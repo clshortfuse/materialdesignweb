@@ -11,7 +11,7 @@ export default SideSheet
       type: 'float',
       empty: 1248,
     },
-    modalBreakpoint: {
+    fixedBreakpoint: {
       type: 'float',
       empty: 1248,
     },

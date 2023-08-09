@@ -38,7 +38,7 @@ export default CustomElement
   .mixin(DelegatesFocusMixin)
   .mixin(ResizeObserverMixin)
   .observe({
-    modal: 'boolean',
+    fixed: 'boolean',
     open: 'boolean',
     inlineEnd: 'boolean',
     _lastComputedInlineSize: {
@@ -66,7 +66,7 @@ export default CustomElement
       type: 'float',
       empty: -1,
     },
-    modalBreakpoint: {
+    fixedBreakpoint: {
       type: 'float',
       empty: 0,
     },
@@ -81,15 +81,15 @@ export default CustomElement
     hostStyles: {
       ...ELEMENT_STYLER_TYPE,
       get({
-        open, modal, _isSideSheetRtl, _lastComputedInlineSize, _translateX,
+        open, fixed, _isSideSheetRtl, _lastComputedInlineSize, _translateX,
         _animationDuration, _animationEasing,
       }) {
-        const computedMargin = (open || modal) ? 0 : `${-1 * _lastComputedInlineSize}px`;
+        const computedMargin = (open || !fixed) ? 0 : `${-1 * _lastComputedInlineSize}px`;
         return {
           styles: {
             marginLeft: _isSideSheetRtl ? 0 : computedMargin,
             marginRight: _isSideSheetRtl ? computedMargin : 0,
-            transform: modal ? `translateX(${_translateX})` : 'none',
+            transform: fixed ? 'none' : `translateX(${_translateX})`,
           },
           timing: {
             duration: _animationDuration,
@@ -105,8 +105,8 @@ export default CustomElement
 
   .methods({
     checkForScrim(animate = false) {
-      let { open, modal, _scrim } = this;
-      if (open && modal) {
+      let { open, fixed, _scrim } = this;
+      if (open && !fixed) {
         if (!_scrim) {
           _scrim = new Scrim();
           _scrim.addEventListener('click', () => {
@@ -128,8 +128,8 @@ export default CustomElement
       }
     },
     checkDragFinished() {
-      const { open, _dragDeltaX, _lastComputedInlineSize, modal, _isSideSheetRtl } = this;
-      if (!open || !modal || _dragDeltaX == null) return;
+      const { open, _dragDeltaX, _lastComputedInlineSize, fixed, _isSideSheetRtl } = this;
+      if (!open || fixed || _dragDeltaX == null) return;
       const visibility = (_dragDeltaX + _lastComputedInlineSize) / _lastComputedInlineSize;
       if (visibility < 0.5) {
         // Should close
@@ -148,13 +148,13 @@ export default CustomElement
       this._dragStartY = null;
     },
     onResize() {
-      const { autoOpen, modalBreakpoint, autoClose, offsetParent } = this;
-      const containerWidth = offsetParent?.clientWidth ?? window.innerWidth;
-      const modal = (containerWidth < modalBreakpoint);
-      this.open = !modal
+      const { autoOpen, fixedBreakpoint, autoClose } = this;
+      const containerWidth = window.innerWidth;
+      const fixed = (containerWidth >= fixedBreakpoint);
+      this.open = fixed
         && autoOpen >= 0
         && (containerWidth >= autoOpen && (autoClose === -1 || containerWidth < autoClose));
-      this.modal = modal;
+      this.fixed = fixed;
       this._hasCheckedResize = true;
     },
   })
@@ -169,8 +169,8 @@ export default CustomElement
   .events({
     '~touchstart'(event) {
       if (!event.touches.length) return;
-      const { open, modal, _isSideSheetRtl } = this;
-      if (!open || !modal) return;
+      const { open, fixed, _isSideSheetRtl } = this;
+      if (!open || fixed) return;
       let [{ clientX, pageX }] = event.touches;
       clientX ??= pageX - window.scrollX; // Safari
       this._dragStartX = _isSideSheetRtl
@@ -180,8 +180,8 @@ export default CustomElement
     },
     '~touchmove'({ touches }) {
       if (!touches.length) return;
-      const { open, modal, _lastChildScrollTime, _dragStartX, _isSideSheetRtl } = this;
-      if (!open || !modal || _dragStartX == null) return;
+      const { open, fixed, _lastChildScrollTime, _dragStartX, _isSideSheetRtl } = this;
+      if (!open || fixed || _dragStartX == null) return;
       if (_lastChildScrollTime && performance.now() - _lastChildScrollTime <= (SUPPORTS_SCROLLEND ? 5000 : 500)) {
         // Assume still scrolling
         return;
@@ -201,7 +201,7 @@ export default CustomElement
     '~touchend': 'checkDragFinished',
     /** Scroll events do no bubble but can be captured, passively */
     '*~scroll'() {
-      if (!this.modal) return;
+      if (this.fixed) return;
       this.checkDragFinished();
       this._lastChildScrollTime = performance.now();
       // Wiping touch state
@@ -209,7 +209,7 @@ export default CustomElement
       this._dragDeltaX = null;
     },
     '*scrollend'() {
-      if (!this.modal) return;
+      if (this.fixed) return;
       this._lastChildScrollTime = null;
     },
   })
@@ -221,7 +221,7 @@ export default CustomElement
       this._animationEasing = open ? 'ease-in' : 'ease-out';
       this.checkForScrim(true);
     },
-    modalChanged() {
+    fixedChanged() {
       this._animationDuration = 0;
       this.checkForScrim(false);
     },
@@ -240,8 +240,11 @@ export default CustomElement
     :host {
       --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);
-      position: sticky;
+
+      position: fixed;
+
       inset-block: 0;
+      inset-inline: 0 auto;
 
       display: inline-block;
       overflow-y:auto;
@@ -255,9 +258,15 @@ export default CustomElement
       min-block-size: 100vh;
       min-block-size: 100dvh;
       max-block-size: 100%;
+
+      max-inline-size: calc(100vw - 56px);
       grid-column: 1;
 
+      transform: translateX(-100%);
+
       visibility: hidden;
+
+      z-index: 24;
 
       background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
@@ -273,25 +282,24 @@ export default CustomElement
       transition: visibility 0s;
     }
 
-    :host(:where([modal])) {
-      position: fixed;
-      inset-inline: 0 auto;
-
-      max-inline-size: calc(100vw - 56px);
-
-      transform: translateX(-100%);
-
-      z-index: 24;
-    }
-
     :host(:where[inline-end]) {
-      grid-column: 3;
-    }
-
-    :host(:where([inline-end][modal])) {
       inset-inline: auto 0;
 
       transform: translateX(100%);
+    }
+
+    :host(:where([fixed])) {
+      position: sticky;
+      inset-inline: auto;
+
+      max-inline-size: none;
+
+      transform: none;
+      z-index: auto;
+    }
+
+    :host(:where([inline-end][fixed])) {
+      grid-column: 3;
     }
   `
   .autoRegister('mdw-side-sheet');
