@@ -14,7 +14,10 @@ export default CustomElement
   `
   .css`
     :host {
-      display: flex;
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-rows: 1fr;
+      grid-template-columns: auto 1fr auto;
       overflow-x: clip;
 
       font: var(--mdw-typescale__body-large__font);
@@ -24,7 +27,7 @@ export default CustomElement
     #center {
       display: block;
 
-      flex: 1;
+      grid-column: 2;
     }
 
   `

@@ -255,6 +255,7 @@ export default CustomElement
       min-block-size: 100vh;
       min-block-size: 100dvh;
       max-block-size: 100%;
+      grid-column: 1;
 
       visibility: hidden;
 
@@ -281,6 +282,10 @@ export default CustomElement
       transform: translateX(-100%);
 
       z-index: 24;
+    }
+
+    :host(:where[inline-end]) {
+      grid-column: 3;
     }
 
     :host(:where([inline-end][modal])) {
