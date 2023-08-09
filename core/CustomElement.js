@@ -358,32 +358,11 @@ export default class CustomElement extends ICustomElement {
 
     const {
       changedCallback: customSimpleCallback,
-      propChangedCallback: customNamedCallback,
       fireChangeOnCreate,
     } = options;
 
-    const customCallbacks = [];
     if (customSimpleCallback) {
-      customCallbacks.push([name, customSimpleCallback]);
-    }
-    if (customNamedCallback) {
-      customCallbacks.push([name, function remappedCallback(...args) {
-        customNamedCallback.call(this, name, ...args);
-      }]);
-    }
-    if (customCallbacks.length) {
-      this.onPropChanged(customCallbacks);
-      if (fireChangeOnCreate) {
-        this._addCallback('_onConstructedCallbacks', function onCreateChangeEmitter() {
-          const value = this[name];
-          if (customSimpleCallback) {
-            customSimpleCallback.call(this, undefined, value, null);
-          }
-          if (customNamedCallback) {
-            customNamedCallback.call(this, name, undefined, value, null);
-          }
-        });
-      }
+      this.onPropChanged([[name, customSimpleCallback]]);
     }
 
     // TODO: Inspect possible closure bloat
@@ -392,6 +371,14 @@ export default class CustomElement extends ICustomElement {
     };
 
     const config = defineObservableProperty(this.prototype, name, options);
+
+    if (fireChangeOnCreate) {
+      this._addCallback('_onConstructedCallbacks', function onCreateChangeEmitter() {
+        const value = this[name];
+        config.propChangedCallback?.call(this, name, value, value, null);
+        config.changedCallback?.call(this, value, value, null);
+      });
+    }
 
     this.propList.set(name, config);
 
