@@ -17,6 +17,9 @@ export function attrValueFromDataValue(value) {
   }
 }
 
+/** @type {Map<string, string>} */
+let attrNameFromPropNameCache;
+
 /**
  * Converts property name to attribute name
  * (Similar to DOMStringMap)
@@ -24,8 +27,14 @@ export function attrValueFromDataValue(value) {
  * @return {string}
  */
 export function attrNameFromPropName(name) {
+  attrNameFromPropNameCache ??= new Map();
+  if (attrNameFromPropNameCache.has(name)) {
+    return attrNameFromPropNameCache.get(name);
+  }
   // eslint-disable-next-line unicorn/prefer-string-replace-all
-  return name.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+  const value = name.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+  attrNameFromPropNameCache.set(name, value);
+  return value;
 }
 
 export const CHROME_VERSION = Number.parseFloat(navigator.userAgent.match(/Chrome\/([\d.]+)/)?.[1]);
