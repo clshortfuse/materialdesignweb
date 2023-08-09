@@ -359,6 +359,7 @@ export default class CustomElement extends ICustomElement {
     const {
       changedCallback: customSimpleCallback,
       fireChangeOnCreate,
+      fireChangeOnConnect,
     } = options;
 
     if (customSimpleCallback) {
@@ -372,12 +373,18 @@ export default class CustomElement extends ICustomElement {
 
     const config = defineObservableProperty(this.prototype, name, options);
 
-    if (fireChangeOnCreate) {
-      this._addCallback('_onConstructedCallbacks', function onCreateChangeEmitter() {
+    if (fireChangeOnCreate || fireChangeOnConnect) {
+      const fireOnLifecycle = function fireOnLifecycle() {
         const value = this[name];
         config.propChangedCallback?.call(this, name, value, value, null);
         config.changedCallback?.call(this, value, value, null);
-      });
+      };
+      if (fireChangeOnCreate) {
+        this._addCallback('_onConstructedCallbacks', fireOnLifecycle);
+      }
+      if (fireChangeOnConnect) {
+        this._addCallback('_onConnectedCallbacks', fireOnLifecycle);
+      }
     }
 
     this.propList.set(name, config);
