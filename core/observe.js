@@ -238,10 +238,6 @@ export function parseObserverOptions(name, typeOrOptions, object) {
     key: name,
     changedCallback,
     watchers: options.watchers ?? [],
-    values: options.values ?? new WeakMap(),
-    computedValues: options.computedValues ?? new WeakMap(),
-    attributeChangedCallback: options.attributeChangedCallback,
-    needsSelfInvalidation: options.needsSelfInvalidation ?? new WeakSet(),
   };
 }
 
@@ -365,7 +361,11 @@ export function defineObservableProperty(object, key, options) {
       } else if (config.is.call(this, oldValue, newValue)) return false;
     }
 
-    config.values.set(this, newValue);
+    if (config.values) {
+      config.values.set(this, newValue);
+    } else {
+      config.values = new WeakMap([[this, newValue]]);
+    }
     // console.log(key, 'value.set', newValue);
     config.propChangedCallback?.call(this, key, oldValue, newValue, changes);
     config.changedCallback?.call(this, oldValue, newValue, changes);
@@ -376,7 +376,7 @@ export function defineObservableProperty(object, key, options) {
    * @return {T2}
    */
   function internalGet() {
-    return config.values.has(this) ? config.values.get(this) : config.value;
+    return config.values?.has(this) ? config.values.get(this) : config.value;
   }
 
   /**
@@ -393,10 +393,12 @@ export function defineObservableProperty(object, key, options) {
   /** @return {void} */
   function onInvalidate() {
     // Current value is now invalidated. Recompute and check if changed
-    const oldValue = config.computedValues.get(this);
+    // eslint-disable-next-line no-multi-assign
+
+    const oldValue = config.computedValues?.get(this);
     const newValue = this[key];
     // console.debug('observe: onInvalidate called for', key, oldValue, '=>', newValue, this);
-    config.needsSelfInvalidation.delete(this);
+    config.needsSelfInvalidation?.delete(this);
     detectChange.call(this, oldValue, newValue);
   }
 
@@ -427,7 +429,8 @@ export function defineObservableProperty(object, key, options) {
       if (config.get) {
         const newValue = config.get.call(this, this, internalGet.bind(this));
         // Store computed value internally. Used by onInvalidate to get previous value
-        config.computedValues.set(this, newValue);
+        const computedValues = (config.computedValues ??= new WeakMap());
+        computedValues.set(this, newValue);
         return newValue;
       }
       return internalGet.call(this);
@@ -443,7 +446,11 @@ export function defineObservableProperty(object, key, options) {
         return;
       }
       if (config.set) {
-        config.needsSelfInvalidation.add(this);
+        if (config.needsSelfInvalidation) {
+          config.needsSelfInvalidation.add(this);
+        } else {
+          config.needsSelfInvalidation = new WeakSet([this]);
+        }
         const oldValue = this[key];
         config.set.call(this, value, internalSet.bind(this));
         const newValue = this[key];
