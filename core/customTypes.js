@@ -160,5 +160,5 @@ export const ELEMENT_STYLER_TYPE = {
       pendingConnections.observe(this);
     }
   },
-  fireChangeOnConnect: true,
+  fireChangeOnCreate: true,
 };

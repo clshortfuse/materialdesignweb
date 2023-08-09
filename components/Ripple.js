@@ -64,7 +64,7 @@ export default CustomElement
       if (!hypotenuse) {
         const width = (x >= parentWidth / 2) ? x : (parentWidth - x);
         const height = (y >= parentHeight / 2) ? y : (parentHeight - y);
-        hypotenuse = 2 * Math.sqrt((width * width) + (height * height));
+        hypotenuse = 2 * Math.hypot(width, height);
       }
 
       // const expandDuration = Math.min(
