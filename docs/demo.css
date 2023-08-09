@@ -7,3 +7,7 @@ html {
 body {
   margin: 0;
 }
+
+demo-page:not(:defined) {
+  display: none;
+}
