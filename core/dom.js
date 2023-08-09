@@ -24,15 +24,8 @@ export function attrValueFromDataValue(value) {
  * @return {string}
  */
 export function attrNameFromPropName(name) {
-  const attrNameWords = name.split(/([A-Z])/);
-  if (attrNameWords.length === 1) return name;
-  return attrNameWords.reduce((prev, curr) => {
-    if (prev == null) return curr;
-    if (curr.length === 1 && curr.toUpperCase() === curr) {
-      return `${prev}-${curr.toLowerCase()}`;
-    }
-    return prev + curr;
-  });
+  // eslint-disable-next-line unicorn/prefer-string-replace-all
+  return name.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
 }
 
 export const CHROME_VERSION = Number.parseFloat(navigator.userAgent.match(/Chrome\/([\d.]+)/)?.[1]);
