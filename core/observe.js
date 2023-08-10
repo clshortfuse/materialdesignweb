@@ -136,74 +136,79 @@ export function parseObserverOptions(name, typeOrOptions, object) {
     ? { type: typeOrOptions }
     : typeOrOptions;
 
-  let { enumerable, attr, reflect } = options;
-  const { type, empty, changedCallback } = options;
+  let {
+    watchers, value, readonly,
+    empty, type,
+    enumerable, reflect, attr,
+    nullable, parser, nullParser,
+    is, diff,
+  } = options;
+
+  watchers ??= [];
+  value ??= empty;
+  readonly ??= false;
+
+  if (empty === undefined) {
+    empty = null;
+  }
 
   /** @type {ObserverPropertyType} */
-  let parsedType = type;
-  if (parsedType == null) {
+  if (!type) {
     // Use .value or .get() to parse type
-    const value = options.value ?? empty ?? options.get?.call(object ?? {}, object ?? {});
+    value ??= options.get?.call(object ?? {}, object ?? {});
     if (value == null) {
-      parsedType = 'string';
+      type = 'string';
     } else {
       const parsed = typeof value;
-      parsedType = (parsed === 'number')
+      type = (parsed === 'number')
         ? (Number.isInteger(value) ? 'integer' : 'number')
         : parsed;
     }
   }
 
   enumerable ??= name[0] !== '_';
-  reflect ??= enumerable ? parsedType !== 'object' : (attr ? 'write' : false);
+  reflect ??= enumerable ? type !== 'object' : (attr ? 'write' : false);
   attr ??= (reflect ? attrNameFromPropName(name) : null);
+  nullable ??= (type === 'boolean') ? false : (empty == null);
 
   // if defined ? value
   // else if boolean ? false
   // else if onNullish ? false
   // else if empty == null
-  const parser = options.parser ?? defaultParserFromType(parsedType);
-  let nullParser = options.nullParser;
-  let parsedEmpty = empty ?? null;
+  parser ??= defaultParserFromType(type);
   if (!nullParser) {
-    const nullable = options.nullable ?? (
-      parsedType === 'boolean'
-        ? false
-        : (empty == null));
     if (nullable) {
       nullParser = () => null;
     } else {
-      parsedEmpty ??= emptyFromType(parsedType);
-      nullParser = parsedEmpty === null ? () => emptyFromType(parsedType) : () => parsedEmpty;
+      empty ??= emptyFromType(type);
+      nullParser = (empty === null)
+        ? () => emptyFromType(type)
+        : () => empty;
     }
   }
 
-  let isFn = options.is;
-  if (!isFn) {
-    isFn = parsedType === 'object'
-      ? (a, b) => !hasMergePatch(a, b)
-      : ((parsedType === 'array') ? () => false : Object.is);
-  }
+  is ??= (type === 'object')
+    ? (a, b) => !hasMergePatch(a, b)
+    : ((type === 'array') ? () => false : Object.is);
 
-  const diff = 'diff' in options
-    ? options.diff
-    : ((parsedType === 'object') ? (a, b) => buildMergePatch(a, b, 'reference') : null);
+  if (diff === undefined) {
+    diff = ((type === 'object') ? (a, b) => buildMergePatch(a, b, 'reference') : null);
+  }
 
   return {
     ...options,
-    type: parsedType,
-    is: isFn,
+    type,
+    is,
     diff,
     attr,
     reflect,
-    readonly: options.readonly ?? false,
+    readonly,
     enumerable,
-    value: options.value ?? parsedEmpty,
+    value,
     parser,
     nullParser,
     key: name,
-    changedCallback,
-    watchers: options.watchers ?? [],
+    watchers,
     INIT_SYMBOL,
   };
 }
