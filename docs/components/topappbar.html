@@ -30,11 +30,11 @@
       <mdw-headline text-padding=0.5em> Center (Default) </mdw-headline>
       <mdw-box flex wrap gap=12>
         <demo-screen color="background">
-          <mdw-top-app-bar headline="Title"></mdw-top-app-bar>
+          <mdw-top-app-bar headline="Title" sticky-parent></mdw-top-app-bar>
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-top-app-bar>Headline in textContent</mdw-top-app-bar>
+          <mdw-top-app-bar sticky-parent>Headline in textContent</mdw-top-app-bar>
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
@@ -44,7 +44,7 @@
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-top-app-bar>
+          <mdw-top-app-bar sticky-parent>
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
             <mdw-inline ink=primary>Custom</mdw-inline> (and possibly oversized) Title
             <mdw-icon-button class="toolbar-icon-button toolbar-avatar" slot="trailing" icon="account_circle">Profile
@@ -53,7 +53,7 @@
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-top-app-bar kbd-nav="false" aria-label="Search Toolbar">
+          <mdw-top-app-bar kbd-nav="false" aria-label="Search Toolbar" sticky-parent>
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
             <mdw-input class="demo-app-bar-search" placeholder="Search" type=search icon=search outlined density=-2
               shape-style="full"></mdw-input>
@@ -68,7 +68,7 @@
       <mdw-headline text-padding=0.5em> Small </mdw-headline>
       <mdw-box flex wrap gap=12>
         <demo-screen color="background">
-          <mdw-top-app-bar headline="Small app bar" size="small">
+          <mdw-top-app-bar headline="Small app bar" size="small" sticky-parent>
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="today">Today</mdw-icon-button>
@@ -82,7 +82,7 @@
       <mdw-headline text-padding=0.5em> Medium </mdw-headline>
       <mdw-box flex wrap gap=12>
         <demo-screen color="background">
-          <mdw-top-app-bar headline="Medium app bar" size="medium" color="secondary-container">
+          <mdw-top-app-bar headline="Medium app bar" size="medium" color="secondary-container" sticky-parent>
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File
             </mdw-icon-button>
@@ -92,7 +92,7 @@
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-top-app-bar headline="Oversized Auto-Hiding Headline Medium app bar" size="medium">
+          <mdw-top-app-bar headline="Oversized Auto-Hiding Headline Medium app bar" size="medium" sticky-parent>
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File
             </mdw-icon-button>
@@ -107,7 +107,7 @@
       <mdw-headline text-padding=0.5em> Large </mdw-headline>
       <mdw-box flex wrap gap=12>
         <demo-screen color="background">
-          <mdw-top-app-bar headline="Large app bar" size="large">
+          <mdw-top-app-bar headline="Large app bar" size="large" sticky-parent>
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File
             </mdw-icon-button>
@@ -117,7 +117,7 @@
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-top-app-bar headline="Oversized Headline Large app bar will not exceed two lines" size="large">
+          <mdw-top-app-bar headline="Oversized Headline Large app bar will not exceed two lines" size="large" sticky-parent>
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File
             </mdw-icon-button>
