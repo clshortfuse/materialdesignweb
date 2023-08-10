@@ -104,7 +104,7 @@ export function* generateHTMLStyleElements(styles, useCache = true) {
       yield style.ownerNode.cloneNode(true);
     } else if (useCache && styleElementFromStyleSheetCache.has(style)) {
       // @ts-ignore Skip cast
-      yield styleElementWrappers.get(style).cloneNode(true);
+      yield styleElementFromStyleSheetCache.get(style).cloneNode(true);
     } else {
       console.warn('Manually constructing HTMLStyleElement', [...style.cssRules].map((r) => r.cssText).join('\n'));
       const styleElement = document.createElement('style');
