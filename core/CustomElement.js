@@ -356,14 +356,8 @@ export default class CustomElement extends ICustomElement {
       ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
     };
 
-    const {
-      changedCallback: customSimpleCallback,
-      fireChangeOnCreate,
-      fireChangeOnConnect,
-    } = options;
-
-    if (customSimpleCallback) {
-      this.onPropChanged([[name, customSimpleCallback]]);
+    if (options.changedCallback) {
+      this.onPropChanged([[name, options.changedCallback]]);
     }
 
     // TODO: Inspect possible closure bloat
@@ -372,20 +366,6 @@ export default class CustomElement extends ICustomElement {
     };
 
     const config = defineObservableProperty(this.prototype, name, options);
-
-    if (fireChangeOnCreate || fireChangeOnConnect) {
-      const fireOnLifecycle = function fireOnLifecycle() {
-        const value = this[name];
-        config.propChangedCallback?.call(this, name, value, value, null);
-        config.changedCallback?.call(this, value, value, null);
-      };
-      if (fireChangeOnCreate) {
-        this._addCallback('_onConstructedCallbacks', fireOnLifecycle);
-      }
-      if (fireChangeOnConnect) {
-        this._addCallback('_onConnectedCallbacks', fireOnLifecycle);
-      }
-    }
 
     this.propList.set(name, config);
 

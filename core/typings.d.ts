@@ -51,8 +51,6 @@ type ObserverOptions<
   propChangedCallback?: (this:C, name:string, oldValue: T2, newValue: T2, changes:any) => any;
   /** Attribute callback */
   attributeChangedCallback?: (this:C, name:string, oldValue: string, newValue: string) => any;
-  fireChangeOnCreate?: boolean,
-  fireChangeOnConnect?: boolean,
   computedValues?: WeakMap<C, T2>;
   watchers?: [keyof C, (this:C, ...args:any[]) => any][];
   needsSelfInvalidation?: WeakSet<C>,

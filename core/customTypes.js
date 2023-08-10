@@ -137,7 +137,14 @@ export const ELEMENT_STYLER_TYPE = {
   type: 'object',
   reflect: false,
   diff: null, // Skip computing entire change
-  propChangedCallback(name) {
+  propChangedCallback(name, oldValue, newValue) {
+    if (!newValue) {
+      const previousAnimations = previousAnimationsByElement.get(this);
+      if (!previousAnimations?.has(name)) {
+        // Fast abort
+        return;
+      }
+    }
     const queuedProps = queuedPropsByElement.get(this);
 
     const initial = !this.isConnected;
@@ -160,5 +167,4 @@ export const ELEMENT_STYLER_TYPE = {
       pendingConnections.observe(this);
     }
   },
-  fireChangeOnCreate: true,
 };
