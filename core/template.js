@@ -16,16 +16,24 @@ import { generateUID } from './uid.js';
 /** @type {Document} */
 let _inactiveDocument;
 
+/** @type {DocumentFragment} */
+let _blankFragment;
+
+/** @type {Range} */
+let _fragmentRange;
+
 /**
  * @param {string} [fromString]
  * @return {DocumentFragment}
  */
 export function generateFragment(fromString) {
   _inactiveDocument ??= document.implementation.createHTMLDocument();
-  if (fromString == null) {
-    return _inactiveDocument.createDocumentFragment();
+  if (!fromString) {
+    _blankFragment ??= _inactiveDocument.createDocumentFragment();
+    return /** @type {DocumentFragment} */ (_blankFragment.cloneNode());
   }
-  return _inactiveDocument.createRange().createContextualFragment(fromString);
+  _fragmentRange ??= _inactiveDocument.createRange();
+  return _fragmentRange.createContextualFragment(fromString);
 }
 
 /** @type {Map<string, InlineFunctionEntry<?>>} */
@@ -91,8 +99,10 @@ export function html(strings, ...substitutions) {
     return fragment;
   }
 
-  let fragment = fragmentCache.get(compiledString);
-  if (!fragment) {
+  let fragment;
+  if (fragmentCache.has(compiledString)) {
+    fragment = fragmentCache.get(compiledString);
+  } else {
     fragment = generateFragment(compiledString);
     fragmentCache.set(compiledString, fragment);
   }
