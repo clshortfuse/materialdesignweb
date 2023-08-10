@@ -1,17 +1,22 @@
 // https://w3c.github.io/aria/#status
 
+import CustomElement from '../core/CustomElement.js';
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DensityMixin from '../mixins/DensityMixin.js';
 import ElevationMixin from '../mixins/ElevationMixin.js';
+import FlexableMixin from '../mixins/FlexableMixin.js';
+import ShapeMixin from '../mixins/ShapeMixin.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import './Button.js';
 import './IconButton.js';
 
-import Surface from './Surface.js';
-
-export default Surface
+export default CustomElement
   .extend()
+  .mixin(ThemableMixin)
+  .mixin(FlexableMixin)
+  .mixin(ShapeMixin)
   .mixin(DensityMixin)
   .mixin(AriaReflectorMixin)
   .mixin(ElevationMixin)
@@ -28,7 +33,6 @@ export default Surface
     closeButton: 'boolean',
     closeIcon: { empty: 'close' },
     closeInk: { empty: 'inherit' },
-    elevation: { empty: 3 },
     onaction: EVENT_HANDLER_TYPE,
   })
   .methods({
@@ -50,13 +54,10 @@ export default Surface
     },
   })
   .html`
-    <div id=content></div>
+    <div id=content><slot id=slot></div>
     <mdw-button mdw-if={action} id=action class=button ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
     <mdw-icon-button mdw-if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-button>
   `
-  .recompose(({ refs: { content, slot } }) => {
-    content.append(slot);
-  })
   .childEvents({
     action: {
       '~click'() {
@@ -83,6 +84,8 @@ export default Surface
       align-items: center;
 
       padding-inline: 16px;
+
+      filter: var(--mdw-elevation__drop-shadow__3);
 
       opacity: 0;
       transform: translateY(25%) scaleY(0.25);

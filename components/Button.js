@@ -54,20 +54,6 @@ export default CustomElement
     viewBox: 'string',
     svgPath: 'string',
   })
-  .observe({
-    _elevation({ elevation, elevated, filled }) {
-      if (elevation != null) return elevation;
-      if (elevated) return 1;
-      if (filled != null) return 0;
-      return null;
-    },
-    _elevationRaised({ elevationRaised, elevated, filled }) {
-      if (elevationRaised != null) return elevationRaised;
-      if (elevated) return 2;
-      if (filled != null) return 1;
-      return null;
-    },
-  })
   .expressions({
     hasIcon({ icon, svg, src, svgPath }) {
       return icon ?? svg ?? src ?? svgPath;
@@ -131,19 +117,39 @@ export default CustomElement
     }
 
     :host(:where([elevated],[filled])) {
-      will-change: filter;
+      transition: box-shadow 200ms;
+      will-change: box-shadow;
     }
 
     /** Elevated Color Defaults */
     :host(:where([elevated])) {
       --mdw-bg: var(--mdw-color__surface-container-low);
       --mdw-ink: var(--mdw-color__primary);
+      box-shadow: var(--mdw-elevation__box-shadow__1);
     }
     /** Filled Color Defaults */
     :host(:where([filled])) {
       --mdw-bg: var(--mdw-color__primary);
       --mdw-ink: var(--mdw-color__on-primary);
+      box-shadow: var(--mdw-elevation__box-shadow__0);
     }
+
+    :host(:where([elevated]:hover:not(:active))) {
+      box-shadow: var(--mdw-elevation__box-shadow__2);
+    }
+
+    :host(:where([filled]:hover:not(:active))) {
+      box-shadow: var(--mdw-elevation__box-shadow__1);
+    }
+
+    :host(:where([elevated]:disabled)) {
+      box-shadow: var(--mdw-elevation__box-shadow__0);
+    }
+
+    :host(:where([filled]:disabled)) {
+      box-shadow: var(--mdw-elevation__box-shadow__0);
+    }
+
     /** Filled Tonal Color Defaults */
     :host(:where([filled="tonal"])) {
       --mdw-bg: var(--mdw-color__secondary-container);

@@ -11,9 +11,6 @@ import Surface from './Surface.js';
 export default Surface
   .extend()
   .mixin(AriaToolbarMixin)
-  .set({
-    elevated: true,
-  })
   .observe({
     color: { empty: 'surface-container' },
   })

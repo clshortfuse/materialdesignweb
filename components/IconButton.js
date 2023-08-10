@@ -17,12 +17,6 @@ export default Button
         return indeterminate ? 'mixed' : (checked ? 'true' : 'false');
       },
     },
-    _elevation({ elevation }) {
-      return elevation;
-    },
-    _elevationRaised({ elevationRaised }) {
-      return elevationRaised;
-    },
     _isToggle({ type }) {
       return type === 'checkbox';
     },

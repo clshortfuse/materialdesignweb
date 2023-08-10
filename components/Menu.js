@@ -1,10 +1,9 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
-import './Surface.js';
 import CustomElement from '../core/CustomElement.js';
 import { attemptFocus } from '../core/dom.js';
 import DensityMixin from '../mixins/DensityMixin.js';
-import SurfaceMixin from '../mixins/ElevationMixin.js';
+import ElevationMixin from '../mixins/ElevationMixin.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import PopupMixin from '../mixins/PopupMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
@@ -13,14 +12,11 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
-  .mixin(SurfaceMixin)
+  .mixin(ElevationMixin)
   .mixin(ShapeMixin)
   .mixin(PopupMixin)
   .mixin(DensityMixin)
   .mixin(KeyboardNavMixin)
-  .observe({
-    elevation: { empty: 2 },
-  })
   .set({
     flow: 'corner',
     _useScrim: false,
@@ -79,6 +75,8 @@ export default CustomElement
       inline-size: auto;
       min-inline-size: calc(var(--mdw-menu__inline-base) * 2);
       max-inline-size: 100vw;
+
+      filter: var(--mdw-elevation__drop-shadow__2);
 
       background-color: rgb(var(--mdw-bg));
     }

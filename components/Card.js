@@ -35,24 +35,6 @@ export default CustomElement
     actionLabel: 'string',
     onaction: EVENT_HANDLER_TYPE,
   })
-  .observe({
-    _elevation({ elevation, elevated, filled, actionable }) {
-      if (elevation != null) return elevation;
-      if (elevated) return 1;
-      if (filled && actionable) return 0;
-      return null;
-    },
-    _elevationRaised({ elevationRaised, elevated, filled, actionable }) {
-      if (!actionable) return null;
-      if (elevationRaised != null) return elevationRaised;
-      if (elevated) return 2;
-      if (filled) return 1;
-      return null;
-    },
-    _secondaryFilter({ disabledState }) {
-      return disabledState ? 'grayScale()' : null;
-    },
-  })
   .define({
     stateTargetElement() { return this.actionable ? this.refs.action : this; },
   })
@@ -79,8 +61,6 @@ export default CustomElement
   `
   .recompose(({ refs: { anchor } }) => { anchor.remove(); })
   .css`
-
-
     :host {
       --mdw-shape__size: 12px;
 
@@ -96,10 +76,19 @@ export default CustomElement
 
       font: var(--mdw-type__font);
       letter-spacing: var(--mdw-type__letter-spacing);
+
+      transition: filter 200ms;
+      will-change: filter;
     }
 
     :host(:where([elevated],[filled],[color])) {
       background-color: rgb(var(--mdw-bg));
+    }
+
+    :host(:where([elevated])) {
+      --mdw-bg: var(--mdw-color__surface-container-low);
+      --mdw-ink: var(--mdw-color__on-surface);
+      filter: var(--mdw-elevation__drop-shadow__1);
     }
 
     :host(:where([filled])) {
@@ -107,9 +96,16 @@ export default CustomElement
       --mdw-ink: var(--mdw-color__on-surface-variant);
     }
 
-    :host(:where([elevated])) {
-      --mdw-bg: var(--mdw-color__surface-container-low);
-      --mdw-ink: var(--mdw-color__on-surface);
+    :host(:where([filled][actionable])) {
+      filter: var(--mdw-elevation__drop-shadow__0);
+    }
+
+    :host(:where([elevated][actionable]:hover:not(:active))) {
+      filter: var(--mdw-elevation__drop-shadow__2);
+    }
+
+    :host(:where([filled][actionable]:hover:not(:active))) {
+      filter: var(--mdw-elevation__drop-shadow__1);
     }
 
     :host([disabled]) {
