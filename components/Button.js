@@ -68,11 +68,6 @@ export default CustomElement
       return null;
     },
   })
-  .observe({
-    _secondaryFilter({ disabledState }) {
-      return disabledState ? 'grayScale()' : null;
-    },
-  })
   .expressions({
     hasIcon({ icon, svg, src, svgPath }) {
       return icon ?? svg ?? src ?? svgPath;
