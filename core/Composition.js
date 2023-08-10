@@ -573,7 +573,7 @@ export default class Composition {
           ranSearch = true;
           const { dirty, value } = executeSearch(action.search, initState, changes, data);
           if (dirty) {
-            // console.log('dirty, updating from batch', initState.nodes[action.nodeIndex], 'with', result.value);
+            // console.log('dirty, updating from batch', initState.nodes[action.nodeIndex], 'with', value);
             action.invocation(initState, value, changes, data);
           }
         }
@@ -677,7 +677,7 @@ export default class Composition {
       if (!nodeValue) return;
       const trimmed = nodeValue.trim();
       if (!trimmed) return;
-      if (attr) {
+      if (attr || element.tagName === 'STYLE') {
         if (trimmed[0] !== '{') return;
         const { length } = trimmed;
         if (trimmed[length - 1] !== '}') return;
@@ -1225,23 +1225,13 @@ export default class Composition {
       switch (node.nodeType) {
         case Node.ELEMENT_NODE:
           element = /** @type {Element} */ (node);
-          if (element instanceof HTMLTemplateElement) {
+          if (element.tagName === 'TEMPLATE') {
             node = treeWalker.nextSibling();
             continue;
           }
-          if (node instanceof HTMLStyleElement) {
-            // Move style elements out of cloneable
-            if (node.parentNode === this.cloneable) {
-              this.styles.push(node);
-              node.remove();
-              node = treeWalker.nextSibling();
-              continue;
-            }
-            console.warn('<style> element not moved');
-          }
-          if (node instanceof HTMLScriptElement) {
+
+          if (element.tagName === 'SCRIPT') {
             console.warn('<script> element found.');
-            node.remove();
             node = treeWalker.nextSibling();
             continue;
           }
@@ -1270,7 +1260,6 @@ export default class Composition {
             node = nextNode;
             continue;
           }
-
           break;
         default:
           throw new Error(`Unexpected node type: ${node.nodeType}`);
