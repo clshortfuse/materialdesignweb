@@ -32,35 +32,22 @@ export default function TypographyMixin(Base) {
       },
     })
     .observe({
-      _beforeStyle: {
-        ...ELEMENT_STYLER_TYPE,
-        get({ _computedTextPaddingTop: marginBlockStart, _computedTextLeading: blockSize }) {
-          if (!marginBlockStart && !blockSize) return null;
-          return {
-            target: 'before',
-            styles: {
-              ...(marginBlockStart ? { marginBlockStart } : {}),
-              ...(blockSize ? { blockSize } : {}),
-            },
-          };
-        },
+      _beforeStyle({ _computedTextPaddingTop: marginBlockStart, _computedTextLeading: blockSize }) {
+        if (!marginBlockStart && !blockSize) return null;
+        return [
+          marginBlockStart ? `margin-block-start:${marginBlockStart}` : '',
+          blockSize ? `block-size:${blockSize}` : '',
+        ].filter(Boolean).join(';');
       },
-      _afterStyle: {
-        ...ELEMENT_STYLER_TYPE,
-        get({ _computedTextPaddingBottom }) {
-          if (!_computedTextPaddingBottom) return null;
-          return {
-            target: 'after',
-            styles: {
-              verticalAlign: `calc(-1 * ${_computedTextPaddingBottom})`,
-            },
-          };
-        },
+      _afterStyle({ _computedTextPaddingBottom }) {
+        if (!_computedTextPaddingBottom) return null;
+        return `vertical-align:calc(-1 * ${_computedTextPaddingBottom})`;
       },
+
     })
     .html`
-      <span id=before mdw-if={!!_beforeStyle}></span>
-      <span id=after mdw-if={!!_afterStyle}></span>
+      <span id=before mdw-if={!!_beforeStyle} style={_beforeStyle}></span>
+      <span id=after mdw-if={!!_afterStyle} style={_afterStyle}></span>
     `
     .recompose(({ refs: { before, slot } }) => {
       slot.before(before);
