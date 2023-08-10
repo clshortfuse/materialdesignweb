@@ -3,64 +3,6 @@ import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
 
 /** @typedef {import('./typings.js').ObserverPropertyType} ObserverPropertyType */
 
-/** @return {null} */
-const DEFAULT_NULL_PARSER = () => null;
-
-/**
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#boolean_coercion
- * @param {any} v
- * @return {boolean}
- */
-const DEFAULT_BOOLEAN_PARSER = (v) => !!v;
-
-/**
- * Doesn't support `BigInt` types
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion
- * @param {any} v
- * @return {number}
- */
-const DEFAULT_NUMBER_PARSER = (v) => +v;
-
-/**
- * Doesn't support `Symbol` types
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion
- * @param {any} v
- * @return {string}
- */
-const DEFAULT_STRING_PARSER = (v) => `${v}`;
-
-/**
- * @template T
- * @param {T} o
- * @return {T}
- */
-const DEFAULT_OBJECT_PARSER = (o) => o;
-
-/**
- * @template T
- * @param {T} a
- * @param {T} b
- * @return {boolean} true if equal
- */
-const DEFAULT_OBJECT_COMPARATOR = (a, b) => !hasMergePatch(a, b);
-
-/**
- * Always invoke change on set
- * @template T
- * @param {T} a
- * @param {T} b
- * @return {boolean} true if equal
- */
-const DEFAULT_ARRAY_COMPARATOR = (a, b) => false;
-
-/**
- * @template T
- * @param {T} a
- * @param {T} b
- * @return {boolean} true if equal
- */
-const DEFAULT_OBJECT_DIFF = (a, b) => buildMergePatch(a, b, 'reference');
-
 /**
  * @param {ObserverPropertyType} type
  * @return {any}
@@ -135,25 +77,49 @@ function buildProxy(proxyTarget, set, deepSet, prefix) {
 function defaultParserFromType(type) {
   switch (type) {
     case 'boolean':
-      return DEFAULT_BOOLEAN_PARSER;
+      /**
+       * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean#boolean_coercion
+       * @param {any} v
+       * @return {boolean}
+       */
+      return (v) => !!v;
     case 'integer':
       // Calls ToNumber(x)
       return Math.round;
     case 'float':
-      return DEFAULT_NUMBER_PARSER;
+      /**
+       * Doesn't support `BigInt` types
+       * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion
+       * @param {any} v
+       * @return {number}
+       */
+      return (v) => +v;
     case 'map':
       return Map;
     case 'set':
       return Set;
     case 'object':
-      return DEFAULT_OBJECT_PARSER;
     case 'array':
-      return DEFAULT_OBJECT_PARSER;
+      /**
+       * Reflect self
+       * @template T
+       * @param {T} o
+       * @return {T}
+       */
+      return (o) => o;
     default:
     case 'string':
-      return DEFAULT_STRING_PARSER;
+      /**
+       * Doesn't support `Symbol` types
+       * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#string_coercion
+       * @param {any} v
+       * @return {string}
+       */
+      return (v) => `${v}`;
   }
 }
+
+const INIT_SYMBOL = Symbol('PROP_INIT');
 
 /**
  * @template {string} K
@@ -166,9 +132,9 @@ function defaultParserFromType(type) {
  */
 export function parseObserverOptions(name, typeOrOptions, object) {
   /** @type {Partial<import('./typings.js').ObserverOptions<T1,T2>>} */
-  const options = {
-    ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
-  };
+  const options = (typeof typeOrOptions === 'string')
+    ? { type: typeOrOptions }
+    : typeOrOptions;
 
   let { enumerable, attr, reflect } = options;
   const { type, empty, changedCallback } = options;
@@ -205,7 +171,7 @@ export function parseObserverOptions(name, typeOrOptions, object) {
         ? false
         : (empty == null));
     if (nullable) {
-      nullParser = DEFAULT_NULL_PARSER;
+      nullParser = () => null;
     } else {
       parsedEmpty ??= emptyFromType(parsedType);
       nullParser = parsedEmpty === null ? () => emptyFromType(parsedType) : () => parsedEmpty;
@@ -215,13 +181,13 @@ export function parseObserverOptions(name, typeOrOptions, object) {
   let isFn = options.is;
   if (!isFn) {
     isFn = parsedType === 'object'
-      ? DEFAULT_OBJECT_COMPARATOR
-      : ((parsedType === 'array') ? DEFAULT_ARRAY_COMPARATOR : Object.is);
+      ? (a, b) => !hasMergePatch(a, b)
+      : ((parsedType === 'array') ? () => false : Object.is);
   }
 
   const diff = 'diff' in options
     ? options.diff
-    : ((parsedType === 'object') ? DEFAULT_OBJECT_DIFF : null);
+    : ((parsedType === 'object') ? (a, b) => buildMergePatch(a, b, 'reference') : null);
 
   return {
     ...options,
@@ -238,17 +204,9 @@ export function parseObserverOptions(name, typeOrOptions, object) {
     key: name,
     changedCallback,
     watchers: options.watchers ?? [],
+    INIT_SYMBOL,
   };
 }
-
-const INIT_SYMBOL = Symbol('PROP_INIT');
-
-/** @type {Partial<import('./typings.js').ObserverConfiguration<?,?,?>>} */
-const DEFAULT_OBSERVER_CONFIGURATION = {
-  nullParser: DEFAULT_NULL_PARSER,
-  is: Object.is,
-  INIT_SYMBOL,
-};
 
 /**
  * @this {import('./typings.js').ObserverConfiguration<?,?,?>}
@@ -319,6 +277,61 @@ export function observeFunction(fn, ...args) {
 }
 
 /**
+ * @param {import('./typings.js').ObserverConfiguration<?,?,?,?>} config
+ * @param {any} oldValue
+ * @param {any} value
+ * @return {boolean} changed
+ */
+function detectChange(config, oldValue, value) {
+  if (config.get) {
+    // TODO: Custom getter vs parser
+  }
+
+  // Compute real new value after parsing
+  const newValue = (value == null)
+    ? config.nullParser.call(this, value)
+    : config.parser.call(this, value);
+
+  // Default change is the newValue
+  let changes = newValue;
+
+  // Null check
+  if (oldValue == null) {
+    if (newValue == null) {
+      // Both nullish
+      return false;
+    }
+  } else if (newValue != null) {
+    // Both non-null, compare
+    if (config.diff) {
+      // Custom change diff
+      changes = config.diff.call(this, oldValue, newValue);
+      if (changes == null) {
+        // No difference
+        return false;
+      }
+    } else if (config.is.call(this, oldValue, newValue)) {
+      // Non-equal
+      return false;
+    }
+  }
+
+  // Commit value
+  if (config.values) {
+    config.values.set(this, newValue);
+  } else {
+    config.values = new WeakMap([[this, newValue]]);
+  }
+
+  // Emit change
+
+  config.propChangedCallback?.call(this, config.key, oldValue, newValue, changes);
+  config.changedCallback?.call(this, oldValue, newValue, changes);
+
+  return true;
+}
+
+/**
  * @template {ObserverPropertyType} T1
  * @template {any} T2
  * @template {string} K
@@ -330,47 +343,8 @@ export function observeFunction(fn, ...args) {
  */
 export function defineObservableProperty(object, key, options) {
   /** @type {import('./typings.js').ObserverConfiguration<T1,T2,K,C>} */
-  const config = {
-    ...DEFAULT_OBSERVER_CONFIGURATION,
-    ...parseObserverOptions(key, options, object),
-    changedCallback: options.changedCallback,
-  };
+  const config = parseObserverOptions(key, options, object);
 
-  /**
-   * @param {T2} oldValue
-   * @param {T2} value
-   * @return {boolean} changed
-   */
-  function detectChange(oldValue, value) {
-    if (config.get) {
-      // TODO: Custom getter vs parser
-    }
-    let newValue = value;
-    newValue = (value == null)
-      ? config.nullParser.call(this, value)
-      : config.parser.call(this, newValue);
-
-    let changes = newValue;
-    if (oldValue == null) {
-      if (newValue == null) return false; // Both nullish
-    } else if (newValue != null) {
-      // if (oldValue === newValue) return false;
-      if (config.diff) {
-        changes = config.diff.call(this, oldValue, newValue);
-        if (changes == null) return false;
-      } else if (config.is.call(this, oldValue, newValue)) return false;
-    }
-
-    if (config.values) {
-      config.values.set(this, newValue);
-    } else {
-      config.values = new WeakMap([[this, newValue]]);
-    }
-    // console.log(key, 'value.set', newValue);
-    config.propChangedCallback?.call(this, key, oldValue, newValue, changes);
-    config.changedCallback?.call(this, oldValue, newValue, changes);
-    return true;
-  }
   /**
    * @this {C}
    * @return {T2}
@@ -387,7 +361,7 @@ export function defineObservableProperty(object, key, options) {
   function internalSet(value) {
     const oldValue = this[key];
     // console.log(key, 'internalSet', oldValue, '=>', value);
-    detectChange.call(this, oldValue, value);
+    detectChange.call(this, config, oldValue, value);
   }
 
   /** @return {void} */
@@ -399,7 +373,7 @@ export function defineObservableProperty(object, key, options) {
     const newValue = this[key];
     // console.debug('observe: onInvalidate called for', key, oldValue, '=>', newValue, this);
     config.needsSelfInvalidation?.delete(this);
-    detectChange.call(this, oldValue, newValue);
+    detectChange.call(this, config, oldValue, newValue);
   }
 
   if (config.get) {
@@ -442,7 +416,7 @@ export function defineObservableProperty(object, key, options) {
      */
     set(value) {
       if (value === INIT_SYMBOL) {
-        // console.log(key, 'returning due to INIT');
+        console.warn(key, 'returning due to INIT', this);
         return;
       }
       if (config.set) {
@@ -456,7 +430,7 @@ export function defineObservableProperty(object, key, options) {
         const newValue = this[key];
         if (!config.needsSelfInvalidation.has(this)) return;
         config.needsSelfInvalidation.delete(this);
-        detectChange.call(this, oldValue, newValue);
+        detectChange.call(this, config, oldValue, newValue);
       } else {
         internalSet.call(this, value);
       }
