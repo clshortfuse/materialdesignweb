@@ -288,7 +288,7 @@ export default CustomElement
         // eslint-disable-next-line operator-linebreak
         const drawer = /** @type {InstanceType<import('../../components/NavDrawer.js').default>} */
           (event.currentTarget);
-        if (!drawer.modal) return;
+        if (drawer.fixed) return;
         if (event.target instanceof NavItem) {
           // Close drawer if modals
           drawer.open = false;
@@ -351,7 +351,7 @@ export default CustomElement
         }, document.title, window.location.href);
       };
       if (document.readyState === 'complete') {
-        requestAnimationFrame(callback);
+        queueMicrotask(callback);
       } else {
         document.addEventListener('DOMContentLoaded', callback);
       }
