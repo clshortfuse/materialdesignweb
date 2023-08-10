@@ -51,7 +51,7 @@ export default function ScrollListenerMixin(Base) {
        * @return {boolean}
        */
       startScrollListener(scroller) {
-        scroller ??= this.offsetParent;
+        scroller ??= window;
         if (!scroller) return false;
 
         if (scroller === document.body) {

@@ -25,6 +25,8 @@ export default function SemiStickyMixin(Base) {
         empty: 'top',
       },
       stickyAlways: 'boolean',
+      /** Stick to offsetParent instead of window */
+      stickyParent: 'boolean',
     })
     .methods({
       _refreshSemiStickyMetrics() {
@@ -143,7 +145,7 @@ export default function SemiStickyMixin(Base) {
         }
       },
       connected() {
-        this.startScrollListener();
+        this.startScrollListener(this.stickyParent ? this.offsetParent : window);
       },
       disconnected() {
         this._scrollListenerClear();
