@@ -1,23 +1,23 @@
 // Micro-optimized functions
 
-const BLANK_TEXT = new Text();
-const BLANK_COMMENT = new Comment();
-const BLANK_DIV = document.createElement('div');
+let BLANK_TEXT;
+let BLANK_COMMENT;
+let BLANK_DIV;
 
 /** @return {Text} */
 export function createEmptyTextNode() {
-  // @ts-ignore
-  return BLANK_TEXT.cloneNode();
+  // eslint-disable-next-line no-return-assign
+  return (BLANK_TEXT ??= new Text()).cloneNode();
 }
 
 /** @return {HTMLDivElement} */
 export function createEmptyDiv() {
-  // @ts-ignore
-  return BLANK_DIV.cloneNode();
+  // eslint-disable-next-line no-return-assign
+  return (BLANK_DIV ??= document.createElement('div')).cloneNode();
 }
 
 /** @return {Comment} */
 export function createEmptyComment() {
-  // @ts-ignore
-  return BLANK_COMMENT.cloneNode();
+  // eslint-disable-next-line no-return-assign
+  return (BLANK_COMMENT ??= new Comment()).cloneNode();
 }
