@@ -641,7 +641,7 @@ export default class CustomElement extends ICustomElement {
      * @return {void}
      */
     this.render = this.composition.render(
-      this,
+      this.constructor.prototype,
       this,
       {
         defaults: this.constructor.prototype,
