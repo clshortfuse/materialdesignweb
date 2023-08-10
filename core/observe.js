@@ -145,23 +145,24 @@ export function parseObserverOptions(name, typeOrOptions, object) {
   } = options;
 
   watchers ??= [];
-  value ??= empty;
   readonly ??= false;
 
   if (empty === undefined) {
     empty = null;
   }
 
+  value ??= empty;
+
   /** @type {ObserverPropertyType} */
   if (!type) {
     // Use .value or .get() to parse type
-    value ??= options.get?.call(object ?? {}, object ?? {});
-    if (value == null) {
+    const computedValue = value ?? options.get?.call(object ?? {}, object ?? {});
+    if (computedValue == null) {
       type = 'string';
     } else {
-      const parsed = typeof value;
+      const parsed = typeof computedValue;
       type = (parsed === 'number')
-        ? (Number.isInteger(value) ? 'integer' : 'number')
+        ? (Number.isInteger(computedValue) ? 'integer' : 'number')
         : parsed;
     }
   }
@@ -170,6 +171,10 @@ export function parseObserverOptions(name, typeOrOptions, object) {
   reflect ??= enumerable ? type !== 'object' : (attr ? 'write' : false);
   attr ??= (reflect ? attrNameFromPropName(name) : null);
   nullable ??= (type === 'boolean') ? false : (empty == null);
+  if (!nullable) {
+    empty ??= emptyFromType(type);
+    value ??= empty;
+  }
 
   // if defined ? value
   // else if boolean ? false
@@ -180,7 +185,6 @@ export function parseObserverOptions(name, typeOrOptions, object) {
     if (nullable) {
       nullParser = () => null;
     } else {
-      empty ??= emptyFromType(type);
       nullParser = (empty === null)
         ? () => emptyFromType(type)
         : () => empty;
