@@ -117,6 +117,10 @@ export default CustomElement
     </mdw-menu>
   `
   .css`
+    :host {
+      display: contents;
+    }
+
     #pane {
       max-inline-size: var(--mdw-page__max-width);
       margin-inline: auto;
