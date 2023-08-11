@@ -16,7 +16,7 @@ import { writeMetafile } from './rollup/plugin-write-metafile.js';
 export default function defineConfig(args) {
   return {
     output: {
-      format: 'esm',
+      format: 'iife',
       entryFileNames: '[name].min.js',
       sourcemap: 'hidden',
     },

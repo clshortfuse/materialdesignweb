@@ -48,7 +48,7 @@ if (!isProduction && live) {
 const buildOptions = {
   entryPoints,
   entryNames: '[dir]/[name].min',
-  format: 'esm',
+  format: 'iife',
   sourcemap: true,
   ...minify,
   banner,
