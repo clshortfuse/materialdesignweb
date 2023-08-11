@@ -592,11 +592,10 @@ export default class CustomElement extends ICustomElement {
     const entries = Array.isArray(options) ? options : Object.entries(options);
     const { attributeChangedCallbacks } = this;
     for (const [name, callback] of entries) {
-      const lcName = name.toLowerCase();
-      if (attributeChangedCallbacks.has(lcName)) {
-        attributeChangedCallbacks.get(lcName).push(callback);
+      if (attributeChangedCallbacks.has(name)) {
+        attributeChangedCallbacks.get(name).push(callback);
       } else {
-        attributeChangedCallbacks.set(lcName, [callback]);
+        attributeChangedCallbacks.set(name, [callback]);
       }
     }
 
@@ -677,10 +676,9 @@ export default class CustomElement extends ICustomElement {
    * @param {string|null} newValue
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    const lcName = name.toLowerCase();
     const { attributeChangedCallbacks } = this.static;
-    if (attributeChangedCallbacks.has(lcName)) {
-      for (const callback of attributeChangedCallbacks.get(lcName)) {
+    if (attributeChangedCallbacks.has(name)) {
+      for (const callback of attributeChangedCallbacks.get(name)) {
         callback.call(this, oldValue, newValue, this);
       }
     }
@@ -697,8 +695,8 @@ export default class CustomElement extends ICustomElement {
     }
 
     let cacheEntry;
-    if (this.attributeCache.has(lcName)) {
-      cacheEntry = this.attributeCache.get(lcName);
+    if (this.attributeCache.has(name)) {
+      cacheEntry = this.attributeCache.get(name);
       if (cacheEntry.stringValue === newValue) return;
     }
 
@@ -719,7 +717,7 @@ export default class CustomElement extends ICustomElement {
       cacheEntry.stringValue = newValue;
       cacheEntry.parsedValue = parsedValue;
     } else {
-      this.attributeCache.set(lcName, {
+      this.attributeCache.set(name, {
         stringValue: newValue, parsedValue,
       });
     }
@@ -742,18 +740,17 @@ export default class CustomElement extends ICustomElement {
     if (propList.has(name)) {
       const { reflect, attr } = propList.get(name);
       if (attr && (reflect === true || reflect === 'write')) {
-        const lcName = attr.toLowerCase();
         /** @type {{stringValue:string, parsedValue:any}} */
         let cacheEntry;
         let needsWrite = false;
         const { attributeCache } = this;
-        if (attributeCache.has(lcName)) {
-          cacheEntry = attributeCache.get(lcName);
+        if (attributeCache.has(name)) {
+          cacheEntry = attributeCache.get(name);
           needsWrite = (cacheEntry.parsedValue !== newValue);
         } else {
         // @ts-ignore skip cast
           cacheEntry = {};
-          attributeCache.set(lcName, cacheEntry);
+          attributeCache.set(name, cacheEntry);
           needsWrite = true;
         }
         if (needsWrite) {
