@@ -110,7 +110,7 @@ export default CustomElement
 
     :host([disabled]) {
       filter: grayscale();
-      opacity: 0.38;  
+      opacity: 0.38;
 
       color: rgb(var(--mdw-color__on-surface));
     }
