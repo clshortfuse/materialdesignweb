@@ -369,7 +369,7 @@ export default class CustomElement extends ICustomElement {
 
     this.propList.set(name, config);
 
-    const { attr, reflect, watchers, INIT_SYMBOL } = config;
+    const { attr, reflect, watchers, value } = config;
 
     if (attr && (reflect === true || reflect === 'read')) {
       this.attrList.set(attr, config);
@@ -377,7 +377,7 @@ export default class CustomElement extends ICustomElement {
 
     this.onPropChanged(watchers);
 
-    return INIT_SYMBOL;
+    return value;
   }
 
   /**

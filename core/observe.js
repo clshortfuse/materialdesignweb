@@ -119,8 +119,6 @@ function defaultParserFromType(type) {
   }
 }
 
-const INIT_SYMBOL = Symbol('PROP_INIT');
-
 /**
  * @template {string} K
  * @template {ObserverPropertyType} [T1=any]
@@ -213,7 +211,6 @@ export function parseObserverOptions(name, typeOrOptions, object) {
     nullParser,
     key: name,
     watchers,
-    INIT_SYMBOL,
   };
 }
 
@@ -400,50 +397,44 @@ export function defineObservableProperty(object, key, options) {
 
     // TODO: May be able to cache value if props are present
   }
+
+  /**
+   * @this {C}
+   * @return {T2}
+   */
+  function cachedGet() {
+    const newValue = config.get.call(this, this, internalGet.bind(this));
+    // Store computed value internally. Used by onInvalidate to get previous value
+    const computedValues = (config.computedValues ??= new WeakMap());
+    computedValues.set(this, newValue);
+    return newValue;
+  }
+
+  /**
+   * @this {C}
+   * @param {T2} value
+   * @return {void}
+   */
+  function cachedSet(value) {
+    if (config.needsSelfInvalidation) {
+      config.needsSelfInvalidation.add(this);
+    } else {
+      config.needsSelfInvalidation = new WeakSet([this]);
+    }
+    const oldValue = this[key];
+    config.set.call(this, value, internalSet.bind(this));
+    const newValue = this[key];
+    if (!config.needsSelfInvalidation.has(this)) return;
+    config.needsSelfInvalidation.delete(this);
+    detectChange.call(this, config, oldValue, newValue);
+  }
+
   /** @type {Partial<PropertyDescriptor>} */
   const descriptor = {
     enumerable: config.enumerable,
     configurable: true,
-    /**
-     * @this {C}
-     * @return {T2}
-     */
-    get() {
-      if (config.get) {
-        const newValue = config.get.call(this, this, internalGet.bind(this));
-        // Store computed value internally. Used by onInvalidate to get previous value
-        const computedValues = (config.computedValues ??= new WeakMap());
-        computedValues.set(this, newValue);
-        return newValue;
-      }
-      return internalGet.call(this);
-    },
-    /**
-     * @this {C}
-     * @param {T2} value
-     * @return {void}
-     */
-    set(value) {
-      if (value === INIT_SYMBOL) {
-        console.warn(key, 'returning due to INIT', this);
-        return;
-      }
-      if (config.set) {
-        if (config.needsSelfInvalidation) {
-          config.needsSelfInvalidation.add(this);
-        } else {
-          config.needsSelfInvalidation = new WeakSet([this]);
-        }
-        const oldValue = this[key];
-        config.set.call(this, value, internalSet.bind(this));
-        const newValue = this[key];
-        if (!config.needsSelfInvalidation.has(this)) return;
-        config.needsSelfInvalidation.delete(this);
-        detectChange.call(this, config, oldValue, newValue);
-      } else {
-        internalSet.call(this, value);
-      }
-    },
+    get: config.get ? cachedGet : internalGet,
+    set: config.set ? cachedSet : internalSet,
   };
 
   Object.defineProperty(object, key, descriptor);
