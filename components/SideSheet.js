@@ -73,7 +73,6 @@ export default CustomElement
     _isSideSheetRtl: 'boolean',
   })
   .set({
-    _hasCheckedResize: false,
     /** @type {InstanceType<Scrim>} */
     _scrim: null,
   })
@@ -147,7 +146,7 @@ export default CustomElement
       this._dragDeltaY = null;
       this._dragStartY = null;
     },
-    onResize() {
+    onWindowResize() {
       const { autoOpen, fixedBreakpoint, autoClose } = this;
       const containerWidth = window.innerWidth;
       const fixed = (containerWidth >= fixedBreakpoint);
@@ -155,15 +154,11 @@ export default CustomElement
         && autoOpen >= 0
         && (containerWidth >= autoOpen && (autoClose === -1 || containerWidth < autoClose));
       this.fixed = fixed;
-      this._hasCheckedResize = true;
     },
   })
   .overrides({
     onResizeObserved(entry) {
       this._lastComputedInlineSize = entry.borderBoxSize[0]?.inlineSize;
-      if (!this._hasCheckedResize) {
-        this.onResize();
-      }
     },
   })
   .events({
@@ -226,10 +221,10 @@ export default CustomElement
       this.checkForScrim(false);
     },
     constructed() {
-      window.addEventListener('resize', this.onResize.bind(this));
+      window.addEventListener('resize', this.onWindowResize.bind(this));
     },
-    disconnected() {
-      this._hasCheckedResize = false;
+    connected() {
+      this.onWindowResize();
     },
     inlineEndChanged(previous, inlineEnd) {
       this._isSideSheetRtl = isRtl(this) ? !inlineEnd : inlineEnd;
