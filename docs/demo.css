@@ -4,10 +4,4 @@ html {
   color: rgb(var(--mdw-color__on-background));
 }
 
-body {
-  margin: 0;
-}
-
-demo-page:not(:defined) {
-  display: none;
-}
+body { margin: 0; }
