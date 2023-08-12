@@ -93,6 +93,9 @@ export default CustomElement
       visibility: hidden; /* Remove from tab order */
       z-index: 22;
 
+      background-color: rgb(var(--mdw-bg));
+      color: rgb(var(--mdw-ink));
+
       font: var(--mdw-typescale__body-medium__font);
       letter-spacing: var(--mdw-typescale__body-medium__letter-spacing);
 
