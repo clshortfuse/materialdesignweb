@@ -1,6 +1,7 @@
 import CustomElement from '../core/CustomElement.js';
 import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
+import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import SemiStickyMixin from '../mixins/SemiStickyMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -11,6 +12,7 @@ export default CustomElement
   .mixin(ShapeMixin)
   .mixin(AriaToolbarMixin)
   .mixin(SemiStickyMixin)
+  .mixin(DelegatesFocusMixin)
   .observe({
     _raised: 'boolean',
     _headlineOpacity: { type: 'float', default: 0 },
