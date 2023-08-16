@@ -1,4 +1,3 @@
-import '../components/Tooltip.js';
 import { canAnchorPopup } from '../utils/popup.js';
 
 /** @typedef {import('../components/Tooltip.js').default} Tooltip */
@@ -11,8 +10,6 @@ export default function TooltipTriggerMixin(Base) {
     .set({
       TOOLTIP_MOUSE_IDLE_MS: 500,
       TOOLTIP_TOUCH_IDLE_MS: 1500,
-      /** @type {InstanceType<Tooltip>} */
-      _tooltipClone: null,
       /** @type {any} */
       _idleDebounce: null,
       /** @type {HTMLElement[]} */
@@ -22,46 +19,18 @@ export default function TooltipTriggerMixin(Base) {
       /** @type {IntersectionObserver} */
       _intersectObserver: null,
       _parentScrollListener: null,
+      tooltipSlotId: 'slot',
     })
     .observe({
       tooltip: 'string',
+      autoTooltip: 'boolean',
     })
+    .html`<mdw-tooltip id=tooltip></mdw-tooltip>`
     .css`
       #tooltip {
-        position:absolute;
-      
-        overflow: hidden;
-      
-        box-sizing: content-box;
-      
-        block-size: 0;
-        inline-size: 0;
-        margin: 0;
-        padding: 0;
-      
-        transform: none;
-      }
-      
-      #tooltip[open] {
-        display: block;
-      
-        block-size: auto;
-        inline-size: auto;
-      
-        cursor: default;
-        pointer-events:auto;
-      
-        opacity: 0;
-        transform: none;
+        display:none;
       }
     `
-    .recompose(({ template, html }) => {
-      template.append(html`
-        <mdw-tooltip role=tooltip id=tooltip>
-          <slot id=tooltip-slot name=tooltip>{tooltip}</slot>
-        </mdw-tooltip>
-      `);
-    })
     .methods({
       cancelShowTooltip() {
         // console.log('cancel tooltiptimer');
@@ -70,7 +39,7 @@ export default function TooltipTriggerMixin(Base) {
       /** @param {'mouse'|'touch'|'keyboard'} type */
       scheduleHideTooltip(type) {
         this.cancelShowTooltip();
-        if (!this._tooltipClone.open) {
+        if (!this.refs.tooltip.open) {
         // console.log('abort schedule (shown)');
           return;
         }
@@ -93,8 +62,7 @@ export default function TooltipTriggerMixin(Base) {
 
       /** @param {'mouse'|'touch'|'keyboard'} type */
       scheduleShowTooltip(type) {
-        if (this._tooltipClone.open) return;
-
+        if (this.refs.tooltip.open) return;
         let timeout = 0;
         switch (type) {
           case 'mouse':
@@ -107,25 +75,23 @@ export default function TooltipTriggerMixin(Base) {
         }
 
         clearTimeout(this._idleDebounce);
-        const job = () => this.showTooltip(type === 'touch');
         if (timeout) {
-          this._idleDebounce = setTimeout(job, timeout);
+          this._idleDebounce = setTimeout(this.showTooltip.bind(this), timeout);
         } else {
-          job();
+          this.showTooltip();
         }
       },
 
-      showTooltip(touch = false) {
-        if (this._tooltipClone.open) return;
-        this.refs.tooltip.open = true;
-        this.refs.tooltip.touch = touch;
-        this._tooltipClone.touch = touch;
-        document.body.append(this._tooltipClone);
+      showTooltip() {
+        const tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip);
+        if (tooltip.open) return;
+        document.body.append(this.refs.tooltip);
+        this.recloneTooltip();
         this.updateTooltipPosition();
         this._resizeObserver.observe(this, { box: 'border-box' });
-        this._resizeObserver.observe(this._tooltipClone, { box: 'border-box' });
+        this._resizeObserver.observe(tooltip, { box: 'border-box' });
         this._intersectObserver.observe(this);
-        this._intersectObserver.observe(this._tooltipClone);
+        this._intersectObserver.observe(tooltip);
         /** @type {HTMLElement} */
         let offsetParent = this;
         while ((offsetParent = offsetParent.offsetParent)) {
@@ -139,7 +105,7 @@ export default function TooltipTriggerMixin(Base) {
 
         // console.log('offsetparent', this.offsetParent);
 
-        this._tooltipClone.open = true;
+        tooltip.open = true;
       },
 
       hideTooltip(cancelSchedule = false) {
@@ -153,12 +119,10 @@ export default function TooltipTriggerMixin(Base) {
           parent.removeEventListener('scroll', this._parentScrollListener);
         }
         window.removeEventListener('scroll', this._parentScrollListener);
-        this._tooltipClone.open = false;
-        this._tooltipClone.remove();
-        this.refs.tooltip.open = false;
-        const hoverStyle = this.refs.tooltip.style;
-        hoverStyle.removeProperty('width');
-        hoverStyle.removeProperty('height');
+        const tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip);
+        tooltip.open = false;
+        // TODO: Self-remove on close (hide animation)
+        tooltip.remove();
       },
       /**
        * TODO: Throttle multiple calls
@@ -167,12 +131,13 @@ export default function TooltipTriggerMixin(Base) {
        */
       updateTooltipPosition(domRect) {
         const offset = 8;
+        const tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip);
         // const margin = 8;
         /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
         const anchorOptions = {
           anchor: domRect ?? this.getBoundingClientRect(),
-          width: this._tooltipClone.clientWidth,
-          height: this._tooltipClone.clientHeight,
+          width: tooltip.clientWidth,
+          height: tooltip.clientHeight,
         // margin,
         };
 
@@ -201,39 +166,45 @@ export default function TooltipTriggerMixin(Base) {
           if (result.visibility === 1) break;
         }
 
-        Object.assign(this._tooltipClone.style, {
+        Object.assign(tooltip.style, {
+          position: 'fixed',
           top: `${anchorResult.top}px`,
           left: `${anchorResult.left}px`,
           margin: '0',
           transformOrigin: `${anchorResult.transformOriginY} ${anchorResult.transformOriginX} 0`,
         });
-
-        Object.assign(this.refs.tooltip.style, {
-          width: `${anchorResult.width + (anchorResult.offsetX * 2)}px`,
-          height: `${anchorResult.height + (anchorResult.offsetY)}px`,
-          top: anchorResult.clientY === 'bottom' ? '100%' : null,
-          bottom: anchorResult.clientY === 'top' ? '100%' : null,
-          left: anchorResult.clientX === 'left' ? 0 : null,
-          right: anchorResult.clientX === 'right' ? 0 : null,
-        });
       },
       recloneTooltip() {
-        const slot = /** @type {HTMLSlotElement} */ (this.refs.tooltipSlot);
-        this._tooltipClone.replaceChildren(
-          ...slot.assignedNodes()
-            .map((child) => child.cloneNode(true)),
-        );
+        let args;
+        const tooltip = this.tooltip;
+        if (tooltip) {
+          args = [tooltip];
+        } else {
+          args = /** @type {HTMLSlotElement} */ (this.refs[this.tooltipSlotId])
+            .assignedNodes()
+            .map((child) => child.cloneNode(true));
+        }
+
+        this.refs.tooltip.replaceChildren(...args);
+      },
+      closeIfNotHovered() {
+        if (this.matches(':hover')) return;
+        if (this.refs.tooltip.matches(':hover')) return;
+        this.hideTooltip(true);
       },
     })
     .childEvents({
-      tooltipSlot: {
+      slot: {
         slotchange: 'recloneTooltip',
+      },
+      tooltip: {
+        pointerleave: 'closeIfNotHovered',
       },
     })
     .events({
       '~pointermove'(event) {
         if (event.pointerType === 'touch') return;
-        if (!this.disabledState) {
+        if (this.autoTooltip && !this.disabledState) {
           this.scheduleShowTooltip('mouse');
         }
       },
@@ -250,27 +221,25 @@ export default function TooltipTriggerMixin(Base) {
     .on({
       constructed() {
         this._watchedParents = [];
-        this._tooltipClone = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip.cloneNode(true));
-        this._tooltipClone.removeAttribute('id');
-        this._tooltipClone.style.setProperty('position', 'fixed');
-        this._tooltipClone.setAttribute('aria-hidden', 'true');
         this._parentScrollListener = this.updateTooltipPosition.bind(this, null);
         this._resizeObserver = new ResizeObserver(() => {
-          if (this._tooltipClone.open) {
+          const tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip);
+          if (tooltip.open) {
             this.updateTooltipPosition();
           }
         });
         const threshold = [0, 0.49, 0.5, 0.51, 1];
         this._intersectObserver = new IntersectionObserver((entries) => {
+          const tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip);
           // console.log('IO', entries);
-          if (!this._tooltipClone.open) return;
+          if (!tooltip.open) return;
           for (const entry of entries) {
             if (entry.intersectionRatio <= 0) {
               // console.debug('Hide tooltip due to tooltip occlusion');
               this.hideTooltip();
               return;
             }
-            if (entry.target === this._tooltipClone) {
+            if (entry.target === tooltip) {
               // console.debug('Reposition tooltip due to possible tooltip occlusion');
               this.updateTooltipPosition();
               return;
@@ -293,26 +262,26 @@ export default function TooltipTriggerMixin(Base) {
       },
       _focusedChanged(previous, current) {
         if (current) {
-          if (!this._pointerPressed && !this._focusedSynthetic) {
+          if (!this._pointerPressed && !this._focusedSynthetic && this.autoTooltip) {
             this.showTooltip();
           }
         } else {
-          this.hideTooltip(true);
+          this.closeIfNotHovered();
         }
       },
       _hoveredChanged(previous, current) {
         if (current) {
-          if (!this.disabledState) {
+          if (this.autoTooltip && !this.disabledState) {
             this.scheduleShowTooltip('mouse');
           }
         } else {
-          this.hideTooltip(true);
+          this.closeIfNotHovered();
         }
       },
       _pointerPressedChanged(previous, current) {
         if (this._lastInteraction !== 'touch') return;
         if (current) {
-          if (!this.disabledState) {
+          if (this.autoTooltip && !this.disabledState) {
             this.scheduleShowTooltip('touch');
           }
         } else {

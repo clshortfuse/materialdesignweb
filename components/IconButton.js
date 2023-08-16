@@ -20,6 +20,7 @@ export default Button
     _isToggle({ type }) {
       return type === 'checkbox';
     },
+    autoTooltip: { empty: true },
   })
   .expressions({
     iconVariation({ checked, outlined, _isToggle }) {
@@ -45,7 +46,7 @@ export default Button
       },
     },
   })
-  .recompose(({ refs: { slot, tooltipSlot, icon, control, outline, state, rippleContainer } }) => {
+  .recompose(({ refs: { icon, control, outline, state, rippleContainer } }) => {
     // Because selected state does not write to light DOM,
     // it must be cloned into shadow root for styling.
     for (const el of [state, icon, rippleContainer]) {
@@ -54,9 +55,7 @@ export default Button
       el.setAttribute('selected', '{checked}');
       el.setAttribute('filled', '{filled}');
     }
-    slot.remove();
     icon.removeAttribute('mdw-if');
-    tooltipSlot.removeAttribute('name');
 
     control.setAttribute('aria-pressed', '{_ariaPressed}');
 
@@ -106,6 +105,8 @@ export default Button
       --mdw-bg: var(--mdw-color__inverse-surface);
       --mdw-ink: var(--mdw-color__inverse-on-surface);
     }
+
+    #slot { display: none; }
 
     #icon {
       position: absolute;

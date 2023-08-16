@@ -21,7 +21,10 @@ export default CustomElement
       },
     },
   })
-  .html`<slot id=slot></slot>`
+  .html`
+    <div id=hover-target></div>
+    <slot id=slot></slot>
+    `
   .css`
     :host {
       --mdw-shape__size: var(--mdw-shape__extra-small);
@@ -57,8 +60,25 @@ export default CustomElement
     }
 
     :host([open]) {
+      pointer-events: auto;
+
       opacity: 1;
       transform: scale(1);
+    }
+
+    #hover-target {
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+
+      box-sizing: content-box;
+      block-size: 100%;
+      inline-size: 100%;
+      padding: 8px;
+
+      transform: translateX(-50%) translateY(-50%);
+      z-index: -1;
+      
     }
   `
   .autoRegister('mdw-tooltip');
