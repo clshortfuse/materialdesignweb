@@ -20,6 +20,12 @@
 
 <body>
   <mdw-root>
+    <mdw-nav-drawer id="drawer" slot="start">
+      <mdw-nav-drawer-item icon="1k">Item 1</mdw-nav-drawer-item>
+      <mdw-nav-drawer-item icon="2k">Item 2</mdw-nav-drawer-item>
+      <mdw-nav-drawer-item icon="3k">Item 3</mdw-nav-drawer-item>
+      <mdw-nav-drawer-item icon="4k">Item 4</mdw-nav-drawer-item>
+    </mdw-nav-drawer>
     <mdw-nav-rail id="rail" slot="start">
       <mdw-nav-rail-item icon="1k">Item 1</mdw-nav-rail-item>
       <mdw-nav-rail-item icon="2k">Item 2</mdw-nav-rail-item>
@@ -35,17 +41,17 @@
       <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
       <mdw-nav-rail-item icon="4k">Item 4</mdw-nav-rail-item>
     </mdw-nav-rail>
-    <mdw-nav-drawer id="drawer" slot="start">
-      <mdw-nav-drawer-item icon="1k">Item 1</mdw-nav-drawer-item>
-      <mdw-nav-drawer-item icon="2k">Item 2</mdw-nav-drawer-item>
-      <mdw-nav-drawer-item icon="3k">Item 3</mdw-nav-drawer-item>
-      <mdw-nav-drawer-item icon="4k">Item 4</mdw-nav-drawer-item>
-    </mdw-nav-drawer>
     <mdw-nav-bar id=nav-bar slot=bottom>
       <mdw-nav-bar-item icon=1k>Item 1</mdw-nav-bar-item>
       <mdw-nav-bar-item icon=2k>Item 2</mdw-nav-bar-item>
       <mdw-nav-bar-item icon=3k>Item 3</mdw-nav-bar-item>
     </mdw-nav-bar>
+    <mdw-fab-container slot=bottom>
+      <mdw-fab extended>I am fabulous</mdw-fab>
+    </mdw-fab-container>
+    <mdw-snackbar-container slot=bottom-fixed>
+      <mdw-snackbar open close-button>I am a snackbar</mdw-snackbar>
+    </mdw-snackbar-container>
     <mdw-page id="page">
       <div>
         <mdw-top-app-bar id="app-bar" color=none>
@@ -129,6 +135,7 @@
         </mdw-list>
       </mdw-box>
     </mdw-page>
+
   </mdw-root>
   <script>
     const { searchParams } = new URL(document.location);
