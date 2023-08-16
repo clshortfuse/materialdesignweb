@@ -24,21 +24,21 @@
       <mdw-headline text-padding=0.5em> Center (Default) </mdw-headline>
       <mdw-box flex wrap gap=12>
         <demo-screen color="background">
-          <mdw-search oninput="onSearchInput(event)" onchange="onSearchChange(event)"></mdw-search>
+          <mdw-search sticky-parent oninput="onSearchInput(event)" onchange="onSearchChange(event)"></mdw-search>
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-search>Headline in textContent</mdw-search>
+          <mdw-search sticky-parent>Headline in textContent</mdw-search>
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-search placeholder="Always Shown" sticky-always>
+          <mdw-search sticky-parent placeholder="Always Shown" sticky-always>
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
           </mdw-search>
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-search>
+          <mdw-search sticky-parent>
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
             <mdw-inline ink=primary>Custom</mdw-inline> (and possibly oversized) Title
             <mdw-icon-button class="toolbar-icon-button toolbar-avatar" slot="trailing" icon="account_circle">Profile
@@ -47,7 +47,7 @@
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-search kbd-nav="false" aria-label="Search Toolbar">
+          <mdw-search sticky-parent kbd-nav="false" aria-label="Search Toolbar">
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="menu">Menu</mdw-icon-button>
             <mdw-input class="demo-app-bar-search" placeholder="Search" type=search icon=search outlined density=-2
               shape-style="full"></mdw-input>
@@ -62,7 +62,7 @@
       <mdw-headline text-padding=0.5em> Small </mdw-headline>
       <mdw-box flex wrap gap=12>
         <demo-screen color="background">
-          <mdw-search headline="Small app bar" size="small">
+          <mdw-search sticky-parent headline="Small app bar" size="small">
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="today">Today</mdw-icon-button>
@@ -76,7 +76,7 @@
       <mdw-headline text-padding=0.5em> Medium </mdw-headline>
       <mdw-box flex wrap gap=12>
         <demo-screen color="background">
-          <mdw-search headline="Medium app bar" size="medium" color="secondary-container">
+          <mdw-search sticky-parent headline="Medium app bar" size="medium" color="secondary-container">
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File
             </mdw-icon-button>
@@ -86,7 +86,7 @@
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-search headline="Oversized Auto-Hiding Headline Medium app bar" size="medium">
+          <mdw-search sticky-parent headline="Oversized Auto-Hiding Headline Medium app bar" size="medium">
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File
             </mdw-icon-button>
@@ -101,7 +101,7 @@
       <mdw-headline text-padding=0.5em> Large </mdw-headline>
       <mdw-box flex wrap gap=12>
         <demo-screen color="background">
-          <mdw-search headline="Large app bar" size="large">
+          <mdw-search sticky-parent headline="Large app bar" size="large">
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File
             </mdw-icon-button>
@@ -111,7 +111,7 @@
           <demo-dummy-text></demo-dummy-text>
         </demo-screen>
         <demo-screen color="background">
-          <mdw-search headline="Oversized Headline Large app bar will not exceed two lines" size="large">
+          <mdw-search sticky-parent headline="Oversized Headline Large app bar will not exceed two lines" size="large">
             <mdw-icon-button class="toolbar-icon-button" slot="leading" icon="arrow_back">Back</mdw-icon-button>
             <mdw-icon-button class="toolbar-icon-button" slot="trailing" icon="attach_file">Attach File
             </mdw-icon-button>
