@@ -30,7 +30,7 @@ describe('mdw-icon-button', () => {
     },
     {
       stateless: { textContent: 'Tooltip' },
-      focused: { ':focus': true, textContent: 'Focused' },
+      focused: { _lastInteraction: 'key', ':focus': true, textContent: 'Focused' },
       hovered: { ':hover': true, textContent: 'Hovered' },
       hovered__focused: { ':hover': true, ':focus': true, textContent: 'Hovered and Focused' },
       pressed: { ':active': true, textContent: 'Pressed' },
