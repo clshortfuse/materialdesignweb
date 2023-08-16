@@ -149,7 +149,7 @@ export declare const ICustomElement: {
     CLASS extends typeof ICustomElement,
     ARGS extends ConstructorParameters<CLASS>,
     INSTANCE extends InstanceType<CLASS>,
-    PROPS extends IDLParameter<INSTANCE>,
+    PROPS extends IDLParameter<INSTANCE & VALUE>,
     VALUE extends {
       [KEY in keyof PROPS]:
       PROPS[KEY] extends (...args2:any[]) => infer R ? R
@@ -161,6 +161,25 @@ export declare const ICustomElement: {
     },
     > (this: CLASS, props: PROPS)
       : CLASS & (new (...args: ARGS) => INSTANCE & VALUE)
+
+  prop<
+    CLASS extends typeof ICustomElement,
+    ARGS extends ConstructorParameters<CLASS>,
+    INSTANCE extends InstanceType<CLASS>,
+    KEY extends string,
+    OPTIONS extends ObserverPropertyType
+      | ObserverOptions<ObserverPropertyType, unknown, INSTANCE>
+      | ((this:INSTANCE, data:Partial<INSTANCE>, fn?: () => any) => any),
+    VALUE extends Record<KEY, OPTIONS extends (...args2:any[]) => infer R ? R
+        : OPTIONS extends ObserverPropertyType ? ParsedObserverPropertyType<OPTIONS>
+        : OPTIONS extends {type: 'object'} & ObserverOptions<any, infer R> ? (unknown extends R ? object : R)
+        : OPTIONS extends {type: ObserverPropertyType} ? ParsedObserverPropertyType<OPTIONS['type']>
+        : OPTIONS extends ObserverOptions<any, infer R> ? (unknown extends R ? string : R)
+        : never
+        >
+    ,
+    > (this: CLASS, name: KEY, options: OPTIONS)
+      : CLASS & (new (...args: ARGS) => INSTANCE & VALUE);
 
   props: typeof ICustomElement.observe;
 

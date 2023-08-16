@@ -96,7 +96,59 @@ export default class CustomElement extends ICustomElement {
   /** @type {Map<string, typeof CustomElement>} */
   static registrations = new Map();
 
-  /** @type {typeof ICustomElement.expressions} */
+  /**
+   * Expressions are idempotent functions that are selectively called whenever
+   * a render is requested.
+   * Expressions are constructed exactly as methods though differ in expected
+   * arguments. The first argument should be destructured to ensure each used
+   * property is accessed at least once in order to inspect used properties.
+   *
+   * The Composition API will inspect this function with a proxy for `this` to
+   * catalog what observables are used by the expression. This allows the
+   * Composition API to build a cache as well as selective invoke the expression
+   * only when needed.
+   *
+   * When used with in element templates, the element itself will be passed as
+   * its first argument.
+   * ````js
+   *    Button
+   *      .prop('filled', 'boolean')
+   *      .prop('outlined', 'boolean')
+   *      .expresssions({
+   *        _isFilledOrOutlined({filled, outlined}) {
+   *          return (filled || outlined)
+   *        },
+   *      })
+   *      .html`<div custom={_isFilledOrOutlined}></div>`;
+   * ````
+   *
+   * When used with external data source, that data source
+   * will be passed to the expression with all properties being `null` at first
+   * inspection.
+   * ````js
+   *    const externalData = {first: 'John', last: 'Doe'};
+   *    ContactCard
+   *      .expresssions({
+   *        _fullName({first, last}) {
+   *          return [first, last].filter(Boolean).join(' ');
+   *        },
+   *      })
+   *   myButton.render(externalData);
+   * ````
+   *
+   * Expressions may be support argumentless calls by using default
+   * parameters with `this`.
+   * ````js
+   *    Button
+   *      .expresssions({
+   *        isFilledOrOutlined({filled, outlined} = this) {
+   *          return (filled || outlined)
+   *        },
+   *      });
+   *    myButton.isFilledorOutlined();
+   * ````
+   * @type {typeof ICustomElement.expressions}
+   */
   static expressions = this.set;
 
   /** @type {typeof ICustomElement.methods} */
@@ -107,6 +159,8 @@ export default class CustomElement extends ICustomElement {
 
   /** @type {typeof ICustomElement.props} */
   static props = this.observe;
+
+  static idl = this.prop;
 
   /**
    * @template {typeof CustomElement} T
@@ -119,7 +173,9 @@ export default class CustomElement extends ICustomElement {
     if (!this.hasOwnProperty(collection)) {
       this[collection] = [
         ...this[collection],
+        callback,
       ];
+      return;
     }
     this[collection].push(callback);
   }
@@ -334,42 +390,22 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Creates observable property on instances (via prototype)
-   * @template {import('./typings.js').ObserverPropertyType} T1
-   * @template {import('./typings.js').ObserverPropertyType} T2
-   * @template {any} T3
-   * @param {string} name
-   * @param {T1|import('./typings.js').ObserverOptions<T2,T3>} [typeOrOptions]
-   * @return {(
-   *    T3 extends null ?
-   *        T2 extends null ?
-   *          T1 extends null ?
-   *            string
-   *          : import('./typings.js').ParsedObserverPropertyType<T1>
-   *        : import('./typings.js').ParsedObserverPropertyType<T2>
-   *    : T3
-   * )}
+   * @type {typeof ICustomElement.prop}
    */
   static prop(name, typeOrOptions) {
     // TODO: Cache and save configuration for reuse (mixins)
-    /** @type {import('./typings.js').ObserverOptions<?,?>} */
-    const options = {
-      ...((typeof typeOrOptions === 'string') ? { type: typeOrOptions } : typeOrOptions),
-    };
+    const config = defineObservableProperty(this.prototype, name, typeOrOptions);
 
-    if (options.changedCallback) {
-      this.onPropChanged([[name, options.changedCallback]]);
+    const { changedCallback, attr, reflect, watchers } = config;
+    if (changedCallback) {
+      watchers.push([name, changedCallback]);
     }
-
     // TODO: Inspect possible closure bloat
-    options.changedCallback = function wrappedChangedCallback(oldValue, newValue, changes) {
+    config.changedCallback = function wrappedChangedCallback(oldValue, newValue, changes) {
       this._onObserverPropertyChanged.call(this, name, oldValue, newValue, changes);
     };
 
-    const config = defineObservableProperty(this.prototype, name, options);
-
     this.propList.set(name, config);
-
-    const { attr, reflect, watchers, value } = config;
 
     if (attr && (reflect === true || reflect === 'read')) {
       this.attrList.set(attr, config);
@@ -377,7 +413,7 @@ export default class CustomElement extends ICustomElement {
 
     this.onPropChanged(watchers);
 
-    return value;
+    return this;
   }
 
   /**
@@ -474,7 +510,7 @@ export default class CustomElement extends ICustomElement {
     this.on({
       composed({ composition }) {
         for (const [key, listenerOptions] of Object.entries(listeners)) {
-          const [, flags, type] = key.match(Composition.EVENT_PREFIX_REGEX);
+          const [, flags, type] = key.match(/^([*1~]+)?(.*)$/);
           // TODO: Make abstract
           let prop;
           /** @type {string[]} */
