@@ -1,29 +1,28 @@
-import SemiStickyMixin from '../mixins/SemiStickyMixin.js';
+import CustomElement from '../core/CustomElement.js';
+import ThemableMixin from '../mixins/ThemableMixin.js';
 
-import Nav from './Nav.js';
+import NavItem from './NavItem.js';
 
-export default Nav
+export default CustomElement
   .extend()
-  .mixin(SemiStickyMixin)
-  .observe({
-    _semiStickyAnchor: { empty: 'bottom' },
+  .mixin(ThemableMixin)
+  .set({
+    color: 'surface-container',
+    _ariaRole: 'navigation',
   })
+  .html`<slot id=slot></slot>`
   .css`
     /* https://m3.material.io/components/navigation-bar/specs */
 
     :host {
       --mdw-bg: var(--mdw-color__surface-container);
-      
-      position: sticky;
-      inset-block-end: 0;
-      order:1; /* Nav Bars are at top of tab order, but bottom of page */
+      --mdw-ink: var(--mdw-color__on-surface);
 
       display: grid;
       align-content: flex-start;
       align-items: flex-start;
       gap: 8px;
 
-      grid-area: nav-bar;
       grid-auto-columns: minmax(48px, 1fr);
       grid-auto-flow: column;
 
@@ -33,19 +32,25 @@ export default Nav
       min-block-size: 80px;
       inline-size: 100%;
 
-      flex-shrink: 0;
-      margin-block-start: auto;
+      background-color: rgb(var(--mdw-bg));
 
-      transform: translateY(0);
+      color: rgb(var(--mdw-ink));
+
+      font: var(--mdw-typescale__label-medium__font);
+      letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
 
       text-align: center;
-
-      will-change: transform;
     }
-
-    #slot {
-      pointer-events: auto;
-    }
-
   `
+  .events({
+    '~click'(event) {
+      // Abort if not child
+      if (event.target === this) return;
+      if (event.target instanceof NavItem === false) return;
+      for (const el of this.querySelectorAll('*')) {
+        if (el instanceof NavItem === false) continue;
+        el.active = (el === event.target);
+      }
+    },
+  })
   .autoRegister('mdw-nav-bar');
