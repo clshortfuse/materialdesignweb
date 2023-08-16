@@ -83,10 +83,11 @@ export default CustomElement
       display: flex;
       align-items: center;
 
+      grid-area: snackbar;
+
       padding-inline: 16px;
 
       filter: var(--mdw-elevation__drop-shadow__3);
-
       opacity: 0;
       transform: translateY(25%) scaleY(0.25);
       transform-origin: bottom center;
