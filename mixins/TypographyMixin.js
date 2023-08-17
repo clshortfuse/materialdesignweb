@@ -1,5 +1,3 @@
-import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
-
 /**
  * @param {string} input
  * @return {string}
@@ -32,24 +30,27 @@ export default function TypographyMixin(Base) {
       },
     })
     .observe({
-      _beforeStyle({ _computedTextPaddingTop: marginBlockStart, _computedTextLeading: blockSize }) {
-        if (!marginBlockStart && !blockSize) return null;
-        return [
-          marginBlockStart ? `margin-block-start:${marginBlockStart}` : '',
-          blockSize ? `block-size:${blockSize}` : '',
-        ].filter(Boolean).join(';');
+      _beforeStyle({ _computedTextPaddingTop, _computedTextLeading }) {
+        if (_computedTextLeading) {
+          return `vertical-align:${_computedTextLeading};max-block-size:0`;
+        }
+        if (_computedTextPaddingTop) {
+          return `margin-top:${_computedTextPaddingTop}`;
+        }
+        return '';
       },
       _afterStyle({ _computedTextPaddingBottom }) {
-        if (!_computedTextPaddingBottom) return null;
-        return `vertical-align:calc(-1 * ${_computedTextPaddingBottom})`;
+        if (!_computedTextPaddingBottom) return '';
+        return `vertical-align:calc(-1 * ${_computedTextPaddingBottom});`;
       },
-
     })
     .html`
       <span id=before mdw-if={!!_beforeStyle} style={_beforeStyle}></span>
       <span id=after mdw-if={!!_afterStyle} style={_afterStyle}></span>
     `
     .recompose(({ refs: { before, slot } }) => {
+      // Chrome improperly renders slot::after display:inline-block
+      // Use real element instead
       slot.before(before);
     })
     .css`
@@ -58,11 +59,6 @@ export default function TypographyMixin(Base) {
       }
 
       span {
-        display: inline-block;
-        vertical-align: 0;
-      }
-
-      #slot {
         display: inline-block;
       }
 
