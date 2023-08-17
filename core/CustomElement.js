@@ -780,13 +780,13 @@ export default class CustomElement extends ICustomElement {
         let cacheEntry;
         let needsWrite = false;
         const { attributeCache } = this;
-        if (attributeCache.has(name)) {
-          cacheEntry = attributeCache.get(name);
+        if (attributeCache.has(attr)) {
+          cacheEntry = attributeCache.get(attr);
           needsWrite = (cacheEntry.parsedValue !== newValue);
         } else {
         // @ts-ignore skip cast
           cacheEntry = {};
-          attributeCache.set(name, cacheEntry);
+          attributeCache.set(attr, cacheEntry);
           needsWrite = true;
         }
         if (needsWrite) {
