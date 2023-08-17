@@ -115,7 +115,6 @@ export default CustomElement
     /* https://material.io/design/iconography/system-icons.html */
 
     :host {
-      display: inline-block;
       vertical-align: -11.5%;
 
       block-size: 1em;
@@ -123,6 +122,8 @@ export default CustomElement
 
       -webkit-user-select: none;
       user-select: none;
+
+      line-height: 1;
 
       font-variation-settings: 'FILL' 0;
 
@@ -141,7 +142,6 @@ export default CustomElement
 
     #icon {
       /* Clip bounds in case font is not ready */
-      display: block;
       overflow: clip;
 
       block-size: 1em;
@@ -161,8 +161,6 @@ export default CustomElement
     }
 
     #svg {
-      display: block;
-
       block-size: inherit;
       inline-size: inherit;
 
@@ -172,8 +170,6 @@ export default CustomElement
     }
 
     #img {
-      display: block;
-
       block-size: inherit;
       inline-size: inherit;
 
