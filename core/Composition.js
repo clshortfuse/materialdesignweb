@@ -350,31 +350,25 @@ export default class Composition {
    * Index of searches by query (dotted notation for deep props)
    * @type {Map<Function|string, RenderGraphSearch>}
    */
-  searchByQuery = new Map();
+  searchByQuery;
 
   /**
    * Index of searches by query (dotted notation for deep props)
    * @type {Map<string, RenderGraphAction[]>}
    */
-  actionsByPropsUsed = new Map();
+  actionsByPropsUsed;
 
   /** @type {RenderGraphAction[]} */
   postInitActions = [];
 
   /** @type {Set<string>} */
-  tagsWithBindings = new Set();
+  tagsWithBindings;
 
   /**
    * Array of element tags
    * @type {string[]}
    */
   tags = [];
-
-  /**
-   * Array of property bindings sorted by tag/subnode
-   * @type {Set<string>}
-   */
-  watchedProps = new Set();
 
   /**
    * Data of arrays used in templates
@@ -391,7 +385,7 @@ export default class Composition {
    * Indexed by ID
    * @type {Map<string|symbol, import('./typings.js').CompositionEventListener<any>[]>}
    */
-  events = new Map();
+  events;
 
   /**
    * Snapshot of composition at initial state.
@@ -421,7 +415,8 @@ export default class Composition {
    * Collection of IDs used for referencing elements
    * Not meant for live DOM. Removed before attaching to document
    */
-  temporaryIds = new Set();
+  /** @type {Set<string>} */
+  temporaryIds;
 
   /** Flag set when template and styles have been interpolated */
   interpolated = false;
@@ -466,10 +461,12 @@ export default class Composition {
   /** @param {import('./typings.js').CompositionEventListener<T>} listener */
   addCompositionEventListener(listener) {
     const key = listener.tag ?? '';
-    if (this.events.has(key)) {
-      this.events.get(key).push(listener);
+    // eslint-disable-next-line no-multi-assign
+    const events = (this.events ??= new Map());
+    if (events.has(key)) {
+      events.get(key).push(listener);
     } else {
-      this.events.set(key, [listener]);
+      events.set(key, [listener]);
     }
     return this;
   }
@@ -481,7 +478,7 @@ export default class Composition {
    * @return {void}
    */
   #bindCompositionEventListeners(tag, target, context) {
-    if (!this.events.has(tag)) return;
+    if (!this.events?.has(tag)) return;
     for (const event of this.events.get(tag)) {
       let listener;
       if (event.handleEvent) {
@@ -566,7 +563,7 @@ export default class Composition {
     const draw = (changes, data) => {
       let ranSearch = false;
       for (const prop of this.props) {
-        if (!this.actionsByPropsUsed.has(prop)) continue;
+        if (!this.actionsByPropsUsed?.has(prop)) continue;
         if (!(prop in changes)) continue;
         const actions = this.actionsByPropsUsed.get(prop);
         for (const action of actions) {
@@ -611,11 +608,11 @@ export default class Composition {
 
     draw.target = target;
     draw.byProp = (prop, value, data) => {
-      if (!this.actionsByPropsUsed.has(prop)) return;
+      if (!this.actionsByPropsUsed?.has(prop)) return;
       let ranSearch = false;
 
       // Update search
-      if (this.searchByQuery.has(prop)) {
+      if (this.searchByQuery?.has(prop)) {
         ranSearch = true;
         const search = this.searchByQuery.get(prop);
         const cachedValue = caches[search.cacheIndex];
@@ -755,7 +752,7 @@ export default class Composition {
       element.removeAttribute(nodeName);
       const tag = this.#tagElement(element);
       const eventType = nodeName.slice(3);
-      const [, flags, type] = eventType.match(Composition.EVENT_PREFIX_REGEX);
+      const [, flags, type] = eventType.match(/^([*1~]+)?(.*)$/);
 
       let handleEvent;
       /** @type {string} */
@@ -792,7 +789,7 @@ export default class Composition {
     /** @type {RenderGraphSearch} */
     let search;
 
-    if (this.searchByQuery.has(query)) {
+    if (this.searchByQuery?.has(query)) {
       search = this.searchByQuery.get(query);
     } else {
       // Has subquery?
@@ -800,7 +797,7 @@ export default class Composition {
       const isSubquery = subquery !== query;
       /** @type {RenderGraphSearch} */
       let subSearch;
-      if (isSubquery && this.searchByQuery.has(subquery)) {
+      if (isSubquery && this.searchByQuery?.has(subquery)) {
         subSearch = this.searchByQuery.get(subquery);
       } else {
         // Construct subsearch, even is not subquery.
@@ -1004,7 +1001,9 @@ export default class Composition {
     }
 
     this.addAction(action);
-    this.tagsWithBindings.add(tag);
+    // eslint-disable-next-line no-multi-assign
+    const tagsWithBindings = (this.tagsWithBindings ??= new Set());
+    tagsWithBindings.add(tag);
   }
 
   /**
@@ -1019,7 +1018,9 @@ export default class Composition {
       }
     } else {
       id = generateUID();
-      this.temporaryIds.add(id);
+      // eslint-disable-next-line no-multi-assign
+      const temporaryIds = (this.temporaryIds ??= new Set());
+      temporaryIds.add(id);
       this.allIds.push(id);
       element.id = id;
     }
@@ -1278,10 +1279,12 @@ export default class Composition {
       );
     }
 
-    this.props = [...this.actionsByPropsUsed.keys()];
+    this.props = this.actionsByPropsUsed
+      ? [...this.actionsByPropsUsed.keys()]
+      : [];
 
     for (const id of this.allIds) {
-      if (!this.tagsWithBindings.has(id)) {
+      if (!this.tagsWithBindings?.has(id)) {
         this.nodesToBind.push({
           tag: id,
           textNodes: [],
@@ -1302,7 +1305,9 @@ export default class Composition {
   addSearch(search) {
     this.searches.push(search);
     if (search.query) {
-      this.searchByQuery.set(search.query, search);
+      // eslint-disable-next-line no-multi-assign
+      const searchByQuery = (this.searchByQuery ??= new Map());
+      searchByQuery.set(search.query, search);
       this.initCache[search.cacheIndex] = search.defaultValue;
     }
     return search;
@@ -1313,11 +1318,13 @@ export default class Composition {
    * @return {RenderGraphAction}
    */
   addAction(action) {
+    // eslint-disable-next-line no-multi-assign
+    const actionsByPropsUsed = (this.actionsByPropsUsed ??= new Map());
     for (const prop of action.search.propsUsed) {
-      if (this.actionsByPropsUsed.has(prop)) {
-        this.actionsByPropsUsed.get(prop).push(action);
+      if (actionsByPropsUsed.has(prop)) {
+        actionsByPropsUsed.get(prop).push(action);
       } else {
-        this.actionsByPropsUsed.set(prop, [action]);
+        actionsByPropsUsed.set(prop, [action]);
       }
     }
     return action;
