@@ -43,10 +43,14 @@ export default Button
       box-shadow: var(--mdw-elevation__box-shadow__3);
       color: rgb(var(--mdw-ink));
 
+      transition-duration: 200ms;
+
       transition-property: box-shadow, gap, min-inline-size;
     }
 
     :host(:where([extended])) {
+      gap: 8px;
+
       min-inline-size: 48px;
     }
 
@@ -55,7 +59,6 @@ export default Button
       align-items: center;
 
       min-block-size: 24px;
-      padding-inline-start: 0;
 
       visibility: hidden;
 
@@ -64,7 +67,7 @@ export default Button
       font-size: 0;
       
 
-      transition: padding-inline-start 200ms, color 200ms, font-size 200ms, visibility 200ms;
+      transition: color 200ms, font-size 200ms, visibility 200ms;
     }
 
     #slot[extended] {
@@ -74,11 +77,7 @@ export default Button
 
       font-size: inherit;
 
-      transition: padding-inline-start 200ms, color 200ms, font-size 200ms, visibility 0ms;
-    }
-
-    #slot[extended][icon] {
-      padding-inline-start: 8px;
+      transition: color 200ms, font-size 200ms, visibility 0ms;
     }
 
     :host([fab-size="small"]) {
