@@ -231,14 +231,18 @@ export function generateScreenshotTests(htmlString, attributeMatrix, padding = 1
             movedFocus = true;
             break;
           case ':hover':
-          case ':active': {
+          case ':active':
+          case ':click': {
             const { x, y } = getMiddleOfElement(element);
             await sendMouse({ type: 'move', position: [x, y] });
             // Firefox is buggy and can sometimes not move the mouse???
             movedMouse = true;
-            if (key === ':active') {
+            if (key === ':active' || key === ':click') {
               // eslint-disable-next-line no-await-in-loop
               await sendMouse({ type: 'down', button: 'left' });
+            }
+            if (key === ':click') {
+              await sendMouse({ type: 'up', button: 'left' });
             }
             break;
           }

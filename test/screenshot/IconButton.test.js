@@ -34,6 +34,7 @@ describe('mdw-icon-button', () => {
       hovered: { ':hover': true, textContent: 'Hovered' },
       hovered__focused: { ':hover': true, ':focus': true, textContent: 'Hovered and Focused' },
       pressed: { ':active': true, textContent: 'Pressed' },
+      clicked: { ':click': true, textContent: 'Clicked' },
     },
   ], 64);
 });
