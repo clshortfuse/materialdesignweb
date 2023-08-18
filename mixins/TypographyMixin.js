@@ -13,6 +13,7 @@ function parseSize(input) {
 export default function TypographyMixin(Base) {
   return Base
     .observe({
+      textTrim: 'boolean',
       textPadding: 'string',
       textPaddingTop: 'string',
       textLeading: 'string',
@@ -30,7 +31,10 @@ export default function TypographyMixin(Base) {
       },
     })
     .observe({
-      _beforeStyle({ _computedTextPaddingTop, _computedTextLeading }) {
+      _beforeStyle({ _computedTextPaddingTop, _computedTextLeading, textTrim }) {
+        if (textTrim) {
+          return 'margin-top:1em';
+        }
         if (_computedTextLeading) {
           return `vertical-align:${_computedTextLeading};max-block-size:0`;
         }
@@ -39,12 +43,22 @@ export default function TypographyMixin(Base) {
         }
         return '';
       },
-      _afterStyle({ _computedTextPaddingBottom }) {
-        if (!_computedTextPaddingBottom) return '';
-        return `vertical-align:calc(-1 * ${_computedTextPaddingBottom});`;
+      _afterStyle({ textTrim, _computedTextPaddingBottom }) {
+        if (textTrim) {
+          return 'vertical-align:-1em';
+        }
+        if (_computedTextPaddingBottom) {
+          return `vertical-align:calc(-1 * ${_computedTextPaddingBottom});`;
+        }
+        return '';
+      },
+      _hostStyle({ textTrim }) {
+        if (textTrim) return ':host{margin-block:-1em}';
+        return '';
       },
     })
     .html`
+      <style mdw-if={!!_hostStyle}>{_hostStyle}</style>
       <span id=before mdw-if={!!_beforeStyle} style={_beforeStyle}></span>
       <span id=after mdw-if={!!_afterStyle} style={_afterStyle}></span>
     `
