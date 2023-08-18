@@ -295,10 +295,15 @@ export function pixelmatch(img1, img2, output, width, height, options) {
     throw new Error('Image data: Uint8Array, Uint8ClampedArray or Buffer expected.');
   }
 
-  if (img1.length !== img2.length || (output && output.length !== img1.length)) { throw new Error('Image sizes do not match.'); }
+  if (img1.length !== img2.length || (output && output.length !== img1.length)) {
+    // throw new Error('Image sizes do not match.');
+    return Number.POSITIVE_INFINITY;
+  }
 
-  if (img1.length !== width * height * 4) throw new Error('Image data size does not match width/height.');
-
+  if (img1.length !== width * height * 4) {
+    // throw new Error('Image data size does not match width/height.');
+    return Number.POSITIVE_INFINITY;
+  }
   options = { ...DEFAULT_OPTIONS, ...options };
 
   // check if images are identical
