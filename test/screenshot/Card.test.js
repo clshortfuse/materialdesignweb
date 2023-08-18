@@ -9,8 +9,9 @@ await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 
-describe('mdw-card', () => {
-  generateScreenshotTests('<mdw-card padding=24>Card</mdw-card>', [
+describe('mdw-card', () => generateScreenshotTests({
+  template: '<mdw-card padding=24>Card</mdw-card>',
+  matrix: [
     {
       enabled: {},
       disabled: { disabled: true },
@@ -31,5 +32,5 @@ describe('mdw-card', () => {
       hovered__focused: { ':hover': true, ':focus': true, textContent: 'Hovered and Focused' },
       pressed: { ':active': true, textContent: 'Pressed' },
     },
-  ]);
-});
+  ],
+}));

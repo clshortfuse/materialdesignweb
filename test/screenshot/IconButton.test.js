@@ -11,8 +11,9 @@ await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 
-describe('mdw-icon-button', () => {
-  generateScreenshotTests('<mdw-icon-button icon=check></mdw-icon-button>', [
+describe('mdw-icon-button', () => generateScreenshotTests({
+  template: '<mdw-icon-button icon=check></mdw-icon-button>',
+  matrix: [
     {
       enabled: { TOOLTIP_MOUSE_IDLE_MS: 0 },
       disabled: { TOOLTIP_MOUSE_IDLE_MS: 0, disabled: true },
@@ -36,5 +37,6 @@ describe('mdw-icon-button', () => {
       pressed: { ':active': true, textContent: 'Pressed' },
       clicked: { ':click': true, textContent: 'Clicked' },
     },
-  ], 64);
-});
+  ],
+  padding: 64,
+}));

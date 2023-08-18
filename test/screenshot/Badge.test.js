@@ -9,14 +9,13 @@ await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 
-describe('mdw-badge', () => {
-  generateScreenshotTests('<mdw-badge></mdw-badge>', [
-    {
-      empty: {},
-      text: { textContent: 'Text' },
-      textlong: { textContent: 'Long text content' },
-      icon: { innerHTML: '<mdw-icon icon=check></mdw-icon>' },
-      icontext: { innerHTML: '<mdw-icon icon=check></mdw-icon> Icon' },
-    },
-  ]);
-});
+describe('mdw-badge', () => generateScreenshotTests({
+  template: '<mdw-badge></mdw-badge>',
+  matrix: [{
+    empty: {},
+    text: { textContent: 'Text' },
+    textlong: { textContent: 'Long text content' },
+    icon: { innerHTML: '<mdw-icon icon=check></mdw-icon>' },
+    icontext: { innerHTML: '<mdw-icon icon=check></mdw-icon> Icon' },
+  }],
+}));

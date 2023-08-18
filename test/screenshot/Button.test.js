@@ -10,8 +10,9 @@ await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 
-describe('mdw-button', () => {
-  generateScreenshotTests('<mdw-button></mdw-button>', [
+describe('mdw-button', () => generateScreenshotTests({
+  template: '<mdw-button></mdw-button>',
+  matrix: [
     {
       enabled: {},
       disabled: { disabled: true },
@@ -34,5 +35,5 @@ describe('mdw-button', () => {
       hovered__focused: { ':hover': true, ':focus': true, textContent: 'Hovered and Focused' },
       pressed: { ':active': true, textContent: 'Pressed' },
     },
-  ]);
-});
+  ],
+}));

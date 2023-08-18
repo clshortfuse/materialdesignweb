@@ -11,8 +11,9 @@ await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 
-describe('mdw-chip', () => {
-  generateScreenshotTests('<mdw-chip>Chip</mdw-chip>', [
+describe('mdw-chip', () => generateScreenshotTests({
+  template: '<mdw-chip>Chip</mdw-chip>',
+  matrix: [
     {
       enabled: {},
       disabled: { disabled: true },
@@ -34,5 +35,5 @@ describe('mdw-chip', () => {
       hovered__focused: { ':hover': true, ':focus': true, textContent: 'Hovered and Focused' },
       pressed: { ':active': true, textContent: 'Pressed' },
     },
-  ]);
-});
+  ],
+}));

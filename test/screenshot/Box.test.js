@@ -6,8 +6,9 @@ await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 
-describe('mdw-box', () => {
-  generateScreenshotTests('<mdw-box>Text</mdw-box>', [
+describe('mdw-box', () => generateScreenshotTests({
+  template: '<mdw-box>Text</mdw-box>',
+  matrix: [
     {
       padding0: {},
       padding8: { padding: 8 },
@@ -27,5 +28,5 @@ describe('mdw-box', () => {
       secondaryink: { ink: 'secondary' },
       tertiaryink: { ink: 'tertiary' },
     },
-  ]);
-});
+  ],
+}));

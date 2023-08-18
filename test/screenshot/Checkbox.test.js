@@ -12,8 +12,9 @@ await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 
-describe('mdw-checkbox', () => {
-  generateScreenshotTests('<mdw-checkbox></mdw-checkbox>', [
+describe('mdw-checkbox', () => generateScreenshotTests({
+  template: '<mdw-checkbox></mdw-checkbox>',
+  matrix: [
     {
       enabled: {},
       disabled: { disabled: true },
@@ -39,5 +40,5 @@ describe('mdw-checkbox', () => {
       pressed: { ':active': true },
       clicked: { ':click': true },
     },
-  ]);
-});
+  ],
+}));

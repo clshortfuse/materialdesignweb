@@ -8,8 +8,9 @@ await addRobotoFont();
 
 beforeEach(() => document.body.replaceChildren());
 
-describe('mdw-slider', () => {
-  generateScreenshotTests('<mdw-slider></mdw-slider>', [
+describe('mdw-slider', () => generateScreenshotTests({
+  template: '<mdw-slider></mdw-slider>',
+  matrix: [
     {
       enabled: {},
       disabled: { disabled: true },
@@ -25,5 +26,6 @@ describe('mdw-slider', () => {
       hovered__focused: { ':hover': true, ':focus': true },
       pressed: { ':active': true },
     },
-  ], 64);
-});
+  ],
+  padding: 64,
+}));

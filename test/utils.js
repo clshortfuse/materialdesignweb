@@ -205,26 +205,34 @@ export function buildObjectMatrix(array, index = 0) {
 }
 
 /**
- * @param {string} htmlString
- * @param {Array<Record<string, any>>} attributeMatrix
- * @param {number} [padding=16]
+ * @typedef {Object} SceenshotTestGeneratorOptions
+ * @prop {string} template
+ * @prop {Record<string, any>} [before]
+ * @prop {Array<Record<string, any>>} [matrix]
+ * @prop {Record<string, any>} [after]
+ * @prop {number} [padding=16]
+ * @param {SceenshotTestGeneratorOptions} options
  */
-export function generateScreenshotTests(htmlString, attributeMatrix, padding = 16) {
-  for (const [tag, attributes] of buildObjectMatrix(attributeMatrix)) {
+export function generateScreenshotTests({ template, before, matrix, after, padding = 16 }) {
+  for (const [tag, attributes] of buildObjectMatrix(matrix)) {
     const tags = tag.split('__');
     const listOfStates = tags.slice(0, -1).join(', ');
     const stateDescription = listOfStates ? `${listOfStates}, and ${tags.at(-1)}` : tag;
     // eslint-disable-next-line no-loop-func
     it(`matches screenshot when ${stateDescription}`, async function () {
-      const bounds = html`<span id=bounds style="display:inline-flex;align-items:center;justify-content:center;padding:${padding}px"></span>`;
-      const element = makeFromString(htmlString.trim(), false);
+      const bounds = html`<span id=bounds style="transform:translateZ(0);position:relative;display:inline-flex;align-items:center;justify-content:center;padding:${padding}px"></span>`;
+      const element = makeFromString(template.trim(), false);
       bounds.append(element);
       let movedMouse = false;
       let movedFocus = true;
       const startTime = performance.now();
       let animationWait = 0;
       /* eslint-disable no-await-in-loop */
-      for (const [key, value] of Object.entries(attributes)) {
+      for (const [key, value] of [
+        ...Object.entries(before ?? {}),
+        ...Object.entries(attributes),
+        ...Object.entries(after ?? {}),
+      ]) {
         switch (key) {
           case ':focus':
             element.focus();
@@ -250,7 +258,12 @@ export function generateScreenshotTests(htmlString, attributeMatrix, padding = 1
             animationWait = value;
             break;
           default:
-            element[key] = value;
+            if (key.endsWith('()')) {
+              console.log('calling function', key);
+              element[key.slice(0, -2)](...value);
+            } else {
+              element[key] = value;
+            }
         }
       }
       /* eslint-enable no-await-in-loop */
