@@ -97,6 +97,7 @@ export default function PopupMixin(Base) {
       popupMargin: 'float',
     })
     .set({
+      useHistory: true,
       returnValue: '',
       _closing: false,
       _useScrim: false,
@@ -288,12 +289,16 @@ export default function PopupMixin(Base) {
         if (this.open) return false;
         this.open = true;
 
-        // SCRIM
+        const { scrim } = this.refs;
         if (this._useScrim) {
-          document.body.append(this.refs.scrim);
-          this.refs.scrim.hidden = false;
+          if (this._isNativeModal) {
+            document.body.append(scrim);
+          } else {
+            this.before(scrim);
+          }
+          scrim.hidden = false;
         } else {
-          this.refs.scrim.remove();
+          scrim.remove();
         }
 
         const previousFocus = source instanceof HTMLElement ? source : document.activeElement;
@@ -309,23 +314,29 @@ export default function PopupMixin(Base) {
         // Native modals can fail update bounds on Chrome
         this.updatePopupPosition(source);
 
-        const newState = { hash: Math.random().toString(36).slice(2, 18) };
-        let previousState = null;
+        let newState;
+        let scrollRestoration;
+        let previousState;
+        if (this.useHistory) {
+          newState = { hash: Math.random().toString(36).slice(2, 18) };
 
-        if (!window.history.state) {
-          // Create new previous state
-          window.history.replaceState({
-            hash: Math.random().toString(36).slice(2, 18),
-          }, document.title);
+          if (!window.history.state) {
+            // Create new previous state
+            window.history.replaceState({
+              hash: Math.random().toString(36).slice(2, 18),
+            }, document.title);
+          }
+          previousState = window.history.state;
+
+          scrollRestoration = window.history.scrollRestoration;
+
+          window.history.scrollRestoration = 'manual';
+          window.history.pushState(newState, document.title);
+          console.debug('Popup pushed page');
+          window.addEventListener('popstate', onPopState);
+          window.addEventListener('beforeunload', onBeforeUnload);
         }
-        previousState = window.history.state;
 
-        const scrollRestoration = window.history.scrollRestoration;
-        window.history.scrollRestoration = 'manual';
-        window.history.pushState(newState, document.title);
-        console.debug('Popup pushed page');
-        window.addEventListener('popstate', onPopState);
-        window.addEventListener('beforeunload', onBeforeUnload);
         window.addEventListener('mousedown', onNavMouseDown, { capture: true });
 
         window.addEventListener('resize', onWindowResize);
@@ -425,18 +436,20 @@ export default function PopupMixin(Base) {
         for (let i = len - 1; i >= 0; i--) {
           const entry = OPEN_POPUPS[i];
           if (entry.element === this) {
-            if (entry.state && window.history
-              && window.history.state && entry.state.hash === window.history.state.hash) {
-              window.removeEventListener('popstate', onPopState);
-              window.history.back();
-              // Back does not set state immediately
-              // Needed to track submenu
-              // TODO: use window.history.go(indexDelta) instead for Safari (not Webkit) submenu support
-              window.history.replaceState(entry.previousState, document.title);
-              window.history.scrollRestoration = entry.scrollRestoration || 'auto';
-              window.addEventListener('popstate', onPopState);
-            } else {
-              console.warn('Menu state mismatch?', entry, window.history.state);
+            if (this.useHistory) {
+              if (entry.state && window.history
+                && window.history.state && entry.state.hash === window.history.state.hash) {
+                window.removeEventListener('popstate', onPopState);
+                window.history.back();
+                // Back does not set state immediately
+                // Needed to track submenu
+                // TODO: use window.history.go(indexDelta) instead for Safari (not Webkit) submenu support
+                window.history.replaceState(entry.previousState, document.title);
+                window.history.scrollRestoration = entry.scrollRestoration || 'auto';
+                window.addEventListener('popstate', onPopState);
+              } else {
+                console.warn('Menu state mismatch?', entry, window.history.state);
+              }
             }
             if (returnFocus) {
               console.log('not returning focus');
