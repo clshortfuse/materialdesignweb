@@ -53,7 +53,8 @@ type ObserverOptions<
   attributeChangedCallback?: (this:C, name:string, oldValue: string, newValue: string) => any;
   computedValues?: WeakMap<C, T2>;
   watchers?: [keyof C, (this:C, ...args:any[]) => any][];
-  needsSelfInvalidation?: WeakSet<C>,
+  needsSelfInvalidation?: WeakSet<C>;
+  props?: Set<keyof C>;
 }
 
 type ObserverConfiguration<

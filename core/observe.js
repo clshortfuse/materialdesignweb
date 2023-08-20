@@ -120,112 +120,6 @@ function defaultParserFromType(type) {
 }
 
 /**
- * @template {string} K
- * @template {ObserverPropertyType} [T1=any]
- * @template {any} [T2=import('./typings.js').ParsedObserverPropertyType<T1>]
- * @param {K} name
- * @param {T1|import('./typings.js').ObserverOptions<T1,T2>} [typeOrOptions='string']
- * @param {any} object
- * @return {import('./typings.js').ObserverConfiguration<T1,T2,K> & import('./typings.js').ObserverOptions<T1,T2>}
- */
-export function parseObserverOptions(name, typeOrOptions, object) {
-  /** @type {Partial<import('./typings.js').ObserverOptions<T1,T2>>} */
-  const options = (typeof typeOrOptions === 'string')
-    ? { type: typeOrOptions }
-    : typeOrOptions;
-
-  let {
-    watchers, value, readonly,
-    empty, type,
-    enumerable, reflect, attr,
-    nullable, parser, nullParser,
-    is, diff,
-  } = options;
-
-  watchers ??= [];
-  readonly ??= false;
-
-  if (empty === undefined) {
-    empty = null;
-  }
-
-  value ??= empty;
-
-  /** @type {ObserverPropertyType} */
-  if (!type) {
-    // Use .value or .get() to parse type
-    const computedValue = value ?? options.get?.call(object ?? {}, object ?? {});
-    if (computedValue == null) {
-      type = 'string';
-    } else {
-      const parsed = typeof computedValue;
-      type = (parsed === 'number')
-        ? (Number.isInteger(computedValue) ? 'integer' : 'number')
-        : parsed;
-    }
-  }
-
-  enumerable ??= name[0] !== '_';
-  reflect ??= enumerable ? type !== 'object' : (attr ? 'write' : false);
-  attr ??= (reflect ? attrNameFromPropName(name) : null);
-  nullable ??= (type === 'boolean') ? false : (empty == null);
-  if (!nullable) {
-    empty ??= emptyFromType(type);
-    value ??= empty;
-  }
-
-  // if defined ? value
-  // else if boolean ? false
-  // else if onNullish ? false
-  // else if empty == null
-  parser ??= defaultParserFromType(type);
-  if (!nullParser) {
-    if (nullable) {
-      nullParser = () => null;
-    } else {
-      nullParser = (empty === null)
-        ? () => emptyFromType(type)
-        : () => empty;
-    }
-  }
-
-  is ??= (type === 'object')
-    ? (a, b) => !hasMergePatch(a, b)
-    : ((type === 'array') ? () => false : Object.is);
-
-  if (diff === undefined) {
-    diff = ((type === 'object') ? (a, b) => buildMergePatch(a, b, 'reference') : null);
-  }
-
-  return {
-    ...options,
-    type,
-    is,
-    diff,
-    attr,
-    reflect,
-    readonly,
-    enumerable,
-    value,
-    parser,
-    nullParser,
-    key: name,
-    watchers,
-  };
-}
-
-/**
- * @this {import('./typings.js').ObserverConfiguration<?,?,?>}
- * @param {*} value
- */
-export function parsePropertyValue(value) {
-  let newValue = value;
-  newValue = value == null
-    ? this.nullParser.call(this, value)
-    : this.parser.call(this, newValue);
-}
-
-/**
  * @param {(data: Partial<any>) => any} fn
  * @param {...any} args
  * @this {any}
@@ -280,6 +174,125 @@ export function observeFunction(fn, ...args) {
     defaultValue,
     reusable,
   };
+}
+
+/**
+ * @template {string} K
+ * @template {ObserverPropertyType} [T1=any]
+ * @template {any} [T2=import('./typings.js').ParsedObserverPropertyType<T1>]
+ * @param {K} name
+ * @param {T1|import('./typings.js').ObserverOptions<T1,T2>} [typeOrOptions='string']
+ * @param {any} object
+ * @return {import('./typings.js').ObserverConfiguration<T1,T2,K> & import('./typings.js').ObserverOptions<T1,T2>}
+ */
+export function parseObserverOptions(name, typeOrOptions, object) {
+  /** @type {Partial<import('./typings.js').ObserverOptions<T1,T2>>} */
+  const options = (typeof typeOrOptions === 'string')
+    ? { type: typeOrOptions }
+    : typeOrOptions;
+
+  let {
+    watchers, value, readonly,
+    empty, type,
+    enumerable, reflect, attr,
+    nullable, parser, nullParser,
+    get,
+    is, diff,
+    props,
+  } = options;
+
+  watchers ??= [];
+  readonly ??= false;
+
+  if (empty === undefined) {
+    empty = null;
+  }
+
+  value ??= empty;
+
+  if (get && !props) {
+    // Custom `get` uses computed values.
+    // Invalidate computed value when dependent `prop` changes
+    const observeResult = observeFunction(get.bind(object), object, () => value);
+    value ??= observeResult.defaultValue;
+    const uniqueProps = new Set([
+      ...observeResult.props.this,
+      ...observeResult.props.args[0],
+    ]);
+    props = uniqueProps;
+  }
+
+  /** @type {ObserverPropertyType} */
+  if (!type) {
+    if (value == null) {
+      type = 'string';
+    } else {
+      const parsed = typeof value;
+      type = (parsed === 'number')
+        ? (Number.isInteger(value) ? 'integer' : 'number')
+        : parsed;
+    }
+  }
+
+  enumerable ??= name[0] !== '_';
+  reflect ??= enumerable ? type !== 'object' : (attr ? 'write' : false);
+  attr ??= (reflect ? attrNameFromPropName(name) : null);
+  nullable ??= (type === 'boolean') ? false : (empty == null);
+  if (!nullable) {
+    empty ??= emptyFromType(type);
+    value ??= empty;
+  }
+
+  // if defined ? value
+  // else if boolean ? false
+  // else if onNullish ? false
+  // else if empty == null
+  parser ??= defaultParserFromType(type);
+  if (!nullParser) {
+    if (nullable) {
+      nullParser = () => null;
+    } else {
+      nullParser = (empty === null)
+        ? () => emptyFromType(type)
+        : () => empty;
+    }
+  }
+
+  is ??= (type === 'object')
+    ? (a, b) => !hasMergePatch(a, b)
+    : ((type === 'array') ? () => false : Object.is);
+
+  if (diff === undefined) {
+    diff = ((type === 'object') ? (a, b) => buildMergePatch(a, b, 'reference') : null);
+  }
+
+  return {
+    ...options,
+    type,
+    is,
+    diff,
+    attr,
+    reflect,
+    readonly,
+    enumerable,
+    value,
+    parser,
+    nullParser,
+    key: name,
+    props,
+    watchers,
+  };
+}
+
+/**
+ * @this {import('./typings.js').ObserverConfiguration<?,?,?>}
+ * @param {*} value
+ */
+export function parsePropertyValue(value) {
+  let newValue = value;
+  newValue = value == null
+    ? this.nullParser.call(this, value)
+    : this.parser.call(this, newValue);
 }
 
 /**
@@ -382,20 +395,10 @@ export function defineObservableProperty(object, key, options) {
     detectChange.call(this, config, oldValue, newValue);
   }
 
-  if (config.get) {
-    // Custom `get` uses computed values.
-    // Invalidate computed value when dependent `prop` changes
-    const observeResult = observeFunction(config.get.bind(object), object, internalGet.bind(object));
-    const uniqueProps = new Set([
-      ...observeResult.props.this,
-      ...observeResult.props.args[0],
-    ]);
-    for (const prop of uniqueProps) {
-      // @ts-ignore keyof C
+  if (config.props) {
+    for (const prop of config.props) {
       config.watchers.push([prop, onInvalidate]);
     }
-
-    // TODO: May be able to cache value if props are present
   }
 
   /**
