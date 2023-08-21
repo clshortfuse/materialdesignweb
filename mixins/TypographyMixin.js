@@ -6,6 +6,7 @@ function parseSize(input) {
   if (!input) return '';
   if (input.includes('px')) return input;
   if (input.includes('em')) return input;
+  if (input.includes('ex')) return input;
   return `calc(${input.replace('sp', '')} * 0.0625rem)`;
 }
 
