@@ -1,11 +1,20 @@
 import CustomElement from '../core/CustomElement.js';
+import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import NavItem from './NavItem.js';
 
 export default CustomElement
   .extend()
+  .mixin(DelegatesFocusMixin)
   .mixin(ThemableMixin)
+  .observe({
+    open: 'boolean',
+    autoClose: {
+      type: 'float',
+      empty: 728,
+    },
+  })
   .set({
     color: 'surface-container',
     _ariaRole: 'navigation',
@@ -17,8 +26,8 @@ export default CustomElement
     :host {
       --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);
+      display: none;
 
-      display: grid;
       align-content: flex-start;
       align-items: flex-start;
       gap: 8px;
@@ -41,7 +50,18 @@ export default CustomElement
 
       text-align: center;
     }
+
+    :host(:where([open])) {
+      display: grid;
+    }
   `
+  .methods({
+    onWindowResize() {
+      const { autoClose } = this;
+      const containerWidth = window.innerWidth;
+      this.open = (autoClose === -1 || containerWidth < autoClose);
+    },
+  })
   .events({
     '~click'(event) {
       // Abort if not child
@@ -51,6 +71,14 @@ export default CustomElement
         if (el instanceof NavItem === false) continue;
         el.active = (el === event.target);
       }
+    },
+  })
+  .on({
+    constructed() {
+      window.addEventListener('resize', this.onWindowResize.bind(this));
+    },
+    connected() {
+      this.onWindowResize();
     },
   })
   .autoRegister('mdw-nav-bar');
