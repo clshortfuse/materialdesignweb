@@ -63,7 +63,8 @@
     "/dist",
     "/components",
     "/core",
-    "/theming",
+    "/loaders",
+    "/services",
     "/mixins",
     "/utils"
   ],
