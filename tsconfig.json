@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "checkJs": true,
+    "declaration": true,
+    "declarationDir": "types",
     "module": "esnext",
     "moduleResolution": "node",
+    "noErrorTruncation": true,
     "noImplicitAny": true,
+    "outDir": "/dev/null",
     "resolveJsonModule": true,
     "strict": false,
-    "target": "esnext",
-    "allowSyntheticDefaultImports": true,
-    "noErrorTruncation": true,
-    "types": []
+    "target": "esnext"
   },
-  
   "exclude": [
     "**/node_modules/*",
     ".history/*",

@@ -68,6 +68,7 @@
     "/loaders",
     "/mixins",
     "/services",
+    "/types",
     "/utils"
   ],
   "homepage": "https://github.com/clshortfuse/materialdesignweb#readme",
@@ -95,7 +96,7 @@
     "docs:rollup": "rollup -c build/rollup.config.js docs/demo.js --dir=docs --compact",
     "predocs": "node bin/mdw-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/theme.css",
     "predocs-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/alt-theme.css",
-    "prepublishOnly": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production",
+    "prepublishOnly": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production && tsc --emitDeclarationOnly",
     "pretest": "eslint --ignore-path .gitignore",
     "sample": "node build/esbuild.js docs/sample.js --outdir=docs --watch --metafile --serve --live",
     "serve": "node build/esbuild.js docs/demo.js --outdir=docs --metafile --serve --live --tree-shaking=true",
