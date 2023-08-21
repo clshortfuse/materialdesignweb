@@ -54,7 +54,8 @@
     "./components/*": "./components/*",
     "./core/*": "./core/*",
     "./mixins/*": "./mixins/*",
-    "./theming/*": "./theming/*",
+    "./loaders/*": "./loaders/*",
+    "./services/*": "./services/*",
     "./utils/*": "./utils/*"
   },
   "files": [
@@ -109,10 +110,9 @@
   "sideEffects": [
     "./components/*.js",
     "./loaders/*.js",
-    "./utils/metadata.js",
+    "./polyfills/*.js",
     "./docs/custom.js",
-    "./docs/demo/*.js",
-    "./polyfills/*.js"
+    "./docs/demo/*.js"
   ],
   "type": "module",
   "version": "0.8.0",
