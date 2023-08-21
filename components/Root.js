@@ -168,6 +168,9 @@ export default CustomElement
         "start bottom  end" auto
         / minmax(0px, auto) minmax(0px, 100%) minmax(0px, auto);
 
+      min-block-size: 100vh;
+      min-block-size: 100dvh;
+
       font: var(--mdw-typescale__body-large__font);
       letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
     }
