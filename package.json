@@ -51,21 +51,23 @@
     "typescript": "5.1"
   },
   "exports": {
+    "./constants/*": "./constants/*",
     "./components/*": "./components/*",
     "./core/*": "./core/*",
-    "./mixins/*": "./mixins/*",
     "./loaders/*": "./loaders/*",
+    "./mixins/*": "./mixins/*",
     "./services/*": "./services/*",
     "./utils/*": "./utils/*"
   },
   "files": [
     "/bin",
     "/dist",
+    "/constants",
     "/components",
     "/core",
     "/loaders",
-    "/services",
     "/mixins",
+    "/services",
     "/utils"
   ],
   "homepage": "https://github.com/clshortfuse/materialdesignweb#readme",
