@@ -1114,7 +1114,7 @@ export default class Composition {
           const instanceAnchorElement = state.nodes[this.nodeIndex];
           const anchorNode = createEmptyComment();
           // Avoid leak
-          state.nodes[this.commentIndex] = anchorNode;
+          state.comments[this.commentIndex] = anchorNode;
           instanceAnchorElement.replaceWith(anchorNode);
           newComposition.adapter = new CompositionAdapter({
             anchorNode,
@@ -1198,7 +1198,9 @@ export default class Composition {
     propsUsed.push(...newComposition.props);
     this.addSearch(search);
     this.addAction(action);
-    this.tagsWithBindings.add(tag);
+    // eslint-disable-next-line no-multi-assign
+    const tagsWithBindings = (this.tagsWithBindings ??= new Set());
+    tagsWithBindings.add(tag);
     // console.log('adding', iterable, 'bind to', this);
     // this.addBinding(iterable, entry);
     return newComposition;
