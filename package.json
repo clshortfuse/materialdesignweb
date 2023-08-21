@@ -51,11 +51,11 @@
     "typescript": "5.1"
   },
   "exports": {
-    "/components": "./components",
-    "/core": "./core",
-    "/mixins": "./mixins",
-    "/theming": "./theming",
-    "/utils": "./utils"
+    "./components/*": "./components/*",
+    "./core/*": "./core/*",
+    "./mixins/*": "./mixins/*",
+    "./theming/*": "./theming/*",
+    "./utils/*": "./utils/*"
   },
   "files": [
     "/bin",
@@ -94,14 +94,17 @@
     "prepublishOnly": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production",
     "pretest": "eslint --ignore-path .gitignore",
     "sample": "node build/esbuild.js index.js --outdir=docs --watch --metafile --serve --live",
-    "serve": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile --serve --live --tree-shaking=true",
+    "serve": "node build/esbuild.js docs/demo.js --outdir=docs --metafile --serve --live --tree-shaking=true",
     "serve:rollup": "rollup -c build/rollup.config.js docs/demo.js --dir=docs --watch --environment SERVE",
     "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
     "test:custom": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1",
+    "test:chromium": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium",
     "test:screenshot": "web-test-runner \"test/screenshot/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
     "test:spec": "web-test-runner \"test/spec/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit",
     "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1 --watch",
-    "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile"
+    "test:path": "web-test-runner --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
+    "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile",
+    "benchmark": "node build/esbuild.js docs/demo.js --outdir=docs --minify --metafile --serve"
   },
   "sideEffects": [
     "./components/*.js",
@@ -112,5 +115,8 @@
     "./polyfills/*.js"
   ],
   "type": "module",
-  "version": "0.8.0"
+  "version": "0.8.0",
+  "dependencies": {
+    "chrome-launcher": "^1.0.0"
+  }
 }
