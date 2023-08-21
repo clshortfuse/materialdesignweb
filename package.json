@@ -97,7 +97,7 @@
     "predocs-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/alt-theme.css",
     "prepublishOnly": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production",
     "pretest": "eslint --ignore-path .gitignore",
-    "sample": "node build/esbuild.js index.js --outdir=docs --watch --metafile --serve --live",
+    "sample": "node build/esbuild.js docs/sample.js --outdir=docs --watch --metafile --serve --live",
     "serve": "node build/esbuild.js docs/demo.js --outdir=docs --metafile --serve --live --tree-shaking=true",
     "serve:rollup": "rollup -c build/rollup.config.js docs/demo.js --dir=docs --watch --environment SERVE",
     "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
@@ -118,8 +118,5 @@
     "./docs/demo/*.js"
   ],
   "type": "module",
-  "version": "0.8.0",
-  "dependencies": {
-    "chrome-launcher": "^1.0.0"
-  }
+  "version": "0.8.0"
 }
