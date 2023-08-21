@@ -4,6 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "checkJs": true,
     "declaration": true,
+    "declarationMap": true,
     "declarationDir": "types",
     "module": "esnext",
     "moduleResolution": "node",
