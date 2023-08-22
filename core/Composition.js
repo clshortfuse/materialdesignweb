@@ -29,6 +29,82 @@ import { generateUID } from './uid.js';
  * @prop {any} [injections]
  */
 
+/** @typedef {HTMLElementEventMap & { input: InputEvent; } } HTMLElementEventMapFixed */
+
+/**
+ * @typedef {(
+ * Pick<HTMLElementEventMapFixed,
+ *  'auxclick' |
+ *  'beforeinput' |
+ *  'click' |
+ *  'compositionstart' |
+ *  'contextmenu' |
+ *  'drag' |
+ *  'dragenter' |
+ *  'dragover' |
+ *  'dragstart' |
+ *  'drop' |
+ *  'invalid' |
+ *  'keydown' |
+ *  'keypress' |
+ *  'keyup' |
+ *  'mousedown' |
+ *  'mousemove' |
+ *  'mouseout' |
+ *  'mouseover' |
+ *  'mouseup' |
+ *  'pointerdown' |
+ *  'pointermove' |
+ *  'pointerout' |
+ *  'pointerover' |
+ *  'pointerup' |
+ *  'reset' |
+ *  'selectstart' |
+ *  'submit' |
+ *  'touchend' |
+ *  'touchmove' |
+ *  'touchstart' |
+ *  'wheel'
+ *  >
+ *  )} HTMLElementCancellableEventMap
+ */
+
+/**
+ * @typedef {(
+ *   HTMLElementEventMapFixed
+ *   & {[P in keyof HTMLElementCancellableEventMap as `~${P}`]: HTMLElementCancellableEventMap[P]}
+ *   & Record<string, Event|CustomEvent>
+ * )} CompositionEventMap
+ */
+
+/**
+ * @template {any} T
+ * @template {keyof CompositionEventMap} [K = keyof CompositionEventMap]
+ * @typedef {{
+ * type?: K
+ * tag?: string,
+ * capture?: boolean;
+ * once?: boolean;
+ * passive?: boolean;
+ * signal?: AbortSignal;
+ * handleEvent?: (
+ *     this: T,
+ *     event: (K extends keyof CompositionEventMap ? CompositionEventMap[K] : Event) & {currentTarget:HTMLElement}
+ *   ) => any;
+ * prop?: string;
+ * deepProp?: string[],
+ * }} CompositionEventListener
+ */
+
+/**
+ * @template T
+ * @typedef {{
+ * [P in keyof CompositionEventMap]?: (keyof T & string)
+ *   | ((this: T, event: CompositionEventMap[P] & {currentTarget:HTMLElement}) => any)
+ *   | CompositionEventListener<T, P>
+ * }} CompositionEventListenerObject
+ */
+
 /**
  * @template {any} T
  * @typedef {Object} NodeBindEntry
@@ -42,7 +118,7 @@ import { generateUID } from './uid.js';
  * @prop {boolean} [doubleNegate]
  * @prop {Function} [expression]
  * @prop {(options: RenderOptions<?>, element: Element, changes:any, data:any) => any} [render] custom render function
- * @prop {import('./typings.js').CompositionEventListener<T>[]} [listeners]
+ * @prop {CompositionEventListener<T>[]} [listeners]
  * @prop {Composition<any>} [composition] // Sub composition templating (eg: array)
  * @prop {T} defaultValue
  */
@@ -217,7 +293,7 @@ function searchWithDeepProp(state, changes, data) {
 
 /**
  * @typedef InterpolateOptions
- * @prop {Object} [defaults] Default values to use for interpolation
+ * @prop {Record<string,any>} [defaults] Default values to use for interpolation
  * @prop {{iterable:string} & Record<string,any>} [injections] Context-specific injected properties. (Experimental)
  */
 
@@ -560,6 +636,10 @@ export default class Composition {
       action.invocation(initState);
     }
 
+    /**
+     * @param {Partial<T>} changes
+     * @param {T} data
+     */
     const draw = (changes, data) => {
       let ranSearch = false;
       for (const prop of this.props) {
@@ -607,6 +687,12 @@ export default class Composition {
     }
 
     draw.target = target;
+
+    /**
+     * @param {keyof T & string} prop
+     * @param {any} value
+     * @param {Partial<T>} [data]
+     */
     draw.byProp = (prop, value, data) => {
       if (!this.actionsByPropsUsed?.has(prop)) return;
       let ranSearch = false;

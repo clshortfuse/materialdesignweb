@@ -1,7 +1,65 @@
 import { attrNameFromPropName } from './dom.js';
 import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
 
-/** @typedef {import('./typings.js').ObserverPropertyType} ObserverPropertyType */
+/** @typedef {'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'object' | 'function' | 'array'} ObserverPropertyType */
+
+/**
+ * @template {ObserverPropertyType} T
+ * @typedef {(
+* T extends 'boolean' ? boolean
+* : T extends 'string' ? string
+* : T extends 'float' | 'integer' ? number
+* : T extends 'array' ? any[]
+* : T extends 'object' ? any
+* : T extends 'function' ? (...args:any) => any
+* : unknown
+* )} ParsedObserverPropertyType
+*/
+
+/**
+ * @template {ObserverPropertyType} T1
+ * @template {any} T2
+ * @template {Object} [C=any]
+ * @typedef {Object} ObserverOptions
+ * @prop {T1} [type]
+ * @prop {string} [attr]
+ * @prop {boolean} [readonly]
+ * @prop {boolean} [enumerable]
+ * Defaults to false if type is boolean
+ * @prop {boolean} [nullable]
+ * @prop {T2} [empty]
+ * @prop {T2} [value]
+ * @prop {WeakMap<C,T2>} [values]
+ * @prop {boolean|'write'|'read'} [reflect]
+ * Function used when null passed
+ * @prop {(this:C, value:null|undefined)=>T2} [nullParser]
+ * @prop {(this:C, value:any)=>T2} [parser]
+ * Function used when comparing
+ * @prop {(this:C, a:T2, b:T2)=> any} [diff]
+ * @prop {(this:C, a:T2, b:T2)=>boolean} [is]
+ * @prop {(this:C, data:Partial<C>, fn?: () => T2) => T2} [get]
+ * @prop {(this:C, value: T2, fn?:(value2: T2) => any) => any} [set]
+ * Simple callback
+ * @prop {(this:C, oldValue:T2, newValue:T2, changes:any)=>any} [changedCallback]
+ * Named callback
+ * @prop {(this:C, name:string, oldValue: T2, newValue: T2, changes:any) => any} [propChangedCallback]
+ * Attribute callback
+ * @prop  {(this:C, name:string, oldValue: string, newValue: string) => any} [attributeChangedCallback]
+ * @prop {WeakMap<C, T2>} [computedValues]
+ * @prop {[keyof C, (this:C, ...args:any[]) => any][]} [watchers]
+ * @prop {WeakSet<C>} [needsSelfInvalidation]
+ * @prop {Set<keyof C>} [props]
+ */
+
+
+/**
+ * @template {ObserverPropertyType} T1
+ * @template {any} [T2=any]
+ * @template {string} [K=string]
+ * @template {Object} [C=any]
+ * @typedef {ObserverOptions<T1, T2, C> & { key: K, values?: WeakMap<C, T2>; attrValues?: WeakMap<C, string> }} ObserverConfiguration
+ */
+
 
 /**
  * @param {ObserverPropertyType} type

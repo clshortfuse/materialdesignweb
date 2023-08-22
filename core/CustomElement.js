@@ -1,12 +1,111 @@
 /* eslint-disable max-classes-per-file */
 
 import Composition from './Composition.js';
-import { ICustomElement } from './ICustomElement.js';
 import { css } from './css.js';
 import { attrNameFromPropName, attrValueFromDataValue } from './dom.js';
 import { applyMergePatch } from './jsonMergePatch.js';
 import { defineObservableProperty } from './observe.js';
 import { addInlineFunction, html } from './template.js';
+
+/** @typedef {import('./observe.js').ObserverPropertyType} ObserverPropertyType */
+
+/**
+ * @template {any} T
+ * @typedef {{
+ * [P in keyof T]:
+ *   T[P] extends (...args:any[]) => infer T2 ? T2
+ *     : T[P] extends ObserverPropertyType
+ *     ? import('./observe.js').ParsedObserverPropertyType<T[P]>
+ *     : T[P] extends {type: ObserverPropertyType}
+ *     ? import('./observe.js').ParsedObserverPropertyType<T[P]['type']>
+ *     : T[P] extends ObserverOptions<null, infer T2>
+ *     ? unknown extends T2 ? string : T2
+ *     : never
+ * }} ParsedProps
+ */
+
+/**
+ * @template {ObserverPropertyType} T1
+ * @template {any} T2
+ * @template {Object} [C=any]
+ * @typedef {import('./observe.js').ObserverOptions<T1,T2,C>} ObserverOptions
+ */
+
+/**
+ * @template {{ prototype: unknown; }} T
+ * @typedef {T} ClassOf<T>
+ */
+
+/**
+ * @template {any} T1
+ * @template {any} [T2=T1]
+ * @callback HTMLTemplater
+ * @param {TemplateStringsArray} string
+ * @param {...(string|DocumentFragment|Element|((this:T1, data:T2) => any))[]} substitutions
+ * @return {DocumentFragment}
+ */
+
+/**
+ * @template {any} [T1=any]
+ * @template {any} [T2=T1]
+ * @typedef {Object} CallbackArguments
+ * @prop {Composition<T1>} composition
+ * @prop {Record<string, HTMLElement>} refs
+ * @prop {HTMLTemplater<T1, Partial<T2>>} html
+ * @prop {(fn: (this:T1, data: {[K in keyof T2]?: T2[K]}) => any) => string} inline
+ * @prop {DocumentFragment} template
+ * @prop {T1} element
+ */
+
+/**
+ * @template {any} T1
+ * @template {any} [T2=T1]
+ * @typedef {{
+ * composed?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+ * constructed?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+ * connected?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+ * disconnected?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+ * props?: {
+ *   [P in keyof T1] : (
+ *   this: T1,
+ *   oldValue: T1[P],
+ *   newValue: T1[P],
+ *   changes:any,
+ *   element: T1
+ *   ) => any
+ * },
+ * attrs?: {[K in keyof any]: (
+ *   this: T1,
+ *   oldValue: string,
+ *   newValue: string,
+ *   element: T1
+ *   ) => unknown
+ * },
+ * } & {
+ * [P in keyof T1 & string as `${P}Changed`]?: (
+ *   this: T1,
+ *   oldValue: T1[P],
+ *   newValue: T1[P],
+ *   changes:any,
+ *   element: T1
+ *   ) => any
+ * }} CompositionCallback
+ */
+
+/**
+ * @template {Object} C
+ * @typedef {{
+ *  [P in string] :
+ *    ObserverPropertyType
+ *    | ObserverOptions<ObserverPropertyType, unknown, C>
+ *    | ((this:C, data:Partial<C>, fn?: () => any) => any)
+ * }} IDLParameter
+ */
+
+/**
+ * @template T
+ * @typedef {(T | Array<[keyof T & string, T[keyof T]]>)} ObjectOrObjectEntries
+ */
 
 /**
  * @template {abstract new (...args: any) => unknown} T
@@ -37,7 +136,7 @@ export function cloneAttributeCallback(name, target) {
 /**
  * Web Component that can cache templates for minification or performance
  */
-export default class CustomElement extends ICustomElement {
+export default class CustomElement extends HTMLElement {
   /** @type {string} */
   static elementName;
 
@@ -55,10 +154,10 @@ export default class CustomElement extends ICustomElement {
   /** @type {Composition<?>} */
   static _composition = null;
 
-  /** @type {Map<string, import('./typings.js').ObserverConfiguration<?,?,?>>} */
+  /** @type {Map<string, import('./observe.js').ObserverConfiguration<?,?,?>>} */
   static _props = new Map();
 
-  /** @type {Map<string, import('./typings.js').ObserverConfiguration<?,?,?>>} */
+  /** @type {Map<string, import('./observe.js').ObserverConfiguration<?,?,?>>} */
   static _attrs = new Map();
 
   /** @type {Map<string, Function[]>} */
@@ -67,16 +166,16 @@ export default class CustomElement extends ICustomElement {
   /** @type {Map<string, Function[]>} */
   static _attributeChangedCallbacks = new Map();
 
-  /** @type {typeof ICustomElement._onComposeCallbacks} */
+  /** @type {((callback: CallbackArguments) => any)[]} */
   static _onComposeCallbacks = [];
 
-  /** @type {typeof ICustomElement._onConnectedCallbacks} */
+  /** @type {((callback: CallbackArguments) => any)[]} */
   static _onConnectedCallbacks = [];
 
-  /** @type {typeof ICustomElement._onDisconnectedCallbacks} */
+  /** @type {((callback: CallbackArguments) => any)[]} */
   static _onDisconnectedCallbacks = [];
 
-  /** @type {typeof ICustomElement._onConstructedCallbacks} */
+  /** @type {((callback: CallbackArguments) => any)[]} */
   static _onConstructedCallbacks = [];
 
   static interpolatesTemplate = true;
@@ -147,42 +246,85 @@ export default class CustomElement extends ICustomElement {
    *      });
    *    myButton.isFilledorOutlined();
    * ````
-   * @type {typeof ICustomElement.expressions}
+   * @type {{
+   * <
+   *  CLASS extends typeof CustomElement,
+   *  ARGS extends ConstructorParameters<CLASS>,
+   *  INSTANCE extends InstanceType<CLASS>,
+   *  PROPS extends {
+   *    [K in keyof any]: ((this: INSTANCE, data?: INSTANCE & CLASS['schema']) => string|boolean|null)
+   *  }
+   *  >(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>):
+   *  CLASS & (new (...args: ARGS) => INSTANCE & PROPS)
+   * }}
    */
-  static expressions = this.set;
+  static expressions = /** @type {any} */ (this.set);
 
-  /** @type {typeof ICustomElement.methods} */
   static methods = this.set;
 
-  /** @type {typeof ICustomElement.overrides} */
-  static overrides = this.set;
+  /**
+   * @type {{
+   * <
+   * CLASS extends typeof CustomElement,
+   * ARGS extends ConstructorParameters<CLASS>,
+   * INSTANCE extends InstanceType<CLASS>,
+   * PROPS extends Partial<INSTANCE>>
+   * (this: CLASS, source: PROPS & ThisType<PROPS & INSTANCE>, options?: Partial<PropertyDescriptor>)
+   * : CLASS & (new(...args: ARGS) => INSTANCE & PROPS)
+   * }}
+   */
+  static overrides = /** @type {any} */ (this.set);
 
-  /** @type {typeof ICustomElement.props} */
-  static props = this.observe;
+  /**
+   * @type {{
+   * <
+   *  CLASS extends typeof CustomElement,
+   *  ARGS extends ConstructorParameters<CLASS>,
+   *  INSTANCE extends InstanceType<CLASS>,
+   *  KEY extends string,
+   *  OPTIONS extends ObserverPropertyType
+   *    | ObserverOptions<ObserverPropertyType, unknown, INSTANCE>
+   *    | ((this:INSTANCE, data:Partial<INSTANCE>, fn?: () => any) => any),
+   *  VALUE extends Record<KEY, OPTIONS extends (...args2:any[]) => infer R ? R
+   *      : OPTIONS extends ObserverPropertyType ? import('./observe.js').ParsedObserverPropertyType<OPTIONS>
+   *      : OPTIONS extends {type: 'object'} & ObserverOptions<any, infer R> ? (unknown extends R ? object : R)
+   *      : OPTIONS extends {type: ObserverPropertyType} ? import('./observe.js').ParsedObserverPropertyType<OPTIONS['type']>
+   *      : OPTIONS extends ObserverOptions<any, infer R> ? (unknown extends R ? string : R)
+   *      : never
+   *      >
+   *  > (this: CLASS, name: KEY, options: OPTIONS)
+   *    : CLASS & (new (...args: ARGS) => INSTANCE & VALUE);
+   * }}
+   */
+  static props = /** @type {any} */ (this.observe);
 
   static idl = this.prop;
 
   /**
-   * @template {typeof CustomElement} T
    * @this T
+   * @template {typeof CustomElement} T
    * @template {keyof T} K
    * @param {K} collection
    * @param {T[K] extends (infer R)[] ? R : never} callback
    */
   static _addCallback(collection, callback) {
     if (!this.hasOwnProperty(collection)) {
-      this[collection] = [
-        ...this[collection],
-        callback,
-      ];
+      // @ts-expect-error not typed
+      this[collection] = [...this[collection], callback];
       return;
     }
+    // @ts-expect-error any
     this[collection].push(callback);
   }
 
   /**
    * Append parts to composition
-   * @type {typeof ICustomElement.append}
+   * @type {{
+   * <
+   *  T extends typeof CustomElement,
+   *  >
+   *  (this: T, ...parts: ConstructorParameters<typeof Composition<InstanceType<T>>>): T;
+   * }}
    */
   static append(...parts) {
     this._addCallback('_onComposeCallbacks', ({ composition }) => {
@@ -195,7 +337,14 @@ export default class CustomElement extends ICustomElement {
   /**
    * After composition, invokes callback.
    * May be called multiple times.
-   * @type {typeof ICustomElement.recompose}
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
+   *  T2 extends InstanceType<T1>,
+   *  T3 extends CompositionCallback<T2, T2 & T1['schema']>['composed'],
+   *  >
+   *  (this: T1, callback: T3): T1
+   * }}
    */
   static recompose(callback) {
     this._addCallback('_onComposeCallbacks', callback);
@@ -205,7 +354,15 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Appends styles to composition
-   * @type {typeof ICustomElement.css}
+   * @type {{
+   * <
+   *   T1 extends typeof CustomElement,
+   *   T2 extends TemplateStringsArray|HTMLStyleElement|CSSStyleSheet|string>(
+   *   this: T1,
+   *   array: T2,
+   *   ...rest: T2 extends string ? any : T2 extends TemplateStringsArray ? any[] : (HTMLStyleElement|CSSStyleSheet)[]
+   * ): T1
+   * }}
    */
   static css(array, ...substitutions) {
     this._addCallback('_onComposeCallbacks', ({ composition }) => {
@@ -222,7 +379,15 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement['setSchema']} */
+  /**
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
+   *  T2 extends {[K in keyof any]: unknown}
+   *  >
+   *  (this: T1, schema: T2): T1 & {schema: T2};
+   * }}
+   */
   static setSchema(schema) {
     this.schema = schema;
     // @ts-expect-error Can't cast T
@@ -233,7 +398,9 @@ export default class CustomElement extends ICustomElement {
    * Registers class asynchronously at end of current event loop cycle
    * via `queueMicrotask`. If class is registered before then,
    * does nothing.
-   * @type {typeof ICustomElement['autoRegister']}
+   * @type {{
+   * <T extends typeof CustomElement>(this: T, elementName: string): T;
+   * }}
    */
   static autoRegister(elementName) {
     if (this.hasOwnProperty('defined') && this.defined) {
@@ -248,7 +415,13 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Appends DocumentFragment to composition
-   * @type {typeof ICustomElement.html}
+   * @type {{
+   * <T extends typeof CustomElement>(
+   *  this: T,
+   *  string: TemplateStringsArray,
+   *  ...substitutions: (string|Element|((this:InstanceType<T>, data:InstanceType<T> & T['schema'], injections?:any) => any))[]
+   *  ): T
+   * }}
    */
   static html(strings, ...substitutions) {
     this._addCallback('_onComposeCallbacks', ({ composition }) => {
@@ -262,7 +435,10 @@ export default class CustomElement extends ICustomElement {
   /**
    * Extends base class into a new class.
    * Use to avoid mutating base class.
-   * @type {typeof ICustomElement.extend}
+   * @type {{
+   * <T1 extends typeof CustomElement, T2 extends T1>
+   * (this: T1,customExtender?: (Base:T1) => T2): T2;
+   * }}
    */
   static extend(customExtender) {
     // @ts-expect-error Can't cast T
@@ -271,7 +447,16 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Assigns static values to class
-   * @type {typeof ICustomElement.setStatic}
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
+   *  T2 extends {
+   *    [K in keyof any]: (
+   *      ((this:T1, ...args:any[]) => any)
+   *      |string|number|boolean|any[]|object)}
+   *  >
+   *  (this: T1, source: T2 & ThisType<T1 & T2>):T1 & T2;
+   * }}
    */
   static setStatic(source) {
     Object.assign(this, source);
@@ -281,7 +466,15 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Assigns values directly to all instances (via prototype)
-   * @type {typeof ICustomElement.set}
+   * @type {{
+   * <
+   *  CLASS extends typeof CustomElement,
+   *  ARGS extends ConstructorParameters<CLASS>,
+   *  INSTANCE extends InstanceType<CLASS>,
+   *  PROPS extends object>
+   *  (this: CLASS, source: PROPS & ThisType<PROPS & INSTANCE>, options?: Partial<PropertyDescriptor>)
+   *  : CLASS & (new(...args: ARGS) => INSTANCE & PROPS)
+   * }}
    */
   static readonly(source, options) {
     // @ts-expect-error Can't cast T
@@ -290,7 +483,15 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Assigns values directly to all instances (via prototype)
-   * @type {typeof ICustomElement.set}
+   * @type {{
+   * <
+   * CLASS extends typeof CustomElement,
+   * ARGS extends ConstructorParameters<CLASS>,
+   * INSTANCE extends InstanceType<CLASS>,
+   * PROPS extends object>
+   * (this: CLASS, source: PROPS & ThisType<PROPS & INSTANCE>, options?: Partial<PropertyDescriptor>)
+   * : CLASS & (new(...args: ARGS) => INSTANCE & PROPS)
+   * }}
    */
   static set(source, options) {
     Object.defineProperties(
@@ -329,7 +530,18 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Returns result of calling mixin with current class
-   * @type {typeof ICustomElement.mixin}
+   * @type {{
+   * <
+   *  BASE extends typeof CustomElement,
+   *  FN extends (...args:any[]) => any,
+   *  RETURN extends ReturnType<FN>,
+   *  SUBCLASS extends ClassOf<RETURN>,
+   *  ARGS extends ConstructorParameters<SUBCLASS>,
+   *  BASE_INSTANCE extends InstanceType<BASE>,
+   *  SUBCLASS_INSTANCE extends InstanceType<SUBCLASS>>
+   *  (this: BASE, mixin: FN): SUBCLASS & BASE
+   *    & (new (...args: ARGS) => SUBCLASS_INSTANCE & BASE_INSTANCE)
+   * }}
    */
   static mixin(mixin) {
     return mixin(this);
@@ -337,7 +549,9 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Registers class with window.customElements synchronously
-   * @type {typeof ICustomElement['register']}
+   * @type {{
+   * <T extends typeof CustomElement>(this: T, elementName?: string, force?: boolean): T;
+   * }}
    */
   static register(elementName) {
     if (elementName) {
@@ -390,11 +604,33 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Creates observable property on instances (via prototype)
-   * @type {typeof ICustomElement.prop}
+   * @type {{
+   * <
+   *  CLASS extends typeof CustomElement,
+   *  ARGS extends ConstructorParameters<CLASS>,
+   *  INSTANCE extends InstanceType<CLASS>,
+   *  KEY extends string,
+   *  OPTIONS extends ObserverPropertyType
+   *    | ObserverOptions<ObserverPropertyType, unknown, INSTANCE>
+   *    | ((this:INSTANCE, data:Partial<INSTANCE>, fn?: () => any) => any),
+   *  VALUE extends Record<KEY, OPTIONS extends (...args2:any[]) => infer R ? R
+   *      : OPTIONS extends ObserverPropertyType ? import('./observe').ParsedObserverPropertyType<OPTIONS>
+   *      : OPTIONS extends {type: 'object'} & ObserverOptions<any, infer R> ? (unknown extends R ? object : R)
+   *      : OPTIONS extends {type: ObserverPropertyType} ? import('./observe').ParsedObserverPropertyType<OPTIONS['type']>
+   *      : OPTIONS extends ObserverOptions<any, infer R> ? (unknown extends R ? string : R)
+   *      : never
+   *      >
+   *  > (this: CLASS, name: KEY, options: OPTIONS)
+   *    : CLASS & (new (...args: ARGS) => INSTANCE & VALUE);
+   * }}
    */
   static prop(name, typeOrOptions) {
     // TODO: Cache and save configuration for reuse (mixins)
-    const config = defineObservableProperty(this.prototype, name, typeOrOptions);
+    const config = defineObservableProperty(
+      /** @type {any} */ (this.prototype),
+      name,
+      /** @type {any} */ (typeOrOptions),
+    );
 
     const { changedCallback, attr, reflect, watchers } = config;
     if (changedCallback) {
@@ -413,6 +649,7 @@ export default class CustomElement extends ICustomElement {
 
     this.onPropChanged(watchers);
 
+    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -420,7 +657,29 @@ export default class CustomElement extends ICustomElement {
    * Define properties on instances via Object.defineProperties().
    * Automatically sets property non-enumerable if name begins with `_`.
    * Functions will be remapped as getters
-   * @type {typeof ICustomElement.define}
+   * @type {{
+   * <
+   *  CLASS extends typeof CustomElement,
+   *  ARGS extends ConstructorParameters<CLASS>,
+   *  INSTANCE extends InstanceType<CLASS>,
+   *  PROPS extends {
+   *      [P in keyof any] :
+   *        {
+   *          enumerable?: boolean;
+   *          configurable?: boolean;
+   *          writable?: boolean;
+   *          value?: any;
+   *          get?: ((this: INSTANCE) => any);
+   *          set?: (this: INSTANCE, value: any) => void;
+   *        } | ((this: INSTANCE, ...args:any[]) => any)
+   *    },
+   *  VALUE extends {
+   *    [KEY in keyof PROPS]: PROPS[KEY] extends (...args2:any[]) => infer R ? R
+   *      : PROPS[KEY] extends TypedPropertyDescriptor<infer R> ? R : never
+   *  }>
+   *  (this: CLASS, props: PROPS & ThisType<PROPS & INSTANCE>): CLASS
+   *    & (new (...args: ARGS) => INSTANCE & VALUE)
+   * }}
    */
   static define(props) {
     Object.defineProperties(
@@ -474,10 +733,28 @@ export default class CustomElement extends ICustomElement {
 
   /**
    * Creates observable properties on instances
-   * @type {typeof ICustomElement.observe}
+   * @type {{
+   * <
+   *  CLASS extends typeof CustomElement,
+   *  ARGS extends ConstructorParameters<CLASS>,
+   *  INSTANCE extends InstanceType<CLASS>,
+   *  PROPS extends IDLParameter<INSTANCE & VALUE>,
+   *  VALUE extends {
+   *    [KEY in keyof PROPS]:
+   *    PROPS[KEY] extends (...args2:any[]) => infer R ? R
+   *        : PROPS[KEY] extends ObserverPropertyType ? import('./observe').ParsedObserverPropertyType<PROPS[KEY]>
+   *        : PROPS[KEY] extends {type: 'object'} & ObserverOptions<any, infer R> ? (unknown extends R ? object : R)
+   *        : PROPS[KEY] extends {type: ObserverPropertyType} ? import('./observe').ParsedObserverPropertyType<PROPS[KEY]['type']>
+   *        : PROPS[KEY] extends ObserverOptions<any, infer R> ? (unknown extends R ? string : R)
+   *        : never
+   *  },
+   *  > (this: CLASS, props: PROPS)
+   *    : CLASS & (new (...args: ARGS) => INSTANCE & VALUE)
+   * }}
    */
   static observe(props) {
     for (const [name, typeOrOptions] of Object.entries(props ?? {})) {
+      /** @type {any} */
       const options = (typeof typeOrOptions === 'function')
         ? { reflect: false, get: typeOrOptions }
         : typeOrOptions;
@@ -488,7 +765,14 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement.defineStatic} */
+  /**
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
+   *  T2 extends IDLParameter<T1>>
+   *  (this: T1, props: T2):T1 & ParsedProps<T2>
+   * }}
+   */
   static defineStatic(props) {
     for (const [name, typeOrOptions] of Object.entries(props ?? {})) {
       const options = (typeof typeOrOptions === 'function')
@@ -505,7 +789,16 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement.events} */
+  /**
+   * @type {{
+   * <T extends typeof CustomElement>
+   *  (
+   *    this: T,
+   *    listeners?: import('./Composition').CompositionEventListenerObject<InstanceType<T>>,
+   *    options?: Partial<import('./Composition').CompositionEventListener<InstanceType<T>>>,
+   *  ): T;
+   * }}
+   */
   static events(listeners, options) {
     this.on({
       composed({ composition }) {
@@ -550,7 +843,18 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement.childEvents} */
+  /**
+   * @type {{
+   * <T extends typeof CustomElement>
+   *  (
+   *    this: T,
+   *    listenerMap: {
+   *      [P in keyof any]: import('./Composition').CompositionEventListenerObject<InstanceType<T>>
+   *    },
+   *    options?: Partial<import('./Composition').CompositionEventListener<InstanceType<T>>>,
+   *  ): T;
+   * }}
+   */
   static childEvents(listenerMap, options) {
     for (const [tag, listeners] of Object.entries(listenerMap)) {
       // @ts-expect-error Can't cast T
@@ -564,7 +868,7 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement.events} */
+  /** @type {typeof CustomElement['events']} */
   static rootEvents(listeners, options) {
     // @ts-expect-error Can't cast T
     return this.events(listeners, {
@@ -573,7 +877,17 @@ export default class CustomElement extends ICustomElement {
     });
   }
 
-  /** @type {typeof ICustomElement['on']} */
+  /**
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
+   *  T2 extends InstanceType<T1>,
+   *  T3 extends CompositionCallback<T2, T2 & T1['schema']>,
+   *  T4 extends keyof T3,
+   *  >
+   *  (this: T1, name: T3|T4, callbacks?: T3[T4] & ThisType<T2>): T1
+   * }}
+   */
   static on(nameOrCallbacks, callback) {
     const callbacks = typeof nameOrCallbacks === 'string'
       ? { [nameOrCallbacks]: callback }
@@ -607,7 +921,26 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement['onPropChanged']} */
+  /**
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
+   *  T2 extends InstanceType<T1>
+   *  >
+   *  (
+   *    this: T1,
+   *    options: ObjectOrObjectEntries<{
+   *      [P in keyof T2]? : (
+   *      this: T2,
+   *      oldValue: T2[P],
+   *      newValue: T2[P],
+   *      changes:any,
+   *      element: T2
+   *      ) => void
+   *    }>,
+   *  ): T1;
+   * }}
+   */
   static onPropChanged(options) {
     const entries = Array.isArray(options) ? options : Object.entries(options);
     const { propChangedCallbacks } = this;
@@ -623,7 +956,25 @@ export default class CustomElement extends ICustomElement {
     return this;
   }
 
-  /** @type {typeof ICustomElement['onAttributeChanged']} */
+  /**
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
+   *  T2 extends InstanceType<T1>
+   *  >
+   *  (
+   *    this: T1,
+   *    options: {
+   *      [x:string]: (
+   *      this: T2,
+   *      oldValue: string,
+   *      newValue: string,
+   *      element: T2
+   *      ) => void
+   *    },
+   *  ): T1;
+   * }}
+   */
   static onAttributeChanged(options) {
     const entries = Array.isArray(options) ? options : Object.entries(options);
     const { attributeChangedCallbacks } = this;
@@ -654,7 +1005,7 @@ export default class CustomElement extends ICustomElement {
   /** @type {Map<string,{stringValue:string, parsedValue:any}>} */
   _propAttributeCache;
 
-  /** @type {import('./ICustomElement.js').CallbackArguments} */
+  /** @type {CallbackArguments} */
   _callbackArguments = null;
 
   /** @param {any[]} args */
@@ -691,7 +1042,18 @@ export default class CustomElement extends ICustomElement {
     }
   }
 
-  /** @type {InstanceType<typeof ICustomElement>['propChangedCallback']} */
+  /**
+   * @type {{
+   * <
+   *   T extends CustomElement,
+   *   K extends string = string,
+   * >(this:T,
+   *     name: K,
+   *     oldValue: K extends keyof T ? T[K] : unknown,
+   *     newValue: K extends keyof T ? T[K] : unknown,
+   *     changes?: K extends keyof T ? T[K] extends object ? Partial<T[K]> : T[K] : unknown): void;
+   * }}
+   */
   propChangedCallback(name, oldValue, newValue, changes = newValue) {
     if (!this.patching) {
       this.render.byProp(name, changes, this);

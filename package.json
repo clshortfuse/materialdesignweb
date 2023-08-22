@@ -119,5 +119,12 @@
     "./docs/demo/*.js"
   ],
   "type": "module",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "types/*"
+      ]
+    }
+  },
   "version": "0.8.0"
 }

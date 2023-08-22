@@ -18,6 +18,7 @@
   "exclude": [
     "**/node_modules/*",
     ".history/*",
-    "**/*.min.js"
+    "**/*.min.js",
+    "types/*"
   ]
 }
