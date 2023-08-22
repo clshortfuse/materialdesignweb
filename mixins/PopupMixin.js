@@ -303,8 +303,8 @@ export default function PopupMixin(Base) {
 
         const previousFocus = source instanceof HTMLElement ? source : document.activeElement;
 
-        if (supportsHTMLDialogElement && focus) {
-          // Calling show will force focus which is not intended for non-modals
+        if (supportsHTMLDialogElement && focus // Calling show will force focus which is not intended for non-modals
+          && !this._dialog.open) {
           this._dialog.show();
         }
 
