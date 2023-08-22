@@ -682,7 +682,7 @@ export default class Composition {
       lastChildNode: null,
       lastChildNodeIndex: 0,
       lastElement: null,
-      nodeStates: new Uint8Array(this.nodesToBind.length),
+      nodeStates: new Uint8Array(this._interpolationState.nodeIndex + 1),
       searchStates: new Uint8Array(this._interpolationState.searchIndex),
       comments: [],
       nodes: [],
