@@ -1032,7 +1032,7 @@ export default class CustomElement extends HTMLElement {
       {
         defaults: this.constructor.prototype,
         store: this,
-        target: this.shadowRoot,
+        shadowRoot: this.shadowRoot,
         context: this,
       },
     );

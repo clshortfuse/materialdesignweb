@@ -78,7 +78,7 @@ export default class CompositionAdapter {
     this.needsArrayKeyFastPath = false;
     this.batchStartIndex = null;
     this.batchEndIndex = null;
-    if (this.metadataCache !== null) {
+    if (this.metadataCache) {
       for (const { domNode } of this.metadataCache.values()) {
         domNode.remove();
       }
@@ -94,10 +94,10 @@ export default class CompositionAdapter {
     domNode.remove();
 
     // Don't release in case we may need it later
-    if (this.metadataCache === null) {
-      this.metadataCache = new Map([[key, metadata]]);
-    } else {
+    if (this.metadataCache) {
       this.metadataCache.set(key, metadata);
+    } else {
+      this.metadataCache = new Map([[key, metadata]]);
     }
   }
 
@@ -138,9 +138,8 @@ export default class CompositionAdapter {
         return;
       }
 
-      if (this.metadataCache === null) {
-        this.metadataCache = new Map();
-      }
+      // eslint-disable-next-line no-multi-assign
+      const metadataCache = (this.metadataCache ??= new Map());
 
       // If not same key. Scan key list.
       // Can avoid checking before current index. Will always be after current
@@ -155,18 +154,18 @@ export default class CompositionAdapter {
         // New key
         // console.log('new key?', 'should be at', newIndex);
         // Was key removed in this batch?
-        if (this.metadataCache.has(key)) {
+        if (metadataCache.has(key)) {
           // console.log('inserting removed element', 'at', newIndex);
           // (Optimistic insert)
           // Key was removed and should be here instead
           // If should have been replace, will correct next step
-          const previousMetadata = this.metadataCache.get(key);
+          const previousMetadata = metadataCache.get(key);
           this.metadata.splice(newIndex, 0, previousMetadata);
           this.keys.splice(newIndex, 0, key);
 
           const previousSibling = this.metadata[newIndex - 1]?.domNode ?? this.anchorNode;
           previousSibling.after(previousMetadata.domNode);
-          this.metadataCache.delete(key);
+          metadataCache.delete(key);
           return;
         }
 
@@ -176,7 +175,7 @@ export default class CompositionAdapter {
         // Allows multiple inserts to batch instead of one-by-one
 
         // console.log('completely new key', 'removing old. will replace', newIndex);
-        this.metadataCache.set(metadataAtIndex.key, metadataAtIndex);
+        metadataCache.set(currentKey, metadataAtIndex);
 
         // Continue to PUT below
       } else {
@@ -220,7 +219,7 @@ export default class CompositionAdapter {
 
         // Don't release in case we may need it later
         // console.debug('Caching key', key);
-        this.metadataCache.set(metadataAtIndex.key, metadataAtIndex);
+        metadataCache.set(currentKey, metadataAtIndex);
 
         return;
       }

@@ -24,7 +24,8 @@ import { generateUID } from './uid.js';
  * @typedef {Object} RenderOptions
  * @prop {T} [defaults] what
  * @prop {T} [store] what
- * @prop {DocumentFragment|ShadowRoot|HTMLElement|Element} [target] where
+ * @prop {DocumentFragment|HTMLElement|Element} [target] where
+ * @prop {ShadowRoot} [shadowRoot] where
  * @prop {any} [context] `this` on callbacks/events
  * @prop {any} [injections]
  */
@@ -129,8 +130,7 @@ import { generateUID } from './uid.js';
  * @typedef RenderGraphSearch
  *  @prop {(state:InitializationState, changes:any, data:any) => any}  invocation
  *  @prop {number}  cacheIndex
- *  @prop {number}  ranFlagIndex
- *  @prop {number}  dirtyIndex
+ *  @prop {number}  searchIndex
  *  @prop {string | Function | string[]}  query
  *  @prop {Function}  [expression]
  *  @prop {string}  prop
@@ -156,10 +156,10 @@ import { generateUID } from './uid.js';
  * @type {RenderGraphAction['invocation']}
  * @this {RenderGraphAction}
  */
-function writeDOMAttribute(state, value) {
+function writeDOMAttribute({ nodes }, value) {
   const { nodeIndex, attrName } = this;
   /** @type {Element} */
-  const element = state.nodes[nodeIndex];
+  const element = nodes[nodeIndex];
   switch (value) {
     case undefined:
     case null:
@@ -179,43 +179,97 @@ function writeDOMAttribute(state, value) {
  * @type {RenderGraphAction['invocation']}
  * @this {RenderGraphAction}
  */
-function writeDOMText(state, value) {
-  // @ts-ignore Skip cast
-  state.nodes[this.nodeIndex].data = value;
+function writeDynamicNode({ nodeStates, comments, nodes }, value) {
+  const { commentIndex, nodeIndex } = this;
+  const nodeState = nodeStates[nodeIndex];
+  // eslint-disable-next-line no-bitwise
+  const hidden = nodeState & 0b0001;
+  const show = value != null && value !== false;
+  if (!show) {
+    // Should be hidden
+    if (hidden) return;
+    // Replace whatever node is there with the comment
+    let comment = comments[commentIndex];
+    if (!comment) {
+      comment = createEmptyComment();
+      comments[commentIndex] = comment;
+    }
+    nodes[nodeIndex].replaceWith(comment);
+    // eslint-disable-next-line no-bitwise
+    nodeStates[nodeIndex] |= 0b0001;
+    return;
+  }
+  // Must be shown
+  // Update node first (offscreen rendering)
+  const node = nodes[nodeIndex];
+  // eslint-disable-next-line no-bitwise
+  const isDynamicNode = nodeState & 0b0010;
+
+  if (typeof value === 'object') {
+    // Not string data, need to replace
+    console.warn('Dynamic nodes not supported yet');
+  } else if (isDynamicNode) {
+    const textNode = new Text(value);
+    node.replaceWith(textNode);
+    nodes[nodeIndex] = textNode;
+    // eslint-disable-next-line no-bitwise
+    nodeStates[nodeIndex] &= ~0b0010;
+  } else {
+    node.data = value;
+  }
+
+  // Updated, now set hidden state
+
+  if (hidden) {
+    const comment = comments[commentIndex];
+    comment.replaceWith(node);
+    // eslint-disable-next-line no-bitwise
+    nodeStates[nodeIndex] &= ~0b0001;
+  }
+  // Done
 }
 
 /**
  * @type {RenderGraphAction['invocation']}
  * @this {RenderGraphAction}
  */
-function writeDOMElementAttachedState(state, value) {
+function writeDOMElementAttachedState({ nodeStates, nodes, comments }, value) {
   const { commentIndex, nodeIndex } = this;
-  let comment = state.comments[commentIndex];
+  // eslint-disable-next-line no-bitwise
+  const hidden = nodeStates[nodeIndex] & 1;
+  const show = value != null && value !== false;
+  if (show === !hidden) return;
+
+  const element = nodes[nodeIndex];
+  let comment = comments[commentIndex];
   if (!comment) {
     comment = createEmptyComment();
-    state.comments[commentIndex] = comment;
+    comments[commentIndex] = comment;
   }
-  const element = state.nodes[nodeIndex];
-  const show = value != null && value !== false;
   if (show) {
     comment.replaceWith(element);
+    // eslint-disable-next-line no-bitwise
+    nodeStates[nodeIndex] &= ~0b0001;
   } else {
     element.replaceWith(comment);
+    // eslint-disable-next-line no-bitwise
+    nodeStates[nodeIndex] |= 0b0001;
   }
-  return show;
 }
 
 /**
  * @type {RenderGraphAction['invocation']}
  * @this {RenderGraphAction}
  */
-function writeDOMHideElementOnInit(state) {
+function writeDOMHideNodeOnInit({ comments, nodeStates, nodes }) {
   const { commentIndex, nodeIndex } = this;
 
   const comment = createEmptyComment();
-  state.comments[commentIndex] = comment;
+  comments[commentIndex] = comment;
+  // eslint-disable-next-line no-bitwise
+  nodeStates[nodeIndex] |= 1;
 
-  state.nodes[nodeIndex].replaceWith(comment);
+  nodes[nodeIndex].replaceWith(comment);
 }
 
 /**
@@ -223,37 +277,50 @@ function writeDOMHideElementOnInit(state) {
  * @param {Parameters<RenderGraphSearch['invocation']>} args
  */
 function executeSearch(search, ...args) {
-  const [state] = args;
-  const cachedValue = state.caches[search.cacheIndex];
-  if (state.ranFlags[search.ranFlagIndex]) {
+  const [{ caches, searchStates }] = args;
+  const { cacheIndex, searchIndex, subSearch, invocation } = search;
+  const cachedValue = caches[cacheIndex];
+  const searchState = searchStates[searchIndex];
+
+  // Ran   = 0b0001
+  // Dirty = 0b0010
+  // eslint-disable-next-line no-bitwise
+  if (searchState & 0b0001) {
     // Return last result
     return {
       value: cachedValue,
-      dirty: state.dirtyFlags[search.dirtyIndex],
+      // eslint-disable-next-line no-bitwise
+      dirty: ((searchState & 0b0010) === 0b0010),
     };
   }
-  state.ranFlags[search.ranFlagIndex] = 1;
+
+  // eslint-disable-next-line no-bitwise
+  searchStates[searchIndex] |= 0b0001;
   let result;
-  if (search.subSearch) {
-    const subResult = executeSearch(search.subSearch, ...args);
-    // Use last cached value (if any)
-    if (!subResult.dirty && cachedValue !== undefined) {
-      state.dirtyFlags[search.dirtyIndex] = 0;
-      return { value: cachedValue, dirty: false };
+  if (invocation) {
+    if (subSearch) {
+      const subResult = executeSearch(subSearch, ...args);
+      // Use last cached value (if any)
+      if (!subResult.dirty && cachedValue !== undefined) {
+        // eslint-disable-next-line no-bitwise
+        searchStates[searchIndex] &= ~0b0010;
+        return { value: cachedValue, dirty: false };
+      }
+      // Pass from subquery
+      result = search.invocation(subResult.value);
+    } else {
+      result = search.invocation(...args);
     }
-    // Pass from subquery
-    result = search.invocation(subResult.value);
-  } else {
-    result = search.invocation(...args);
-  }
-  if ((result === undefined) || (cachedValue === result)) {
-    // Returnf rom cache
-    return { value: result, dirty: false };
+    if ((result === undefined) || (cachedValue === result)) {
+      // Return from cache
+      return { value: result, dirty: false };
+    }
   }
 
   // Overwrite cache and flag as dirty
-  state.caches[search.cacheIndex] = result;
-  state.dirtyFlags[search.dirtyIndex] = 1;
+  caches[cacheIndex] = result;
+  // eslint-disable-next-line no-bitwise
+  searchStates[searchIndex] |= 0b0010;
   return { value: result, dirty: true };
 }
 
@@ -261,11 +328,11 @@ function executeSearch(search, ...args) {
  * @type {RenderGraphSearch['invocation']}
  * @this {RenderGraphSearch}
  */
-function searchWithExpression(state, changes, data) {
+function searchWithExpression({ options: { context, store, injections } }, changes, data) {
   return this.expression.call(
-    state.options.context,
-    state.options.store ?? data,
-    state.options.injections,
+    context,
+    store ?? data,
+    injections,
   );
 }
 
@@ -273,7 +340,7 @@ function searchWithExpression(state, changes, data) {
  * @type {RenderGraphSearch['invocation']}
  * @this {RenderGraphSearch}
  */
-function searchWithProp(state, changes, data) {
+function searchWithProp(state, changes) {
   return changes[this.prop];
 }
 
@@ -300,16 +367,14 @@ function searchWithDeepProp(state, changes, data) {
 /**
  * @typedef InitializationState
  * @prop {Element} lastElement
- * @prop {boolean} isShadowRoot
  * @prop {ChildNode} lastChildNode
  * @prop {(Element|Text)[]} nodes
  * @prop {any[]} caches
  * @prop {Comment[]} comments
- * @prop {Uint8Array} ranFlags
- * @prop {Uint8Array} dirtyFlags
+ * @prop {Uint8Array} nodeStates
+ * @prop {Uint8Array} searchStates
  * @prop {Element[]} refs
  * @prop {number} lastChildNodeIndex
- * @prop {DocumentFragment} instanceFragment
  * @prop {RenderOptions<?>} options
  */
 
@@ -393,15 +458,16 @@ function valueFromPropName(prop, source) {
   return value;
 }
 
+const compositionCache = new Map();
+
 /** @template T */
 export default class Composition {
   static EVENT_PREFIX_REGEX = /^([*1~]+)?(.*)$/;
 
-  #interpolationState = {
+  _interpolationState = {
     nodeIndex: -1,
-    ranFlagIndex: 0,
+    searchIndex: 0,
     cacheIndex: 0,
-    dirtyIndex: 0,
     commentIndex: 0,
     /** @type {this['nodesToBind'][0]} */
     nodeEntry: null,
@@ -459,7 +525,7 @@ export default class Composition {
   /**
    * Collection of events to bind.
    * Indexed by ID
-   * @type {Map<string|symbol, import('./typings.js').CompositionEventListener<any>[]>}
+   * @type {Map<string|symbol, CompositionEventListener<any>[]>}
    */
   events;
 
@@ -516,6 +582,24 @@ export default class Composition {
   }
 
   /**
+   * @template T
+   * @param  {ConstructorParameters<typeof Composition<T>>} parts
+   * @return {Composition<T>}
+   */
+  static compose(...parts) {
+    for (const [cache, comp] of compositionCache) {
+      if (cache.length !== parts.length) continue;
+      if (parts.every((part, index) => part === cache[index])) {
+        return comp;
+      }
+    }
+
+    const composition = new Composition(...parts);
+    compositionCache.set(parts, composition);
+    return composition;
+  }
+
+  /**
    * @param {CompositionPart<T>[]} parts
    */
   append(...parts) {
@@ -534,7 +618,7 @@ export default class Composition {
     return this;
   }
 
-  /** @param {import('./typings.js').CompositionEventListener<T>} listener */
+  /** @param {CompositionEventListener<T>} listener */
   addCompositionEventListener(listener) {
     const key = listener.tag ?? '';
     // eslint-disable-next-line no-multi-assign
@@ -590,36 +674,45 @@ export default class Composition {
 
     const instanceFragment = /** @type {DocumentFragment} */ (this.cloneable.cloneNode(true));
 
-    const target = options.target ?? instanceFragment.firstElementChild;
-
-    const isShadowRoot = target instanceof ShadowRoot;
+    const shadowRoot = options.shadowRoot;
+    const target = shadowRoot ?? options.target ?? instanceFragment.firstElementChild;
 
     /** @type {InitializationState} */
     const initState = {
-      instanceFragment,
       lastChildNode: null,
       lastChildNodeIndex: 0,
       lastElement: null,
-      isShadowRoot,
-      ranFlags: new Uint8Array(this.#interpolationState.ranFlagIndex),
+      nodeStates: new Uint8Array(this.nodesToBind.length),
+      searchStates: new Uint8Array(this._interpolationState.searchIndex),
       comments: [],
       nodes: [],
       caches: this.initCache.slice(),
-      dirtyFlags: new Uint8Array(this.#interpolationState.dirtyIndex),
       refs: [],
       options,
     };
 
-    const { nodes, refs, ranFlags, dirtyFlags, caches } = initState;
+    const { nodes, refs, searchStates, caches } = initState;
     for (const { tag, textNodes } of this.nodesToBind) {
-      const element = instanceFragment.getElementById(tag);
-      refs.push(element);
-      nodes.push(element);
-      this.#bindCompositionEventListeners(tag, element, options.context);
+      /** @type {Text} */
+      let textNode;
+      if (tag === '') {
+        if (!textNodes.length) {
+          console.warn('why was root tagged?');
+          continue;
+        }
+        console.warn('found empty tag??');
+        refs.push(null);
+        nodes.push(null);
+        textNode = instanceFragment.firstChild;
+      } else {
+        const element = instanceFragment.getElementById(tag);
+        refs.push(element);
+        nodes.push(element);
+        this.#bindCompositionEventListeners(tag, element, options.context);
+        if (!textNodes.length) continue;
+        textNode = element.firstChild;
+      }
 
-      if (!textNodes.length) continue;
-
-      let textNode = element.firstChild;
       let currentIndex = 0;
       for (const index of textNodes) {
         while (index !== currentIndex) {
@@ -656,16 +749,15 @@ export default class Composition {
         }
       }
       if (!ranSearch) return;
-      ranFlags.fill(0);
-      dirtyFlags.fill(0);
+      searchStates.fill(0);
     };
 
-    if (isShadowRoot) {
-      options.context ??= target.host;
-      if ('adoptedStyleSheets' in target) {
+    if (shadowRoot) {
+      options.context ??= shadowRoot.host;
+      if ('adoptedStyleSheets' in shadowRoot) {
         if (this.adoptedStyleSheets.length) {
-          target.adoptedStyleSheets = [
-            ...target.adoptedStyleSheets,
+          shadowRoot.adoptedStyleSheets = [
+            ...shadowRoot.adoptedStyleSheets,
             ...this.adoptedStyleSheets,
           ];
         }
@@ -681,9 +773,9 @@ export default class Composition {
       draw(changes, data);
     }
 
-    if (isShadowRoot) {
-      target.append(instanceFragment);
-      customElements.upgrade(target);
+    if (shadowRoot) {
+      shadowRoot.append(instanceFragment);
+      customElements.upgrade(shadowRoot);
     }
 
     draw.target = target;
@@ -705,9 +797,8 @@ export default class Composition {
         if (cachedValue === value) {
           return;
         }
-        ranFlags[search.ranFlagIndex] = 1;
         caches[search.cacheIndex] = value;
-        dirtyFlags[search.dirtyIndex] = 1;
+        searchStates[search.searchIndex] = 0b0011;
       }
 
       let changes;
@@ -728,8 +819,7 @@ export default class Composition {
       }
 
       if (!ranSearch) return;
-      ranFlags.fill(0);
-      dirtyFlags.fill(0);
+      searchStates.fill(0);
     };
     draw.state = initState;
     return draw;
@@ -737,7 +827,7 @@ export default class Composition {
 
   /**
    * @param {Attr|Text} node
-   * @param {Element} element
+   * @param {Element|null} [element]
    * @param {InterpolateOptions} [options]
    * @param {string} [parsedValue]
    * @return {true|undefined} remove node
@@ -760,7 +850,7 @@ export default class Composition {
       if (!nodeValue) return;
       const trimmed = nodeValue.trim();
       if (!trimmed) return;
-      if (attr || element.tagName === 'STYLE') {
+      if (attr || element?.tagName === 'STYLE') {
         if (trimmed[0] !== '{') return;
         const { length } = trimmed;
         if (trimmed[length - 1] !== '}') return;
@@ -923,7 +1013,7 @@ export default class Composition {
           }
           if (defaultValue == null && options?.injections) {
             defaultValue = valueFromPropName(parsedValue, options.injections);
-            console.log('default value from injection', parsedValue, { defaultValue });
+            // console.log('default value from injection', parsedValue, { defaultValue });
           }
         }
 
@@ -970,9 +1060,8 @@ export default class Composition {
           inlineFunctionOptions.deepProps = deepPropsUsed;
         }
         subSearch = {
-          cacheIndex: this.#interpolationState.cacheIndex++,
-          dirtyIndex: this.#interpolationState.dirtyIndex++,
-          ranFlagIndex: this.#interpolationState.ranFlagIndex++,
+          cacheIndex: this._interpolationState.cacheIndex++,
+          searchIndex: this._interpolationState.searchIndex++,
           query: subquery,
           defaultValue,
           subSearch: null,
@@ -987,9 +1076,8 @@ export default class Composition {
       }
       if (isSubquery) {
         search = {
-          cacheIndex: this.#interpolationState.cacheIndex++,
-          dirtyIndex: this.#interpolationState.dirtyIndex++,
-          ranFlagIndex: this.#interpolationState.ranFlagIndex++,
+          cacheIndex: this._interpolationState.cacheIndex++,
+          searchIndex: this._interpolationState.searchIndex++,
           query,
           subSearch,
           negate,
@@ -1019,7 +1107,6 @@ export default class Composition {
     let subnode = null;
     let defaultValue = search.defaultValue;
     if (text) {
-      text.data = defaultValue;
       subnode = textNodeIndex;
     } else if (nodeName === 'mdw-if') {
       tag = this.#tagElement(element);
@@ -1037,15 +1124,15 @@ export default class Composition {
     tag ??= this.#tagElement(element);
 
     // Node entry
-    let nodeEntry = this.#interpolationState.nodeEntry;
+    let nodeEntry = this._interpolationState.nodeEntry;
     if (!nodeEntry || nodeEntry.tag !== tag) {
       nodeEntry = {
         tag,
         textNodes: [],
       };
-      this.#interpolationState.nodeEntry = nodeEntry;
+      this._interpolationState.nodeEntry = nodeEntry;
       this.nodesToBind.push(nodeEntry);
-      this.#interpolationState.nodeIndex++;
+      this._interpolationState.nodeIndex++;
     }
 
     /** @type {RenderGraphAction} */
@@ -1055,16 +1142,18 @@ export default class Composition {
     if (text) {
       nodeEntry.textNodes.push(textNodeIndex);
 
-      this.#interpolationState.nodeIndex++;
+      this._interpolationState.nodeIndex++;
       action = {
-        nodeIndex: this.#interpolationState.nodeIndex,
-        invocation: writeDOMText,
+        nodeIndex: this._interpolationState.nodeIndex,
+        commentIndex: this._interpolationState.commentIndex++,
+        invocation: writeDynamicNode,
         defaultValue,
         search,
       };
+      text.data = typeof defaultValue === 'string' ? defaultValue : '';
     } else if (subnode) {
       action = {
-        nodeIndex: this.#interpolationState.nodeIndex,
+        nodeIndex: this._interpolationState.nodeIndex,
         attrName: subnode,
         defaultValue,
         invocation: writeDOMAttribute,
@@ -1072,8 +1161,8 @@ export default class Composition {
       };
     } else {
       action = {
-        nodeIndex: this.#interpolationState.nodeIndex,
-        commentIndex: this.#interpolationState.commentIndex++,
+        nodeIndex: this._interpolationState.nodeIndex,
+        commentIndex: this._interpolationState.commentIndex++,
         defaultValue,
         invocation: writeDOMElementAttachedState,
         search,
@@ -1081,7 +1170,7 @@ export default class Composition {
       if (!defaultValue) {
         this.postInitActions.push({
           ...action,
-          invocation: writeDOMHideElementOnInit,
+          invocation: writeDOMHideNodeOnInit,
         });
       }
     }
@@ -1097,6 +1186,7 @@ export default class Composition {
    * @return {string}
    */
   #tagElement(element) {
+    if (!element) return '';
     let id = element.id;
     if (id) {
       if (!this.allIds.includes(id)) {
@@ -1146,21 +1236,20 @@ export default class Composition {
     element.removeAttribute('mdw-for');
     // Create a new composition targetting element as root
 
-    const elementAnchor = document.createElement('template');
+    const elementAnchor = element.ownerDocument.createElement('template');
     element.replaceWith(elementAnchor);
     const tag = this.#tagElement(elementAnchor);
     // console.log('tagging placeholder element with', elementAnchor, tag);
 
-    let nodeEntry = this.#interpolationState.nodeEntry;
+    let nodeEntry = this._interpolationState.nodeEntry;
     if (!nodeEntry || nodeEntry.tag !== tag) {
       nodeEntry = {
         tag,
         textNodes: [],
       };
-      this.#interpolationState.nodeEntry = nodeEntry;
+      this._interpolationState.nodeEntry = nodeEntry;
       this.nodesToBind.push(nodeEntry);
-      this.#interpolationState.nodeIndex++;
-      console.log('adding node entry', tag, this.#interpolationState.nodeIndex);
+      this._interpolationState.nodeIndex++;
     }
 
     const newComposition = new Composition();
@@ -1175,24 +1264,20 @@ export default class Composition {
     const propsUsed = [iterableName];
     /** @type {RenderGraphSearch} */
     const search = {
-      cacheIndex: this.#interpolationState.cacheIndex++,
-      dirtyIndex: this.#interpolationState.dirtyIndex++,
-      ranFlagIndex: this.#interpolationState.ranFlagIndex++,
+      cacheIndex: this._interpolationState.cacheIndex++,
+      searchIndex: this._interpolationState.searchIndex++,
       propsUsed,
       deepPropsUsed: [[iterableName]],
       defaultValue: {},
-      invocation(state, changes, data) {
-        // Return unique to always specify dirty
-        return {};
-      },
+      invocation: null,
     };
 
     /** @type {RenderGraphAction} */
     const action = {
       defaultValue: null,
-      nodeIndex: this.#interpolationState.nodeIndex,
+      nodeIndex: this._interpolationState.nodeIndex,
       search,
-      commentIndex: this.#interpolationState.commentIndex++,
+      commentIndex: this._interpolationState.commentIndex++,
       injections,
       invocation(state, value, changes, data) {
         if (!newComposition.adapter) {
@@ -1225,8 +1310,9 @@ export default class Composition {
         const needTargetAll = newComposition.props.some((prop) => prop !== iterableName && prop in changes);
 
         adapter.startBatch();
-        if (!needTargetAll && !Array.isArray(changeList)) {
-          const iterator = Array.isArray(changeList) ? changeList.entries() : Object.entries(changeList);
+        let isArray;
+        if (!needTargetAll && !(isArray = Array.isArray(changeList))) {
+          const iterator = isArray ? changeList.entries() : Object.entries(changeList);
           // console.log('changeList render', iterator);
           for (const [key, change] of iterator) {
             if (key === 'length') continue;
@@ -1315,18 +1401,18 @@ export default class Composition {
         case Node.ELEMENT_NODE:
           element = /** @type {Element} */ (node);
           if (element.tagName === 'TEMPLATE') {
-            node = treeWalker.nextSibling();
+            while (element.contains(node = treeWalker.nextNode()));
             continue;
           }
 
           if (element.tagName === 'SCRIPT') {
             console.warn('<script> element found.');
-            node = treeWalker.nextSibling();
+            while (element.contains(node = treeWalker.nextNode()));
             continue;
           }
 
           if (element.hasAttribute('mdw-for')) {
-            node = treeWalker.nextSibling();
+            while (element.contains(node = treeWalker.nextNode()));
             this.#interpolateIterable(element, options);
           } else {
             const idAttr = element.attributes.id;
@@ -1342,7 +1428,7 @@ export default class Composition {
 
           break;
         case Node.TEXT_NODE:
-          element = node.parentNode;
+          element = node.parentElement;
           if (this.#interpolateNode(/** @type {Text} */ (node), element, options)) {
             const nextNode = treeWalker.nextNode();
             node.remove();
