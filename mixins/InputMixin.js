@@ -338,11 +338,14 @@ export default function InputMixin(Base) {
         this._input.stepUp(...args);
         this._value = this._input.value;
       },
+
+      /** @type {HTMLInputElement['select']} */
+      select(...args) {
+        this._input.select(...args);
+      },
     })
     .define({
       files() { return this._input.files; },
-
-      select() { return this._input.select; },
 
       selectionDirection: {
         get() { return this._input.selectionDirection; },
