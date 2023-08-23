@@ -346,7 +346,7 @@ export function pixelmatch(img1, img2, output, width, height, options) {
         } else {
           // found substantial difference not caused by anti-aliasing; draw it as such
           if (output) {
-            drawPixel(output, pos, ...(delta < 0 && options.diffColorAlt || options.diffColor));
+            drawPixel(output, pos, ...(delta < 0 && (options.diffColorAlt || options.diffColor)));
           }
           diff++;
         }

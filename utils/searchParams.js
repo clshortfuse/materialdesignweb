@@ -10,7 +10,7 @@ export function getCurrentSearchParams() {
     } catch {}
     if (!url) {
       try {
-        url = document.currentScript.src;
+        url = /** @type {HTMLScriptElement} */ (document.currentScript).src;
       } catch {}
     }
     currentSearchParams = new URL(url).searchParams;
