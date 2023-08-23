@@ -4,12 +4,14 @@ import '../../components/Divider.js';
 import '../../components/IconButton.js';
 import '../../components/Progress.js';
 import '../../components/Shape.js';
+import '../../components/Surface.js';
 import '../../components/Box.js';
 import '../../components/Checkbox.js';
 
 import Card from '../../components/Card.js';
 import '../../components/Label.js';
-import { buildMergePatch } from '../../utils/jsonMergePatch.js';
+import { buildMergePatch } from '../../core/jsonMergePatch.js';
+import { addSVGAlias } from '../../services/svgAlias.js';
 
 const SAMPLE_DATA = {
   id: 1,
@@ -29,6 +31,7 @@ const SAMPLE_DATA = {
     'https://i.dummyjson.com/data/products/1/thumbnail.jpg'],
 };
 
+
 /**
  * @param {number} min
  * @param {number} max
@@ -42,6 +45,7 @@ export default Card
   .extend()
   .setSchema(/** @type {SAMPLE_DATA} */ (null))
   .observe({
+    title: 'string',
     productId: {
       type: 'integer',
       empty: 1,
@@ -108,6 +112,8 @@ export default Card
     }
 
     #thumbnail-shape {
+      overflow: hidden;
+
       block-size: 128px;
       min-block-size: 128px;
       inline-size: 128px;
@@ -115,8 +121,8 @@ export default Card
     }
 
     #thumbnail {
-      block-size: inherit;
-      inline-size: inherit;
+      block-size: 100%;
+      inline-size: 100%;
 
       object-fit: cover;
     }
@@ -150,7 +156,7 @@ export default Card
 
       object-fit: contain;
     }
-  `.html/* html */`
+  `.html`
     <form id=form>
       <div id=overlay busy={busy}>
         <mdw-progress circle></mdw-progress>
@@ -158,9 +164,9 @@ export default Card
       <div id=content busy={busy}>
         <fieldset disabled={busy}>
           <mdw-box flex y=center gap=16 padding=16>
-            <mdw-shape id=thumbnail-shape outlined shape-style=full>
+            <mdw-surface id=thumbnail-shape outlined shape-style=full>
               <img id=thumbnail src={thumbnail} />
-            </mdw-shape>
+            </mdw-surface>
             <div>
               <mdw-title>{title}</mdw-title>
               <mdw-label ink=primary size=small>{brand}</mdw-label>
@@ -178,10 +184,8 @@ export default Card
           </mdw-box>
           <mdw-divider></mdw-divider>
           <div id=images>
-            <mdw-label _if={!images.length}>(No images available)</mdw-label>
-            <img _if={images.0} class="image" src={images.0} />
-            <img _if={images.1} class="image" src={images.1} />
-            <img _if={images.2} class="image" src={images.2} />
+            <mdw-label mdw-if={!images.length}>(No images available)</mdw-label>
+            <img mdw-for="{image of images}" class="image" src={image} />
           </div>
         </fieldset>
       </div>
@@ -239,6 +243,6 @@ export default Card
   })
   .autoRegister('dummy-product-page');
 
-Icon.addSVGAlias('check', 'M382 816 154 588l57-57 171 171 367-367 57 57-424 424Z', '0 96 960 960');
-Icon.addSVGAlias('chevron_left', 'M560 816 320 576l240-240 56 56-184 184 184 184-56 56Z', '0 96 960 960');
-Icon.addSVGAlias('chevron_right', 'm376 816-56-56 184-184-184-184 56-56 240 240-240 240Z', '0 96 960 960');
+addSVGAlias('check', 'M382 816 154 588l57-57 171 171 367-367 57 57-424 424Z', '0 96 960 960');
+addSVGAlias('chevron_left', 'M560 816 320 576l240-240 56 56-184 184 184 184-56 56Z', '0 96 960 960');
+addSVGAlias('chevron_right', 'm376 816-56-56 184-184-184-184 56-56 240 240-240 240Z', '0 96 960 960');
