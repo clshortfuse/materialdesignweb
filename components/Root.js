@@ -207,6 +207,8 @@ export default CustomElement
       grid-area: bottom;
       overflow-y: hidden;
 
+      pointer-events: none;
+
       z-index: 1;
     }
 
@@ -244,8 +246,6 @@ export default CustomElement
       inset-block-end: 100%;
 
       display: block;
-
-      pointer-events: none;
     }
   `
   .autoRegister('mdw-root');

@@ -85,7 +85,9 @@ export default CustomElement
 
       grid-area: snackbar;
 
-      padding-inline: 16px;
+      padding-inline: 16px; 
+
+      pointer-events: auto;
 
       filter: var(--mdw-elevation__drop-shadow__3);
       opacity: 0;

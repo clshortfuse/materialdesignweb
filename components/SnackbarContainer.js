@@ -19,6 +19,8 @@ export default CustomElement
 
       margin: 16px;
 
+      pointer-events: none;
+
     }
 
     @media (min-width: 648px) {

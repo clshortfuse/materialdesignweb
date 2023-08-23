@@ -41,6 +41,8 @@ export default CustomElement
       min-block-size: 80px;
       inline-size: 100%;
 
+      pointer-events: auto;
+
       background-color: rgb(var(--mdw-bg));
 
       color: rgb(var(--mdw-ink));
