@@ -2,8 +2,8 @@
 
 import { cloneAttributeCallback } from '../core/CustomElement.js';
 import { FIREFOX_VERSION, SAFARI_VERSION } from '../core/dom.js';
-import DelegatesFocusMixin from './DelegatesFocusMixin.js';
 
+import DelegatesFocusMixin from './DelegatesFocusMixin.js';
 import FormAssociatedMixin from './FormAssociatedMixin.js';
 
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
