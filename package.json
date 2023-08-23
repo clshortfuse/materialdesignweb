@@ -98,7 +98,6 @@
     "predocs-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/alt-theme.css",
     "prepublishOnly": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production && tsc --emitDeclarationOnly",
     "pretest": "eslint --ignore-path .gitignore",
-    "sample": "node build/esbuild.js docs/sample.js --outdir=docs --watch --metafile --serve --live",
     "serve": "node build/esbuild.js docs/demo.js --outdir=docs --metafile --serve --live --tree-shaking=true",
     "serve:rollup": "rollup -c build/rollup.config.js docs/demo.js --dir=docs --watch --environment SERVE",
     "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
@@ -108,8 +107,10 @@
     "test:spec": "web-test-runner \"test/spec/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit",
     "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1 --watch",
     "test:path": "web-test-runner --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
+    "types": "rm -Rf types && tsc --emitDeclarationOnly",
     "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile",
-    "benchmark": "node build/esbuild.js docs/demo.js --outdir=docs --minify --metafile --serve"
+    "sample": "node build/esbuild.js docs/sample/sample.js --outdir=docs/sample --watch --metafile --serve --live",
+    "benchmark": "node build/esbuild.js docs/benchmark/main.js --outdir=docs/benchmark --minify --production --metafile --serve --watch"
   },
   "sideEffects": [
     "./components/*.js",
