@@ -237,14 +237,14 @@ export function observeFunction(fn, ...args) {
 /**
  * @template {string} K
  * @template {ObserverPropertyType} [T1=any]
- * @template {any} [T2=import('./typings.js').ParsedObserverPropertyType<T1>]
+ * @template {any} [T2=ParsedObserverPropertyType<T1>]
  * @param {K} name
- * @param {T1|import('./typings.js').ObserverOptions<T1,T2>} [typeOrOptions='string']
- * @param {any} object
- * @return {import('./typings.js').ObserverConfiguration<T1,T2,K> & import('./typings.js').ObserverOptions<T1,T2>}
+ * @param {T1|ObserverOptions<T1,T2>} [typeOrOptions='string']
+ * @param {any} [object]
+ * @return {ObserverConfiguration<T1,T2,K> & ObserverOptions<T1,T2>}
  */
 export function parseObserverOptions(name, typeOrOptions, object) {
-  /** @type {Partial<import('./typings.js').ObserverOptions<T1,T2>>} */
+  /** @type {Partial<ObserverOptions<T1,T2>>} */
   const options = (typeof typeOrOptions === 'string')
     ? { type: typeOrOptions }
     : typeOrOptions;
@@ -343,7 +343,7 @@ export function parseObserverOptions(name, typeOrOptions, object) {
 }
 
 /**
- * @this {import('./typings.js').ObserverConfiguration<?,?,?>}
+ * @this {ObserverConfiguration<?,?,?>}
  * @param {*} value
  */
 export function parsePropertyValue(value) {
@@ -354,7 +354,7 @@ export function parsePropertyValue(value) {
 }
 
 /**
- * @param {import('./typings.js').ObserverConfiguration<?,?,?,?>} config
+ * @param {ObserverConfiguration<?,?,?,?>} config
  * @param {any} oldValue
  * @param {any} value
  * @return {boolean} changed
@@ -415,11 +415,11 @@ function detectChange(config, oldValue, value) {
  * @template [C=any]
  * @param {C} object
  * @param {K} key
- * @param {import('./typings.js').ObserverOptions<T1, T2, C>} options
- * @return {import('./typings.js').ObserverConfiguration<T1,T2,K,C>}
+ * @param {ObserverOptions<T1, T2, C>} options
+ * @return {ObserverConfiguration<T1,T2,K,C>}
  */
 export function defineObservableProperty(object, key, options) {
-  /** @type {import('./typings.js').ObserverConfiguration<T1,T2,K,C>} */
+  /** @type {ObserverConfiguration<T1,T2,K,C>} */
   const config = parseObserverOptions(key, options, object);
 
   /**

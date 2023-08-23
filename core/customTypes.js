@@ -2,7 +2,7 @@
 
 /**
  * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
- * @type {import('./typings.js').ObserverOptions<'function',EventListener, unknown>}
+ * @type {import('./observe.js').ObserverOptions<'function',EventListener, unknown>}
  */
 export const EVENT_HANDLER_TYPE = {
   type: 'function',
@@ -39,7 +39,7 @@ export const EVENT_HANDLER_TYPE = {
 const weakRefValues = new WeakMap();
 
 /**
- * @type {import('./typings.js').ObserverOptions<'object',HTMLElement>}
+ * @type {import('./observe.js').ObserverOptions<'object',HTMLElement>}
  */
 export const WEAKREF_TYPE = {
   type: 'object',
@@ -132,7 +132,7 @@ const pendingConnections = new ResizeObserver((entries) => {
   }
 });
 
-/** @type {import('./typings.js').ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
+/** @type {import('./observe.js').ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
 export const ELEMENT_STYLER_TYPE = {
   type: 'object',
   reflect: false,

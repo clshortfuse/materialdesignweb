@@ -97,15 +97,15 @@ export default class CustomElement extends HTMLElement {
      *  ARGS extends ConstructorParameters<CLASS>,
      *  INSTANCE extends InstanceType<CLASS>,
      *  PROPS extends {
-     *    [K in keyof any]: ((this: INSTANCE, data?: INSTANCE & CLASS['schema']) => string|boolean|null)
+     *    [K in keyof any]: ((this: INSTANCE, data?: INSTANCE) => string|boolean|null)
      *  }
      *  >(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>):
-     *  CLASS & (new (...args: ARGS) => INSTANCE & PROPS)
+     *  CLASS & Class<PROPS,ARGS>
      * }}
      */
     static expressions: <CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends {
-        [x: string]: (this: INSTANCE, data?: INSTANCE & CLASS["schema"]) => string | boolean | null;
-    }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & (new (...args: ARGS) => INSTANCE & PROPS);
+        [x: string]: (this: INSTANCE, data?: INSTANCE) => string | boolean | null;
+    }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & Class<PROPS, ARGS>;
     static methods: typeof CustomElement.set;
     /**
      * @type {{
@@ -115,10 +115,10 @@ export default class CustomElement extends HTMLElement {
      * INSTANCE extends InstanceType<CLASS>,
      * PROPS extends Partial<INSTANCE>>
      * (this: CLASS, source: PROPS & ThisType<PROPS & INSTANCE>, options?: Partial<PropertyDescriptor>)
-     * : CLASS & (new(...args: ARGS) => INSTANCE & PROPS)
+     * : CLASS & Class<PROPS,ARGS>
      * }}
      */
-    static overrides: <CLASS_1 extends typeof CustomElement, ARGS_1 extends ConstructorParameters<CLASS_1>, INSTANCE_1 extends InstanceType<CLASS_1>, PROPS_1 extends Partial<INSTANCE_1>>(this: CLASS_1, source: PROPS_1 & ThisType<PROPS_1 & INSTANCE_1>, options?: Partial<PropertyDescriptor>) => CLASS_1 & (new (...args: ARGS_1) => INSTANCE_1 & PROPS_1);
+    static overrides: <CLASS_1 extends typeof CustomElement, ARGS_1 extends ConstructorParameters<CLASS_1>, INSTANCE_1 extends InstanceType<CLASS_1>, PROPS_1 extends Partial<INSTANCE_1>>(this: CLASS_1, source: PROPS_1 & ThisType<PROPS_1 & INSTANCE_1>, options?: Partial<PropertyDescriptor>) => CLASS_1 & Class<PROPS_1, ARGS_1>;
     /**
      * @type {{
      * <
@@ -137,14 +137,14 @@ export default class CustomElement extends HTMLElement {
      *      : never
      *      >
      *  > (this: CLASS, name: KEY, options: OPTIONS)
-     *    : CLASS & (new (...args: ARGS) => INSTANCE & VALUE);
+     *    : CLASS & Class<VALUE,ARGS>;
      * }}
      */
     static props: <CLASS_2 extends typeof CustomElement, ARGS_2 extends ConstructorParameters<CLASS_2>, INSTANCE_2 extends InstanceType<CLASS_2>, KEY extends string, OPTIONS extends import("./observe.js").ObserverPropertyType | ObserverOptions<import("./observe.js").ObserverPropertyType, unknown, INSTANCE_2> | ((this: INSTANCE_2, data: Partial<INSTANCE_2>, fn?: () => any) => any), VALUE extends Record<KEY, OPTIONS extends (...args2: any[]) => infer R ? R : OPTIONS extends import("./observe.js").ObserverPropertyType ? import("./observe.js").ParsedObserverPropertyType<OPTIONS> : OPTIONS extends {
         type: 'object';
     } & ObserverOptions<any, infer R_1 extends unknown, any> ? unknown extends R_1 ? object : R_1 : OPTIONS extends {
         type: ObserverPropertyType;
-    } ? import("./observe.js").ParsedObserverPropertyType<OPTIONS["type"]> : OPTIONS extends ObserverOptions<any, infer R_2 extends unknown, any> ? unknown extends R_2 ? string : R_2 : never>>(this: CLASS_2, name: KEY, options: OPTIONS) => CLASS_2 & (new (...args: ARGS_2) => INSTANCE_2 & VALUE);
+    } ? import("./observe.js").ParsedObserverPropertyType<OPTIONS["type"]> : OPTIONS extends ObserverOptions<any, infer R_2 extends unknown, any> ? unknown extends R_2 ? string : R_2 : never>>(this: CLASS_2, name: KEY, options: OPTIONS) => CLASS_2 & Class<VALUE, ARGS_2>;
     static idl: typeof CustomElement.prop;
     /**
      * @this T
@@ -155,33 +155,28 @@ export default class CustomElement extends HTMLElement {
      */
     static _addCallback<T_2 extends typeof CustomElement, K_2 extends keyof T_2>(this: T_2, collection: K_2, callback: T_2[K_2] extends (infer R_3)[] ? R_3 : never): void;
     static append<T_3 extends typeof CustomElement>(this: T_3, ...parts: import("./Composition.js").CompositionPart<T>[]): T_3;
-    static recompose<T1 extends typeof CustomElement, T2 extends InstanceType<T1>, T3 extends CompositionCallback<T2, T2 & T1["schema"]>["composed"]>(this: T1, callback: T3): T1;
+    static recompose<T1 extends typeof CustomElement, T2 extends InstanceType<T1>, T3 extends CompositionCallback<T2, T2>["composed"]>(this: T1, callback: T3): T1;
     static css<T1_1 extends typeof CustomElement, T2_1 extends string | TemplateStringsArray | CSSStyleSheet | HTMLStyleElement>(this: T1_1, array: T2_1, ...rest: T2_1 extends string ? any : T2_1 extends TemplateStringsArray ? any[] : (CSSStyleSheet | HTMLStyleElement)[]): T1_1;
-    static setSchema<T1_2 extends typeof CustomElement, T2_2 extends {
-        [x: string]: unknown;
-    }>(this: T1_2, schema: T2_2): T1_2 & {
-        schema: T2_2;
-    };
     static autoRegister<T_4 extends typeof CustomElement>(this: T_4, elementName: string): T_4;
-    static html<T_5 extends typeof CustomElement>(this: T_5, string: TemplateStringsArray, ...substitutions: (string | Element | ((this: InstanceType<T_5>, data: InstanceType<T_5> & T_5["schema"], injections?: any) => any))[]): T_5;
-    static extend<T1_3 extends typeof CustomElement, T2_3 extends T1_3>(this: T1_3, customExtender?: (Base: T1_3) => T2_3): T2_3;
-    static setStatic<T1_4 extends typeof CustomElement, T2_4 extends {
-        [x: string]: string | number | boolean | object | any[] | ((this: T1_4, ...args: any[]) => any);
-    }>(this: T1_4, source: T2_4 & ThisType<T1_4 & T2_4>): T1_4 & T2_4;
-    static readonly<CLASS_3 extends typeof CustomElement, ARGS_3 extends ConstructorParameters<CLASS_3>, INSTANCE_3 extends InstanceType<CLASS_3>, PROPS_2 extends object>(this: CLASS_3, source: PROPS_2 & ThisType<PROPS_2 & INSTANCE_3>, options?: Partial<PropertyDescriptor>): CLASS_3 & (new (...args: ARGS_3) => INSTANCE_3 & PROPS_2);
-    static set<CLASS_4 extends typeof CustomElement, ARGS_4 extends ConstructorParameters<CLASS_4>, INSTANCE_4 extends InstanceType<CLASS_4>, PROPS_3 extends object>(this: CLASS_4, source: PROPS_3 & ThisType<PROPS_3 & INSTANCE_4>, options?: Partial<PropertyDescriptor>): CLASS_4 & (new (...args: ARGS_4) => INSTANCE_4 & PROPS_3);
-    static mixin<BASE extends typeof CustomElement, FN extends (...args: any[]) => any, RETURN extends ReturnType<FN>, SUBCLASS extends RETURN, ARGS_5 extends ConstructorParameters<SUBCLASS>, BASE_INSTANCE extends InstanceType<BASE>, SUBCLASS_INSTANCE extends InstanceType<SUBCLASS>>(this: BASE, mixin: FN): SUBCLASS & BASE & (new (...args: ARGS_5) => SUBCLASS_INSTANCE & BASE_INSTANCE);
+    static html<T_5 extends typeof CustomElement>(this: T_5, string: TemplateStringsArray, ...substitutions: (string | Element | ((this: InstanceType<T_5>, data: InstanceType<T_5>, injections?: any) => any))[]): T_5;
+    static extend<T1_2 extends typeof CustomElement, T2_2 extends T1_2>(this: T1_2, customExtender?: (Base: T1_2) => T2_2): T2_2;
+    static setStatic<T1_3 extends typeof CustomElement, T2_3 extends {
+        [x: string]: string | number | boolean | object | any[] | ((this: T1_3, ...args: any[]) => any);
+    }>(this: T1_3, source: T2_3 & ThisType<T1_3 & T2_3>): T1_3 & T2_3;
+    static readonly<CLASS_3 extends typeof CustomElement, ARGS_3 extends ConstructorParameters<CLASS_3>, INSTANCE_3 extends InstanceType<CLASS_3>, PROPS_2 extends object>(this: CLASS_3, source: PROPS_2 & ThisType<PROPS_2 & INSTANCE_3>, options?: Partial<PropertyDescriptor>): CLASS_3 & Class<PROPS_2, ARGS_3>;
+    static set<CLASS_4 extends typeof CustomElement, ARGS_4 extends ConstructorParameters<CLASS_4>, INSTANCE_4 extends InstanceType<CLASS_4>, PROPS_3 extends object>(this: CLASS_4, source: PROPS_3 & ThisType<PROPS_3 & INSTANCE_4>, options?: Partial<PropertyDescriptor>): CLASS_4 & Class<PROPS_3, ARGS_4>;
+    static mixin<BASE extends typeof CustomElement, FN extends (...args: any[]) => any, RETURN extends ReturnType<FN>, SUBCLASS extends RETURN>(this: BASE, mixin: FN): SUBCLASS & BASE;
     static register<T_6 extends typeof CustomElement>(this: T_6, elementName?: string, force?: boolean): T_6;
     static get propList(): Map<string, import("./observe.js").ObserverConfiguration<any, any, any, any>>;
     static get attrList(): Map<string, import("./observe.js").ObserverConfiguration<any, any, any, any>>;
     static get propChangedCallbacks(): Map<string, Function[]>;
     static get attributeChangedCallbacks(): Map<string, Function[]>;
-    static prop<CLASS_5 extends typeof CustomElement, ARGS_6 extends ConstructorParameters<CLASS_5>, INSTANCE_5 extends InstanceType<CLASS_5>, KEY_1 extends string, OPTIONS_1 extends import("./observe.js").ObserverPropertyType | ObserverOptions<import("./observe.js").ObserverPropertyType, unknown, INSTANCE_5> | ((this: INSTANCE_5, data: Partial<INSTANCE_5>, fn?: () => any) => any), VALUE_1 extends Record<KEY_1, OPTIONS_1 extends (...args2: any[]) => infer R_4 ? R_4 : OPTIONS_1 extends import("./observe.js").ObserverPropertyType ? import("./observe.js").ParsedObserverPropertyType<OPTIONS_1> : OPTIONS_1 extends {
+    static prop<CLASS_5 extends typeof CustomElement, ARGS_5 extends ConstructorParameters<CLASS_5>, INSTANCE_5 extends InstanceType<CLASS_5>, KEY_1 extends string, OPTIONS_1 extends import("./observe.js").ObserverPropertyType | ObserverOptions<import("./observe.js").ObserverPropertyType, unknown, INSTANCE_5> | ((this: INSTANCE_5, data: Partial<INSTANCE_5>, fn?: () => any) => any), VALUE_1 extends Record<KEY_1, OPTIONS_1 extends (...args2: any[]) => infer R_4 ? R_4 : OPTIONS_1 extends import("./observe.js").ObserverPropertyType ? import("./observe.js").ParsedObserverPropertyType<OPTIONS_1> : OPTIONS_1 extends {
         type: 'object';
     } & ObserverOptions<any, infer R_5 extends unknown, any> ? unknown extends R_5 ? object : R_5 : OPTIONS_1 extends {
         type: ObserverPropertyType;
-    } ? import("./observe.js").ParsedObserverPropertyType<OPTIONS_1["type"]> : OPTIONS_1 extends ObserverOptions<any, infer R_6 extends unknown, any> ? unknown extends R_6 ? string : R_6 : never>>(this: CLASS_5, name: KEY_1, options: OPTIONS_1): CLASS_5 & (new (...args: ARGS_6) => INSTANCE_5 & VALUE_1);
-    static define<CLASS_6 extends typeof CustomElement, ARGS_7 extends ConstructorParameters<CLASS_6>, INSTANCE_6 extends InstanceType<CLASS_6>, PROPS_4 extends {
+    } ? import("./observe.js").ParsedObserverPropertyType<OPTIONS_1["type"]> : OPTIONS_1 extends ObserverOptions<any, infer R_6 extends unknown, any> ? unknown extends R_6 ? string : R_6 : never>>(this: CLASS_5, name: KEY_1, options: OPTIONS_1): CLASS_5 & Class<VALUE_1, ARGS_5>;
+    static define<CLASS_6 extends typeof CustomElement, ARGS_6 extends ConstructorParameters<CLASS_6>, INSTANCE_6 extends InstanceType<CLASS_6>, PROPS_4 extends {
         [x: string]: {
             enumerable?: boolean;
             configurable?: boolean;
@@ -190,24 +185,24 @@ export default class CustomElement extends HTMLElement {
             get?: (this: INSTANCE_6) => any;
             set?: (this: INSTANCE_6, value: any) => void;
         } | ((this: INSTANCE_6, ...args: any[]) => any);
-    }, VALUE_2 extends { [KEY_2 in keyof PROPS_4]: PROPS_4[KEY_2] extends (...args2: any[]) => infer R_7 ? R_7 : PROPS_4[KEY_2] extends TypedPropertyDescriptor<infer R_8> ? R_8 : never; }>(this: CLASS_6, props: PROPS_4 & ThisType<PROPS_4 & INSTANCE_6>): CLASS_6 & (new (...args: ARGS_7) => INSTANCE_6 & VALUE_2);
+    }, VALUE_2 extends { [KEY_2 in keyof PROPS_4]: PROPS_4[KEY_2] extends (...args2: any[]) => infer R_7 ? R_7 : PROPS_4[KEY_2] extends TypedPropertyDescriptor<infer R_8> ? R_8 : never; }>(this: CLASS_6, props: PROPS_4 & ThisType<PROPS_4 & INSTANCE_6>): CLASS_6 & Class<VALUE_2, ARGS_6>;
     static undefine(name: any): typeof CustomElement;
-    static observe<CLASS_7 extends typeof CustomElement, ARGS_8 extends ConstructorParameters<CLASS_7>, INSTANCE_7 extends InstanceType<CLASS_7>, PROPS_5 extends IDLParameter<INSTANCE_7 & VALUE_3>, VALUE_3 extends { [KEY_3 in keyof PROPS_5]: PROPS_5[KEY_3] extends (...args2: any[]) => infer R_9 ? R_9 : PROPS_5[KEY_3] extends import("./observe.js").ObserverPropertyType ? import("./observe.js").ParsedObserverPropertyType<PROPS_5[KEY_3]> : PROPS_5[KEY_3] extends {
+    static observe<CLASS_7 extends typeof CustomElement, ARGS_7 extends ConstructorParameters<CLASS_7>, INSTANCE_7 extends InstanceType<CLASS_7>, PROPS_5 extends IDLParameter<INSTANCE_7 & VALUE_3>, VALUE_3 extends { [KEY_3 in keyof PROPS_5]: PROPS_5[KEY_3] extends (...args2: any[]) => infer R_9 ? R_9 : PROPS_5[KEY_3] extends import("./observe.js").ObserverPropertyType ? import("./observe.js").ParsedObserverPropertyType<PROPS_5[KEY_3]> : PROPS_5[KEY_3] extends {
         type: 'object';
     } & ObserverOptions<any, infer R_10 extends unknown, any> ? unknown extends R_10 ? object : R_10 : PROPS_5[KEY_3] extends {
         type: ObserverPropertyType;
-    } ? import("./observe.js").ParsedObserverPropertyType<PROPS_5[KEY_3]["type"]> : PROPS_5[KEY_3] extends ObserverOptions<any, infer R_11 extends unknown, any> ? unknown extends R_11 ? string : R_11 : never; }>(this: CLASS_7, props: PROPS_5): CLASS_7 & (new (...args: ARGS_8) => INSTANCE_7 & VALUE_3);
-    static defineStatic<T1_5 extends typeof CustomElement, T2_5 extends IDLParameter<T1_5>>(this: T1_5, props: T2_5): T1_5 & ParsedProps<T2_5>;
+    } ? import("./observe.js").ParsedObserverPropertyType<PROPS_5[KEY_3]["type"]> : PROPS_5[KEY_3] extends ObserverOptions<any, infer R_11 extends unknown, any> ? unknown extends R_11 ? string : R_11 : never; }>(this: CLASS_7, props: PROPS_5): CLASS_7 & Class<VALUE_3, ARGS_7>;
+    static defineStatic<T1_4 extends typeof CustomElement, T2_4 extends IDLParameter<T1_4>>(this: T1_4, props: T2_4): T1_4 & ParsedProps<T2_4>;
     static events<T_7 extends typeof CustomElement>(this: T_7, listeners?: import("./Composition.js").CompositionEventListenerObject<InstanceType<T_7>>, options?: Partial<import("./Composition.js").CompositionEventListener<InstanceType<T_7>, string>>): T_7;
     static childEvents<T_8 extends typeof CustomElement>(this: T_8, listenerMap: {
         [x: string]: import("./Composition.js").CompositionEventListenerObject<InstanceType<T_8>>;
     }, options?: Partial<import("./Composition.js").CompositionEventListener<InstanceType<T_8>, string>>): T_8;
     static rootEvents<T_7 extends typeof CustomElement>(this: T_7, listeners?: import("./Composition.js").CompositionEventListenerObject<InstanceType<T_7>>, options?: Partial<import("./Composition.js").CompositionEventListener<InstanceType<T_7>, string>>): T_7;
-    static on<T1_6 extends typeof CustomElement, T2_6 extends InstanceType<T1_6>, T3_1 extends CompositionCallback<T2_6, T2_6 & T1_6["schema"]>, T4 extends keyof T3_1>(this: T1_6, name: T3_1 | T4, callbacks?: T3_1[T4] & ThisType<T2_6>): T1_6;
-    static onPropChanged<T1_7 extends typeof CustomElement, T2_7 extends InstanceType<T1_7>>(this: T1_7, options: ObjectOrObjectEntries<{ [P_1 in keyof T2_7]?: (this: T2_7, oldValue: T2_7[P_1], newValue: T2_7[P_1], changes: any, element: T2_7) => void; }>): T1_7;
-    static onAttributeChanged<T1_8 extends typeof CustomElement, T2_8 extends InstanceType<T1_8>>(this: T1_8, options: {
-        [x: string]: (this: T2_8, oldValue: string, newValue: string, element: T2_8) => void;
-    }): T1_8;
+    static on<T1_5 extends typeof CustomElement, T2_5 extends InstanceType<T1_5>, T3_1 extends CompositionCallback<T2_5, T2_5>, T4 extends keyof T3_1>(this: T1_5, name: T3_1 | T4, callbacks?: T3_1[T4] & ThisType<T2_5>): T1_5;
+    static onPropChanged<T1_6 extends typeof CustomElement, T2_6 extends InstanceType<T1_6>>(this: T1_6, options: ObjectOrObjectEntries<{ [P_1 in keyof T2_6]?: (this: T2_6, oldValue: T2_6[P_1], newValue: T2_6[P_1], changes: any, element: T2_6) => void; }>): T1_6;
+    static onAttributeChanged<T1_7 extends typeof CustomElement, T2_7 extends InstanceType<T1_7>>(this: T1_7, options: {
+        [x: string]: (this: T2_7, oldValue: string, newValue: string, element: T2_7) => void;
+    }): T1_7;
     /** @param {any[]} args */
     constructor(...args: any[]);
     compose(parts: import("./Composition.js").CompositionPart<T>[]): Composition<any>;
@@ -281,6 +276,7 @@ export type ObserverOptions<T1 extends import("./observe.js").ObserverPropertyTy
 export type ClassOf<T extends {
     prototype: unknown;
 }> = T;
+export type Class<T extends unknown = any, A extends any[] = any[]> = new (...args: A) => T;
 export type HTMLTemplater<T1 extends unknown, T2 extends unknown = T1> = (string: TemplateStringsArray, ...substitutions: (string | Element | DocumentFragment | ((this: T1, data: T2) => any))[][]) => DocumentFragment;
 export type CallbackArguments<T1 extends unknown = any, T2 extends unknown = T1> = {
     composition: Composition<T1>;

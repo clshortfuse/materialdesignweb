@@ -37,6 +37,12 @@ import { addInlineFunction, html } from './template.js';
  */
 
 /**
+ * @template {any} [T=any]
+ * @template {any[]} [A=any[]]
+ * @typedef {new (...args: A) => T} Class
+ */
+
+/**
  * @template {any} T1
  * @template {any} [T2=T1]
  * @callback HTMLTemplater
@@ -252,10 +258,10 @@ export default class CustomElement extends HTMLElement {
    *  ARGS extends ConstructorParameters<CLASS>,
    *  INSTANCE extends InstanceType<CLASS>,
    *  PROPS extends {
-   *    [K in keyof any]: ((this: INSTANCE, data?: INSTANCE & CLASS['schema']) => string|boolean|null)
+   *    [K in keyof any]: ((this: INSTANCE, data?: INSTANCE) => string|boolean|null)
    *  }
    *  >(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>):
-   *  CLASS & (new (...args: ARGS) => INSTANCE & PROPS)
+   *  CLASS & Class<PROPS,ARGS>
    * }}
    */
   static expressions = /** @type {any} */ (this.set);
@@ -270,7 +276,7 @@ export default class CustomElement extends HTMLElement {
    * INSTANCE extends InstanceType<CLASS>,
    * PROPS extends Partial<INSTANCE>>
    * (this: CLASS, source: PROPS & ThisType<PROPS & INSTANCE>, options?: Partial<PropertyDescriptor>)
-   * : CLASS & (new(...args: ARGS) => INSTANCE & PROPS)
+   * : CLASS & Class<PROPS,ARGS>
    * }}
    */
   static overrides = /** @type {any} */ (this.set);
@@ -293,7 +299,7 @@ export default class CustomElement extends HTMLElement {
    *      : never
    *      >
    *  > (this: CLASS, name: KEY, options: OPTIONS)
-   *    : CLASS & (new (...args: ARGS) => INSTANCE & VALUE);
+   *    : CLASS & Class<VALUE,ARGS>;
    * }}
    */
   static props = /** @type {any} */ (this.observe);
@@ -341,7 +347,7 @@ export default class CustomElement extends HTMLElement {
    * <
    *  T1 extends typeof CustomElement,
    *  T2 extends InstanceType<T1>,
-   *  T3 extends CompositionCallback<T2, T2 & T1['schema']>['composed'],
+   *  T3 extends CompositionCallback<T2, T2>['composed'],
    *  >
    *  (this: T1, callback: T3): T1
    * }}
@@ -380,21 +386,6 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
-   * @type {{
-   * <
-   *  T1 extends typeof CustomElement,
-   *  T2 extends {[K in keyof any]: unknown}
-   *  >
-   *  (this: T1, schema: T2): T1 & {schema: T2};
-   * }}
-   */
-  static setSchema(schema) {
-    this.schema = schema;
-    // @ts-expect-error Can't cast T
-    return this;
-  }
-
-  /**
    * Registers class asynchronously at end of current event loop cycle
    * via `queueMicrotask`. If class is registered before then,
    * does nothing.
@@ -419,7 +410,7 @@ export default class CustomElement extends HTMLElement {
    * <T extends typeof CustomElement>(
    *  this: T,
    *  string: TemplateStringsArray,
-   *  ...substitutions: (string|Element|((this:InstanceType<T>, data:InstanceType<T> & T['schema'], injections?:any) => any))[]
+   *  ...substitutions: (string|Element|((this:InstanceType<T>, data:InstanceType<T>, injections?:any) => any))[]
    *  ): T
    * }}
    */
@@ -473,7 +464,7 @@ export default class CustomElement extends HTMLElement {
    *  INSTANCE extends InstanceType<CLASS>,
    *  PROPS extends object>
    *  (this: CLASS, source: PROPS & ThisType<PROPS & INSTANCE>, options?: Partial<PropertyDescriptor>)
-   *  : CLASS & (new(...args: ARGS) => INSTANCE & PROPS)
+   *  : CLASS & Class<PROPS,ARGS>
    * }}
    */
   static readonly(source, options) {
@@ -490,7 +481,7 @@ export default class CustomElement extends HTMLElement {
    * INSTANCE extends InstanceType<CLASS>,
    * PROPS extends object>
    * (this: CLASS, source: PROPS & ThisType<PROPS & INSTANCE>, options?: Partial<PropertyDescriptor>)
-   * : CLASS & (new(...args: ARGS) => INSTANCE & PROPS)
+   * : CLASS & Class<PROPS,ARGS>
    * }}
    */
   static set(source, options) {
@@ -536,11 +527,7 @@ export default class CustomElement extends HTMLElement {
    *  FN extends (...args:any[]) => any,
    *  RETURN extends ReturnType<FN>,
    *  SUBCLASS extends ClassOf<RETURN>,
-   *  ARGS extends ConstructorParameters<SUBCLASS>,
-   *  BASE_INSTANCE extends InstanceType<BASE>,
-   *  SUBCLASS_INSTANCE extends InstanceType<SUBCLASS>>
    *  (this: BASE, mixin: FN): SUBCLASS & BASE
-   *    & (new (...args: ARGS) => SUBCLASS_INSTANCE & BASE_INSTANCE)
    * }}
    */
   static mixin(mixin) {
@@ -621,7 +608,7 @@ export default class CustomElement extends HTMLElement {
    *      : never
    *      >
    *  > (this: CLASS, name: KEY, options: OPTIONS)
-   *    : CLASS & (new (...args: ARGS) => INSTANCE & VALUE);
+   *    : CLASS & Class<VALUE,ARGS>
    * }}
    */
   static prop(name, typeOrOptions) {
@@ -678,7 +665,7 @@ export default class CustomElement extends HTMLElement {
    *      : PROPS[KEY] extends TypedPropertyDescriptor<infer R> ? R : never
    *  }>
    *  (this: CLASS, props: PROPS & ThisType<PROPS & INSTANCE>): CLASS
-   *    & (new (...args: ARGS) => INSTANCE & VALUE)
+   *    & Class<VALUE,ARGS>
    * }}
    */
   static define(props) {
@@ -749,7 +736,7 @@ export default class CustomElement extends HTMLElement {
    *        : never
    *  },
    *  > (this: CLASS, props: PROPS)
-   *    : CLASS & (new (...args: ARGS) => INSTANCE & VALUE)
+   *    : CLASS & Class<VALUE,ARGS>
    * }}
    */
   static observe(props) {
@@ -882,7 +869,7 @@ export default class CustomElement extends HTMLElement {
    * <
    *  T1 extends typeof CustomElement,
    *  T2 extends InstanceType<T1>,
-   *  T3 extends CompositionCallback<T2, T2 & T1['schema']>,
+   *  T3 extends CompositionCallback<T2, T2>,
    *  T4 extends keyof T3,
    *  >
    *  (this: T1, name: T3|T4, callbacks?: T3[T4] & ThisType<T2>): T1

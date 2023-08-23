@@ -38,18 +38,22 @@ export function observeFunction(this: any, fn: (data: Partial<any>) => any, ...a
 /**
  * @template {string} K
  * @template {ObserverPropertyType} [T1=any]
- * @template {any} [T2=import('./typings.js').ParsedObserverPropertyType<T1>]
+ * @template {any} [T2=ParsedObserverPropertyType<T1>]
  * @param {K} name
- * @param {T1|import('./typings.js').ObserverOptions<T1,T2>} [typeOrOptions='string']
- * @param {any} object
- * @return {import('./typings.js').ObserverConfiguration<T1,T2,K> & import('./typings.js').ObserverOptions<T1,T2>}
+ * @param {T1|ObserverOptions<T1,T2>} [typeOrOptions='string']
+ * @param {any} [object]
+ * @return {ObserverConfiguration<T1,T2,K> & ObserverOptions<T1,T2>}
  */
-export function parseObserverOptions<K extends string, T1 extends ObserverPropertyType = any, T2 extends unknown = any>(name: K, typeOrOptions?: any, object: any): any & any;
+export function parseObserverOptions<K extends string, T1 extends ObserverPropertyType = any, T2 extends unknown = ParsedObserverPropertyType<T1>>(name: K, typeOrOptions?: T1 | ObserverOptions<T1, T2, any>, object?: any): ObserverOptions<T1, T2, any> & {
+    key: K;
+    values?: WeakMap<any, T2>;
+    attrValues?: WeakMap<any, string>;
+};
 /**
- * @this {import('./typings.js').ObserverConfiguration<?,?,?>}
+ * @this {ObserverConfiguration<?,?,?>}
  * @param {*} value
  */
-export function parsePropertyValue(this: any, value: any): void;
+export function parsePropertyValue(this: ObserverConfiguration<any, any, any, any>, value: any): void;
 /**
  * @template {ObserverPropertyType} T1
  * @template {any} T2
@@ -57,10 +61,10 @@ export function parsePropertyValue(this: any, value: any): void;
  * @template [C=any]
  * @param {C} object
  * @param {K} key
- * @param {import('./typings.js').ObserverOptions<T1, T2, C>} options
- * @return {import('./typings.js').ObserverConfiguration<T1,T2,K,C>}
+ * @param {ObserverOptions<T1, T2, C>} options
+ * @return {ObserverConfiguration<T1,T2,K,C>}
  */
-export function defineObservableProperty<T1 extends ObserverPropertyType, T2 extends unknown, K extends string, C = any>(object: C, key: K, options: any): any;
+export function defineObservableProperty<T1 extends ObserverPropertyType, T2 extends unknown, K extends string, C = any>(object: C, key: K, options: ObserverOptions<T1, T2, C>): ObserverConfiguration<T1, T2, K, C>;
 export type ObserverPropertyType = 'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'object' | 'function' | 'array';
 export type ParsedObserverPropertyType<T extends ObserverPropertyType> = T extends "boolean" ? boolean : T extends "string" ? string : T extends "float" | "integer" ? number : T extends "array" ? any[] : T extends "object" ? any : T extends "function" ? (...args: any) => any : unknown;
 export type ObserverOptions<T1 extends ObserverPropertyType, T2 extends unknown, C extends Object = any> = {

@@ -1,7 +1,7 @@
 /**
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
-export default function StateMixin(Base: typeof import('../core/CustomElement.js').default): typeof import("../core/CustomElement.js").default & (new (...args: any[]) => import("../core/CustomElement.js").default & {
+export default function StateMixin(Base: typeof import('../core/CustomElement.js').default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
     hovered: boolean;
@@ -14,47 +14,14 @@ export default function StateMixin(Base: typeof import('../core/CustomElement.js
     _keyReleased: boolean;
     _pointerPressed: boolean;
     stateLayer: boolean;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     disabledState: boolean;
     hoveredState: boolean;
     focusedState: boolean;
     pressedState: boolean;
     touchedState: boolean;
     pointedState: boolean;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     stateTargetElement: import("../core/CustomElement.js").default & {
         disabled: boolean;
         focused: boolean;
@@ -76,5 +43,5 @@ export default function StateMixin(Base: typeof import('../core/CustomElement.js
         touchedState: boolean;
         pointedState: boolean;
     };
-});
+}, any[]>;
 //# sourceMappingURL=StateMixin.d.ts.map

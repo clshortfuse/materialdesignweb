@@ -1,53 +1,18 @@
-declare const _default: typeof CustomElement & (new (...args: any[]) => CustomElement & {
+declare const _default: typeof CustomElement & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
     typeStyle: string;
-}) & (new (...args: any[]) => CustomElement & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     delegatesFocus: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    delegatesFocus: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    delegatesFocus: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    delegatesFocus: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     open: boolean;
     autoClose: number;
-}) & (new (...args: any[]) => CustomElement & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    delegatesFocus: boolean;
-} & {
-    open: boolean;
-    autoClose: number;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     _ariaRole: string;
-}) & (new (...args: any[]) => CustomElement & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    delegatesFocus: boolean;
-} & {
-    open: boolean;
-    autoClose: number;
-} & {
-    color: string;
-    _ariaRole: string;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     onWindowResize(): void;
-});
+}, any[]>;
 export default _default;
 import CustomElement from '../core/CustomElement.js';
 //# sourceMappingURL=NavBar.d.ts.map

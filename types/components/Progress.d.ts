@@ -1,49 +1,19 @@
-declare const _default: typeof CustomElement & (new (...args: any[]) => CustomElement & {
+declare const _default: typeof CustomElement & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
     typeStyle: string;
-}) & (new (...args: any[]) => CustomElement & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-}) & (new (...args: any[]) => CustomElement & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     circle: boolean;
     value: number;
     max: number;
     autoHide: boolean;
     _determinateStyle: string;
-}) & (new (...args: any[]) => CustomElement & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    circle: boolean;
-    value: number;
-    max: number;
-    autoHide: boolean;
-    _determinateStyle: string;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _valueAsFraction: number;
-}) & (new (...args: any[]) => CustomElement & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    circle: boolean;
-    value: number;
-    max: number;
-    autoHide: boolean;
-    _determinateStyle: string;
-} & {
-    _valueAsFraction: number;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     position: number;
     labels: NodeListOf<HTMLLabelElement>;
-});
+}, any[]>;
 export default _default;
 import CustomElement from '../core/CustomElement.js';
 //# sourceMappingURL=Progress.d.ts.map

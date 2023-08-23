@@ -1,145 +1,31 @@
-declare const _default: typeof import("../core/CustomElement.js").default & (new (...args: any[]) => import("../core/CustomElement.js").default & {
+declare const _default: typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     onConnectAriaValues: Map<string, string>;
     hasFiredConnected: boolean;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
     updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     kbdNav: string;
     _kbdFocusable: boolean;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-} & {
-    kbdNav: string;
-    _kbdFocusable: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     kbdNavQuery: string;
     kbdNavFocusableWhenDisabled: boolean;
     ariaOrientationDefault: "horizontal" | "vertical";
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-} & {
-    kbdNav: string;
-    _kbdFocusable: boolean;
-} & {
-    kbdNavQuery: string;
-    kbdNavFocusableWhenDisabled: boolean;
-    ariaOrientationDefault: "horizontal" | "vertical";
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     kbdNavChildren: NodeListOf<HTMLElement>;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-} & {
-    kbdNav: string;
-    _kbdFocusable: boolean;
-} & {
-    kbdNavQuery: string;
-    kbdNavFocusableWhenDisabled: boolean;
-    ariaOrientationDefault: "horizontal" | "vertical";
-} & {
-    kbdNavChildren: NodeListOf<HTMLElement>;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _ariaOrientationIsVertical(): boolean;
     focusCurrentOrFirst(): HTMLElement;
     focusNext(current?: HTMLElement, loop?: boolean, reverse?: boolean): HTMLElement;
     focusPrevious(current?: HTMLElement, loop?: boolean): HTMLElement;
     focus(options?: FocusOptions): void;
     refreshTabIndexes(): void;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-} & {
-    kbdNav: string;
-    _kbdFocusable: boolean;
-} & {
-    kbdNavQuery: string;
-    kbdNavFocusableWhenDisabled: boolean;
-    ariaOrientationDefault: "horizontal" | "vertical";
-} & {
-    kbdNavChildren: NodeListOf<HTMLElement>;
-} & {
-    _ariaOrientationIsVertical(): boolean;
-    focusCurrentOrFirst(): HTMLElement;
-    focusNext(current?: HTMLElement, loop?: boolean, reverse?: boolean): HTMLElement;
-    focusPrevious(current?: HTMLElement, loop?: boolean): HTMLElement;
-    focus(options?: FocusOptions): void;
-    refreshTabIndexes(): void;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-} & {
-    kbdNav: string;
-    _kbdFocusable: boolean;
-} & {
-    kbdNavQuery: string;
-    kbdNavFocusableWhenDisabled: boolean;
-    ariaOrientationDefault: "horizontal" | "vertical";
-} & {
-    kbdNavChildren: NodeListOf<HTMLElement>;
-} & {
-    _ariaOrientationIsVertical(): boolean;
-    focusCurrentOrFirst(): HTMLElement;
-    focusNext(current?: HTMLElement, loop?: boolean, reverse?: boolean): HTMLElement;
-    focusPrevious(current?: HTMLElement, loop?: boolean): HTMLElement;
-    focus(options?: FocusOptions): void;
-    refreshTabIndexes(): void;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     ariaOrientationDefault: string;
     _ariaRole: string;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
     hovered: boolean;
@@ -152,47 +38,14 @@ declare const _default: typeof import("../core/CustomElement.js").default & (new
     _keyReleased: boolean;
     _pointerPressed: boolean;
     stateLayer: boolean;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     disabledState: boolean;
     hoveredState: boolean;
     focusedState: boolean;
     pressedState: boolean;
     touchedState: boolean;
     pointedState: boolean;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     stateTargetElement: import("../core/CustomElement.js").default & {
         disabled: boolean;
         focused: boolean;
@@ -214,368 +67,25 @@ declare const _default: typeof import("../core/CustomElement.js").default & (new
         touchedState: boolean;
         pointedState: boolean;
     };
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
     typeStyle: string;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: import("../core/CustomElement.js").default & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     shapeTop: boolean;
     shapeBottom: boolean;
     shapeStart: boolean;
     shapeEnd: boolean;
     shapeStyle: string;
     outlined: boolean;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     flex: string;
     x: string;
     y: string;
     gap: number;
     padding: number;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
-    ink: string;
-    typeStyle: string;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: import("../core/CustomElement.js").default & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: import("../core/CustomElement.js").default & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-} & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-} & {
-    kbdNav: string;
-    _kbdFocusable: boolean;
-} & {
-    kbdNavQuery: string;
-    kbdNavFocusableWhenDisabled: boolean;
-    ariaOrientationDefault: "horizontal" | "vertical";
-} & {
-    kbdNavChildren: NodeListOf<HTMLElement>;
-} & {
-    _ariaOrientationIsVertical(): boolean;
-    focusCurrentOrFirst(): HTMLElement;
-    focusNext(current?: HTMLElement, loop?: boolean, reverse?: boolean): HTMLElement;
-    focusPrevious(current?: HTMLElement, loop?: boolean): HTMLElement;
-    focus(options?: FocusOptions): void;
-    refreshTabIndexes(): void;
-} & {
-    ariaOrientationDefault: string;
-    _ariaRole: string;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: import("../core/CustomElement.js").default & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-} & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-}) & (new (...args: any[]) => import("../core/CustomElement.js").default & {
-    _ariaRole: string;
-} & {
-    onConnectAriaValues: Map<string, string>;
-    hasFiredConnected: boolean;
-} & {
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-} & {
-    kbdNav: string;
-    _kbdFocusable: boolean;
-} & {
-    kbdNavQuery: string;
-    kbdNavFocusableWhenDisabled: boolean;
-    ariaOrientationDefault: "horizontal" | "vertical";
-} & {
-    kbdNavChildren: NodeListOf<HTMLElement>;
-} & {
-    _ariaOrientationIsVertical(): boolean;
-    focusCurrentOrFirst(): HTMLElement;
-    focusNext(current?: HTMLElement, loop?: boolean, reverse?: boolean): HTMLElement;
-    focusPrevious(current?: HTMLElement, loop?: boolean): HTMLElement;
-    focus(options?: FocusOptions): void;
-    refreshTabIndexes(): void;
-} & {
-    ariaOrientationDefault: string;
-    _ariaRole: string;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: import("../core/CustomElement.js").default & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-} & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-} & {
-    color: string;
-});
+}, any[]>;
 export default _default;
 //# sourceMappingURL=BottomAppBar.d.ts.map

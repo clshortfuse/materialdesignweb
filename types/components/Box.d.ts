@@ -1,154 +1,31 @@
-declare const _default: typeof CustomElement & (new (...args: any[]) => CustomElement & {
+declare const _default: typeof CustomElement & import("../core/CustomElement.js").Class<{
     _resizeObserverEnabled: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    _resizeObserverEnabled: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
     observeResize(): void;
     unobserveResize(): void;
-}) & (new (...args: any[]) => CustomElement & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     flex: string;
     x: string;
     y: string;
     gap: number;
     padding: number;
-}) & (new (...args: any[]) => CustomElement & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
     typeStyle: string;
-}) & (new (...args: any[]) => CustomElement & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-}) & (new (...args: any[]) => CustomElement & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-}) & (new (...args: any[]) => CustomElement & {
-    _resizeObserverEnabled: boolean;
-} & {
-    onResizeObserved(entry: ResizeObserverEntry): void;
-    observeResize(): void;
-    unobserveResize(): void;
-} & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-}) & (new (...args: any[]) => CustomElement & {
-    _resizeObserverEnabled: boolean;
-} & {
-    onResizeObserved(entry: ResizeObserverEntry): void;
-    observeResize(): void;
-    unobserveResize(): void;
-} & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     inline: boolean;
     grid: boolean;
     contentPadding: boolean;
     block: boolean;
     columns: number;
     _autoColumns: number;
-}) & (new (...args: any[]) => CustomElement & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _resizeObserverEnabled: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
-    observeResize(): void;
-    unobserveResize(): void;
-} & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    inline: boolean;
-    grid: boolean;
-    contentPadding: boolean;
-    block: boolean;
-    columns: number;
-    _autoColumns: number;
-} & {
-    _resizeObserverEnabled: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    _resizeObserverEnabled: boolean;
-} & {
-    onResizeObserved(entry: ResizeObserverEntry): void;
-    observeResize(): void;
-    unobserveResize(): void;
-} & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    inline: boolean;
-    grid: boolean;
-    contentPadding: boolean;
-    block: boolean;
-    columns: number;
-    _autoColumns: number;
-} & {
-    _resizeObserverEnabled: boolean;
-} & {
-    onResizeObserved(entry: ResizeObserverEntry): void;
-}) & (new (...args: any[]) => CustomElement & {
-    _resizeObserverEnabled: boolean;
-} & {
-    onResizeObserved(entry: ResizeObserverEntry): void;
-    observeResize(): void;
-    unobserveResize(): void;
-} & {
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    inline: boolean;
-    grid: boolean;
-    contentPadding: boolean;
-    block: boolean;
-    columns: number;
-    _autoColumns: number;
-} & {
-    _resizeObserverEnabled: boolean;
-} & {
-    onResizeObserved(entry: ResizeObserverEntry): void;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _computedColumns(this: CustomElement & {
         _resizeObserverEnabled: boolean;
     } & {
@@ -203,8 +80,8 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
         _resizeObserverEnabled: boolean;
     } & {
         onResizeObserved(entry: ResizeObserverEntry): void;
-    } & T2): string;
-});
+    }): string;
+}, any[]>;
 export default _default;
 import CustomElement from '../core/CustomElement.js';
 //# sourceMappingURL=Box.d.ts.map

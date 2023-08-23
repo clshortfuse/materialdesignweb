@@ -13,7 +13,15 @@ declare const _default: {
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string;
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -439,7 +447,15 @@ declare const _default: {
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string;
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -457,7 +473,15 @@ declare const _default: {
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string;
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -546,7 +570,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -565,7 +597,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -583,7 +623,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -680,7 +728,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -699,7 +755,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -717,7 +781,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -738,7 +810,7 @@ declare const _default: {
         } & {
             /** @type {HTMLElement['focus']} */
             focus(options?: FocusOptions): void;
-        } & T2): string;
+        }): string;
         _anchorAriaLabelledby(this: CustomElement & {
             delegatesFocus: boolean;
         } & {
@@ -815,7 +887,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -834,7 +914,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -852,7 +940,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -949,7 +1045,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -968,7 +1072,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -986,7 +1098,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1007,7 +1127,7 @@ declare const _default: {
         } & {
             /** @type {HTMLElement['focus']} */
             focus(options?: FocusOptions): void;
-        } & T2): string;
+        }): string;
         _anchorHref(this: CustomElement & {
             delegatesFocus: boolean;
         } & {
@@ -1084,7 +1204,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1103,7 +1231,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1121,7 +1257,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1218,7 +1362,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1237,7 +1389,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1255,7 +1415,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1276,7 +1444,7 @@ declare const _default: {
         } & {
             /** @type {HTMLElement['focus']} */
             focus(options?: FocusOptions): void;
-        } & T2): string;
+        }): string;
         iconVariation(this: CustomElement & {
             delegatesFocus: boolean;
         } & {
@@ -1353,7 +1521,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1372,7 +1548,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1390,7 +1574,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1487,7 +1679,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1506,7 +1706,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1524,7 +1732,15 @@ declare const _default: {
                 _radius: number;
                 holdRipple: boolean;
             } & {
-                _positionStyle: any;
+                _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                    styles: {
+                        minHeight: string;
+                        minWidth: string;
+                        boxShadow: string;
+                        top: string;
+                        left: string;
+                    };
+                };
             } & {
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
@@ -1545,7 +1761,7 @@ declare const _default: {
         } & {
             /** @type {HTMLElement['focus']} */
             focus(options?: FocusOptions): void;
-        } & T2): string;
+        }): string;
     };
     elementName: string;
     readonly observedAttributes: Iterable<string>;
@@ -1566,46 +1782,40 @@ declare const _default: {
     autoRegistration: boolean;
     registrations: Map<string, typeof CustomElement>;
     expressions: <CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends {
-        [x: string]: (this: INSTANCE, data?: INSTANCE & CLASS["schema"]) => string | boolean;
-    }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & (new (...args: ARGS) => INSTANCE & PROPS);
+        [x: string]: (this: INSTANCE, data?: INSTANCE) => string | boolean;
+    }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & import("../core/CustomElement.js").Class<PROPS, ARGS>;
     methods: typeof CustomElement.set;
-    overrides: <CLASS_1 extends typeof CustomElement, ARGS_1 extends ConstructorParameters<CLASS_1>, INSTANCE_1 extends InstanceType<CLASS_1>, PROPS_1 extends Partial<INSTANCE_1>>(this: CLASS_1, source: PROPS_1 & ThisType<PROPS_1 & INSTANCE_1>, options?: Partial<PropertyDescriptor>) => CLASS_1 & (new (...args: ARGS_1) => INSTANCE_1 & PROPS_1);
+    overrides: <CLASS_1 extends typeof CustomElement, ARGS_1 extends ConstructorParameters<CLASS_1>, INSTANCE_1 extends InstanceType<CLASS_1>, PROPS_1 extends Partial<INSTANCE_1>>(this: CLASS_1, source: PROPS_1 & ThisType<PROPS_1 & INSTANCE_1>, options?: Partial<PropertyDescriptor>) => CLASS_1 & import("../core/CustomElement.js").Class<PROPS_1, ARGS_1>;
     props: <CLASS_2 extends typeof CustomElement, ARGS_2 extends ConstructorParameters<CLASS_2>, INSTANCE_2 extends InstanceType<CLASS_2>, KEY extends string, OPTIONS extends import("../core/observe.js").ObserverPropertyType | import("../core/CustomElement.js").ObserverOptions<import("../core/observe.js").ObserverPropertyType, unknown, INSTANCE_2> | ((this: INSTANCE_2, data: Partial<INSTANCE_2>, fn?: () => any) => any), VALUE extends Record<KEY, OPTIONS extends (...args2: any[]) => infer R ? R : OPTIONS extends import("../core/observe.js").ObserverPropertyType ? import("../core/observe.js").ParsedObserverPropertyType<OPTIONS> : OPTIONS extends {
         type: "object";
     } & import("../core/CustomElement.js").ObserverOptions<any, infer R_1 extends unknown, any> ? unknown extends R_1 ? object : R_1 : OPTIONS extends {
         type: import("../core/observe.js").ObserverPropertyType;
-    } ? import("../core/observe.js").ParsedObserverPropertyType<OPTIONS["type"]> : OPTIONS extends import("../core/CustomElement.js").ObserverOptions<any, infer R_2 extends unknown, any> ? unknown extends R_2 ? string : R_2 : never>>(this: CLASS_2, name: KEY, options: OPTIONS) => CLASS_2 & (new (...args: ARGS_2) => INSTANCE_2 & VALUE);
+    } ? import("../core/observe.js").ParsedObserverPropertyType<OPTIONS["type"]> : OPTIONS extends import("../core/CustomElement.js").ObserverOptions<any, infer R_2 extends unknown, any> ? unknown extends R_2 ? string : R_2 : never>>(this: CLASS_2, name: KEY, options: OPTIONS) => CLASS_2 & import("../core/CustomElement.js").Class<VALUE, ARGS_2>;
     idl: typeof CustomElement.prop;
     _addCallback<T_6 extends typeof CustomElement, K_18 extends keyof T_6>(this: T_6, collection: K_18, callback: T_6[K_18] extends (infer R_3)[] ? R_3 : never): void;
     append<T_7 extends typeof CustomElement>(this: T_7, ...parts: import("../core/Composition.js").CompositionPart<T>[]): T_7;
-    recompose<T1 extends typeof CustomElement, T2_1 extends InstanceType<T1>, T3 extends import("../core/CustomElement.js").CompositionCallback<T2_1, T2_1 & T1["schema"]>["composed"]>(this: T1, callback: T3): T1;
-    css<T1_1 extends typeof CustomElement, T2_2 extends string | TemplateStringsArray | CSSStyleSheet | HTMLStyleElement>(this: T1_1, array: T2_2, ...rest: T2_2 extends string ? any : T2_2 extends TemplateStringsArray ? any[] : (CSSStyleSheet | HTMLStyleElement)[]): T1_1;
-    setSchema<T1_2 extends typeof CustomElement, T2 extends {
-        [x: string]: unknown;
-    }>(this: T1_2, schema: T2): T1_2 & {
-        schema: T2;
-    };
-    schema: T2;
+    recompose<T1 extends typeof CustomElement, T2 extends InstanceType<T1>, T3 extends import("../core/CustomElement.js").CompositionCallback<T2, T2>["composed"]>(this: T1, callback: T3): T1;
+    css<T1_1 extends typeof CustomElement, T2_1 extends string | TemplateStringsArray | CSSStyleSheet | HTMLStyleElement>(this: T1_1, array: T2_1, ...rest: T2_1 extends string ? any : T2_1 extends TemplateStringsArray ? any[] : (CSSStyleSheet | HTMLStyleElement)[]): T1_1;
     autoRegister<T_8 extends typeof CustomElement>(this: T_8, elementName: string): T_8;
-    html<T_9 extends typeof CustomElement>(this: T_9, string: TemplateStringsArray, ...substitutions: (string | Element | ((this: InstanceType<T_9>, data: InstanceType<T_9> & T_9["schema"], injections?: any) => any))[]): T_9;
-    extend<T1_3 extends typeof CustomElement, T2_3 extends T1_3>(this: T1_3, customExtender?: (Base: T1_3) => T2_3): T2_3;
-    setStatic<T1_4 extends typeof CustomElement, T2_4 extends {
-        [x: string]: string | number | boolean | object | any[] | ((this: T1_4, ...args: any[]) => any);
-    }>(this: T1_4, source: T2_4 & ThisType<T1_4 & T2_4>): T1_4 & T2_4;
-    readonly<CLASS_3 extends typeof CustomElement, ARGS_3 extends ConstructorParameters<CLASS_3>, INSTANCE_3 extends InstanceType<CLASS_3>, PROPS_2 extends object>(this: CLASS_3, source: PROPS_2 & ThisType<PROPS_2 & INSTANCE_3>, options?: Partial<PropertyDescriptor>): CLASS_3 & (new (...args: ARGS_3) => INSTANCE_3 & PROPS_2);
-    set<CLASS_4 extends typeof CustomElement, ARGS_4 extends ConstructorParameters<CLASS_4>, INSTANCE_4 extends InstanceType<CLASS_4>, PROPS_3 extends object>(this: CLASS_4, source: PROPS_3 & ThisType<PROPS_3 & INSTANCE_4>, options?: Partial<PropertyDescriptor>): CLASS_4 & (new (...args: ARGS_4) => INSTANCE_4 & PROPS_3);
-    mixin<BASE extends typeof CustomElement, FN extends (...args: any[]) => any, RETURN extends ReturnType<FN>, SUBCLASS extends RETURN, ARGS_5 extends ConstructorParameters<SUBCLASS>, BASE_INSTANCE extends InstanceType<BASE>, SUBCLASS_INSTANCE extends InstanceType<SUBCLASS>>(this: BASE, mixin: FN): SUBCLASS & BASE & (new (...args: ARGS_5) => SUBCLASS_INSTANCE & BASE_INSTANCE);
+    html<T_9 extends typeof CustomElement>(this: T_9, string: TemplateStringsArray, ...substitutions: (string | Element | ((this: InstanceType<T_9>, data: InstanceType<T_9>, injections?: any) => any))[]): T_9;
+    extend<T1_2 extends typeof CustomElement, T2_2 extends T1_2>(this: T1_2, customExtender?: (Base: T1_2) => T2_2): T2_2;
+    setStatic<T1_3 extends typeof CustomElement, T2_3 extends {
+        [x: string]: string | number | boolean | object | any[] | ((this: T1_3, ...args: any[]) => any);
+    }>(this: T1_3, source: T2_3 & ThisType<T1_3 & T2_3>): T1_3 & T2_3;
+    readonly<CLASS_3 extends typeof CustomElement, ARGS_3 extends ConstructorParameters<CLASS_3>, INSTANCE_3 extends InstanceType<CLASS_3>, PROPS_2 extends object>(this: CLASS_3, source: PROPS_2 & ThisType<PROPS_2 & INSTANCE_3>, options?: Partial<PropertyDescriptor>): CLASS_3 & import("../core/CustomElement.js").Class<PROPS_2, ARGS_3>;
+    set<CLASS_4 extends typeof CustomElement, ARGS_4 extends ConstructorParameters<CLASS_4>, INSTANCE_4 extends InstanceType<CLASS_4>, PROPS_3 extends object>(this: CLASS_4, source: PROPS_3 & ThisType<PROPS_3 & INSTANCE_4>, options?: Partial<PropertyDescriptor>): CLASS_4 & import("../core/CustomElement.js").Class<PROPS_3, ARGS_4>;
+    mixin<BASE extends typeof CustomElement, FN extends (...args: any[]) => any, RETURN extends ReturnType<FN>, SUBCLASS extends RETURN>(this: BASE, mixin: FN): SUBCLASS & BASE;
     register<T_10 extends typeof CustomElement>(this: T_10, elementName?: string, force?: boolean): T_10;
     readonly propList: Map<string, import("../core/observe.js").ObserverConfiguration<any, any, any, any>>;
     readonly attrList: Map<string, import("../core/observe.js").ObserverConfiguration<any, any, any, any>>;
     readonly propChangedCallbacks: Map<string, Function[]>;
     readonly attributeChangedCallbacks: Map<string, Function[]>;
-    prop<CLASS_5 extends typeof CustomElement, ARGS_6 extends ConstructorParameters<CLASS_5>, INSTANCE_5 extends InstanceType<CLASS_5>, KEY_1 extends string, OPTIONS_1 extends import("../core/observe.js").ObserverPropertyType | import("../core/CustomElement.js").ObserverOptions<import("../core/observe.js").ObserverPropertyType, unknown, INSTANCE_5> | ((this: INSTANCE_5, data: Partial<INSTANCE_5>, fn?: () => any) => any), VALUE_1 extends Record<KEY_1, OPTIONS_1 extends (...args2: any[]) => infer R_4 ? R_4 : OPTIONS_1 extends import("../core/observe.js").ObserverPropertyType ? import("../core/observe.js").ParsedObserverPropertyType<OPTIONS_1> : OPTIONS_1 extends {
+    prop<CLASS_5 extends typeof CustomElement, ARGS_5 extends ConstructorParameters<CLASS_5>, INSTANCE_5 extends InstanceType<CLASS_5>, KEY_1 extends string, OPTIONS_1 extends import("../core/observe.js").ObserverPropertyType | import("../core/CustomElement.js").ObserverOptions<import("../core/observe.js").ObserverPropertyType, unknown, INSTANCE_5> | ((this: INSTANCE_5, data: Partial<INSTANCE_5>, fn?: () => any) => any), VALUE_1 extends Record<KEY_1, OPTIONS_1 extends (...args2: any[]) => infer R_4 ? R_4 : OPTIONS_1 extends import("../core/observe.js").ObserverPropertyType ? import("../core/observe.js").ParsedObserverPropertyType<OPTIONS_1> : OPTIONS_1 extends {
         type: "object";
     } & import("../core/CustomElement.js").ObserverOptions<any, infer R_5 extends unknown, any> ? unknown extends R_5 ? object : R_5 : OPTIONS_1 extends {
         type: import("../core/observe.js").ObserverPropertyType;
-    } ? import("../core/observe.js").ParsedObserverPropertyType<OPTIONS_1["type"]> : OPTIONS_1 extends import("../core/CustomElement.js").ObserverOptions<any, infer R_6 extends unknown, any> ? unknown extends R_6 ? string : R_6 : never>>(this: CLASS_5, name: KEY_1, options: OPTIONS_1): CLASS_5 & (new (...args: ARGS_6) => INSTANCE_5 & VALUE_1);
-    define<CLASS_6 extends typeof CustomElement, ARGS_7 extends ConstructorParameters<CLASS_6>, INSTANCE_6 extends InstanceType<CLASS_6>, PROPS_4 extends {
+    } ? import("../core/observe.js").ParsedObserverPropertyType<OPTIONS_1["type"]> : OPTIONS_1 extends import("../core/CustomElement.js").ObserverOptions<any, infer R_6 extends unknown, any> ? unknown extends R_6 ? string : R_6 : never>>(this: CLASS_5, name: KEY_1, options: OPTIONS_1): CLASS_5 & import("../core/CustomElement.js").Class<VALUE_1, ARGS_5>;
+    define<CLASS_6 extends typeof CustomElement, ARGS_6 extends ConstructorParameters<CLASS_6>, INSTANCE_6 extends InstanceType<CLASS_6>, PROPS_4 extends {
         [x: string]: {
             enumerable?: boolean;
             configurable?: boolean;
@@ -1614,24 +1824,24 @@ declare const _default: {
             get?: (this: INSTANCE_6) => any;
             set?: (this: INSTANCE_6, value: any) => void;
         } | ((this: INSTANCE_6, ...args: any[]) => any);
-    }, VALUE_2 extends { [KEY_2 in keyof PROPS_4]: PROPS_4[KEY_2] extends (...args2: any[]) => infer R_7 ? R_7 : PROPS_4[KEY_2] extends TypedPropertyDescriptor<infer R_8> ? R_8 : never; }>(this: CLASS_6, props: PROPS_4 & ThisType<PROPS_4 & INSTANCE_6>): CLASS_6 & (new (...args: ARGS_7) => INSTANCE_6 & VALUE_2);
+    }, VALUE_2 extends { [KEY_2 in keyof PROPS_4]: PROPS_4[KEY_2] extends (...args2: any[]) => infer R_7 ? R_7 : PROPS_4[KEY_2] extends TypedPropertyDescriptor<infer R_8> ? R_8 : never; }>(this: CLASS_6, props: PROPS_4 & ThisType<PROPS_4 & INSTANCE_6>): CLASS_6 & import("../core/CustomElement.js").Class<VALUE_2, ARGS_6>;
     undefine(name: any): typeof CustomElement;
-    observe<CLASS_7 extends typeof CustomElement, ARGS_8 extends ConstructorParameters<CLASS_7>, INSTANCE_7 extends InstanceType<CLASS_7>, PROPS_5 extends import("../core/CustomElement.js").IDLParameter<INSTANCE_7 & VALUE_3>, VALUE_3 extends { [KEY_3 in keyof PROPS_5]: PROPS_5[KEY_3] extends (...args2: any[]) => infer R_9 ? R_9 : PROPS_5[KEY_3] extends import("../core/observe.js").ObserverPropertyType ? import("../core/observe.js").ParsedObserverPropertyType<PROPS_5[KEY_3]> : PROPS_5[KEY_3] extends {
+    observe<CLASS_7 extends typeof CustomElement, ARGS_7 extends ConstructorParameters<CLASS_7>, INSTANCE_7 extends InstanceType<CLASS_7>, PROPS_5 extends import("../core/CustomElement.js").IDLParameter<INSTANCE_7 & VALUE_3>, VALUE_3 extends { [KEY_3 in keyof PROPS_5]: PROPS_5[KEY_3] extends (...args2: any[]) => infer R_9 ? R_9 : PROPS_5[KEY_3] extends import("../core/observe.js").ObserverPropertyType ? import("../core/observe.js").ParsedObserverPropertyType<PROPS_5[KEY_3]> : PROPS_5[KEY_3] extends {
         type: "object";
     } & import("../core/CustomElement.js").ObserverOptions<any, infer R_10 extends unknown, any> ? unknown extends R_10 ? object : R_10 : PROPS_5[KEY_3] extends {
         type: import("../core/observe.js").ObserverPropertyType;
-    } ? import("../core/observe.js").ParsedObserverPropertyType<PROPS_5[KEY_3]["type"]> : PROPS_5[KEY_3] extends import("../core/CustomElement.js").ObserverOptions<any, infer R_11 extends unknown, any> ? unknown extends R_11 ? string : R_11 : never; }>(this: CLASS_7, props: PROPS_5): CLASS_7 & (new (...args: ARGS_8) => INSTANCE_7 & VALUE_3);
-    defineStatic<T1_5 extends typeof CustomElement, T2_5 extends import("../core/CustomElement.js").IDLParameter<T1_5>>(this: T1_5, props: T2_5): T1_5 & import("../core/CustomElement.js").ParsedProps<T2_5>;
+    } ? import("../core/observe.js").ParsedObserverPropertyType<PROPS_5[KEY_3]["type"]> : PROPS_5[KEY_3] extends import("../core/CustomElement.js").ObserverOptions<any, infer R_11 extends unknown, any> ? unknown extends R_11 ? string : R_11 : never; }>(this: CLASS_7, props: PROPS_5): CLASS_7 & import("../core/CustomElement.js").Class<VALUE_3, ARGS_7>;
+    defineStatic<T1_4 extends typeof CustomElement, T2_4 extends import("../core/CustomElement.js").IDLParameter<T1_4>>(this: T1_4, props: T2_4): T1_4 & import("../core/CustomElement.js").ParsedProps<T2_4>;
     events<T_11 extends typeof CustomElement>(this: T_11, listeners?: import("../core/Composition.js").CompositionEventListenerObject<InstanceType<T_11>>, options?: Partial<import("../core/Composition.js").CompositionEventListener<InstanceType<T_11>, string>>): T_11;
     childEvents<T_12 extends typeof CustomElement>(this: T_12, listenerMap: {
         [x: string]: import("../core/Composition.js").CompositionEventListenerObject<InstanceType<T_12>>;
     }, options?: Partial<import("../core/Composition.js").CompositionEventListener<InstanceType<T_12>, string>>): T_12;
     rootEvents<T_11 extends typeof CustomElement>(this: T_11, listeners?: import("../core/Composition.js").CompositionEventListenerObject<InstanceType<T_11>>, options?: Partial<import("../core/Composition.js").CompositionEventListener<InstanceType<T_11>, string>>): T_11;
-    on<T1_6 extends typeof CustomElement, T2_6 extends InstanceType<T1_6>, T3_1 extends import("../core/CustomElement.js").CompositionCallback<T2_6, T2_6 & T1_6["schema"]>, T4 extends keyof T3_1>(this: T1_6, name: T3_1 | T4, callbacks?: T3_1[T4] & ThisType<T2_6>): T1_6;
-    onPropChanged<T1_7 extends typeof CustomElement, T2_7 extends InstanceType<T1_7>>(this: T1_7, options: import("../core/CustomElement.js").ObjectOrObjectEntries<{ [P in keyof T2_7]?: (this: T2_7, oldValue: T2_7[P], newValue: T2_7[P], changes: any, element: T2_7) => void; }>): T1_7;
-    onAttributeChanged<T1_8 extends typeof CustomElement, T2_8 extends InstanceType<T1_8>>(this: T1_8, options: {
-        [x: string]: (this: T2_8, oldValue: string, newValue: string, element: T2_8) => void;
-    }): T1_8;
+    on<T1_5 extends typeof CustomElement, T2_5 extends InstanceType<T1_5>, T3_1 extends import("../core/CustomElement.js").CompositionCallback<T2_5, T2_5>, T4 extends keyof T3_1>(this: T1_5, name: T3_1 | T4, callbacks?: T3_1[T4] & ThisType<T2_5>): T1_5;
+    onPropChanged<T1_6 extends typeof CustomElement, T2_6 extends InstanceType<T1_6>>(this: T1_6, options: import("../core/CustomElement.js").ObjectOrObjectEntries<{ [P in keyof T2_6]?: (this: T2_6, oldValue: T2_6[P], newValue: T2_6[P], changes: any, element: T2_6) => void; }>): T1_6;
+    onAttributeChanged<T1_7 extends typeof CustomElement, T2_7 extends InstanceType<T1_7>>(this: T1_7, options: {
+        [x: string]: (this: T2_7, oldValue: string, newValue: string, element: T2_7) => void;
+    }): T1_7;
 };
 export default _default;
 export type DeprecatedHTMLAnchorElementProperties = 'charset' | 'coords' | 'name' | 'shape';

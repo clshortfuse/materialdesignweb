@@ -1,6 +1,6 @@
-declare const _default: typeof CustomElement & (new (...args: any[]) => CustomElement & {
+declare const _default: typeof CustomElement & import("../core/CustomElement.js").Class<{
     delegatesFocus: boolean;
-}) & (new (...args: any[]) => CustomElement) & (new (...args: any[]) => CustomElement & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     href: string;
     target: string;
     download: string;
@@ -8,15 +8,7 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
     rel: string;
     hreflang: string;
     referrerPolicy: string;
-}) & (new (...args: any[]) => CustomElement & {
-    href: string;
-    target: string;
-    download: string;
-    ping: string;
-    rel: string;
-    hreflang: string;
-    referrerPolicy: string;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     origin: string;
     protocol: string;
     username: string;
@@ -27,121 +19,30 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
     pathname: string;
     search: string;
     hash: string;
-}) & (new (...args: any[]) => CustomElement & {
-    href: string;
-    target: string;
-    download: string;
-    ping: string;
-    rel: string;
-    hreflang: string;
-    referrerPolicy: string;
-} & {
-    origin: string;
-    protocol: string;
-    username: string;
-    password: string;
-    host: string;
-    hostname: string;
-    port: string;
-    pathname: string;
-    search: string;
-    hash: string;
-} & object) & (new (...args: any[]) => CustomElement & {
+}, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
     _scrollListenerPositionX: number;
     _scrollListenerPositionY: number;
     _scrollListenerLastIdle: number;
     _scrollListenerLastScroll: number;
     _scrollListenerLastResize: number;
-}) & (new (...args: any[]) => CustomElement & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _scroller: WeakRef<EventTarget>;
     _scrollerScrollListener: EventListener;
     _scrollerResizeListener: EventListener;
     _scrollDebounce: any;
-}) & (new (...args: any[]) => CustomElement & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _scrollListenerOnScrollIdle(): void;
     _scrollListenerOnScrollerScroll(event: Event): void;
     _scrollListenerOnScrollerResize(event: Event): void;
     startScrollListener(scroller?: EventTarget): boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _scrollListenerScroller: HTMLElement | Window;
-}) & (new (...args: any[]) => CustomElement & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _scrollListenerScrollerScrollHeight: any;
     _scrollListenerScrollerClientHeight: any;
-}) & (new (...args: any[]) => CustomElement & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
-    _scrollListenerScrollerScrollHeight: any;
-    _scrollListenerScrollerClientHeight: any;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _scrollListenerClear(scroller?: EventTarget): boolean;
-}) & (new (...args: any[]) => CustomElement & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
     hovered: boolean;
@@ -154,47 +55,14 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
     _keyReleased: boolean;
     _pointerPressed: boolean;
     stateLayer: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     disabledState: boolean;
     hoveredState: boolean;
     focusedState: boolean;
     pressedState: boolean;
     touchedState: boolean;
     pointedState: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     stateTargetElement: CustomElement & {
         disabled: boolean;
         focused: boolean;
@@ -216,49 +84,7 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
         touchedState: boolean;
         pointedState: boolean;
     };
-}) & (new (...args: any[]) => CustomElement & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _lastRippleWeakRef: WeakRef<CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
@@ -271,74 +97,21 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
         _radius: number;
         holdRipple: boolean;
     } & {
-        _positionStyle: any;
+        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+            styles: {
+                minHeight: string;
+                minWidth: string; /** @type {HTMLElement['focus']} */
+                boxShadow: string;
+                top: string;
+                left: string;
+            };
+        };
     } & {
         updatePosition(x?: number, y?: number, size?: number): void;
         handleRippleComplete(): void;
     }>;
     _rippleAdded: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     _lastRipple: CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
@@ -351,91 +124,20 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
         _radius: number;
         holdRipple: boolean;
     } & {
-        _positionStyle: any;
+        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+            styles: {
+                minHeight: string;
+                minWidth: string; /** @type {HTMLElement['focus']} */
+                boxShadow: string;
+                top: string;
+                left: string;
+            };
+        };
     } & {
         updatePosition(x?: number, y?: number, size?: number): void;
         handleRippleComplete(): void;
     };
-}) & (new (...args: any[]) => CustomElement & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
@@ -448,1523 +150,47 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
         _radius: number;
         holdRipple: boolean;
     } & {
-        _positionStyle: any;
+        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+            styles: {
+                minHeight: string;
+                minWidth: string; /** @type {HTMLElement['focus']} */
+                boxShadow: string;
+                top: string;
+                left: string;
+            };
+        };
     } & {
         updatePosition(x?: number, y?: number, size?: number): void;
         handleRippleComplete(): void;
     };
-}) & (new (...args: any[]) => CustomElement & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
     typeStyle: string;
-}) & (new (...args: any[]) => CustomElement & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     shapeTop: boolean;
     shapeBottom: boolean;
     shapeStart: boolean;
     shapeEnd: boolean;
     shapeStyle: string;
     outlined: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
-    _scrollListenerScrollerScrollHeight: any;
-    _scrollListenerScrollerClientHeight: any;
-} & {
-    _scrollListenerClear(scroller?: EventTarget): boolean;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    href: string;
-    target: string;
-    download: string;
-    ping: string;
-    rel: string;
-    hreflang: string;
-    referrerPolicy: string;
-} & {
-    origin: string;
-    protocol: string;
-    username: string;
-    password: string;
-    host: string;
-    hostname: string;
-    port: string;
-    pathname: string;
-    search: string;
-    hash: string;
-} & object & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
-    _scrollListenerScrollerScrollHeight: any;
-    _scrollListenerScrollerClientHeight: any;
-} & {
-    _scrollListenerClear(scroller?: EventTarget): boolean;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    delegatesFocus: boolean;
-} & {
-    href: string;
-    target: string;
-    download: string;
-    ping: string;
-    rel: string;
-    hreflang: string;
-    referrerPolicy: string;
-} & {
-    origin: string;
-    protocol: string;
-    username: string;
-    password: string;
-    host: string;
-    hostname: string;
-    port: string;
-    pathname: string;
-    search: string;
-    hash: string;
-} & object & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
-    _scrollListenerScrollerScrollHeight: any;
-    _scrollListenerScrollerClientHeight: any;
-} & {
-    _scrollListenerClear(scroller?: EventTarget): boolean;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    delegatesFocus: boolean;
-} & {
-    href: string;
-    target: string;
-    download: string;
-    ping: string;
-    rel: string;
-    hreflang: string;
-    referrerPolicy: string;
-} & {
-    origin: string;
-    protocol: string;
-    username: string;
-    password: string;
-    host: string;
-    hostname: string;
-    port: string;
-    pathname: string;
-    search: string;
-    hash: string;
-} & object & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
-    _scrollListenerScrollerScrollHeight: any;
-    _scrollListenerScrollerClientHeight: any;
-} & {
-    _scrollListenerClear(scroller?: EventTarget): boolean;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     stateTargetElement: HTMLElement;
-}) & (new (...args: any[]) => CustomElement & {
-    delegatesFocus: boolean;
-} & {
-    href: string;
-    target: string;
-    download: string;
-    ping: string;
-    rel: string;
-    hreflang: string;
-    referrerPolicy: string;
-} & {
-    origin: string;
-    protocol: string;
-    username: string;
-    password: string;
-    host: string;
-    hostname: string;
-    port: string;
-    pathname: string;
-    search: string;
-    hash: string;
-} & object & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
-    _scrollListenerScrollerScrollHeight: any;
-    _scrollListenerScrollerClientHeight: any;
-} & {
-    _scrollListenerClear(scroller?: EventTarget): boolean;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
+}, any[]> & import("../core/CustomElement.js").Class<{
     stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-} & {
-    stateTargetElement: HTMLElement;
-} & {
-    stateLayer: boolean;
-}) & (new (...args: any[]) => CustomElement & {
-    delegatesFocus: boolean;
-} & {
-    href: string;
-    target: string;
-    download: string;
-    ping: string;
-    rel: string;
-    hreflang: string;
-    referrerPolicy: string;
-} & {
-    origin: string;
-    protocol: string;
-    username: string;
-    password: string;
-    host: string;
-    hostname: string;
-    port: string;
-    pathname: string;
-    search: string;
-    hash: string;
-} & object & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
-    _scrollListenerScrollerScrollHeight: any;
-    _scrollListenerScrollerClientHeight: any;
-} & {
-    _scrollListenerClear(scroller?: EventTarget): boolean;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-} & {
-    stateTargetElement: HTMLElement;
-} & {
-    stateLayer: boolean;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     active: boolean;
     icon: string;
     src: string;
     ariaLabel: string;
-}) & (new (...args: any[]) => CustomElement & {
-    delegatesFocus: boolean;
-} & {
-    href: string;
-    target: string;
-    download: string;
-    ping: string;
-    rel: string;
-    hreflang: string;
-    referrerPolicy: string;
-} & {
-    origin: string;
-    protocol: string;
-    username: string;
-    password: string;
-    host: string;
-    hostname: string;
-    port: string;
-    pathname: string;
-    search: string;
-    hash: string;
-} & object & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
-    _scrollListenerScrollerScrollHeight: any;
-    _scrollListenerScrollerClientHeight: any;
-} & {
-    _scrollListenerClear(scroller?: EventTarget): boolean;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-} & {
-    stateTargetElement: HTMLElement;
-} & {
-    stateLayer: boolean;
-} & {
-    active: boolean;
-    icon: string;
-    src: string;
-    ariaLabel: string;
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     /** @type {HTMLElement['focus']} */
     focus(options?: FocusOptions): void;
     computeLabelMetrics(): {
         width: number;
         left: number;
     };
-}) & (new (...args: any[]) => CustomElement & {
-    delegatesFocus: boolean;
-} & {
-    href: string;
-    target: string;
-    download: string;
-    ping: string;
-    rel: string;
-    hreflang: string;
-    referrerPolicy: string;
-} & {
-    origin: string;
-    protocol: string;
-    username: string;
-    password: string;
-    host: string;
-    hostname: string;
-    port: string;
-    pathname: string;
-    search: string;
-    hash: string;
-} & object & {
-    _scrollListenerPositionX: number;
-    _scrollListenerPositionY: number;
-    _scrollListenerLastIdle: number;
-    _scrollListenerLastScroll: number;
-    _scrollListenerLastResize: number;
-} & {
-    _scroller: WeakRef<EventTarget>;
-    _scrollerScrollListener: EventListener;
-    _scrollerResizeListener: EventListener;
-    _scrollDebounce: any;
-} & {
-    _scrollListenerOnScrollIdle(): void;
-    _scrollListenerOnScrollerScroll(event: Event): void;
-    _scrollListenerOnScrollerResize(event: Event): void;
-    startScrollListener(scroller?: EventTarget): boolean;
-} & {
-    _scrollListenerScroller: HTMLElement | Window;
-} & {
-    _scrollListenerScrollerScrollHeight: any;
-    _scrollListenerScrollerClientHeight: any;
-} & {
-    _scrollListenerClear(scroller?: EventTarget): boolean;
-} & {
-    disabled: boolean;
-    focused: boolean;
-    hovered: boolean;
-    pressed: boolean;
-    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-    _hovered: boolean;
-    _focused: boolean;
-    _focusedSynthetic: boolean;
-    _keyPressed: boolean;
-    _keyReleased: boolean;
-    _pointerPressed: boolean;
-    stateLayer: boolean;
-} & {
-    disabledState: boolean;
-    hoveredState: boolean;
-    focusedState: boolean;
-    pressedState: boolean;
-    touchedState: boolean;
-    pointedState: boolean;
-} & {
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
-} & {
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
-    _rippleAdded: boolean;
-} & {
-    _lastRipple: CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: any;
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
-} & {
-    color: string;
-    ink: string;
-    typeStyle: string;
-} & {
-    shapeTop: boolean;
-    shapeBottom: boolean;
-    shapeStart: boolean;
-    shapeEnd: boolean;
-    shapeStyle: string;
-    outlined: boolean;
-} & {
-    stateTargetElement: HTMLElement;
-} & {
-    stateLayer: boolean;
-} & {
-    active: boolean;
-    icon: string;
-    src: string;
-    ariaLabel: string;
-} & {
-    /** @type {HTMLElement['focus']} */
-    focus(options?: FocusOptions): void;
-    computeLabelMetrics(): {
-        width: number;
-        left: number;
-    };
-} & {
+}, any[]> & import("../core/CustomElement.js").Class<{
     anchorAriaControls(this: CustomElement & {
         delegatesFocus: boolean;
     } & {
@@ -2064,7 +290,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2083,7 +317,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2101,7 +343,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2232,7 +482,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2251,7 +509,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2269,7 +535,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2301,7 +575,7 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             width: number;
             left: number;
         };
-    } & T2): string;
+    }): string;
     anchorAriaSelected(this: CustomElement & {
         delegatesFocus: boolean;
     } & {
@@ -2401,7 +675,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2420,7 +702,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2438,7 +728,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2569,7 +867,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2588,7 +894,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2606,7 +920,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2638,7 +960,7 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             width: number;
             left: number;
         };
-    } & T2): string;
+    }): string;
     anchorAriaDisabled(this: CustomElement & {
         delegatesFocus: boolean;
     } & {
@@ -2738,7 +1060,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2757,7 +1087,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2775,7 +1113,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2906,7 +1252,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2925,7 +1279,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2943,7 +1305,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -2975,7 +1345,7 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             width: number;
             left: number;
         };
-    } & T2): string;
+    }): string;
     anchorHref(this: CustomElement & {
         delegatesFocus: boolean;
     } & {
@@ -3075,7 +1445,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3094,7 +1472,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3112,7 +1498,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3243,7 +1637,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3262,7 +1664,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3280,7 +1690,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3312,7 +1730,7 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             width: number;
             left: number;
         };
-    } & T2): string;
+    }): string;
     iconIf(this: CustomElement & {
         delegatesFocus: boolean;
     } & {
@@ -3412,7 +1830,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3431,7 +1857,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3449,7 +1883,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3580,7 +2022,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3599,7 +2049,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3617,7 +2075,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3649,7 +2115,7 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             width: number;
             left: number;
         };
-    } & T2): string;
+    }): string;
     iconVariation(this: CustomElement & {
         delegatesFocus: boolean;
     } & {
@@ -3749,7 +2215,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3768,7 +2242,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3786,7 +2268,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3917,7 +2407,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3936,7 +2434,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3954,7 +2460,15 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             _radius: number;
             holdRipple: boolean;
         } & {
-            _positionStyle: any;
+            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                styles: {
+                    minHeight: string;
+                    minWidth: string; /** @type {HTMLElement['focus']} */
+                    boxShadow: string;
+                    top: string;
+                    left: string;
+                };
+            };
         } & {
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
@@ -3986,8 +2500,8 @@ declare const _default: typeof CustomElement & (new (...args: any[]) => CustomEl
             width: number;
             left: number;
         };
-    } & T2): string;
-});
+    }): string;
+}, any[]>;
 export default _default;
 import CustomElement from '../core/CustomElement.js';
 //# sourceMappingURL=Tab.d.ts.map

@@ -43,7 +43,7 @@ function asyncStall(min = 0, max = 4000) {
 
 export default Card
   .extend()
-  .setSchema(/** @type {SAMPLE_DATA} */ (null))
+  // .setSchema(/** @type {SAMPLE_DATA} */ (null))
   .observe({
     title: 'string',
     productId: {
