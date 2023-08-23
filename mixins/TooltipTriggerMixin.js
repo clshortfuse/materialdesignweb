@@ -1,3 +1,4 @@
+import '../components/Tooltip.js';
 import { canAnchorPopup } from '../utils/popup.js';
 
 /** @typedef {import('../components/Tooltip.js').default} Tooltip */
