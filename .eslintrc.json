@@ -48,6 +48,7 @@
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/require-await": "error",
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/return-await": [
       "error",
       "always"
