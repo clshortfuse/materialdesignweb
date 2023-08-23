@@ -55,10 +55,10 @@ export default CustomElement
     svgPath: 'string',
   })
   .expressions({
-    hasIcon({ icon, svg, src, svgPath }) {
+    hasIcon({ icon, svg, src, svgPath } = this) {
       return icon ?? svg ?? src ?? svgPath;
     },
-    iconVariation({ outlined }) {
+    iconVariation({ outlined } = this) {
       return outlined ? null : 'filled';
     },
   })
