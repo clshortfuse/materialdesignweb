@@ -15,6 +15,16 @@
     "strict": false,
     "target": "esnext"
   },
+  "include": [
+    "./bin/*",
+    "./constants/*",
+    "./components/*",
+    "./core/*",
+    "./loaders/*",
+    "./mixins/*",
+    "./services/*",
+    "./utils/*"
+  ],
   "exclude": [
     "**/node_modules/*",
     ".history/*",
