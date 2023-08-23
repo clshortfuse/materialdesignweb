@@ -511,7 +511,7 @@ declare const _default: {
     autoRegistration: boolean;
     registrations: Map<string, typeof CustomElement>;
     expressions: <CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends {
-        [x: string]: (this: INSTANCE, data?: INSTANCE) => string | boolean;
+        [x: string]: (this: INSTANCE, data?: INSTANCE, state?: Record<string, any>) => string | boolean;
     }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & import("../core/CustomElement.js").Class<PROPS, ARGS>;
     methods: typeof CustomElement.set;
     overrides: <CLASS_1 extends typeof CustomElement, ARGS_1 extends ConstructorParameters<CLASS_1>, INSTANCE_1 extends InstanceType<CLASS_1>, PROPS_1 extends Partial<INSTANCE_1>>(this: CLASS_1, source: PROPS_1 & ThisType<PROPS_1 & INSTANCE_1>, options?: Partial<PropertyDescriptor>) => CLASS_1 & import("../core/CustomElement.js").Class<PROPS_1, ARGS_1>;

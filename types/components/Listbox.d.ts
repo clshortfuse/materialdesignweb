@@ -10909,7 +10909,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
         expressions: <CLASS extends typeof import("../core/CustomElement.js").default, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends {
-            [x: string]: (this: INSTANCE, data?: INSTANCE) => string | boolean;
+            [x: string]: (this: INSTANCE, data?: INSTANCE, state?: Record<string, any>) => string | boolean;
         }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & import("../core/CustomElement.js").Class<PROPS, ARGS>;
         methods: typeof import("../core/CustomElement.js").default.set;
         overrides: <CLASS_1 extends typeof import("../core/CustomElement.js").default, ARGS_1 extends ConstructorParameters<CLASS_1>, INSTANCE_1 extends InstanceType<CLASS_1>, PROPS_1 extends Partial<INSTANCE_1>>(this: CLASS_1, source: PROPS_1 & ThisType<PROPS_1 & INSTANCE_1>, options?: Partial<PropertyDescriptor>) => CLASS_1 & import("../core/CustomElement.js").Class<PROPS_1, ARGS_1>;
@@ -21665,7 +21665,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
         expressions: <CLASS extends typeof import("../core/CustomElement.js").default, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends {
-            [x: string]: (this: INSTANCE, data?: INSTANCE) => string | boolean;
+            [x: string]: (this: INSTANCE, data?: INSTANCE, state?: Record<string, any>) => string | boolean;
         }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & import("../core/CustomElement.js").Class<PROPS, ARGS>;
         methods: typeof import("../core/CustomElement.js").default.set;
         overrides: <CLASS_1 extends typeof import("../core/CustomElement.js").default, ARGS_1 extends ConstructorParameters<CLASS_1>, INSTANCE_1 extends InstanceType<CLASS_1>, PROPS_1 extends Partial<INSTANCE_1>>(this: CLASS_1, source: PROPS_1 & ThisType<PROPS_1 & INSTANCE_1>, options?: Partial<PropertyDescriptor>) => CLASS_1 & import("../core/CustomElement.js").Class<PROPS_1, ARGS_1>;
@@ -32422,7 +32422,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
         expressions: <CLASS extends typeof import("../core/CustomElement.js").default, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends {
-            [x: string]: (this: INSTANCE, data?: INSTANCE) => string | boolean;
+            [x: string]: (this: INSTANCE, data?: INSTANCE, state?: Record<string, any>) => string | boolean;
         }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & import("../core/CustomElement.js").Class<PROPS, ARGS>;
         methods: typeof import("../core/CustomElement.js").default.set;
         overrides: <CLASS_1 extends typeof import("../core/CustomElement.js").default, ARGS_1 extends ConstructorParameters<CLASS_1>, INSTANCE_1 extends InstanceType<CLASS_1>, PROPS_1 extends Partial<INSTANCE_1>>(this: CLASS_1, source: PROPS_1 & ThisType<PROPS_1 & INSTANCE_1>, options?: Partial<PropertyDescriptor>) => CLASS_1 & import("../core/CustomElement.js").Class<PROPS_1, ARGS_1>;
@@ -35395,7 +35395,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
                     onConnectAriaValues: Map<string, string>;
                     hasFiredConnected: boolean;
                 } & {
-                    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | ... 29 more ... | "role"): string | ShadowRoot;
+                    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | ... 36 more ... | "role"): string | ShadowRoot;
                     updateAriaProperty(name: "shadowRoot" | ... 37 more ... | "role", value: string): void;
                 } & ... 9 more ... & {
                     ...;

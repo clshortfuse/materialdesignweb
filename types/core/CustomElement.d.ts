@@ -97,14 +97,14 @@ export default class CustomElement extends HTMLElement {
      *  ARGS extends ConstructorParameters<CLASS>,
      *  INSTANCE extends InstanceType<CLASS>,
      *  PROPS extends {
-     *    [K in keyof any]: ((this: INSTANCE, data?: INSTANCE) => string|boolean|null)
+     *    [K in keyof any]: ((this: INSTANCE, data?: INSTANCE, state?: Record<string, any>) => string|boolean|null)
      *  }
      *  >(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>):
      *  CLASS & Class<PROPS,ARGS>
      * }}
      */
     static expressions: <CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends {
-        [x: string]: (this: INSTANCE, data?: INSTANCE) => string | boolean | null;
+        [x: string]: (this: INSTANCE, data?: INSTANCE, state?: Record<string, any>) => string | boolean | null;
     }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & Class<PROPS, ARGS>;
     static methods: typeof CustomElement.set;
     /**
