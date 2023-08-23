@@ -103,7 +103,7 @@ export default CustomElement
   .observe({
     shapeTop: {
       type: 'boolean',
-      empty: 'true',
+      empty: true,
     },
     modal: 'boolean',
     open: 'boolean',
