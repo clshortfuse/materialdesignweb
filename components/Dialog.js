@@ -17,9 +17,9 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 function listTabbables(root) {
   const treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
   const focusables = [];
-  /** @type {Element} */
+  /** @type {HTMLElement} */
   let node;
-  while ((node = treeWalker.nextNode())) {
+  while ((node = /** @type {Element} */ (treeWalker.nextNode()))) {
     if (node.tagName === 'SLOT') {
       for (const el of (/** @type {HTMLSlotElement} */ (node)).assignedElements()) {
         if (el.tabIndex >= 0 && !el.matches(':disabled')) {
@@ -48,7 +48,7 @@ function focusOnTree(root, autofocus, forward = true) {
   const focusables = [];
   /** @type {Element} */
   let node;
-  while ((node = treeWalker.nextNode())) {
+  while ((node = /** @type {Element} */ (treeWalker.nextNode()))) {
     if (autofocus && node.hasAttribute('autofocus')) {
       if (attemptFocus(node)) return true;
       continue;

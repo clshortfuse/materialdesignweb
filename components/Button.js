@@ -63,6 +63,7 @@ export default CustomElement
     },
   })
   .methods({
+    /** @type {HTMLElement['focus']} */
     focus(...options) {
       if (this.href) {
         this.refs.anchor.focus(...options);
