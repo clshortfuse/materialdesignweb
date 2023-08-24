@@ -43,8 +43,11 @@ export default CustomElement
   })
   .observe({
     ticks: 'string',
-    showLabel: { type: 'boolean', reflect: false },
-    _previewValue: { nullable: false },
+    _valueAsText: { nullable: false },
+    thumbLabel: {
+      type: 'string',
+      reflect: 'read',
+    },
     _roundedValue: 'float',
     _isHoveringThumb: 'boolean',
     _lastDispatchedChangeValue: 'string',
@@ -123,7 +126,7 @@ export default CustomElement
         }
 
         this._roundedValue = roundedValue;
-        this._previewValue = roundedValue.toString(10);
+        this._valueAsText = roundedValue.toString(10);
         return;
       }
 
@@ -152,7 +155,9 @@ export default CustomElement
     onControlFinish(event) {
       const input = event.currentTarget;
       if (input.disabled) return;
-      event.preventDefault();
+      if (event.type === 'click') {
+        event.preventDefault();
+      }
       input.valueAsNumber = this._roundedValue;
       this._value = input.value;
       if (this._lastDispatchedChangeValue !== this._value) {
@@ -180,14 +185,17 @@ export default CustomElement
     },
   })
   .expressions({
-    computeTrackStyle({ ticks, _previewValue, min, max }) {
+    computeTrackStyle({ ticks, _valueAsText, min, max }) {
       return [
         ticks ? `--ticks:${ticks}` : null,
-        `--value:${valueAsFraction(_previewValue, min, max)}`,
+        `--value:${valueAsFraction(_valueAsText, min, max)}`,
       ].filter(Boolean).join(';') || null;
     },
     _thumbLabelHidden({ _isHoveringThumb, focusedState }) {
       return (!_isHoveringThumb && !focusedState);
+    },
+    _computedThumbLabel({ thumbLabel, _valueAsText }) {
+      return thumbLabel ?? _valueAsText;
     },
   })
   .html`
@@ -198,7 +206,7 @@ export default CustomElement
         <div id=thumb></div>
         <div id=thumb-label
           hidden={_thumbLabelHidden}
-          text={_previewValue}></div>
+          text={_computedThumbLabel}></div>
       </div>
     </div>
   `
@@ -208,7 +216,7 @@ export default CustomElement
   })
   .on({
     valueChanged(oldValue, newValue) {
-      this._previewValue = newValue;
+      this._valueAsText = newValue;
     },
   })
   .css`
@@ -371,14 +379,13 @@ export default CustomElement
       position: absolute;
       inset: 0;
 
-      padding-inline: 10px;
+      padding-inline: 2px;
 
       background-clip: content-box;
-      background-image: radial-gradient(circle at center, var(--tick-color) 0, var(--tick-color) 1px, transparent 0);
-      background-position: center center;
+      background-image: radial-gradient(circle at 1px, var(--tick-color) 0, var(--tick-color) 1px, transparent 0);
+      background-position: -1px 50%;
       background-repeat: repeat-x;
-      background-size: 0 100%;
-      background-size: calc(100% / var(--ticks, 0)) 2px;
+      background-size: calc(100% / (var(--ticks, 0) + 1)) 2px;
     }
 
     #ticks::before {
@@ -469,21 +476,24 @@ export default CustomElement
       align-items: center;
       justify-content: center;
 
+      box-sizing: border-box;
+
       min-block-size: 28px;
       min-inline-size: 28px;
+      padding: 4px;
 
       z-index: 1;
 
       background-color: rgb(var(--mdw-bg));
-      border-radius: 50%;
+      border-radius: 14px;
       color: rgb(var(--mdw-ink));
     }
 
     #thumb-label::after {
       /* Values from Figma SVG */
-      --x-start: 14.6446%; /*4.1005px*/
-      --x-end: 85.3554%;
-      --y: 70.7106%; /*24.0416px*/
+      --x-start: 4.1005px; /*4.1005px*/
+      --x-end: calc(100% - 4.1005px);
+      --y: calc(100% - 9.9584px); /*24.0416px*/
 
       content: "";
 
