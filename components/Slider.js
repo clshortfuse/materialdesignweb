@@ -1,5 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
-import { isFocused, isRtl } from '../core/dom.js';
+import { SAFARI_VERSION, isFocused, isRtl } from '../core/dom.js';
 import InputMixin from '../mixins/InputMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -127,6 +127,16 @@ export default CustomElement
 
         this._roundedValue = roundedValue;
         this._valueAsText = roundedValue.toString(10);
+        if (isTouch && SAFARI_VERSION) {
+          // Safari does not update input when drag wasn't initiated at thumb
+          const { _input } = this;
+          if (_input.valueAsNumber !== roundedValue) {
+            _input.valueAsNumber = roundedValue;
+            this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+            this.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }
+
         return;
       }
 
