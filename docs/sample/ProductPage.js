@@ -163,7 +163,7 @@ export default Card
       </div>
       <div id=content busy={busy}>
         <fieldset disabled={busy}>
-          <mdw-box flex y=center gap=16 padding=16>
+          <mdw-box row y=center gap=16 padding=16>
             <mdw-surface id=thumbnail-shape outlined shape-style=full>
               <img id=thumbnail src={thumbnail} />
             </mdw-surface>
@@ -174,11 +174,11 @@ export default Card
             </div>
           </mdw-box>
           <mdw-divider></mdw-divider>
-          <mdw-box flex=column gap=16 padding=16>
+          <mdw-box gap=16 padding=16>
             <mdw-input outlined type=number name=price value={price} label=Price input-prefix=$ step=0.01></mdw-input>
             <mdw-input outlined type=number name=discountPercentage value={discountPercentage} input-suffix=% label=Discount step=0.01></mdw-input>
             <mdw-slider name=rating value={rating} min=0 max=5 step=0.1 ticks=4></mdw-slider>
-            <mdw-box flex y=center gap=8>
+            <mdw-box row y=center gap=8>
                 <mdw-checkbox-icon icon=check selected=${({ stock }) => stock > 0}></mdw-checkbox-icon> Stock: {stock} </div>
             <mdw-box>
           </mdw-box>
@@ -191,9 +191,9 @@ export default Card
       </div>
     </form>
     <mdw-divider></mdw-divider>
-    <mdw-box flex x=between y=center padding=8 gap=8>
+    <mdw-box row x=between y=center padding=8 gap=8>
       <mdw-title ink=secondary>Product ID: {productId}</mdw-title>
-      <mdw-box flex gap=8>
+      <mdw-box row gap=8>
         <mdw-icon-button
           disabled="${({ productId }) => productId === 1}"
           id="previous"

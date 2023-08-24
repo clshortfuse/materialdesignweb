@@ -13,7 +13,7 @@
   <demo-page>
     <section>
       <mdw-headline size=medium text-padding=0.5em>Filled</mdw-headline>
-      <mdw-box flex=column x=stretch gap=16 padding=24>
+      <mdw-box x=stretch gap=16 padding=24>
         <mdw-input filled label="Label"></mdw-input>
         <mdw-input filled placeholder="Placeholder only" aria-label="Blank"></mdw-input>
         <mdw-input filled ink="tertiary" label="Ink only"></mdw-input>
@@ -48,7 +48,7 @@
     </section>
     <section>
       <mdw-headline size=medium text-padding=0.5em>Outlined</mdw-headline>
-      <mdw-box flex=column x=stretch gap=16 padding=24>
+      <mdw-box x=stretch gap=16 padding=24>
         <mdw-input outlined label="Label"></mdw-input>
         <mdw-input outlined placeholder="Placeholder only" aria-label="Blank"></mdw-input>
         <mdw-input outlined ink="tertiary" label="Ink only"></mdw-input>
@@ -83,7 +83,7 @@
     </section>
     <section>
       <mdw-headline size=medium text-padding=0.5em>Outlined Dense</mdw-headline>
-      <mdw-box flex=column x=stretch gap=16 padding=24>
+      <mdw-box x=stretch gap=16 padding=24>
         <mdw-input outlined density=-2 label="Label"></mdw-input>
         <mdw-input outlined density=-2 placeholder="Placeholder only" aria-label="Blank"></mdw-input>
         <mdw-input outlined density=-2 ink="tertiary" label="Ink only"></mdw-input>
@@ -121,7 +121,7 @@
     </section>
     <section>
       <h2 slot="heading">Editable Combobox</h2>
-      <mdw-box flex=column x=stretch gap=16 padding=24>
+      <mdw-box x=stretch gap=16 padding=24>
         <mdw-input filled label="Basic" supporting="No list-autocomplete (filtering), inline-autocomplete (appending text), or automatic selection.">
           <mdw-listbox>
             <mdw-list-option>Apple</mdw-list-option>
@@ -193,6 +193,7 @@
               const box = document.createElement('mdw-box')
               box.setAttribute('role', 'mark');
               box.color = this.ink || 'primary';
+              box.block = true;
               box.inline = true;
               box.textContent = matchStr;
               
@@ -231,7 +232,7 @@
     </section>
     <section>
       <h2 slot="heading">Non-editable Combobox</h2>
-      <mdw-box flex=column x=stretch gap=16 padding=24>
+      <mdw-box x=stretch gap=16 padding=24>
         <mdw-input filled label="Basic" type=select-one supporting="Uses [type=select-one]">
           <mdw-listbox>
             <mdw-list-option>Apple</mdw-list-option>
@@ -276,7 +277,7 @@
     </section>
     <section>
       <mdw-headline size=medium text-padding=0.5em>Bare</mdw-headline>
-      <mdw-box flex=column x=stretch gap=16 padding=24>
+      <mdw-box x=stretch gap=16 padding=24>
         <mdw-input label="[label] only"></mdw-input>
         <mdw-input placeholder="[placeholder] + [label]" label="Blank"></mdw-input>
         <mdw-input ink="tertiary" aria-label="Ink only"></mdw-input>

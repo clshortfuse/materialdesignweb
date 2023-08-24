@@ -14,7 +14,7 @@
   <demo-page>
     <section>
       <mdw-headline text-padding=0.5em>Basic menus</mdw-headline>
-      <mdw-box flex wrap gap=12 padding=16>
+      <mdw-box row wrap gap=12 padding=16>
         <mdw-button filled onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
           aria-controls="menu-cascade">Cascading menu</mdw-button>
         <mdw-button filled onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
@@ -25,7 +25,7 @@
     </section>
     <section>
       <mdw-headline text-padding=0.5em>Modal menus</mdw-headline>
-      <mdw-box flex wrap gap=12 padding=16>
+      <mdw-box row wrap gap=12 padding=16>
         <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
           aria-controls="menu-cascade">Cascading menu modal</mdw-button>
         <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
@@ -37,7 +37,7 @@
     <demo-dummy-text></demo-dummy-text>
     <section>
       <mdw-headline text-padding=0.5em>Checkboxes menu</mdw-headline>
-      <mdw-box flex wrap gap=12>
+      <mdw-box row wrap gap=12>
         <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
           aria-controls="menu-checkboxes">Checkboxes menu</mdw-button>
         <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
@@ -46,7 +46,7 @@
     </section>
     <section>
       <mdw-headline text-padding=0.5em>Radio menu</mdw-headline>
-      <mdw-box flex wrap gap=12>
+      <mdw-box row wrap gap=12>
         <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
           aria-controls="menu-radio">Radio menu</mdw-button>
         <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
@@ -55,7 +55,7 @@
     </section>
     <section>
       <mdw-headline text-padding=0.5em>Clickthrough test</mdw-headline>
-      <mdw-box flex gap=12 wrap padding=8 x=center>
+      <mdw-box row gap=12 wrap padding=8 x=center>
         <mdw-checkbox checked aria-label="Default" value="1">Click me while menu is open</mdw-checkbox>
       </mdw-box>
     </section>
