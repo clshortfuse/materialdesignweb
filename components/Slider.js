@@ -137,7 +137,6 @@ export default CustomElement
           if (_input.valueAsNumber !== roundedValue) {
             _input.valueAsNumber = roundedValue;
             this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
-            this.dispatchEvent(new Event('change', { bubbles: true }));
           }
         }
 
@@ -176,7 +175,7 @@ export default CustomElement
       this._value = input.value;
       if (this._lastDispatchedChangeValue !== this._value) {
         this._lastDispatchedChangeValue = this._value;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
+        this.dispatchEvent(new Event('change', { bubbles: true }));
       }
     },
   })
@@ -189,13 +188,21 @@ export default CustomElement
       '~mousedown': 'onControlMouseOrTouch',
       '~mousemove': 'onControlMouseOrTouch',
       '~mouseout': 'onControlMouseOrTouch',
-      '~touchmove': 'onControlMouseOrTouch',
       touchstart: 'onControlMouseOrTouch',
+      '~touchmove': 'onControlMouseOrTouch',
       '~touchleave': 'onControlMouseOrTouch',
       '~touchcancel': 'onControlMouseOrTouch',
       '~touchend': 'onControlMouseOrTouch',
       touchend: 'onControlFinish',
       click: 'onControlFinish',
+      '~change'(event) {
+        // Change event will be rethrown by ControlMixin
+        // Track value to avoid double dispatch
+        if (this._lastDispatchedChangeValue === this._value) {
+          event.stopPropagation();
+        }
+        this._lastDispatchedChangeValue = this._value;
+      },
     },
   })
   .expressions({
