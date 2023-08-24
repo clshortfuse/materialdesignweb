@@ -50,27 +50,27 @@ export default function FlexableMixin(Base) {
         flex-direction: row;
       }
 
-      :host(:where([row][y="start"], [x="start"])) {
+      :host(:where([row][y="start"], [x="start"]:not([row])) {
         align-items: flex-start;
       }
 
-      :host(:where([row][y="end"], [x="end"])) {
+      :host(:where([row][y="end"], [x="end"]:not([row])) {
         align-items: flex-end;
       }
 
-      :host(:where([row][y="center"], [x="center"])) {
+      :host(:where([row][y="center"], [x="center"]:not([row])) {
         align-items: center;
       }
 
-      :host(:where([row][y="between"], [x="between"])) {
+      :host(:where([row][y="between"], [x="between"]:not([row])) {
         align-items: space-between;
       }
 
-      :host(:where([row][y="around"], [x="around"])) {
+      :host(:where([row][y="around"], [x="around"]:not([row])) {
         align-items: space-around;
       }
 
-      :host(:where([row][y="stretch"], [x="stretch"])) {
+      :host(:where([row][y="stretch"], [x="stretch"]:not([row])) {
         align-items: stretch;
       }
 
