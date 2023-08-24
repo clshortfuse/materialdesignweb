@@ -334,6 +334,7 @@ export default CustomElement
 
       background-color: rgb(var(--mdw-color__surface-container-highest));
       border-radius: inherit;
+      color: rgb(var(--mdw-bg));
     }
 
     #thumb {
@@ -353,7 +354,7 @@ export default CustomElement
 
       border-radius: 50%;
 
-      color: rgb(var(--mdw-bg));
+      color: currentColor;
     }
 
     #thumb::before {
@@ -367,7 +368,7 @@ export default CustomElement
       background-color: currentColor;
       border-radius: 50%;
 
-      transition: background-color 100ms;
+      transition: color 100ms, background-color 100ms;
     }
 
     /* Inactive ticks */
@@ -382,22 +383,23 @@ export default CustomElement
       padding-inline: 2px;
 
       background-clip: content-box;
-      background-image: radial-gradient(circle at 1px, var(--tick-color) 0, var(--tick-color) 1px, transparent 0);
+      background-image: radial-gradient(circle at 1px, currentColor 0, currentColor 1px, transparent 0);
       background-position: -1px 50%;
       background-repeat: repeat-x;
       background-size: calc(100% / (var(--ticks, 0) + 1)) 2px;
     }
 
     #ticks::before {
-      --tick-color: rgb(var(--mdw-color__on-surface-variant));
+      color: rgb(var(--mdw-color__on-surface-variant));
     }
 
     #ticks::after {
-      --tick-color: rgb(var(--mdw-ink));
       /* TODO: Use single-paint implementation */
       padding-inline-end: calc(100% - (100% * var(--value)) + 10px);
 
       z-index: 1;
+
+      color: rgb(var(--mdw-ink));
 
       will-change: padding-inline-end;
     }
@@ -420,7 +422,7 @@ export default CustomElement
       transform: scaleX(var(--value));
       transform-origin: calc(100% * calc(-0.5 * var(--mdw-dir, 1) + 0.5)) 0;
 
-      background-color: rgb(var(--mdw-bg));
+      background-color: currentColor;
 
       will-change: transform;
     }
@@ -503,7 +505,7 @@ export default CustomElement
 
       clip-path: polygon(var(--x-start) var(--y), var(--x-end) var(--y), 50% 100%, var(--x-start) var(--y));
 
-      background-color: rgb(var(--mdw-bg));
+      background-color: currentColor;
     }
 
     #track[disabled] {
