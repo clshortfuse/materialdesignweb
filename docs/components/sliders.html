@@ -19,19 +19,28 @@
         <mdw-slider color="tertiary" min="-10" value="3"></mdw-slider>
         <mdw-slider color="green" min="1" max="5"></mdw-slider>
         <mdw-slider color="custom" min=0 step=5 value=100></mdw-slider>
+        <mdw-slider color="yellow" min=0 max=3 step=1 value=2 thumb-label='Med' oninput="{
+          this.thumbLabel = ['Off', 'Low', 'Med', 'High'][this.valueAsNumber]
+          this.color = ['alias', 'green', 'yellow', 'error'][this.valueAsNumber]
+        }"></mdw-slider>
         <mdw-slider color=secondary value="12" disabled></mdw-slider>
       </mdw-box>
     </section>
     <section>
       <mdw-headline text-padding=0.5em>Discrete</mdw-headline>
       <mdw-box flex=column x=stretch gap=8 padding=24>
-        <mdw-slider value="1" min=0 list="tickmarks" ticks="10" step="10"></mdw-slider>
-        <mdw-slider value="8" ticks="8" min="0" max="64"></mdw-slider>
-        <mdw-slider color="secondary" value="2" min="-10" max="10" ticks="4"></mdw-slider>
-        <mdw-slider color="tertiary" min="0" max="10" ticks="10" value="3"></mdw-slider>
+        <mdw-slider value="1" min=0 list="tickmarks" ticks="9" step="10"></mdw-slider>
+        <mdw-slider value="8" ticks="7" min="0" max="64"></mdw-slider>
+        <mdw-slider color="secondary" value="2" min="-10" max="10" ticks="3"></mdw-slider>
+        <mdw-slider color="tertiary" min="0" max="10" ticks="9" value="3"></mdw-slider>
         <mdw-slider color="green" min="10" max="90" ticks="1"></mdw-slider>
-        <mdw-slider color="custom" min=0 step=5 value=100 ticks="5"></mdw-slider>
-        <mdw-slider color=secondary value="12" disabled ticks="10"></mdw-slider>
+        <mdw-slider color="yellow" ticks=2 min=0 max=3 step=1 value=2 thumb-label='Med' oninput="{
+          this.thumbLabel = ['Off', 'Low', 'Med', 'High'][this.valueAsNumber]
+          this.color = ['alias', 'green', 'yellow', 'error'][this.valueAsNumber]
+        }"></mdw-slider>
+        <mdw-slider color="custom" min=0 step=5 value=100 ticks="4"></mdw-slider>
+        <mdw-slider color=secondary value="12" disabled ticks="9"></mdw-slider>
+        
       </mdw-box>
     </section>
   </demo-page>
