@@ -39,7 +39,7 @@ export function attrNameFromPropName(name) {
 
 export const CHROME_VERSION = Number.parseFloat(navigator.userAgent.match(/Chrome\/([\d.]+)/)?.[1]);
 export const FIREFOX_VERSION = Number.parseFloat(navigator.userAgent.match(/Firefox\/([\d.]+)/)?.[1]);
-export const SAFARI_VERSION = Number.isNaN(CHROME_VERSION)
+export const SAFARI_VERSION = CHROME_VERSION || !navigator.userAgent.includes('AppleWebKit')
   ? Number.NaN
   : Number.parseFloat(navigator.userAgent.match(/Version\/([\d.]+)/)?.[1]);
 
