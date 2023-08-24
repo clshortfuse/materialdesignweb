@@ -15,13 +15,7 @@ export default CustomElement
   .mixin(FlexableMixin)
   .mixin(ResizeObserverMixin)
   .observe({
-    inline: 'boolean',
     grid: 'boolean',
-    contentPadding: 'boolean',
-    block: {
-      type: 'boolean',
-      empty: true,
-    },
     columns: 'integer',
     _autoColumns: {
       type: 'integer',
@@ -53,18 +47,6 @@ export default CustomElement
     },
   })
   .css`
-    :host {
-      display: block;
-    }
-    
-    :host([inline]) {
-      display: inline-block;
-    }
-    
-    :host([flex]:where([inline])) {
-      display: inline-flex;
-    }
-
     :host([color]) {
       background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
@@ -89,8 +71,6 @@ export default CustomElement
       block-size: inherit;
       inline-size: inherit;
     }
-
-    #slot[flex]::slotted([col-span="100%"]) { flex: 1; }
 
     :host([grid]) {
       --mdw-grid__columns: 4;
@@ -145,6 +125,18 @@ export default CustomElement
       --mdw-grid__columns__4: 0;
       --mdw-grid__columns__8: 0;
       --mdw-grid__columns__12: 1;
+    }
+
+    #slot[flex]::slotted([flex-0]) {
+      flex: 0;
+    }
+
+    #slot[flex]::slotted([flex-1]) {
+      flex: 1;
+    }
+
+    #slot[flex]::slotted([flex-none]) {
+      flex: none;
     }
 
     #slot[grid]::slotted(*) {
@@ -208,5 +200,10 @@ export default CustomElement
       return null;
     },
   })
-  .html`<slot id=slot type-style={typeStyle} grid={grid} columns={_computedColumns}></slot>`
+  .expressions({
+    _isFlex({ block, grid }) {
+      return !block && !grid;
+    },
+  })
+  .html`<slot id=slot type-style={typeStyle} grid={grid} flex={!_isFlex} columns={_computedColumns}></slot>`
   .autoRegister('mdw-box');

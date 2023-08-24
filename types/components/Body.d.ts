@@ -19,7 +19,9 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     observeResize(): void;
     unobserveResize(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    flex: string;
+    block: boolean;
+    inline: boolean;
+    row: boolean;
     x: string;
     y: string;
     gap: number;
@@ -29,10 +31,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     ink: string;
     typeStyle: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    inline: boolean;
     grid: boolean;
-    contentPadding: boolean;
-    block: boolean;
     columns: number;
     _autoColumns: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
@@ -47,7 +46,9 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         observeResize(): void;
         unobserveResize(): void;
     } & {
-        flex: string;
+        block: boolean;
+        inline: boolean;
+        row: boolean;
         x: string;
         y: string;
         gap: number;
@@ -57,10 +58,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         ink: string;
         typeStyle: string;
     } & {
-        inline: boolean;
         grid: boolean;
-        contentPadding: boolean;
-        block: boolean;
         columns: number;
         _autoColumns: number;
     } & {
@@ -74,7 +72,9 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         observeResize(): void;
         unobserveResize(): void;
     } & {
-        flex: string;
+        block: boolean;
+        inline: boolean;
+        row: boolean;
         x: string;
         y: string;
         gap: number;
@@ -84,10 +84,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         ink: string;
         typeStyle: string;
     } & {
-        inline: boolean;
         grid: boolean;
-        contentPadding: boolean;
-        block: boolean;
         columns: number;
         _autoColumns: number;
     } & {
@@ -95,6 +92,168 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     } & {
         onResizeObserved(entry: ResizeObserverEntry): void;
     }): string;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    _isFlex(this: import("../core/CustomElement.js").default & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
+        block: boolean;
+        inline: boolean;
+        row: boolean;
+        x: string;
+        y: string;
+        gap: number;
+        padding: number;
+    } & {
+        color: string;
+        ink: string;
+        typeStyle: string;
+    } & {
+        grid: boolean;
+        columns: number;
+        _autoColumns: number;
+    } & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+    } & {
+        _computedColumns(this: import("../core/CustomElement.js").default & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        }, { columns, _autoColumns }: import("../core/CustomElement.js").default & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        }): string;
+    }, { block, grid }: import("../core/CustomElement.js").default & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
+        block: boolean;
+        inline: boolean;
+        row: boolean;
+        x: string;
+        y: string;
+        gap: number;
+        padding: number;
+    } & {
+        color: string;
+        ink: string;
+        typeStyle: string;
+    } & {
+        grid: boolean;
+        columns: number;
+        _autoColumns: number;
+    } & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+    } & {
+        _computedColumns(this: import("../core/CustomElement.js").default & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        }, { columns, _autoColumns }: import("../core/CustomElement.js").default & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        }): string;
+    }): boolean;
 }, any[]>;
 export default _default;
 //# sourceMappingURL=Body.d.ts.map

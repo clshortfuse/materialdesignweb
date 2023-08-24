@@ -20,9 +20,8 @@ export default Surface
     :host {
       --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);
-
-      display: flex;
       align-items: center;
+      flex-direction: row;
       gap: 8px;
       justify-content: flex-start;
 

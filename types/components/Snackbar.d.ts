@@ -62,12 +62,6 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     shapeStyle: string;
     outlined: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    flex: string;
-    x: string;
-    y: string;
-    gap: number;
-    padding: number;
-}, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
     elevated: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{

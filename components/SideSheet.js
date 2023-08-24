@@ -241,7 +241,8 @@ export default CustomElement
       inset-block: 0;
       inset-inline: 0 auto;
 
-      display: inline-block;
+      display: inline-flex;
+
       overflow-y:auto;
 
       overscroll-behavior: none;

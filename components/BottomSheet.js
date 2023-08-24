@@ -38,7 +38,6 @@ CustomElement
         inset-inline: 0;
         align-self: stretch;
 
-        display: block;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -372,7 +371,6 @@ export default CustomElement
       inset-block-end: 0;
       inset-inline: 0;
 
-      display: inline-block;
       overflow-y: clip;
 
       overscroll-behavior: none;

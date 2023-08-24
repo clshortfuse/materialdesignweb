@@ -5,7 +5,6 @@ import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DensityMixin from '../mixins/DensityMixin.js';
 import ElevationMixin from '../mixins/ElevationMixin.js';
-import FlexableMixin from '../mixins/FlexableMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
@@ -15,7 +14,6 @@ import './IconButton.js';
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
-  .mixin(FlexableMixin)
   .mixin(ShapeMixin)
   .mixin(DensityMixin)
   .mixin(AriaReflectorMixin)
@@ -78,8 +76,8 @@ export default CustomElement
       --mdw-shape__size: var(--mdw-shape__small);
       --mdw-bg: var(--mdw-color__inverse-surface);
       --mdw-ink: var(--mdw-color__inverse-on-surface);
-
       --mdw-type__line-height: var(--mdw-typescale__body-medium__line-height);
+
       display: flex;
       align-items: center;
 

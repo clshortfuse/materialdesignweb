@@ -60,7 +60,7 @@ export default CustomElement
   .html`
     <div id=track selected={checked} disabled={disabled}>
       <div id=thumb selected={checked} pressed={pressed} disabled={disabled}>
-        <mdw-box id=thumb-shape selected={checked} pressed={pressed} hovered={hovered} focused={focused} icon={hasIcon}
+        <mdw-box block id=thumb-shape selected={checked} pressed={pressed} hovered={hovered} focused={focused} icon={hasIcon}
         color={_thumbColor} active={_active} ink={_thumbInk} disabled={disabled}></mdw-box>
         <mdw-icon ink={_iconInk} class=icon id=icon src={src} selected={checked} icon={icon} variation={iconVariation}></mdw-icon>
         <mdw-icon ink={_iconInk} class=icon id=selected-icon src={selectedIconSrc} selected={checked} icon={selectedIcon} variation=filled></mdw-icon>

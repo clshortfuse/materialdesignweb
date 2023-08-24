@@ -43,12 +43,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         pointedState: boolean;
     };
 }, any[]> & {
-    formAssociated: true; /**
-     * @param {string} value
-     * @param {string} min
-     * @param {string} max
-     * @return {?number}
-     */
+    formAssociated: true;
 } & import("../core/CustomElement.js").Class<{
     _ipcListener: EventListener;
     _ipcTarget: EventTarget;

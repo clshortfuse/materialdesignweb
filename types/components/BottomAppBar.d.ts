@@ -79,7 +79,9 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     shapeStyle: string;
     outlined: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    flex: string;
+    block: boolean;
+    inline: boolean;
+    row: boolean;
     x: string;
     y: string;
     gap: number;

@@ -28,28 +28,29 @@ describe('mdw-box', () => {
   });
 
   describe('layout', () => {
-    it('default display:block', () => {
+    it('default flex column', () => {
       const element = html`<mdw-box>foo</mdw-box>`;
-      assert.equal(window.getComputedStyle(element).display, 'block');
+      const { display, flexDirection } = window.getComputedStyle(element);
+      assert.equal(display, 'flex');
+      assert.equal(flexDirection, 'column');
     });
 
     it('[inline]', () => {
       const element = html`<mdw-box inline>foo</mdw-box>`;
-      assert.equal(window.getComputedStyle(element).display, 'inline-block');
+      assert.equal(window.getComputedStyle(element).display, 'inline-flex');
     });
 
-    it('[flex]', () => {
-      const element = html`<mdw-box flex>foo</mdw-box>`;
+    it('[block]', () => {
+      const element = html`<mdw-box block>foo</mdw-box>`;
+      const { display } = window.getComputedStyle(element);
+      assert.equal(display, 'block');
+    });
+
+    it('[row]', () => {
+      const element = html`<mdw-box row>foo</mdw-box>`;
       const { display, flexDirection } = window.getComputedStyle(element);
       assert.equal(display, 'flex');
       assert.equal(flexDirection, 'row');
-    });
-
-    it('[flex=column]', () => {
-      const element = html`<mdw-box flex=column>foo</mdw-box>`;
-      const { display, flexDirection } = window.getComputedStyle(element);
-      assert.equal(display, 'flex');
-      assert.equal(flexDirection, 'column');
     });
 
     it('[grid]', () => {

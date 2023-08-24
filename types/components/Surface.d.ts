@@ -52,7 +52,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     shapeStyle: string;
     outlined: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    flex: string;
+    block: boolean;
+    inline: boolean;
+    row: boolean;
     x: string;
     y: string;
     gap: number;

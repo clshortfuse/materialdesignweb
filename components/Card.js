@@ -70,8 +70,6 @@ export default CustomElement
       --mdw-ink: var(--mdw-color__on-surface);
       position: relative;
 
-      display: block;
-
       color: rgb(var(--mdw-ink));
 
       font: var(--mdw-type__font);

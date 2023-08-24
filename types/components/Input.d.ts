@@ -33503,7 +33503,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         observeResize(): void;
         unobserveResize(): void;
     } & {
-        flex: string;
+        block: boolean;
+        inline: boolean;
+        row: boolean;
         x: string;
         y: string;
         gap: number;
@@ -33513,10 +33515,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         ink: string;
         typeStyle: string;
     } & {
-        inline: boolean;
         grid: boolean;
-        contentPadding: boolean;
-        block: boolean;
         columns: number;
         _autoColumns: number;
     } & {
@@ -33531,7 +33530,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             observeResize(): void;
             unobserveResize(): void;
         } & {
-            flex: string;
+            block: boolean;
+            inline: boolean;
+            row: boolean;
             x: string;
             y: string;
             gap: number;
@@ -33541,10 +33542,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             ink: string;
             typeStyle: string;
         } & {
-            inline: boolean;
             grid: boolean;
-            contentPadding: boolean;
-            block: boolean;
             columns: number;
             _autoColumns: number;
         } & {
@@ -33558,7 +33556,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             observeResize(): void;
             unobserveResize(): void;
         } & {
-            flex: string;
+            block: boolean;
+            inline: boolean;
+            row: boolean;
             x: string;
             y: string;
             gap: number;
@@ -33568,10 +33568,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             ink: string;
             typeStyle: string;
         } & {
-            inline: boolean;
             grid: boolean;
-            contentPadding: boolean;
-            block: boolean;
             columns: number;
             _autoColumns: number;
         } & {
@@ -33579,6 +33576,168 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         } & {
             onResizeObserved(entry: ResizeObserverEntry): void;
         }): string;
+    } & {
+        _isFlex(this: CustomElement & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        } & {
+            _computedColumns(this: CustomElement & {
+                _resizeObserverEnabled: boolean;
+            } & {
+                onResizeObserved(entry: ResizeObserverEntry): void;
+                observeResize(): void;
+                unobserveResize(): void;
+            } & {
+                block: boolean;
+                inline: boolean;
+                row: boolean;
+                x: string;
+                y: string;
+                gap: number;
+                padding: number;
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                grid: boolean;
+                columns: number;
+                _autoColumns: number;
+            } & {
+                _resizeObserverEnabled: boolean;
+            } & {
+                onResizeObserved(entry: ResizeObserverEntry): void;
+            }, { columns, _autoColumns }: CustomElement & {
+                _resizeObserverEnabled: boolean;
+            } & {
+                onResizeObserved(entry: ResizeObserverEntry): void;
+                observeResize(): void;
+                unobserveResize(): void;
+            } & {
+                block: boolean;
+                inline: boolean;
+                row: boolean;
+                x: string;
+                y: string;
+                gap: number;
+                padding: number;
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                grid: boolean;
+                columns: number;
+                _autoColumns: number;
+            } & {
+                _resizeObserverEnabled: boolean;
+            } & {
+                onResizeObserved(entry: ResizeObserverEntry): void;
+            }): string;
+        }, { block, grid }: CustomElement & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        } & {
+            _computedColumns(this: CustomElement & {
+                _resizeObserverEnabled: boolean;
+            } & {
+                onResizeObserved(entry: ResizeObserverEntry): void;
+                observeResize(): void;
+                unobserveResize(): void;
+            } & {
+                block: boolean;
+                inline: boolean;
+                row: boolean;
+                x: string;
+                y: string;
+                gap: number;
+                padding: number;
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                grid: boolean;
+                columns: number;
+                _autoColumns: number;
+            } & {
+                _resizeObserverEnabled: boolean;
+            } & {
+                onResizeObserved(entry: ResizeObserverEntry): void;
+            }, { columns, _autoColumns }: CustomElement & {
+                _resizeObserverEnabled: boolean;
+            } & {
+                onResizeObserved(entry: ResizeObserverEntry): void;
+                observeResize(): void;
+                unobserveResize(): void;
+            } & {
+                block: boolean;
+                inline: boolean;
+                row: boolean;
+                x: string;
+                y: string;
+                gap: number;
+                padding: number;
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                grid: boolean;
+                columns: number;
+                _autoColumns: number;
+            } & {
+                _resizeObserverEnabled: boolean;
+            } & {
+                onResizeObserved(entry: ResizeObserverEntry): void;
+            }): string;
+        }): boolean;
     } & {
         _ariaRole: string;
         color: {
@@ -41921,147 +42080,10 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                             touchedState: boolean;
                             pointedState: boolean;
                         };
-                    } & {
-                        _lastRippleWeakRef: WeakRef<CustomElement & {
-                            hadRippleHeld: boolean;
-                            hadRippleReleased: boolean;
-                            rippleStarted: boolean;
-                        } & {
-                            rippleState: string;
-                            keepAlive: boolean;
-                            _positionX: number;
-                            _positionY: number;
-                            _radius: number;
-                            holdRipple: boolean;
-                        } & {
-                            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
-                                styles: {
-                                    minHeight: string;
-                                    minWidth: string;
-                                    boxShadow: string;
-                                    top: string;
-                                    left: string;
-                                };
-                            };
-                        } & {
-                            updatePosition(x?: number, y?: number, size?: number): void;
-                            handleRippleComplete(): void;
-                        }>;
-                        _rippleAdded: boolean;
-                    } & {
-                        _lastRipple: CustomElement & {
-                            hadRippleHeld: boolean;
-                            hadRippleReleased: boolean;
-                            rippleStarted: boolean;
-                        } & {
-                            rippleState: string;
-                            keepAlive: boolean;
-                            _positionX: number;
-                            _positionY: number;
-                            _radius: number;
-                            holdRipple: boolean;
-                        } & {
-                            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
-                                styles: {
-                                    minHeight: string;
-                                    minWidth: string;
-                                    boxShadow: string;
-                                    top: string;
-                                    left: string;
-                                };
-                            };
-                        } & {
-                            updatePosition(x?: number, y?: number, size?: number): void;
-                            handleRippleComplete(): void;
-                        };
-                    } & {
-                        addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-                            hadRippleHeld: boolean;
-                            hadRippleReleased: boolean;
-                            rippleStarted: boolean;
-                        } & {
-                            rippleState: string;
-                            keepAlive: boolean;
-                            _positionX: number;
-                            _positionY: number;
-                            _radius: number;
-                            holdRipple: boolean;
-                        } & {
-                            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
-                                styles: {
-                                    minHeight: string;
-                                    minWidth: string;
-                                    boxShadow: string;
-                                    top: string;
-                                    left: string;
-                                };
-                            };
-                        } & {
-                            updatePosition(x?: number, y?: number, size?: number): void;
-                            handleRippleComplete(): void;
-                        };
-                    } & {
-                        color: string;
-                        ink: string;
-                        typeStyle: string;
-                    } & {
-                        _ariaRole: string;
-                        stateLayer: boolean;
-                    } & {
-                        leading: string;
-                        avatar: string;
-                        avatarColor: string;
-                        avatarSrc: string;
-                        src: string;
-                        alt: string;
-                        icon: string;
-                        iconInk: string;
-                        iconSrc: string;
-                        iconVariation: string;
-                        checkbox: string;
-                        radio: string;
-                        selectionColor: string;
-                        selected: boolean;
-                        supporting: string;
-                        trailing: string;
-                        trailingIcon: string;
-                        trailingIconInk: string;
-                        trailingIconSrc: string;
-                        divider: boolean;
-                        video: boolean;
-                        lines: number;
-                        _supportingSlotted: boolean;
-                    } & {
-                        disabledState: boolean;
+                    } & ... 6 more ... & {
+                        ...;
                     }): boolean;
-                    checkboxClass(this: CustomElement & {
-                        href: string;
-                        target: string;
-                        download: string;
-                        ping: string;
-                        rel: string;
-                        hreflang: string;
-                        referrerPolicy: string;
-                    } & {
-                        origin: string;
-                        protocol: string;
-                        username: string;
-                        password: string;
-                        host: string;
-                        hostname: string;
-                        port: string;
-                        pathname: string;
-                        search: string;
-                        hash: string;
-                    } & object & {
-                        _ariaRole: string;
-                    } & {
-                        onConnectAriaValues: Map<string, string>;
-                        hasFiredConnected: boolean;
-                    } & {
-                        readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | ... 10 more ... | "role"): string | ShadowRoot;
-                        updateAriaProperty(name: "shadowRoot" | ... 37 more ... | "role", value: string): void;
-                    } & ... 9 more ... & {
+                    checkboxClass(this: CustomElement & ... 15 more ... & {
                         ...;
                     }): string;
                     radioClass(this: CustomElement & ... 15 more ... & {
@@ -43701,7 +43723,9 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
     observeResize(): void;
     unobserveResize(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    flex: string;
+    block: boolean;
+    inline: boolean;
+    row: boolean;
     x: string;
     y: string;
     gap: number;
@@ -43711,10 +43735,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
     ink: string;
     typeStyle: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    inline: boolean;
     grid: boolean;
-    contentPadding: boolean;
-    block: boolean;
     columns: number;
     _autoColumns: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
@@ -43729,7 +43750,9 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         observeResize(): void;
         unobserveResize(): void;
     } & {
-        flex: string;
+        block: boolean;
+        inline: boolean;
+        row: boolean;
         x: string;
         y: string;
         gap: number;
@@ -43739,10 +43762,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         ink: string;
         typeStyle: string;
     } & {
-        inline: boolean;
         grid: boolean;
-        contentPadding: boolean;
-        block: boolean;
         columns: number;
         _autoColumns: number;
     } & {
@@ -43756,7 +43776,9 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         observeResize(): void;
         unobserveResize(): void;
     } & {
-        flex: string;
+        block: boolean;
+        inline: boolean;
+        row: boolean;
         x: string;
         y: string;
         gap: number;
@@ -43766,10 +43788,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         ink: string;
         typeStyle: string;
     } & {
-        inline: boolean;
         grid: boolean;
-        contentPadding: boolean;
-        block: boolean;
         columns: number;
         _autoColumns: number;
     } & {
@@ -43777,6 +43796,168 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
     } & {
         onResizeObserved(entry: ResizeObserverEntry): void;
     }): string;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    _isFlex(this: CustomElement & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
+        block: boolean;
+        inline: boolean;
+        row: boolean;
+        x: string;
+        y: string;
+        gap: number;
+        padding: number;
+    } & {
+        color: string;
+        ink: string;
+        typeStyle: string;
+    } & {
+        grid: boolean;
+        columns: number;
+        _autoColumns: number;
+    } & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+    } & {
+        _computedColumns(this: CustomElement & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        }, { columns, _autoColumns }: CustomElement & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        }): string;
+    }, { block, grid }: CustomElement & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
+        block: boolean;
+        inline: boolean;
+        row: boolean;
+        x: string;
+        y: string;
+        gap: number;
+        padding: number;
+    } & {
+        color: string;
+        ink: string;
+        typeStyle: string;
+    } & {
+        grid: boolean;
+        columns: number;
+        _autoColumns: number;
+    } & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+    } & {
+        _computedColumns(this: CustomElement & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        }, { columns, _autoColumns }: CustomElement & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+            observeResize(): void;
+            unobserveResize(): void;
+        } & {
+            block: boolean;
+            inline: boolean;
+            row: boolean;
+            x: string;
+            y: string;
+            gap: number;
+            padding: number;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            grid: boolean;
+            columns: number;
+            _autoColumns: number;
+        } & {
+            _resizeObserverEnabled: boolean;
+        } & {
+            onResizeObserved(entry: ResizeObserverEntry): void;
+        }): string;
+    }): boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
     color: {
@@ -80999,34 +81180,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             } & {
                 disabledState: boolean;
             } & {
-                isInteractive(this: CustomElement & {
-                    href: string;
-                    target: string;
-                    download: string;
-                    ping: string;
-                    rel: string;
-                    hreflang: string;
-                    referrerPolicy: string;
-                } & {
-                    origin: string;
-                    protocol: string;
-                    username: string;
-                    password: string;
-                    host: string;
-                    hostname: string;
-                    port: string;
-                    pathname: string;
-                    search: string;
-                    hash: string;
-                } & object & {
-                    _ariaRole: string;
-                } & {
-                    onConnectAriaValues: Map<string, string>;
-                    hasFiredConnected: boolean;
-                } & {
-                    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-                    updateAriaProperty(name: "shadowRoot" | ... 37 more ... | "role", value: string): void;
-                } & ... 9 more ... & {
+                isInteractive(this: CustomElement & ... 15 more ... & {
                     ...;
                 }, { href }: CustomElement & {
                     href: string;
@@ -81103,112 +81257,15 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                         hadRippleReleased: boolean;
                         rippleStarted: boolean;
                     } & {
-                        rippleState: string;
-                        keepAlive: boolean;
-                        _positionX: number;
-                        _positionY: number;
-                        _radius: number;
-                        holdRipple: boolean;
+                        ...;
                     } & {
-                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
-                            styles: {
-                                minHeight: string;
-                                minWidth: string;
-                                boxShadow: string;
-                                top: string;
-                                left: string;
-                            };
-                        };
+                        ...;
                     } & {
-                        updatePosition(x?: number, y?: number, size?: number): void;
-                        handleRippleComplete(): void;
+                        ...;
                     }>;
                     _rippleAdded: boolean;
-                } & {
-                    _lastRipple: CustomElement & {
-                        hadRippleHeld: boolean;
-                        hadRippleReleased: boolean;
-                        rippleStarted: boolean;
-                    } & {
-                        rippleState: string;
-                        keepAlive: boolean;
-                        _positionX: number;
-                        _positionY: number;
-                        _radius: number;
-                        holdRipple: boolean;
-                    } & {
-                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
-                            styles: {
-                                minHeight: string;
-                                minWidth: string;
-                                boxShadow: string;
-                                top: string;
-                                left: string;
-                            };
-                        };
-                    } & {
-                        updatePosition(x?: number, y?: number, size?: number): void;
-                        handleRippleComplete(): void;
-                    };
-                } & {
-                    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-                        hadRippleHeld: boolean;
-                        hadRippleReleased: boolean;
-                        rippleStarted: boolean;
-                    } & {
-                        rippleState: string;
-                        keepAlive: boolean;
-                        _positionX: number;
-                        _positionY: number;
-                        _radius: number;
-                        holdRipple: boolean;
-                    } & {
-                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
-                            styles: {
-                                minHeight: string;
-                                minWidth: string;
-                                boxShadow: string;
-                                top: string;
-                                left: string;
-                            };
-                        };
-                    } & {
-                        updatePosition(x?: number, y?: number, size?: number): void;
-                        handleRippleComplete(): void;
-                    };
-                } & {
-                    color: string;
-                    ink: string;
-                    typeStyle: string;
-                } & {
-                    _ariaRole: string;
-                    stateLayer: boolean;
-                } & {
-                    leading: string;
-                    avatar: string;
-                    avatarColor: string;
-                    avatarSrc: string;
-                    src: string;
-                    alt: string;
-                    icon: string;
-                    iconInk: string;
-                    iconSrc: string;
-                    iconVariation: string;
-                    checkbox: string;
-                    radio: string;
-                    selectionColor: string;
-                    selected: boolean;
-                    supporting: string;
-                    trailing: string;
-                    trailingIcon: string;
-                    trailingIconInk: string;
-                    trailingIconSrc: string;
-                    divider: boolean;
-                    video: boolean;
-                    lines: number;
-                    _supportingSlotted: boolean;
-                } & {
-                    disabledState: boolean;
+                } & ... 5 more ... & {
+                    ...;
                 }): boolean;
                 hasSupporting(this: CustomElement & ... 15 more ... & {
                     ...;

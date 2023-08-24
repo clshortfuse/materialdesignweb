@@ -4,12 +4,9 @@
 export default function FlexableMixin(Base) {
   return Base
     .observe({
-      flex: {
-        type: 'string',
-        empty: 'row',
-        /** @type {'row'|'column'} */
-        value: 'row',
-      },
+      block: 'boolean',
+      inline: 'boolean',
+      row: 'boolean',
       x: {
         type: 'string',
         empty: 'start',
@@ -29,86 +26,106 @@ export default function FlexableMixin(Base) {
       /* https://css-tricks.com/snippets/css/a-guide-to-flexbox/ */
 
       :host{
-        box-sizing: border-box;
-      }
-
-      :host([flex]) {
-        display:flex;
-      }
-
-      :host(:where([flex])) {
+        display: flex;
         align-items: flex-start;
-        justify-content: flex-start;
-      }
-
-      :host(:where([flex="column"])) {
         flex-direction: column;
+        justify-content: flex-start;
+
       }
 
-      :host(:where([flex=""][y="start"], [flex="column"][x="start"])) {
+      :host(:where([inline])) {
+        display: inline-flex;
+      }
+
+      :host(:where([block])) {
+        display: block;
+      }
+      
+      
+      :host(:where([inline][block])) {
+        display: inline-block;
+      }
+
+      :host(:where([row])) {
+        flex-direction: row;
+      }
+
+      :host(:where([row][y="start"], [x="start"])) {
         align-items: flex-start;
       }
 
-      :host(:where([flex=""][y="end"], [flex="column"][x="end"])) {
+      :host(:where([row][y="end"], [x="end"])) {
         align-items: flex-end;
       }
 
-      :host(:where([flex=""][y="center"], [flex="column"][x="center"])) {
+      :host(:where([row][y="center"], [x="center"])) {
         align-items: center;
       }
 
-      :host(:where([flex=""][y="between"], [flex="column"][x="between"])) {
+      :host(:where([row][y="between"], [x="between"])) {
         align-items: space-between;
       }
 
-      :host(:where([flex=""][y="around"], [flex="column"][x="around"])) {
+      :host(:where([row][y="around"], [x="around"])) {
         align-items: space-around;
       }
 
-      :host(:where([flex=""][y="stretch"], [flex="column"][x="stretch"])) {
+      :host(:where([row][y="stretch"], [x="stretch"])) {
         align-items: stretch;
       }
 
-      :host(:where([flex=""][x="start"], [flex="column"][y="start"])) {
+      :host(:where([row][x="start"], [y="start"]:not([row]))) {
         justify-content: flex-start;
       }
 
-      :host(:where([flex=""][x="end"], [flex="column"][y="end"])) {
+      :host(:where([row][x="end"], [y="end"]:not([row]))) {
         justify-content: flex-end;
       }
 
-      :host(:where([flex=""][x="center"], [flex="column"][y="center"])) {
+      :host(:where([row][x="center"], [y="center"]:not([row]))) {
         justify-content: center;
       }
 
-      :host(:where([flex=""][x="between"], [flex="column"][y="between"])) {
+      :host(:where([row][x="between"], [y="between"]:not([row]))) {
         justify-content: space-between;
       }
 
-      :host(:where([flex=""][x="stretch"], [flex="column"][y="stretch"])) {
+      :host(:where([row][x="stretch"], [y="stretch"]:not([row]))) {
         justify-content: stretch;
       }
 
-      :host([wrap]) {
+      :host(:where([wrap])) {
         flex-wrap: wrap;
       }
 
-      :host([wrap="reverse"]) {
+      :host(:where([wrap="reverse"])) {
         flex-wrap: wrap-reverse;
       }
 
-      :host([gap="4"]) {gap: 4px;}
-      :host([gap="8"]) {gap: 8px;}
-      :host([gap="12"]) {gap: 12px;}
-      :host([gap="16"]) {gap: 16px;}
-      :host([gap="20"]) {gap: 20px;}
-      :host([gap="24"]) {gap: 24px;}
+      :host(:where([gap="4"])) {gap: 4px;}
+      :host(:where([gap="8"])) {gap: 8px;}
+      :host(:where([gap="12"])) {gap: 12px;}
+      :host(:where([gap="16"])) {gap: 16px;}
+      :host(:where([gap="20"])) {gap: 20px;}
+      :host(:where([gap="24"])) {gap: 24px;}
 
-      :host([padding="4"]) {padding: 4px;}
-      :host([padding="8"]) {padding: 8px;}
-      :host([padding="12"]) {padding: 12px;}
-      :host([padding="16"]) {padding: 16px;}
-      :host([padding="20"]) {padding: 20px;}
-      :host([padding="24"]) {padding: 24px;}
+      :host(:where([padding="4"])) {padding: 4px;}
+      :host(:where([padding="8"])) {padding: 8px;}
+      :host(:where([padding="12"])) {padding: 12px;}
+      :host(:where([padding="16"])) {padding: 16px;}
+      :host(:where([padding="20"])) {padding: 20px;}
+      :host(:where([padding="24"])) {padding: 24px;}
+      :host(:where([padding-x="4"])) {padding-inline: 4px;}
+      :host(:where([padding-x="8"])) {padding-inline: 8px;}
+      :host(:where([padding-x="12"])) {padding-inline: 12px;}
+      :host(:where([padding-x="16"])) {padding-inline: 16px;}
+      :host(:where([padding-x="20"])) {padding-inline: 20px;}
+      :host(:where([padding-x="24"])) {padding-inline: 24px;}
+      :host(:where([padding-y="4"])) {padding-block: 4px;}
+      :host(:where([padding-y="8"])) {padding-block: 8px;}
+      :host(:where([padding-y="12"])) {padding-block: 12px;}
+      :host(:where([padding-y="16"])) {padding-block: 16px;}
+      :host(:where([padding-y="20"])) {padding-block: 20px;}
+      :host(:where([padding-y="24"])) {padding-block: 24px;}
     `;
 }

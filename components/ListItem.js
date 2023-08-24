@@ -1,5 +1,6 @@
 // https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 
+import './Box.js';
 import './CheckboxIcon.js';
 import './RadioIcon.js';
 import './Divider.js';
@@ -75,7 +76,7 @@ export default CustomElement
   .html`
     <mdw-checkbox-icon id=checkbox mdw-if={checkbox} aria-hidden=true class={checkboxClass} color={selectionColor} disabled={disabledState} icon=check selected={selected}></mdw-checkbox-icon>
     <mdw-radio-icon id=radio mdw-if={radio} aria-hidden=true class={radioClass} disabled={disabledState} ink={selectionColor} selected={selected}></mdw-radio-icon>
-    <mdw-box mdw-if={avatar} id=avatar color={avatarColor} type-style=title-medium src={AvatarSrc}
+    <mdw-box mdw-if={avatar} id=avatar color={avatarColor} x=center y=center type-style=title-medium src={AvatarSrc}
       aria-hidden=true>{avatar}</mdw-box>
     <mdw-icon mdw-if={icon} id=icon ink={iconInk} src={iconSrc} aria-hidden=true icon={icon} variation={computedIconVariation}></mdw-icon>
     <img id=img mdw-if={src} src={src} alt={alt} video={video} />
@@ -284,10 +285,6 @@ export default CustomElement
     }
 
     #avatar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
       block-size: 40px;
       inline-size: 40px;
 
