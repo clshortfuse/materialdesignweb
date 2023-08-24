@@ -129,6 +129,10 @@ export default CustomElement
         this._valueAsText = roundedValue.toString(10);
         if (isTouch && SAFARI_VERSION) {
           // Safari does not update input when drag wasn't initiated at thumb
+          if (event.type === 'touchstart') {
+            // Default touch action on Safari is to magnify when on track
+            event.preventDefault();
+          }
           const { _input } = this;
           if (_input.valueAsNumber !== roundedValue) {
             _input.valueAsNumber = roundedValue;
@@ -186,7 +190,7 @@ export default CustomElement
       '~mousemove': 'onControlMouseOrTouch',
       '~mouseout': 'onControlMouseOrTouch',
       '~touchmove': 'onControlMouseOrTouch',
-      '~touchstart': 'onControlMouseOrTouch',
+      touchstart: 'onControlMouseOrTouch',
       '~touchleave': 'onControlMouseOrTouch',
       '~touchcancel': 'onControlMouseOrTouch',
       '~touchend': 'onControlMouseOrTouch',
