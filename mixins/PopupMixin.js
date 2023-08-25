@@ -3,6 +3,7 @@ import { canAnchorPopup } from '../utils/popup.js';
 
 import DelegatesFocusMixin from './DelegatesFocusMixin.js';
 import '../components/Scrim.js';
+import ResizeObserverMixin from './ResizeObserverMixin.js';
 
 const supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
@@ -13,7 +14,6 @@ const supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
  * @prop {boolean} [centered=false]
  * @prop {Record<string, any>} [state]
  * @prop {Record<string, any>} [previousState]
- * @prop {MouseEvent|PointerEvent|HTMLElement|Element} [originalEvent]
  * @prop {any} [pendingResizeOperation]
  * @prop {window['history']['scrollRestoration']} [scrollRestoration]
  */
@@ -25,17 +25,14 @@ const OPEN_POPUPS = [];
  * @return {void}
  */
 function onWindowResize() {
-  const lastOpenPopup = OPEN_POPUPS.at(-1);
-  if (!lastOpenPopup || !lastOpenPopup.originalEvent) {
-    return;
+  // Fire in popup order
+  for (const { element } of OPEN_POPUPS) {
+    if (element._pendingResizeOperation) {
+      cancelAnimationFrame(element._pendingResizeOperation);
+      element._pendingResizeOperation = null;
+    }
+    element.schedulePopupPosition();
   }
-  if (lastOpenPopup.pendingResizeOperation) {
-    cancelAnimationFrame(lastOpenPopup.pendingResizeOperation);
-  }
-  lastOpenPopup.pendingResizeOperation = requestAnimationFrame(() => {
-    lastOpenPopup.element.updatePopupPosition(lastOpenPopup.originalEvent);
-    lastOpenPopup.pendingResizeOperation = null;
-  });
 }
 
 /**
@@ -82,10 +79,11 @@ function onBeforeUnload(event) {
 export default function PopupMixin(Base) {
   return Base
     .mixin(DelegatesFocusMixin)
+    .mixin(ResizeObserverMixin)
     .observe({
       open: 'boolean',
       modal: 'boolean',
-      _isNativeModal: 'boolean',
+      native: 'boolean',
       scrollable: 'boolean',
       matchSourceWidth: 'boolean',
       _currentFlow: 'string',
@@ -101,6 +99,8 @@ export default function PopupMixin(Base) {
       returnValue: '',
       _closing: false,
       _useScrim: false,
+      _isUpdatingPosition: false,
+      _pendingResizeOperation: null,
     })
     .define({
       _dialog() {
@@ -108,42 +108,50 @@ export default function PopupMixin(Base) {
       },
     })
     .methods({
+      schedulePopupPosition() {
+        if (this._pendingResizeOperation) return;
+        this._pendingResizeOperation = requestAnimationFrame(() => {
+          this.updatePopupPosition();
+          this._pendingResizeOperation = null;
+        });
+      },
       /**
        * @param {DOMRect|Element} [anchor]
        * @return {void}
        */
-      updatePopupPosition(anchor) {
+      updatePopupPosition(anchor = this._anchor) {
+        this._isUpdatingPosition = true;
         const flow = this._currentFlow ?? this.flow;
         Object.assign(this.style, {
-          minWidth: '0',
-          minHeight: '0',
-          width: 'auto',
-          height: 'auto',
-          maxWidth: 'none',
-          maxHeight: 'none',
           top: '0',
           left: '0',
+          right: 'auto',
+          bottom: 'auto',
         });
-        this.style.setProperty('--mdw-popup__x-offset', '0');
-        this.style.setProperty('--mdw-popup__y-offset', '0');
 
-        const layoutElement = this._isNativeModal ? this._dialog : this;
+        const layoutElement = this.native ? this._dialog : this;
         Object.assign(layoutElement.style, { width: 'auto', height: 'auto' });
 
         const width = (anchor && this.matchSourceWidth)
           ? anchor.clientWidth
           : 56 * Math.ceil(layoutElement.clientWidth / 56);
 
-        this.style.setProperty('width', `${width}px`);
+        layoutElement.style.setProperty('width', `${width}px`);
 
         const height = layoutElement.clientHeight;
         Object.assign(layoutElement.style, { width: null, height: null });
 
-        const initialRect = this.getBoundingClientRect();
         /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
         const anchorOptions = {
           anchor: anchor == null
-            ? initialRect
+            ? {
+              left: 0,
+              width: window.innerWidth,
+              right: window.innerWidth,
+              top: 0,
+              bottom: window.innerHeight,
+              height: window.innerHeight,
+            }
             : (anchor instanceof Element ? anchor.getBoundingClientRect() : anchor),
           width,
           height,
@@ -255,18 +263,9 @@ export default function PopupMixin(Base) {
           if (result.visibility === 1) break;
         }
 
-        Object.assign(this.style, {
-          top: `${anchorResult.top - initialRect.y}px`,
-          left: `${anchorResult.left - initialRect.x}px`,
-          minWidth: `${anchorResult.right - anchorResult.left}px`,
-          minHeight: `${anchorResult.bottom - anchorResult.top}px`,
-          width: null,
-          height: null,
-          maxWidth: `${anchorResult.right - anchorResult.left}px`,
-          maxHeight: `${anchorResult.bottom - anchorResult.top}px`,
-          transformOrigin: `${anchorResult.transformOriginY} ${anchorResult.transformOriginX}`,
-        });
+        Object.assign(this.style, anchorResult.styles);
         // this.scrollIntoView();
+        this._isUpdatingPosition = false;
       },
       /**
        * @param {Event & {currentTarget: HTMLSlotElement}} event
@@ -288,10 +287,12 @@ export default function PopupMixin(Base) {
       showPopup(source, focus = true, flow = null) {
         if (this.open) return false;
         this.open = true;
+        this._source = source;
+        this._anchor = source;
 
         const { scrim } = this.refs;
         if (this._useScrim) {
-          if (this._isNativeModal) {
+          if (this.native) {
             document.body.append(scrim);
           } else {
             this.before(scrim);
@@ -332,7 +333,6 @@ export default function PopupMixin(Base) {
 
           window.history.scrollRestoration = 'manual';
           window.history.pushState(newState, document.title);
-          console.debug('Popup pushed page');
           window.addEventListener('popstate', onPopState);
           window.addEventListener('beforeunload', onBeforeUnload);
         }
@@ -351,13 +351,11 @@ export default function PopupMixin(Base) {
           previousFocus,
           state: newState,
           previousState,
-          originalEvent: source,
           scrollRestoration,
         });
 
         // Overrideable
         if (focus) {
-          console.log('focusing!');
           this.focus();
         }
 
@@ -374,7 +372,7 @@ export default function PopupMixin(Base) {
         this.modal = true;
         if (supportsHTMLDialogElement) {
           this._dialog.showModal();
-          this._isNativeModal = true;
+          this.native = true;
         }
         return this.showPopup(source, focus, flow);
       },
@@ -400,14 +398,15 @@ export default function PopupMixin(Base) {
       close(returnValue = undefined, returnFocus = true) {
         if (!this.open) return false;
         if (this._closing) return false;
+        this._source = null;
         this._closing = true;
         this.modal = false;
 
         // SCRIM
         this.refs.scrim.hidden = true;
 
-        if (this._isNativeModal) {
-          this._isNativeModal = false;
+        if (this.native) {
+          this.native = false;
         } else {
           const main = document.querySelector('main');
           if (main) {
@@ -452,15 +451,15 @@ export default function PopupMixin(Base) {
               }
             }
             if (returnFocus) {
-              console.log('not returning focus');
+              // console.log('not returning focus');
               entry.previousFocus?.focus?.({ preventScroll: true });
             }
             OPEN_POPUPS.splice(i, 1);
             break;
           } else if (this.contains(entry.element)) {
-            console.debug('Closing submenu first');
+            // console.debug('Closing submenu first');
             entry.element.close(false);
-            console.debug('Sub menu closed. Continuing...');
+            // console.debug('Sub menu closed. Continuing...');
           }
         }
         if (!OPEN_POPUPS.length) {
@@ -468,10 +467,20 @@ export default function PopupMixin(Base) {
           window.removeEventListener('beforeunload', onBeforeUnload);
           window.removeEventListener('resize', onWindowResize);
           window.removeEventListener('mousedown', onNavMouseDown, { capture: true });
-          console.debug('All menus closed');
+          // console.debug('All menus closed');
         }
         this._closing = false;
         return true;
+      },
+    })
+
+    .overrides({
+      onResizeObserved(entry) {
+        if (!this.open || this._closing) return;
+        if (this._isUpdatingPosition) {
+          return;
+        }
+        this.updatePopupPosition();
       },
     })
     .expressions({
@@ -493,8 +502,6 @@ export default function PopupMixin(Base) {
       --mdw-popup__standard-easing: var(--mdw-motion-standard-easing, cubic-bezier(0.4, 0.0, 0.2, 1));
       --mdw-popup__deceleration-easing: var(--mdw-motion-deceleration-easing, cubic-bezier(0.0, 0.0, 0.2, 1));
       --mdw-popup__fade-in-duration: var(--mdw-motion-fade-in-duration, 150ms);
-      --mdw-popup__x-offset: -50%;
-      --mdw-popup__y-offset: -50%;
 
       --mdw-shape__size: 28px;
 
@@ -505,10 +512,8 @@ export default function PopupMixin(Base) {
 
       position: fixed;
 
-      /* stylelint-disable-next-line liberty/use-logical-spec */
-      top: 50%;
-      /* stylelint-disable-next-line liberty/use-logical-spec */
-      left: 50%;
+      inset-block-start: 0;
+      inset-inline-start: 0;
       align-self: center;
       justify-self: center;
 
@@ -533,9 +538,6 @@ export default function PopupMixin(Base) {
 
       opacity: 0;
 
-      transform: translateX(var(--mdw-popup__x-offset)) translateY(var(--mdw-popup__y-offset)) scale(0) ;
-      /* visiblity:hidden still registers events, hide from pointer with scale(0) */
-      transform-origin: top center;
       visibility: hidden;
       z-index: 24;
 
@@ -544,12 +546,11 @@ export default function PopupMixin(Base) {
       font: var(--mdw-type__font);
       letter-spacing: var(--mdw-type__letter-spacing);
 
-      transition-delay: 0s, 200ms, 200ms;
-      transition-duration: 200ms, 0s, 0s;
-      transition-property: opacity, transform, visibility;
+      transition-delay: 0s, 200ms;
+      transition-duration: 200ms, 0s;
+      transition-property: opacity, visibility;
       transition-timing-function: ease-out;
 
-      will-change: display, transform;
       will-change: opacity;
 
     }
@@ -559,15 +560,16 @@ export default function PopupMixin(Base) {
 
       opacity: 1;
 
-      transform: translateX(var(--mdw-popup__x-offset)) translateY(var(--mdw-popup__y-offset)) scale(1);
-      visibility: visible;
+      transform: scale(1);
+      visibility: inherit;
 
       transition-delay: 0s;
-      transition-duration: 200ms, 0s, 0s;
       transition-timing-function: ease-in;
     }
 
-    
+    :host([native][open]) {
+      opacity: 0;
+    }
 
     #dialog {
       position: static;
@@ -668,10 +670,10 @@ export default function PopupMixin(Base) {
       
       place-items: inherit;
 
-      height: 100%;
-      max-height: none;
-      width: 100%;
-      max-width: none;
+      block-size: 100%;
+      max-block-size: none;
+      inline-size: 100%;
+      max-inline-size: none;
 
       flex: 1;
     }
@@ -681,12 +683,12 @@ export default function PopupMixin(Base) {
     #dialog[scrollable][open]:modal {
       overflow:auto;
 
-      height:100%;
-      min-height: none;
-      max-height: inherit;
-      width:100%;
-      min-width: none;
-      max-width: inherit;
+      block-size:100%;
+      min-block-size: none;
+      max-block-size: inherit;
+      inline-size:100%;
+      min-inline-size: none;
+      max-inline-size: inherit;
       flex: inherit;
       padding: inherit;
     }
@@ -709,7 +711,7 @@ export default function PopupMixin(Base) {
         '~click'(event) {
           // Track if click on backdrop
           if (event.target !== event.currentTarget) return;
-          if (!this._isNativeModal) return;
+          if (!this.native) return;
           if (event.offsetX >= 0 && event.offsetX < event.currentTarget.offsetWidth
         && event.offsetY >= 0 && event.offsetY < event.currentTarget.offsetHeight) return;
           const cancelEvent = new Event('cancel', { cancelable: true });

@@ -102,13 +102,13 @@ export default CustomElement
     cancel: { value: 'Cancel' },
     confirm: { value: 'Confirm' },
   })
-  .set({
-    _useScrim: true,
+  .define({
+    /** Dialogs are not anchored to source */
+    _anchor() { return null; },
   })
-  .overrides({
-    updatePopupPosition() {
-      // noop (keep centered);
-    },
+  .set({
+    flow: 'center',
+    _useScrim: true,
   })
   .methods({
     /**
@@ -188,19 +188,9 @@ export default CustomElement
     /* https://m3.material.io/components/dialogs/specs */
 
     :host {
-      --mdw-shape__size: 28px;
-
-      /* padding-inline: 12px; */
-
       --mdw-bg: var(--mdw-color__surface-container-high);
       --mdw-ink: var(--mdw-color__on-surface);
       position: fixed;
-
-      /* stylelint-disable-next-line liberty/use-logical-spec */
-      top: 50%;
-      /* stylelint-disable-next-line liberty/use-logical-spec */
-      left: 50%;
-
       display: flex;
       align-items: flex-start;
       flex-direction: column;
@@ -210,33 +200,15 @@ export default CustomElement
       overscroll-behavior: none;
       overscroll-behavior: contain;
 
-      box-sizing: border-box;
       max-block-size: calc(100% - 40px);
       inline-size: max-content;
       min-inline-size: 280px;
       max-inline-size: min(560px, calc(100% - 40px));
       padding-block-start: 8px;
 
-      pointer-events: none;
-
-      opacity: 0;
-
-      transform: translateX(-50%) translateY(-50%) scale(0);
-      /* visiblity:hidden still registers events, hide from pointer with scale(0) */
-      transform-origin: top center;
-      visibility: hidden;
-
       background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
 
-      font: var(--mdw-type__font);
-      letter-spacing: var(--mdw-type__letter-spacing);
-
-      transition-delay: 0s, 200ms, 200ms;
-      transition-duration: 200ms, 0s, 0s;
-      transition-property: opacity, transform, visibility;
-      transition-timing-function: ease-out;
-      will-change: display, transform, opacity;
     }
 
     #dialog:modal {

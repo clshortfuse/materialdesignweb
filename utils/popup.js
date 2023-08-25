@@ -1,11 +1,21 @@
 /**
+ * @typedef {Object} DOMRectLike
+ * @prop {number} left
+ * @prop {number} right
+ * @prop {number} top
+ * @prop {number} bottom
+ * @prop {number} width
+ * @prop {number} height
+ */
+
+/**
  * @typedef {Object} CanAnchorPopUpOptions
- * @prop {Element|DOMRect} [anchor]
+ * @prop {Element|DOMRectLike} [anchor]
  * @prop {number|'left'|'center'|'right'} [clientX]
  * @prop {number|'top'|'center'|'bottom'} [clientY]
  * @prop {number} [pageX]
  * @prop {number} [pageY]
- * @prop {Element|DOMRect} [popup]
+ * @prop {Element|{width:number, height:number}} [popup]
  * @prop {number} [width]
  * @prop {number} [height]
  * @prop {number} [offsetX] Offset from anchor
@@ -72,7 +82,7 @@ export function canAnchorPopup(options) {
       height = popup.clientHeight;
     } else {
       width = popup.width;
-      height = popup.width;
+      height = popup.height;
     }
   }
 
@@ -86,6 +96,8 @@ export function canAnchorPopup(options) {
   let pageBottom = -margin;
   let pageLeft = margin;
   let pageRight = -margin;
+  const pageWidth = document.documentElement.clientWidth;
+  const pageHeight = document.documentElement.clientHeight;
 
   if (window.visualViewport) {
     pageTop += window.visualViewport.offsetTop;
@@ -93,8 +105,8 @@ export function canAnchorPopup(options) {
     pageLeft += window.visualViewport.offsetLeft;
     pageRight += window.visualViewport.offsetLeft + window.visualViewport.width;
   } else {
-    pageBottom += document.documentElement.clientHeight;
-    pageRight += document.documentElement.clientWidth;
+    pageBottom += pageHeight;
+    pageRight += pageWidth;
   }
 
   const offsetX = options.offsetX ?? 0;
@@ -130,12 +142,19 @@ export function canAnchorPopup(options) {
       right = Math.min(left + width, pageRight);
   }
 
+  const cssTop = `${top}px`;
+  const cssLeft = `${left}px`;
+  const cssBottom = directionX === 'center' ? 'auto' : `${pageHeight - bottom}px`;
+  const cssRight = directionY === 'center' ? 'auto' : `${pageWidth - right}px`;
+
   // compute area
   const fullSize = width * height;
   const realSize = (bottom - top) * (right - left);
 
   const visibility = realSize / fullSize;
 
+  const transformOriginX = directionX === 'center' ? 'center' : (directionX === 'left' ? 'right' : 'left');
+  const transformOriginY = directionY === 'center' ? 'center' : (directionY === 'up' ? 'bottom' : 'top');
   return {
     ...options,
     top,
@@ -143,7 +162,12 @@ export function canAnchorPopup(options) {
     bottom,
     left,
     visibility,
-    transformOriginX: directionX === 'center' ? 'center' : (directionX === 'left' ? 'right' : 'left'),
-    transformOriginY: directionY === 'center' ? 'center' : (directionY === 'up' ? 'bottom' : 'top'),
+    styles: {
+      top: cssTop,
+      bottom: cssBottom,
+      left: cssLeft,
+      right: cssRight,
+      transformOrigin: `${transformOriginY} ${transformOriginX}`,
+    },
   };
 }

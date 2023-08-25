@@ -169,10 +169,7 @@ export default function TooltipTriggerMixin(Base) {
 
         Object.assign(tooltip.style, {
           position: 'fixed',
-          top: `${anchorResult.top}px`,
-          left: `${anchorResult.left}px`,
-          margin: '0',
-          transformOrigin: `${anchorResult.transformOriginY} ${anchorResult.transformOriginX} 0`,
+          ...anchorResult.styles,
         });
       },
       recloneTooltip() {
