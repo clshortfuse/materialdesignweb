@@ -17,8 +17,7 @@ export default Box
     /* https://m3.material.io/components/lists/specs */
 
     :host {
-      display: flex;
-      flex-direction: column;
+      display: block;
 
       padding-block: 8px;
 
