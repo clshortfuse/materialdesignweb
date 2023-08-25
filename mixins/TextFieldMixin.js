@@ -293,7 +293,7 @@ export default function TextFieldMixin(Base) {
 
         transform: none;
 
-        visibility: visible;
+        visibility: inherit;
 
         background-color: transparent;
         border-color: transparent;

@@ -34,7 +34,7 @@ export default Box
 
     :host(:is([active],[peeking])) {
       /* Safari bug: Visiblity not changing without !important or layout reflow */
-      visibility: visible !important;
+      visibility: inherit !important;
     }
   `
   .autoRegister('mdw-tab-panel');

@@ -230,7 +230,7 @@ export default CustomElement
 
     @media (any-pointer: coarse) {
       #touch-target {
-        visibility: visible;
+        visibility: inherit;
       }
     }
   `

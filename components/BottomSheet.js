@@ -398,7 +398,7 @@ export default CustomElement
     :host(:where([open])) {
       pointer-events: auto;
 
-      visibility: visible;
+      visibility: inherit;
 
       transition: visibility 0s;
     }

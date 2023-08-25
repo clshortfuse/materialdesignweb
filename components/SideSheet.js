@@ -273,7 +273,7 @@ export default CustomElement
     }
 
     :host(:where([open])) {
-      visibility: visible;
+      visibility: inherit;
 
       transition: visibility 0s;
     }

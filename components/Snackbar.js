@@ -118,7 +118,7 @@ export default CustomElement
     :host([open]) {
       opacity: 1;
       transform: scale(1);
-      visibility: visible;
+      visibility: inherit;
     }
 
     #content {

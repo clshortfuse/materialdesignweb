@@ -71,7 +71,7 @@ export default Button
     }
 
     #slot[extended] {
-      visibility: visible;
+      visibility: inherit;
 
       color: inherit;
 

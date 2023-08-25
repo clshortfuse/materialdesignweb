@@ -99,16 +99,19 @@
     "custom-property-no-missing-var-function": true,
     "declaration-property-value-disallowed-list": [
       {
-        "/^margin/": "/[^0]/"
+        "/^margin/": "/[^0]/",
+        "/^visibility$/": "/^visible$/"
       },
       {
         "message": "Elements should not set margins. Use padding, or use parent element if styling layout."
+      },
+      {
+        "message": "Use `inherit` of instead of `visible` to respect parent visibility."
       }
     ],
     "rule-selector-property-disallowed-list": [
       {
         "/^(?!:host)[^[]+\\[/": "/^--/"
-        
       },
       { "message": "Avoid using CSS variables for state since they will traverse down the entire tree" },
       { "message": "Avoid constructing containers on shadowed elements since they will not be exposed to children as their offsetParent" }

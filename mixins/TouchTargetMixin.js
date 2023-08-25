@@ -26,7 +26,7 @@ export default function TouchTargetMixin(Base) {
         pointer-events: auto;
       
         transform: translateX(-50%) translateY(-50%);
-        visibility: visible;
+        visibility: inherit;
         z-index: 1;
       
         border-radius: inherit;
