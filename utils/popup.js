@@ -29,9 +29,24 @@
 /** @param {CanAnchorPopUpOptions} options */
 export function canAnchorPopup(options) {
   let { pageX, pageY, directionX, directionY } = options;
+  const pageWidth = document.documentElement.clientWidth;
+  const pageHeight = document.documentElement.clientHeight;
   if (pageX == null || pageY == null) {
     const { clientX, clientY, anchor } = options;
-    const rect = anchor instanceof Element ? anchor.getBoundingClientRect() : anchor;
+    let rect;
+    if (anchor) {
+      rect = anchor instanceof Element ? anchor.getBoundingClientRect() : anchor;
+    } else {
+      rect = {
+        left: 0,
+        width: pageWidth,
+        right: pageWidth,
+        top: 0,
+        bottom: pageHeight,
+        height: pageHeight,
+      };
+    }
+
     if (pageX == null) {
       switch (clientX) {
         case 'left':
@@ -96,8 +111,6 @@ export function canAnchorPopup(options) {
   let pageBottom = -margin;
   let pageLeft = margin;
   let pageRight = -margin;
-  const pageWidth = document.documentElement.clientWidth;
-  const pageHeight = document.documentElement.clientHeight;
 
   if (window.visualViewport) {
     pageTop += window.visualViewport.offsetTop;
@@ -114,38 +127,64 @@ export function canAnchorPopup(options) {
   pageX += offsetX;
   pageY += offsetY;
 
+  let cssTop = 'auto';
+  let cssRight = 'auto';
+  let cssBottom = 'auto';
+  let cssLeft = 'auto';
+  let maxHeight = null;
+  let maxWidth = null;
+
   switch (directionY) {
     case 'up':
       bottom = Math.min(pageY, pageBottom);
       top = Math.max(bottom - height, pageTop);
+      cssBottom = `${pageHeight - bottom}px`;
+      if (top === pageTop) {
+        maxHeight = `${bottom - pageTop}px`;
+      }
       break;
     case 'center':
       top = Math.max(pageY - height / 2, pageTop);
       bottom = Math.min(pageY + height / 2, pageBottom);
+      cssTop = `${top}px`;
+      if (bottom === pageBottom) {
+        maxHeight = `${pageBottom - pageTop}px`;
+      }
       break;
     default:
       top = Math.max(pageY, pageTop);
       bottom = Math.min(top + height, pageBottom);
+      cssTop = `${top}px`;
+      if (bottom === pageBottom) {
+        maxHeight = `${pageBottom - top}px`;
+      }
   }
 
   switch (directionX) {
     case 'left':
       right = Math.min(pageX, pageRight);
       left = Math.max(right - width, pageLeft);
+      cssRight = `${pageWidth - right}px`;
+      if (left === pageLeft) {
+        maxWidth = `${right - pageLeft}px`;
+      }
       break;
     case 'center':
       left = Math.max(pageX - width / 2, pageLeft);
       right = Math.min(pageX + width / 2, pageRight);
+      cssLeft = `${left}px`;
+      if (right === pageRight) {
+        maxWidth = `${pageRight - pageLeft}px`;
+      }
       break;
     default:
       left = Math.max(pageX, pageLeft);
       right = Math.min(left + width, pageRight);
+      cssLeft = `${left}px`;
+      if (right === pageRight) {
+        maxWidth = `${pageRight - left}px`;
+      }
   }
-
-  const cssTop = `${top}px`;
-  const cssLeft = `${left}px`;
-  const cssBottom = directionX === 'center' ? 'auto' : `${pageHeight - bottom}px`;
-  const cssRight = directionY === 'center' ? 'auto' : `${pageWidth - right}px`;
 
   // compute area
   const fullSize = width * height;
@@ -167,6 +206,8 @@ export function canAnchorPopup(options) {
       bottom: cssBottom,
       left: cssLeft,
       right: cssRight,
+      maxWidth,
+      maxHeight,
       transformOrigin: `${transformOriginY} ${transformOriginX}`,
     },
   };

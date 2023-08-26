@@ -104,7 +104,10 @@ export default CustomElement
   })
   .define({
     /** Dialogs are not anchored to source */
-    _anchor() { return null; },
+    _anchor: {
+      get() { return null; },
+      set() { /* noop */ },
+    },
   })
   .set({
     flow: 'center',

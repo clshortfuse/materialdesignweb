@@ -27,11 +27,7 @@ const OPEN_POPUPS = [];
 function onWindowResize() {
   // Fire in popup order
   for (const { element } of OPEN_POPUPS) {
-    if (element._pendingResizeOperation) {
-      cancelAnimationFrame(element._pendingResizeOperation);
-      element._pendingResizeOperation = null;
-    }
-    element.schedulePopupPosition();
+    element.updatePopupPosition();
   }
 }
 
@@ -99,8 +95,6 @@ export default function PopupMixin(Base) {
       returnValue: '',
       _closing: false,
       _useScrim: false,
-      _isUpdatingPosition: false,
-      _pendingResizeOperation: null,
     })
     .define({
       _dialog() {
@@ -108,25 +102,19 @@ export default function PopupMixin(Base) {
       },
     })
     .methods({
-      schedulePopupPosition() {
-        if (this._pendingResizeOperation) return;
-        this._pendingResizeOperation = requestAnimationFrame(() => {
-          this.updatePopupPosition();
-          this._pendingResizeOperation = null;
-        });
-      },
       /**
        * @param {DOMRect|Element} [anchor]
        * @return {void}
        */
       updatePopupPosition(anchor = this._anchor) {
-        this._isUpdatingPosition = true;
         const flow = this._currentFlow ?? this.flow;
         Object.assign(this.style, {
           top: '0',
           left: '0',
           right: 'auto',
           bottom: 'auto',
+          maxWidth: null,
+          maxHeight: null,
         });
 
         const layoutElement = this.native ? this._dialog : this;
@@ -139,20 +127,11 @@ export default function PopupMixin(Base) {
         layoutElement.style.setProperty('width', `${width}px`);
 
         const height = layoutElement.clientHeight;
-        Object.assign(layoutElement.style, { width: null, height: null });
+        Object.assign(layoutElement.style, { height: null });
 
         /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
         const anchorOptions = {
-          anchor: anchor == null
-            ? {
-              left: 0,
-              width: window.innerWidth,
-              right: window.innerWidth,
-              top: 0,
-              bottom: window.innerHeight,
-              height: window.innerHeight,
-            }
-            : (anchor instanceof Element ? anchor.getBoundingClientRect() : anchor),
+          anchor,
           width,
           height,
           margin: this.popupMargin ?? (window.innerWidth < 648 ? 16 : 24),
@@ -263,9 +242,18 @@ export default function PopupMixin(Base) {
           if (result.visibility === 1) break;
         }
 
-        Object.assign(this.style, anchorResult.styles);
+        let { maxWidth, maxHeight } = anchorResult.styles;
+        if (maxWidth || maxHeight) {
+          const styles = window.getComputedStyle(this);
+          if (styles.maxWidth) {
+            maxWidth = `min(${maxWidth}, ${styles.maxWidth})`;
+          }
+          if (styles.maxHeight) {
+            maxHeight = `min(${maxHeight}, ${styles.maxHeight})`;
+          }
+        }
+        Object.assign(this.style, { ...anchorResult.styles, maxWidth, maxHeight });
         // this.scrollIntoView();
-        this._isUpdatingPosition = false;
       },
       /**
        * @param {Event & {currentTarget: HTMLSlotElement}} event
@@ -477,9 +465,6 @@ export default function PopupMixin(Base) {
     .overrides({
       onResizeObserved(entry) {
         if (!this.open || this._closing) return;
-        if (this._isUpdatingPosition) {
-          return;
-        }
         this.updatePopupPosition();
       },
     })

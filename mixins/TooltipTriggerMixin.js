@@ -135,11 +135,22 @@ export default function TooltipTriggerMixin(Base) {
         const tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip);
         // const margin = 8;
         /** @type {import('../utils/popup.js').CanAnchorPopUpOptions} */
+
+        Object.assign(tooltip.style, {
+          top: '0',
+          left: '0',
+          right: 'auto',
+          bottom: 'auto',
+          position: 'fixed',
+          maxWidth: null,
+          maxHeight: null,
+        });
+
         const anchorOptions = {
           anchor: domRect ?? this.getBoundingClientRect(),
           width: tooltip.clientWidth,
           height: tooltip.clientHeight,
-        // margin,
+          // margin,
         };
 
         const isPageRTL = (getComputedStyle(this).direction === 'rtl');

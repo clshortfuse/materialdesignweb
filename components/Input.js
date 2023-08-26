@@ -374,14 +374,8 @@ export default CustomElement
         }
         const value = event.currentTarget.value;
         this._draftInput = value;
-        if (this.autocompleteList != null) {
-          if (this.autocompleteList !== 'custom') {
-            this.applyAutocompleteList();
-          }
-          if (this._expanded) {
-            // May have resized
-            getSharedPopup().updatePopupPosition(this.refs.shape);
-          }
+        if (this.autocompleteList != null && this.autocompleteList !== 'custom') {
+          this.applyAutocompleteList();
         }
         this.resetSuggestion();
         if (value && !this._expanded && this._listbox.length) {
