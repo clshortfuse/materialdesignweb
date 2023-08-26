@@ -14,7 +14,7 @@
     <section>
       <mdw-headline text-padding=0.5em>Standard</mdw-headline>
       <demo-screen color="background">
-        <mdw-tab-list tab-content-id="standard">
+        <mdw-tab-list sticky-parent tab-content-id="standard">
           <mdw-tab href="#standard-flights">Flights</mdw-tab>
           <mdw-tab href="#standard-trips">Trips</mdw-tab>
           <mdw-tab href="#standard-explore">Explore</mdw-tab>
@@ -38,7 +38,7 @@
     <section>
       <mdw-headline text-padding=0.5em>Standard (Icons)</mdw-headline>
       <demo-screen color="background">
-        <mdw-tab-list secondary tab-content-id="standard-icons">
+        <mdw-tab-list sticky-parent secondary tab-content-id="standard-icons">
           <mdw-tab icon=flight href="#standard-icons-flights">Flights</mdw-tab>
           <mdw-tab icon=luggage href="#standard-icons-trips">Trips</mdw-tab>
           <mdw-tab icon=explore href="#standard-icons-explore">Explore</mdw-tab>
@@ -59,7 +59,7 @@
     <section>
       <mdw-headline text-padding=0.5em>Icons only</mdw-headline>
       <demo-screen color="background">
-        <mdw-tab-list mdw-ink=tertiary tab-content-id="icons">
+        <mdw-tab-list sticky-parent mdw-ink=tertiary tab-content-id="icons">
           <mdw-tab icon=flight href="#icons-flights" aria-label="Flights"></mdw-tab>
           <mdw-tab icon=luggage href="#icons-trips" aria-label="Trips"></mdw-tab>
           <mdw-tab icon=explore href="#icons-explore" aria-label="Explore"></mdw-tab>
@@ -80,7 +80,7 @@
     <section>
       <mdw-headline text-padding=0.5em>Mixed sizes</mdw-headline>
       <demo-screen color="background">
-        <mdw-tab-list tab-content-id="mixed">
+        <mdw-tab-list sticky-parent tab-content-id="mixed">
           <mdw-tab icon=flight href="#mixed-flights">Flight</mdw-tab>
           <mdw-tab icon=luggage href="#mixed-trips"></mdw-tab>
           <mdw-tab icon=explore href="#mixed-explore">Oversized label that clips</mdw-tab>
@@ -102,7 +102,7 @@
       <mdw-headline text-padding=0.5em>Themed</mdw-headline>
       <mdw-box row wrap gap=12>
         <demo-screen color="background">
-          <mdw-tab-list outlined color=tertiary-container shape-style="full" tab-content-id="custom" ink="tertiary"
+          <mdw-tab-list sticky-parent outlined color=tertiary-container shape-style="full" tab-content-id="custom" ink="tertiary"
             style="">
             <mdw-tab shape-style=full shape-start icon=flight href="#custom-flights">Full Shape
             </mdw-tab>
@@ -127,7 +127,7 @@
     <section>
       <mdw-headline text-padding=0.5em>Scrolling Tab List</mdw-headline>
       <demo-screen color="background">
-        <mdw-tab-list scrollable tab-content-id="scrollable">
+        <mdw-tab-list sticky-parent scrollable tab-content-id="scrollable">
           <mdw-tab href="#scrollable-1">Tab Item #1</mdw-tab>
           <mdw-tab href="#scrollable-2" icon="filter_2" aria-label="Tab Item #2"></mdw-tab>
           <mdw-tab href="#scrollable-3">Tab Item #3</mdw-tab>

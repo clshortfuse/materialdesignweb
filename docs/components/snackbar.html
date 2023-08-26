@@ -15,9 +15,9 @@
       var $$ = document.querySelectorAll.bind(document);
     </script>
     <section>
-      <h1 slot="heading">Single-line</h1>
+      <mdw-headline text-padding=0.5em>Single-line</mdw-headline>
       <section>
-        <h2 slot="heading">Options</h2>
+        <mdw-headline text-padding=0.5em size=medium>Options</mdw-headline>
         <mdw-box padding=24 gap=16>
           <mdw-checkbox checked onchange="{
                 for (const el of $$('#single-line mdw-snackbar')) {

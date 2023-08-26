@@ -12,8 +12,8 @@
 <body>
   <demo-page>
     <section>
-      <h1 slot="heading">Desktop</h1>
-      <mdw-box x=center gap=16 padding=24>
+      <mdw-headline text-padding=0.5em>Tooltips</mdw-headline>
+      <mdw-box x=center gap=16 padding=24 style="z-index:0;position:relative">
         <mdw-tooltip open>Default</mdw-tooltip>
         <mdw-tooltip open>
           <mdw-icon icon="sunny">Sunny</mdw-icon> Sunny
@@ -31,7 +31,7 @@
     </section>
 
     <section>
-      <h1 slot="heading">Icon Buttons</h1>
+      <mdw-headline text-padding=0.5em>Icon Buttons</mdw-headline>
       <mdw-box x=center gap=16 padding=24>
         <mdw-icon-button icon="sunny">Sunny</mdw-icon-button>
       </mdw-box>

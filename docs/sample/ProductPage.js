@@ -90,7 +90,7 @@ export default Card
       pointer-events: auto;
       
       opacity: 1;
-      visibility: visible;
+      visibility: inherit;
 
       transition-delay: var(--busy-delay);
     }

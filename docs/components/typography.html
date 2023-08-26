@@ -12,7 +12,7 @@
 <body>
   <demo-page>
     <section>
-      <mdw-headline slot=heading text-padding-bottom="24" text-padding-top="24" ink="primary" >Type Styles</mdw-headline>
+      <mdw-headline text-padding-bottom="24" text-padding-top="24" ink="primary" >Type Styles</mdw-headline>
       <mdw-display>Display large</mdw-display>
       <mdw-display size="medium">Display medium</mdw-display>
       <mdw-display size="small">Display small</mdw-display>
@@ -30,7 +30,7 @@
       <mdw-body size=small>Body small</mdw-body>
     </section>
     <section>
-      <mdw-headline slot=heading text-padding-bottom="24" text-padding-top="24" ink="primary">Alignment examples</mdw-headline>
+      <mdw-headline text-padding-bottom="24" text-padding-top="24" ink="primary">Alignment examples</mdw-headline>
       <mdw-divider ink="primary"></mdw-divider>
       <mdw-title text-leading="64" text-padding-bottom="20">64sp leading and 20sp from baseline with <mdw-icon icon=edit></mdw-icon> icon.
       </mdw-title>
@@ -39,6 +39,12 @@
       <mdw-divider ink="primary"></mdw-divider>
       <mdw-divider ink="primary"></mdw-divider>
       <mdw-body color="secondary-container" text-padding-top="36" text-padding-bottom="36">36sp padding from cap-height and 36sp from baseline. Bounding rectangle includes the padding to allow colored content</mdw-body>
+      <mdw-divider ink="primary"></mdw-divider>
+      <mdw-box padding-y=24 gap=24 color=tertiary-container>
+        <mdw-headline text-trim>Evenly spaced 24px</mdw-headline>
+        <mdw-title text-trim>Regardless of mixed typography</mdw-title>
+        <mdw-body text-trim>This is one <code>mdw-body</code> element with <mdw-icon icon=edit></mdw-icon> inline icons. All elements are easily placed inside inside one <code>mdw-box</code> element. This is done completely with HTML attributes and Web Components without the need of custom author styles or Javascript.</mdw-body>
+      </mdw-box>
       <mdw-divider ink="primary"></mdw-divider>
     </section>
   </demo-page>
