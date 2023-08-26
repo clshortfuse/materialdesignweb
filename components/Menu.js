@@ -69,7 +69,6 @@ export default CustomElement
       --mdw-shape__size: var(--mdw-shape__extra-small);
       --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);
-
       display: block;
 
       inline-size: auto;

@@ -209,6 +209,9 @@ export default CustomElement
       max-inline-size: min(560px, calc(100% - 40px));
       padding-block-start: 8px;
 
+      transform: translateY(-40px) scaleY(0);
+      transform-origin: top center !important;
+
       background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
 

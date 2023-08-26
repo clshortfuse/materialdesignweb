@@ -517,11 +517,11 @@ export default function PopupMixin(Base) {
       max-inline-size: 100vw;
 
       outline: none; /* Older Chromium Builds */
-  
-      
+
       pointer-events: none;
 
       opacity: 0;
+      transform: scale(0);
 
       visibility: hidden;
       z-index: 24;
@@ -531,12 +531,12 @@ export default function PopupMixin(Base) {
       font: var(--mdw-type__font);
       letter-spacing: var(--mdw-type__letter-spacing);
 
-      transition-delay: 0s, 200ms;
-      transition-duration: 200ms, 0s;
-      transition-property: opacity, visibility;
+      transition-delay: 200ms, 0s;
+      transition-duration: 0s, 200ms, 200ms;
+      transition-property: visibility, opacity, transform;
       transition-timing-function: ease-out;
 
-      will-change: opacity;
+      will-change: visibility, opacity, transform;
 
     }
 
@@ -545,7 +545,7 @@ export default function PopupMixin(Base) {
 
       opacity: 1;
 
-      transform: scale(1);
+      transform: none;
       visibility: inherit;
 
       transition-delay: 0s;
