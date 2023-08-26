@@ -220,8 +220,13 @@ export function generateScreenshotTests({ template, before, matrix, after, paddi
     const stateDescription = listOfStates ? `${listOfStates}, and ${tags.at(-1)}` : tag;
     // eslint-disable-next-line no-loop-func
     it(`matches screenshot when ${stateDescription}`, async function () {
-      const bounds = html`<span id=bounds style="transform:translateZ(0);position:relative;display:inline-flex;align-items:center;justify-content:center;padding:${padding}px"></span>`;
+      makeFromString(`
+        <div id=box style="position:fixed;inset:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column">
+          <div id=bounds style="position:relative;display:inline-flex;align-items:center;justify-content:center;padding:${padding}px"></div>
+        </div>
+      `);
       const element = makeFromString(template.trim(), false);
+      const bounds = document.getElementById('bounds');
       bounds.append(element);
       let movedMouse = false;
       let movedFocus = true;
@@ -259,7 +264,6 @@ export function generateScreenshotTests({ template, before, matrix, after, paddi
             break;
           default:
             if (key.endsWith('()')) {
-              console.log('calling function', key);
               element[key.slice(0, -2)](...value);
             } else {
               element[key] = value;
