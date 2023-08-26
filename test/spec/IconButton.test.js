@@ -75,15 +75,33 @@ describe('mdw-icon-button', () => {
     it('supports aria-label', async () => {
       const element = html`<mdw-icon-button aria-label=foo></mdw-icon-button>`;
       const results = await axTree({ selector: element.tagName });
-      const [{ name }] = iterateMeaningfulAXNodes(results);
+      const [{ role, name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'button');
       assert.equal(name, 'foo');
     });
 
     it('labels based on slot', async () => {
       const element = html`<mdw-icon-button>foo</mdw-icon-button>`;
       const results = await axTree({ selector: element.tagName });
-      const [{ name }] = iterateMeaningfulAXNodes(results);
+      const [{ role, name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'button');
       assert.equal(name, 'foo');
+    });
+
+    it('labels based on defaultValue when empty', async () => {
+      const element = html`<mdw-icon-button value=foo></mdw-icon-button>`;
+      const results = await axTree({ selector: element.tagName });
+      const [{ role, name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'button');
+      assert.equal(name, 'foo');
+    });
+
+    it('labels based on slot despite defaultValue', async () => {
+      const element = html`<mdw-icon-button value=foo>bar</mdw-icon-button>`;
+      const results = await axTree({ selector: element.tagName });
+      const [{ role, name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'button');
+      assert.equal(name, 'bar');
     });
 
     it('returns link role with [href]', async () => {
@@ -1394,14 +1412,16 @@ describe('mdw-icon-button', () => {
       it('supports aria-label', async () => {
         const element = html`<mdw-icon-button type=checkbox aria-label=foo></mdw-icon-button>`;
         const results = await axTree({ selector: element.tagName });
-        const [{ name }] = iterateMeaningfulAXNodes(results);
+        const [{ role, name }] = iterateMeaningfulAXNodes(results);
+        assert.equal(role, 'button');
         assert.equal(name, 'foo');
       });
 
       it('labels based on slot', async () => {
         const element = html`<mdw-icon-button type=checkbox>foo</mdw-icon-button>`;
         const results = await axTree({ selector: element.tagName });
-        const [{ name }] = iterateMeaningfulAXNodes(results);
+        const [{ role, name }] = iterateMeaningfulAXNodes(results);
+        assert.equal(role, 'button');
         assert.equal(name, 'foo');
       });
 

@@ -85,6 +85,22 @@ describe('mdw-button', () => {
       assert.equal(name, 'foo');
     });
 
+    it('labels based on defaultValue when empty', async () => {
+      const element = html`<mdw-button value=foo></mdw-icon-button>`;
+      const results = await axTree({ selector: element.tagName });
+      const [{ role, name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'button');
+      assert.equal(name, 'foo');
+    });
+
+    it('labels based on slot despite defaultValue', async () => {
+      const element = html`<mdw-button value=foo>bar</mdw-icon-button>`;
+      const results = await axTree({ selector: element.tagName });
+      const [{ role, name }] = iterateMeaningfulAXNodes(results);
+      assert.equal(role, 'button');
+      assert.equal(name, 'bar');
+    });
+
     it('returns link role with [href]', async () => {
       const element = html`<mdw-button href=#></mdw-button>`;
       const results = await axTree({ selector: element.tagName });

@@ -76,7 +76,7 @@ export default CustomElement
     <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState}
       outlined={outlined} variation={iconVariation} aria-hidden=true svg={svg} src={src}
       svg-path={svgPath} view-box={viewBox} icon={icon}></mdw-icon>
-    <slot id=slot disabled={disabledState} aria-hidden=true>{value}</slot>
+    <slot id=slot disabled={disabledState} aria-hidden=true>{_defaultValue}</slot>
   `
   .recompose(({ refs: { anchor, control } }) => {
     control.setAttribute('mdw-if', '{!href}');

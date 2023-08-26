@@ -95,17 +95,15 @@ export default function ControlMixin(Base) {
           this.refs.control,
         );
       },
-
+    })
+    .observe({
+      _computedAriaLabel({ ariaLabel, _slotInnerText }) {
+        return ariaLabel?.trim() || _slotInnerText?.trim() || null;
+      },
     })
     .expressions({
-      _computedAriaLabel({ ariaLabel, _slotInnerText }) {
-        if (FIREFOX_VERSION < 116 || SAFARI_VERSION < 17) {
-          return ariaLabel?.trim() || _slotInnerText?.trim() || null;
-        }
-        return ariaLabel?.trim() || null;
-      },
-      _computedAriaLabelledby({ ariaLabel }) {
-        return ariaLabel ? null : 'slot';
+      _computedAriaLabelledby({ _computedAriaLabel }) {
+        return _computedAriaLabel ? null : 'slot';
       },
     })
 
@@ -177,11 +175,12 @@ export default function ControlMixin(Base) {
           this.checkValidity();
         },
       },
-      slot: (FIREFOX_VERSION < 116 || SAFARI_VERSION < 17) ? {
+      slot: (FIREFOX_VERSION < 116 || SAFARI_VERSION <= 17) ? {
         slotchange({ currentTarget }) {
           // Firefox and Safari will not apply label from slots.
           // https://bugzilla.mozilla.org/show_bug.cgi?id=1826194
           // https://commits.webkit.org/263644@main
+          // https://bugs.webkit.org/show_bug.cgi?id=260772
           this._slotInnerText = this.textContent;
           if (!this._slotMutationObserver) {
             this._slotMutationObserver = new MutationObserver(() => {
