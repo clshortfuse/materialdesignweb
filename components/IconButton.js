@@ -27,9 +27,6 @@ export default Button
       if (!checked && (_isToggle || outlined)) return null;
       return 'filled';
     },
-    _computedAriaLabelledby({ ariaLabel }) {
-      return ariaLabel ? null : 'tooltip';
-    },
   })
   .childEvents({
     control: {
