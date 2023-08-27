@@ -30,7 +30,6 @@ export default SideSheet
       --mdw-nav-item__label__padding-inline: 52px 0;
       --mdw-nav-item__anchor__display: block;
       --mdw-nav-item__indicator__grid-area: auto;
-      --mdw-bg: var(--mdw-color__surface-container-low);
 
       display:inline-block;
 

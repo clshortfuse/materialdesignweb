@@ -71,12 +71,17 @@ export default CustomElement
       empty: 0,
     },
     _isSideSheetRtl: 'boolean',
+    color: { empty: 'surface-container-low' },
+    fixedColor: { empty: 'surface' },
   })
   .set({
     /** @type {InstanceType<Scrim>} */
     _scrim: null,
   })
   .observe({
+    _styles({ fixed, color, fixedColor }) {
+      return `:host{--mdw-side-sheet__bg:var(--mdw-color__${fixed ? fixedColor : color})}`;
+    },
     hostStyles: {
       ...ELEMENT_STYLER_TYPE,
       get({
@@ -99,9 +104,9 @@ export default CustomElement
     },
   })
   .html`
+    <style id=styles>{_styles}</style>
     <slot id=slot></slot>
   `
-
   .methods({
     checkForScrim(animate = false) {
       let { open, fixed, _scrim } = this;
@@ -233,8 +238,8 @@ export default CustomElement
   })
   .css`
     :host {
-      --mdw-bg: var(--mdw-color__surface-container);
-      --mdw-ink: var(--mdw-color__on-surface);
+      --mdw-bg: var(--mdw-color__surface-container-low);
+      --mdw-ink: var(--mdw-color__on-surface-variant);
 
       position: fixed;
 
@@ -264,7 +269,7 @@ export default CustomElement
 
       z-index: 24;
 
-      background-color: rgb(var(--mdw-bg));
+      background-color: rgb(var(--mdw-side-sheet__bg, var(--mdw-bg)));
       color: rgb(var(--mdw-ink));
 
       transition: visibility 200ms;
@@ -275,7 +280,7 @@ export default CustomElement
     :host(:where([open])) {
       visibility: inherit;
 
-      transition: visibility 0s;
+      transition-delay: 0s;
     }
 
     :host(:where[inline-end]) {
