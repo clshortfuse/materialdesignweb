@@ -51,6 +51,7 @@ export default Button
       el.setAttribute('toggle', '{_isToggle}');
       el.setAttribute('selected', '{checked}');
       el.setAttribute('filled', '{filled}');
+      el.setAttribute('color', '{color}');
     }
     icon.removeAttribute('mdw-if');
 
@@ -139,15 +140,15 @@ export default Button
       color: rgb(var(--mdw-ink));
     }
 
-    #icon[filled] {
+    #icon:is([filled],[color]) {
       background-color: rgb(var(--mdw-bg));
     }
 
-    #icon[filled][toggle] {
+    #icon:is([filled],[color])[toggle] {
       background-color: rgb(var(--mdw-color__surface-container-highest));
     }
 
-    .colored[filled][toggle] {
+    .colored:is([filled],[color])[toggle] {
       color: rgb(var(--mdw-bg));
     }
 
@@ -160,11 +161,11 @@ export default Button
       color: rgb(var(--mdw-color__on-surface-variant));
     }
 
-    #icon[filled][selected] {
+    #icon:is([filled],[color])[selected] {
       background-color: rgb(var(--mdw-bg));
     }
 
-    .colored[filled][selected] {
+    .colored:is([filled],[color])[selected] {
       color: rgb(var(--mdw-ink));
     }
 
@@ -213,12 +214,12 @@ export default Button
       color: rgba(var(--mdw-color__on-surface), 0.38);
     }
 
-    #icon[disabled][filled],
+    #icon[disabled]:is([filled],[color]),
     #icon[disabled][outlined][selected] {
       background-color: rgba(var(--mdw-color__on-surface), 0.12);
     }
 
-    .colored[disabled][filled],
+    .colored[disabled]:is([filled],[color]),
     .colored[disabled][outlined][selected] {
       color: rgba(var(--mdw-color__on-surface), 0.38);
     }
