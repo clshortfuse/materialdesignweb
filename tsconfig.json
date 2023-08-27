@@ -16,19 +16,19 @@
     "target": "esnext"
   },
   "include": [
-    "./bin/*",
-    "./constants/*",
-    "./components/*",
-    "./core/*",
-    "./loaders/*",
-    "./mixins/*",
-    "./services/*",
-    "./utils/*"
+    "./bin/**/*.js",
+    "./constants/**/*.js",
+    "./components/**/*.js",
+    "./core/**/*.js",
+    "./loaders/**/*.js",
+    "./mixins/**/*.js",
+    "./services/**/*.js",
+    "./utils/**/*.js"
   ],
   "exclude": [
-    "**/node_modules/*",
+    "./**/*.min.js",
+    "./node_modules/*",
     ".history/*",
-    "**/*.min.js",
     "types/*"
   ]
 }
