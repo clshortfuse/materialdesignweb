@@ -102,6 +102,7 @@ export default function FlexableMixin(Base) {
         flex-wrap: wrap-reverse;
       }
 
+      :host(:where([gap])) {gap: 0;}
       :host(:where([gap="4"])) {gap: 4px;}
       :host(:where([gap="8"])) {gap: 8px;}
       :host(:where([gap="12"])) {gap: 12px;}
@@ -109,18 +110,21 @@ export default function FlexableMixin(Base) {
       :host(:where([gap="20"])) {gap: 20px;}
       :host(:where([gap="24"])) {gap: 24px;}
 
+      :host(:where([padding])) {padding: 0;}
       :host(:where([padding="4"])) {padding: 4px;}
       :host(:where([padding="8"])) {padding: 8px;}
       :host(:where([padding="12"])) {padding: 12px;}
       :host(:where([padding="16"])) {padding: 16px;}
       :host(:where([padding="20"])) {padding: 20px;}
       :host(:where([padding="24"])) {padding: 24px;}
+      :host(:where([padding-x])) {padding-inline: 0;}
       :host(:where([padding-x="4"])) {padding-inline: 4px;}
       :host(:where([padding-x="8"])) {padding-inline: 8px;}
       :host(:where([padding-x="12"])) {padding-inline: 12px;}
       :host(:where([padding-x="16"])) {padding-inline: 16px;}
       :host(:where([padding-x="20"])) {padding-inline: 20px;}
       :host(:where([padding-x="24"])) {padding-inline: 24px;}
+      :host(:where([padding-y])) {padding-block: 0;}
       :host(:where([padding-y="4"])) {padding-block: 4px;}
       :host(:where([padding-y="8"])) {padding-block: 8px;}
       :host(:where([padding-y="12"])) {padding-block: 12px;}
