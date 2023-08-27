@@ -19,19 +19,11 @@ export default CustomElement
     headline: 'string',
     size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
     color: { empty: 'surface' },
+    raisedColor: { empty: 'surface-container' },
   })
   .observe({
-    _hostRaisedStyle: {
-      ...ELEMENT_STYLER_TYPE,
-      get({ _raised, color }) {
-        if (!_raised) return null;
-        if (color !== 'none' && color !== 'surface') return null;
-        return {
-          styles: {
-            backgroundColor: 'rgb(var(--mdw-color__surface-container))',
-          },
-        };
-      },
+    _styles({ _raised, color, raisedColor }) {
+      return `:host{--mdw-top-app-bar__bg:var(--mdw-color__${_raised ? raisedColor : color})}`;
     },
     _headlineStyle: {
       ...ELEMENT_STYLER_TYPE,
@@ -55,6 +47,7 @@ export default CustomElement
     },
   })
   .html`
+    <style id=styles>{_styles}</style>
     <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
     <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
       {headline}
@@ -122,10 +115,10 @@ export default CustomElement
       transform: translateY(0);
       z-index: 5;
 
-      background-color: rgb(var(--mdw-bg));
+      background-color: rgb(var(--mdw-top-app-bar__bg, var(--mdw-bg)));
       color: rgb(var(--mdw-ink));
 
-      transition: grid-template-columns 100ms, background-color 100ms;
+      transition: grid-template-columns 100ms, background-color 200ms;
       will-change: transform;
     }
 
