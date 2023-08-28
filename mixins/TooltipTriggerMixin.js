@@ -1,4 +1,5 @@
 import '../components/Tooltip.js';
+import { FIREFOX_VERSION } from '../core/dom.js';
 import { canAnchorPopup } from '../utils/popup.js';
 
 /** @typedef {import('../components/Tooltip.js').default} Tooltip */
@@ -197,9 +198,18 @@ export default function TooltipTriggerMixin(Base) {
         this.refs.tooltip.replaceChildren(...args);
       },
       closeIfNotHovered() {
-        if (this.matches(':hover')) return;
-        if (this.refs.tooltip.matches(':hover')) return;
-        this.hideTooltip(true);
+        // eslint-disable-next-line unicorn/consistent-function-scoping
+        const check = () => {
+          if (this.hoveredState) return;
+          if (this.refs.tooltip.matches(':hover')) return;
+          this.hideTooltip(true);
+        };
+        if (FIREFOX_VERSION) {
+          // Firefox stalls one tick
+          requestAnimationFrame(check);
+        } else {
+          check();
+        }
       },
     })
     .childEvents({
