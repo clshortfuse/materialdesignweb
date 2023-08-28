@@ -1,3 +1,5 @@
+import DelegatesFocusMixin from './DelegatesFocusMixin.js';
+
 /**
  * @param {string} input
  * @return {string}
@@ -13,6 +15,7 @@ function parseSize(input) {
 /** @param {typeof import('../core/CustomElement.js').default} Base */
 export default function TypographyMixin(Base) {
   return Base
+    .mixin(DelegatesFocusMixin)
     .observe({
       textTrim: 'boolean',
       textPadding: 'string',
@@ -53,31 +56,36 @@ export default function TypographyMixin(Base) {
         }
         return '';
       },
-      _hostStyle({ textTrim }) {
-        if (textTrim) return ':host{margin-block:-1em}';
-        return '';
-      },
     })
-    .html`
-      <style mdw-if={!!_hostStyle}>{_hostStyle}</style>
-      <span id=before mdw-if={!!_beforeStyle} style={_beforeStyle}></span>
-      <span id=after mdw-if={!!_afterStyle} style={_afterStyle}></span>
-    `
-    .recompose(({ refs: { before, slot } }) => {
+    .html`<div id=wrapper text-trim={textTrim}><span id=before mdw-if={!!_beforeStyle} style={_beforeStyle}></span><span id=after mdw-if={!!_afterStyle} style={_afterStyle}></span></div>`
+    .recompose(({ refs: { after, slot } }) => {
       // Chrome improperly renders slot::after display:inline-block
       // Use real element instead
-      slot.before(before);
+      after.before(slot);
+      slot.setAttribute('text-trim', '{textTrim}');
     })
     .css`
       :host {
         display: block;
       }
 
-      span {
-        display: inline-block;
+      :host([text-trim]) {
+        display: flow-root;
+      }
+
+      #wrapper {
+        display: contents;
+      }
+
+      #wrapper[text-trim] {
+        display: block;
+
+        margin-block: -1em;
       }
 
       #before {
+        display: inline-block;
+
         block-size: 1.4ex; /* Estimate */
       }
       @supports(height:1cap) {
@@ -87,6 +95,8 @@ export default function TypographyMixin(Base) {
       }
 
       #after {
+        display: inline-block;
+
         min-block-size: 1px; /* Safari workaround */
       }
 
