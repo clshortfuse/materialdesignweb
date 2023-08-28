@@ -37,8 +37,15 @@ export default Box
       --mdw-ink: var(--mdw-color__on-secondary-container);
 
       display: inline-flex;
+      align-items: stretch;
+      flex-direction: row;
+      justify-content: initial;
       overflow-x: auto;
       overflow-y: hidden;
+
+      box-sizing: border-box;
+      min-inline-size: 100%;
+      flex:none;
     }
 
     :host([color]) {
@@ -47,6 +54,7 @@ export default Box
 
     #slot {
       display: grid;
+      grid-auto-columns: 1fr;
       grid-auto-flow: column;
 
       flex: none;
