@@ -103,6 +103,8 @@ export default Button
 
       overflow: visible;
 
+      block-size: 100%;
+
       margin: 0;
 
       opacity: 0;
