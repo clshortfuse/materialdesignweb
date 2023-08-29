@@ -1,8 +1,8 @@
 import ShapeMixin from '../mixins/ShapeMixin.js';
 
-import Grid from './Grid.js';
+import Box from './Box.js';
 
-export default Grid
+export default Box
   .extend()
   .mixin(ShapeMixin)
   .css`
