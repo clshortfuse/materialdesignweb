@@ -89,16 +89,15 @@ export default CustomElement
           <mdw-nav-drawer-item icon=web_asset href="/components/topappbar.html">Top App Bar</mdw-nav-drawer-item>
         </mdw-nav-drawer>
         <mdw-page>
-          <mdw-top-app-bar headline={_title} color=none>
-            <mdw-icon-button color=surface id=menu-button slot=leading 
-              icon=menu
-              >Menu</mdw-icon-button>
-            <mdw-icon-button color=surface id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
-            <mdw-icon-button color=surface slot=trailing href="https://github.com/clshortfuse/materialdesignweb" icon=invertocat>GitHub Page</mdw-icon-button>
-          </mdw-top-app-bar>
-          <div id=pane>
+          <mdw-pane id=pane color=surface-container>
+            <mdw-top-app-bar headline={_title} color=surface-container raised-color=surface>
+              <mdw-icon-button color=surface-container-low id=menu-button slot=leading icon=menu>Menu</mdw-icon-button>
+              <mdw-icon-button color=surface-container-low id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
+              <mdw-icon-button color=surface-container-low slot=trailing href="https://github.com/clshortfuse/materialdesignweb" icon=invertocat>GitHub Page</mdw-icon-button>
+            </mdw-top-app-bar>
             <slot role=main></slot>
-          </div>
+          </mdw-pane>
+
         </mdw-page>
     </mdw-root>
     <mdw-menu id=menu>
@@ -119,13 +118,6 @@ export default CustomElement
   .css`
     :host {
       display: contents;
-    }
-
-    #pane {
-      max-inline-size: var(--mdw-page__max-width);
-      margin-inline: auto;
-      padding: var(--mdw-page__margin);
-      padding-block-start: 0;
     }
   `
   .methods({

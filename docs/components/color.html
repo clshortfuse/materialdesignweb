@@ -11,85 +11,98 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Core</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-box class=box color=primary padding=8>Primary</mdw-box>
-        <mdw-box color=primary-container padding=8>Primary Container</mdw-box>
-        <mdw-box color=secondary padding=8>Secondary</mdw-box>
-        <mdw-box color=secondary-container padding=8>Secondary Container</mdw-box>
-        <mdw-box color=tertiary padding=8>Tertiary</mdw-box>
-        <mdw-box color=tertiary-container padding=8>Tertiary Container</mdw-box>
-        <mdw-box color=error padding=8>Error</mdw-box>
-        <mdw-box color=error-container padding=8>Error Container</mdw-box>
-        <mdw-box color=background padding=8>Background</mdw-box>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Surface</mdw-headline>
-      <mdw-box row gap=12 wrap>
-        <mdw-surface padding=8 color="surface-dim">Surface Dim</mdw-surface>
-        <mdw-surface padding=8>Surface</mdw-surface>
-        <mdw-surface padding=8 color="surface-bright">Surface Bright</mdw-surface>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Surface Container</mdw-headline>
-      <mdw-box row gap=12 wrap>
-        <mdw-surface padding=8 color="surface-container-lowest">Surface Container Lowest</mdw-surface>
-        <mdw-surface padding=8 color="surface-container-low">Surface Container Low</mdw-surface>
-        <mdw-surface padding=8 color="surface-container">Surface Container</mdw-surface>
-        <mdw-surface padding=8 color="surface-container-high">Surface Container High</mdw-surface>
-        <mdw-surface padding=8 color="surface-container-highest">Surface Container Highest</mdw-surface>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Elevation</mdw-headline>
-      <mdw-box row gap=12 wrap>
-        <mdw-surface padding=8 elevation="1" color="surface-container-lowest">Elevation +1</mdw-surface>
-        <mdw-surface padding=8 elevation="2" color="surface-container-low">Elevation +2</mdw-surface>
-        <mdw-surface padding=8 elevation="3" color="surface-container">Elevation +3</mdw-surface>
-        <mdw-surface padding=8 elevation="4" color="surface-container-high">Elevation +4</mdw-surface>
-        <mdw-surface padding=8 elevation="5" color="surface-container-highest">Elevation +5</mdw-surface>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Inverse</mdw-headline>
-      <mdw-box row gap=12 wrap>
-        <mdw-surface color=inverse padding=8>Inverse Surface</mdw-surface>
-        <mdw-surface color=inverse elevation=1 padding=8>Inverse Surface +1</mdw-surface>
-        <mdw-surface color=inverse elevation=2 padding=8>Inverse Surface +2</mdw-surface>
-        <mdw-surface color=inverse elevation=3 padding=8>Inverse Surface +3</mdw-surface>
-        <mdw-surface color=inverse elevation=4 padding=8>Inverse Surface +4</mdw-surface>
-        <mdw-surface color=inverse elevation=5 padding=8>Inverse Surface +5</mdw-surface>
-        <mdw-surface color=inverse-primary padding=8>Inverse Primary</mdw-surface>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Neutral variant</mdw-headline>
-      <mdw-box row gap=12 wrap>
-        <mdw-surface color=variant padding=8>Surface Variant</mdw-surface>
-        <mdw-surface color=variant elevation=1 padding=8>Surface Variant +1</mdw-surface>
-        <mdw-surface color=variant elevation=2 padding=8>Surface Variant +2</mdw-surface>
-        <mdw-surface color=variant elevation=3 padding=8>Surface Variant +3</mdw-surface>
-        <mdw-surface color=variant elevation=4 padding=8>Surface Variant +4</mdw-surface>
-        <mdw-surface color=variant elevation=5 padding=8>Surface Variant +5</mdw-surface>
-        <mdw-surface color=transparent ink=outline outlined padding=8>Outline</mdw-surface>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Custom</mdw-headline>
-      <mdw-box row gap=12 wrap>
-        <mdw-box color=yellow padding=8>Yellow</mdw-box>
-        <mdw-box color=yellow-container padding=8>Yellow Container</mdw-box>
-        <mdw-box color=orange padding=8>Orange</mdw-box>
-        <mdw-box color=orange-container padding=8>Orange Container</mdw-box>
-        <mdw-box color=green padding=8>Green</mdw-box>
-        <mdw-box color=green-container padding=8>Green Container</mdw-box>
-        <mdw-box color=alias padding=8>Alias</mdw-box>
-        <mdw-box color=alias-container padding=8>Alias Container</mdw-box>
-      </mdw-box>
-    </section>
+    <mdw-box x=stretch role=region gap=16 padding=pane>
+      <mdw-headline text-padding=0>Color</mdw-headline>
+      <demo-preview-card label="Core" x=center>
+        <mdw-box column gap=16 x=stretch>
+          <mdw-box row gap=16 y=stretch wrap>
+            <mdw-box flex-1 class=box color=primary padding=16>Primary</mdw-box>
+            <mdw-box flex-1 color=primary-container padding=16>Primary Container</mdw-box>
+          </mdw-box>
+          <mdw-box row gap=16 y=stretch wrap>
+            <mdw-box flex-1 color=secondary padding=16>Secondary</mdw-box>
+            <mdw-box flex-1 color=secondary-container padding=16>Secondary Container</mdw-box>
+          </mdw-box>
+          <mdw-box row gap=16 y=stretch wrap>
+            <mdw-box flex-1 color=tertiary padding=16>Tertiary</mdw-box>
+            <mdw-box flex-1 color=tertiary-container padding=16>Tertiary Container</mdw-box>
+          </mdw-box>
+          <mdw-box row gap=16 y=stretch wrap>
+            <mdw-box flex-1 color=error padding=16>Error</mdw-box>
+            <mdw-box flex-1 color=error-container padding=16>Error Container</mdw-box>
+          </mdw-box>
+          <mdw-box color=background padding=16>Background</mdw-box>
+        </mdw-box>
+      </demo-preview-card>
+
+      <demo-preview-card label="Surface">
+        <mdw-box row gap=16 x=center y=stretch wrap>
+          <mdw-surface flex-1 padding=16 color="surface-dim">Surface Dim</mdw-surface>
+          <mdw-surface flex-1 padding=16>Surface</mdw-surface>
+          <mdw-surface flex-1 padding=16 color="surface-bright">Surface Bright</mdw-surface>
+        </mdw-box>
+      </demo-preview-card>
+
+      <demo-preview-card label="Surface Container">
+        <mdw-box row gap=16 x=center y=stretch wrap>
+          <mdw-surface flex-1 padding=16 color="surface-container-lowest">Surface Container Lowest</mdw-surface>
+          <mdw-surface flex-1 padding=16 color="surface-container-low">Surface Container Low</mdw-surface>
+          <mdw-surface flex-1 padding=16 color="surface-container">Surface Container</mdw-surface>
+          <mdw-surface flex-1 padding=16 color="surface-container-high">Surface Container High</mdw-surface>
+          <mdw-surface flex-1 padding=16 color="surface-container-highest">Surface Container Highest</mdw-surface>
+        </mdw-box>
+      </demo-preview-card>
+
+      <demo-preview-card label="Elevation">
+        <mdw-box row gap=16 x=center y=stretch wrap>
+          <mdw-surface flex-1 padding=16 elevation="1" color="surface-container-lowest">Elevation +1</mdw-surface>
+          <mdw-surface flex-1 padding=16 elevation="2" color="surface-container-low">Elevation +2</mdw-surface>
+          <mdw-surface flex-1 padding=16 elevation="3" color="surface-container">Elevation +3</mdw-surface>
+          <mdw-surface flex-1 padding=16 elevation="4" color="surface-container-high">Elevation +4</mdw-surface>
+          <mdw-surface flex-1 padding=16 elevation="5" color="surface-container-highest">Elevation +5</mdw-surface>
+        </mdw-box>
+      </demo-preview-card>
+
+      <demo-preview-card label="Inverse">
+        <mdw-box row gap=24 x=center y=stretch wrap>
+          <mdw-surface flex-1 color=inverse padding=16>Inverse Surface</mdw-surface>
+          <mdw-surface flex-1 color=inverse elevation=1 padding=16>Inverse Surface +1</mdw-surface>
+          <mdw-surface flex-1 color=inverse elevation=2 padding=16>Inverse Surface +2</mdw-surface>
+          <mdw-surface flex-1 color=inverse elevation=3 padding=16>Inverse Surface +3</mdw-surface>
+          <mdw-surface flex-1 color=inverse elevation=4 padding=16>Inverse Surface +4</mdw-surface>
+          <mdw-surface flex-1 color=inverse elevation=5 padding=16>Inverse Surface +5</mdw-surface>
+          <mdw-surface flex-1 color=inverse-primary padding=16>Inverse Primary</mdw-surface>
+        </mdw-box>
+      </demo-preview-card>
+
+      <demo-preview-card label="Neutral variant">
+        <mdw-box row gap=24 x=center y=stretch wrap>
+          <mdw-surface flex-1 color=variant padding=16>Surface Variant</mdw-surface>
+          <mdw-surface flex-1 color=variant elevation=1 padding=16>Surface Variant +1</mdw-surface>
+          <mdw-surface flex-1 color=variant elevation=2 padding=16>Surface Variant +2</mdw-surface>
+          <mdw-surface flex-1 color=variant elevation=3 padding=16>Surface Variant +3</mdw-surface>
+          <mdw-surface flex-1 color=variant elevation=4 padding=16>Surface Variant +4</mdw-surface>
+          <mdw-surface flex-1 color=variant elevation=5 padding=16>Surface Variant +5</mdw-surface>
+          <mdw-surface flex-1 color=transparent ink=outline outlined padding=16>Outline</mdw-surface>
+        </mdw-box>
+      </demo-preview-card>
+
+      <demo-preview-card label="Custom">
+        <mdw-box row gap=24 x=center y=stretch wrap>
+          <mdw-box flex-1 color=yellow padding=16>Yellow</mdw-box>
+          <mdw-box flex-1 color=yellow-container padding=16>Yellow Container</mdw-box>
+          <mdw-box flex-1 color=orange padding=16>Orange</mdw-box>
+          <mdw-box flex-1 color=orange-container padding=16>Orange Container</mdw-box>
+          <mdw-box flex-1 color=green padding=16>Green</mdw-box>
+          <mdw-box flex-1 color=green-container padding=16>Green Container</mdw-box>
+          <mdw-box flex-1 color=alias padding=16>Alias</mdw-box>
+          <mdw-box flex-1 color=alias-container padding=16>Alias Container</mdw-box>
+        </mdw-box>
+      </demo-preview-card>
+
+    </mdw-box>
+
+
 
   </demo-page>
 </body>

@@ -11,134 +11,173 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Elevated</mdw-headline>
-      <mdw-box row gap=12 wrap>
-        <mdw-card elevated gap=8 padding=12>
-          <div>
-            <mdw-title>Elevated Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card actionable elevated action-label="Primary Action" onaction="alert('Action!')" gap=8 padding=12>
-          <div>
-            <mdw-title>Actionable Elevated Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card actionable elevated color=inverse-surface action-label="Primary Action" gap=8 padding=12>
-          <div>
-            <mdw-title>Actionable Elevated Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card elevated disabled gap=8 padding=12>
-          <div>
-            <mdw-title>Elevated Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card actionable elevated disabled action-label="Primary Action" gap=8 padding=12>
-          <div>
-            <mdw-title>Actionable Elevated Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Filled</mdw-headline>
-      <mdw-box row gap=12 wrap>
-        <mdw-card filled flex=column gap=8 padding=12 x=start y=between>
-          <div>
-            <mdw-title>Filled Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled=tertiary>Action</mdw-button>
-        </mdw-card>
-        <mdw-card filled actionable action-label="Primary Action" flex=column gap=8 padding=12 x=start y=between>
-          <div>
-            <mdw-title>Actionable Filled Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card filled color=inverse-surface actionable action-label="Primary Action" flex=column gap=8 padding=12
-        x=start y=between>
-          <div>
-            <mdw-title>Actionable Filled Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card filled disabled flex=column gap=8 padding=12 x=start y=between>
-          <div>
-            <mdw-title>Filled Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card filled actionable disabled action-label="Primary Action" flex=column gap=8 padding=12 x=start y=between>
-          <div>
-            <mdw-title>Actionable Filled Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Outlined</mdw-headline>
-      <mdw-box row gap=12 wrap>
-        <mdw-card outlined flex=column gap=8 padding=12 x=start y=between>
-          <div>
-            <mdw-title>Outlined Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card outlined actionable action-label="Primary Action" flex=column gap=8 padding=12 x=start y=between>
-          <div>
-            <mdw-title>Actionable Outlined Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card outlined disabled flex=column gap=8 padding=12 x=start y=between>
-          <div>
-            <mdw-title>Outlined Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-        <mdw-card outlined actionable disabled action-label="Primary Action" flex=column gap=8 padding=12 x=start y=between>
-          <div>
-            <mdw-title>Actionable Outlined Card</mdw-title>
-            <mdw-title size=small>Title small text</mdw-title>
-            <mdw-body size=medium>Body medium text</mdw-body>
-          </div>
-          <mdw-button filled>Action</mdw-button>
-        </mdw-card>
-      </mdw-box>
-    </section>
+    <mdw-grid gap=16 padding=pane x=stretch>
+
+      <demo-preview-card label="Elevated" col-span=4 col-span-12=6 x=center y=between>
+        <mdw-box flex-1 gap=16 x=stretch y=between>
+          <mdw-card elevated padding=16 gap=16>
+            <div>
+              <mdw-title text-padding=0>Elevated Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card actionable elevated padding=16 gap=16 action-label="Primary Action" onaction="alert('Action!')">
+            <div>
+              <mdw-title text-padding=0>Actionable Elevated Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card actionable elevated color=inverse-surface padding=16 gap=16 action-label="Primary Action">
+            <div>
+              <mdw-title text-padding=0>Actionable Elevated Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card elevated disabled padding=16 gap=16>
+            <div>
+              <mdw-title text-padding=0>Elevated Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card actionable elevated disabled padding=16 gap=16 action-label="Primary Action">
+            <div>
+              <mdw-title text-padding=0>Actionable Elevated Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+        </mdw-box>
+      </demo-preview-card>
+      
+      <demo-preview-card label="Filled" col-span=4 col-span-12=6 x=center y=stretch>
+        <mdw-box flex-1 gap=16 x=stretch y=between>
+          <mdw-card filled padding=16 gap=16>
+            <div>
+              <mdw-title text-padding=0>Filled Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button outlined color=surface-primary>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card filled actionable padding=16 gap=16 action-label="Primary Action">
+            <div>
+              <mdw-title text-padding=0>Actionable Filled Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button outlined color=surface-primary>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card filled color=primary-container actionable padding=16 gap=16 action-label="Primary Action">
+            <div>
+              <mdw-title text-padding=0>Actionable Filled Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button outlined color=surface-primary>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card filled disabled padding=16 gap=16>
+            <div>
+              <mdw-title text-padding=0>Filled Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button outlined color=surface-primary>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card filled actionable disabled padding=16 gap=16 action-label="Primary Action">
+            <div>
+              <mdw-title text-padding=0>Actionable Filled Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button outlined color=surface-primary>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+        </mdw-box>
+      </demo-preview-card>
+
+      <demo-preview-card label="Outlined" col-span=4 col-span-12=6 x=center y=stretch>
+        <mdw-box flex-1 gap=16 x=stretch y=between>
+          <mdw-card outlined padding=16 gap=16>
+            <div>
+              <mdw-title text-padding=0>Outlined Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled=tonal>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card outlined actionable padding=16 gap=16 action-label="Primary Action">
+            <div>
+              <mdw-title text-padding=0>Actionable Outlined Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled=tonal>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card outlined actionable color=none padding=16 gap=16 action-label="Primary Action">
+            <div>
+              <mdw-title text-padding=0>Actionable Outlined Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled=tonal>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card outlined disabled padding=16 gap=16>
+            <div>
+              <mdw-title text-padding=0>Outlined Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled=tonal>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+          <mdw-card outlined actionable disabled padding=16 gap=16 action-label="Primary Action">
+            <div>
+              <mdw-title text-padding=0>Actionable Outlined Card</mdw-title>
+              <mdw-title text-leading=20 text-padding-bottom=0 size=small>Title small text</mdw-title>
+              <mdw-body text-leading=20 text-padding-bottom=0 size=medium>Body medium text</mdw-body>
+            </div>
+            <mdw-box x=end>
+              <mdw-button filled=tonal>Action</mdw-button>
+            </mdw-box>
+          </mdw-card>
+        </mdw-box>
+      </demo-preview-card>
+    </mdw-grid>
   </demo-page>
 </body>
 

@@ -12,32 +12,32 @@
 <body>
 
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Normal</mdw-headline>
+    <mdw-box gap=16 padding=pane>
       <form>
-        <mdw-box row gap=24 wrap padding=8>
-          <mdw-checkbox name=checkbox-demo-1 value="1">Default</mdw-checkbox>
-          <mdw-checkbox name=checkbox-demo-2 checked color="secondary" value="2">Secondary</mdw-checkbox>
-          <mdw-checkbox name=checkbox-demo-2 required color=alias value="2">Alias (Required)
-          </mdw-checkbox>
-          <mdw-checkbox name=checkbox-demo-3 color="tertiary" value="3">Tertiary</mdw-checkbox>
-          <mdw-checkbox name=checkbox-demo-4 checked color="primary" disabled value="4">Disabled
-          </mdw-checkbox>
-          <mdw-checkbox name=checkbox-demo-5 color="primary" disabled value="5" checked>Disabled Checked
-          </mdw-checkbox>
-        </mdw-box>
+        <demo-preview-card label="Checkbox with Text">
+          <mdw-box gap=24 padding=16 x=start>
+            <mdw-checkbox name=checkbox-demo-1 value="1">Default</mdw-checkbox>
+            <mdw-checkbox name=checkbox-demo-2 checked color="secondary" value="2">Secondary</mdw-checkbox>
+            <mdw-checkbox name=checkbox-demo-2 required color=alias value="2">Alias (Required)
+            </mdw-checkbox>
+            <mdw-checkbox name=checkbox-demo-3 color="tertiary" value="3">Tertiary</mdw-checkbox>
+            <mdw-checkbox name=checkbox-demo-4 checked color="primary" disabled value="4">Disabled
+            </mdw-checkbox>
+            <mdw-checkbox name=checkbox-demo-5 color="primary" disabled value="5" checked>Disabled Checked
+            </mdw-checkbox>
+          </mdw-box>
+        </demo-preview-card>
       </form>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>No Label</mdw-headline>
       <form>
-        <mdw-box row gap=24 wrap padding=8>
-          <mdw-checkbox name=checkbox-demo-6 checked aria-label="Default" value="1"></mdw-checkbox>
-          <mdw-checkbox name=checkbox-demo-7 aria-label="Secondary" color="secondary" value="2"></mdw-checkbox>
-          <mdw-checkbox name=checkbox-demo-8 disabled aria-label="Tertiary" color="tertiary" value="3"></mdw-checkbox>
-        </mdw-box>
+        <demo-preview-card label="Checkbox without Text">
+          <mdw-box gap=24 padding=16>
+            <mdw-checkbox name=checkbox-demo-6 checked aria-label="Default" value="1"></mdw-checkbox>
+            <mdw-checkbox name=checkbox-demo-7 aria-label="Secondary" color="secondary" value="2"></mdw-checkbox>
+            <mdw-checkbox name=checkbox-demo-8 disabled aria-label="Tertiary" color="tertiary" value="3"></mdw-checkbox>
+          </mdw-box>
+        </demo-preview-card>
       </form>
-    </section>
+    </mdw-box>
     <script>
       document.querySelector('[name="checkbox-demo-3"]').indeterminate = true;
       document.querySelector('[name="checkbox-demo-4"]').indeterminate = true;

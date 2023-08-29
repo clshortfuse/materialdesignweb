@@ -1,7 +1,6 @@
 html {
-  background: repeating-conic-gradient(rgba(var(--mdw-color__on-background), 0.0333) 0% 25%, transparent 0% 50%) 50% / 16px 16px;
-  background-color: rgb(var(--mdw-color__background));
-  color: rgb(var(--mdw-color__on-background));
+  background-color: rgb(var(--mdw-color__surface-container));
+  color: rgb(var(--mdw-color__on-surface));
 }
 
 body { margin: 0; }
