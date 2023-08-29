@@ -6,6 +6,15 @@ import SemiStickyMixin from '../mixins/SemiStickyMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/**
+ * Top App Bars should have a background-color that is identical to
+ * `transparent`, though an explicit value allows updating the environment's
+ * to match the app bar (eg: color system bar).
+ *
+ * Top corners are shaped when not scrolling to allow matching with pane, but
+ * removed when raised
+ */
+
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -22,8 +31,8 @@ export default CustomElement
     raisedColor: { empty: 'surface-container' },
   })
   .observe({
-    _styles({ _raised, color, raisedColor }) {
-      return `:host{--mdw-top-app-bar__bg:var(--mdw-color__${_raised ? raisedColor : color})}`;
+    _styles({ raisedColor }) {
+      return `:host{--mdw-top-app-bar__raised-rgb:var(--mdw-color__${raisedColor})}`;
     },
     _headlineStyle: {
       ...ELEMENT_STYLER_TYPE,
@@ -48,6 +57,7 @@ export default CustomElement
   })
   .html`
     <style id=styles>{_styles}</style>
+    <div id=raised-background raised={_raised}></div>
     <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
     <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
       {headline}
@@ -82,7 +92,6 @@ export default CustomElement
   .css`
     /* https://m3.material.io/components/bottom-app-bar/specs */
     :host {
-      --mdw-shape__size: 0;
       --mdw-bg: var(--mdw-color__surface);
       --mdw-ink: var(--mdw-color__on-surface);
 
@@ -108,18 +117,33 @@ export default CustomElement
       /* paddingInlineStart = 16px - ((48px / 2) - (24px / 2)) */
       /* paddingInlineEnd = 16px - ((48px / 2) - (30px / 2)) */
 
-      padding-inline: var(--mdw-page__padding-inline, 16px);
+      padding-inline: var(--mdw-pane__padding-inline, 16px);
 
       pointer-events: auto;
 
       transform: translateY(0);
       z-index: 5;
 
-      background-color: rgb(var(--mdw-top-app-bar__bg, var(--mdw-bg)));
+      background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
 
-      transition: grid-template-columns 100ms, background-color 200ms;
+      transition: grid-template-columns 100ms;
       will-change: transform;
+    }
+
+    #raised-background {
+      position: absolute;
+      inset: 0;
+
+      z-index: -1;
+
+      background-color: transparent;
+
+      transition: background-color 200ms;
+    }
+
+    #raised-background[raised] {
+      background-color: rgb(var(--mdw-top-app-bar__raised-rgb, var(--mdw-bg)));
     }
 
     #leading {
