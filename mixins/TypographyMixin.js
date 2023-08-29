@@ -1,3 +1,5 @@
+import { CHROME_VERSION, SAFARI_VERSION } from '../core/dom.js';
+
 import DelegatesFocusMixin from './DelegatesFocusMixin.js';
 
 /**
@@ -17,7 +19,6 @@ export default function TypographyMixin(Base) {
   return Base
     .mixin(DelegatesFocusMixin)
     .observe({
-      textTrim: 'boolean',
       textPadding: 'string',
       textPaddingTop: 'string',
       textLeading: 'string',
@@ -35,58 +36,72 @@ export default function TypographyMixin(Base) {
       },
     })
     .observe({
-      _beforeStyle({ _computedTextPaddingTop, _computedTextLeading, textTrim }) {
-        if (textTrim) {
-          return 'margin-top:1em';
-        }
+      _beforeStyle({ _computedTextPaddingTop, _computedTextLeading }) {
         if (_computedTextLeading) {
-          return `vertical-align:${_computedTextLeading};max-block-size:0`;
+          return `margin-top:${_computedTextLeading}`;
         }
         if (_computedTextPaddingTop) {
           return `margin-top:${_computedTextPaddingTop}`;
         }
         return '';
       },
-      _afterStyle({ textTrim, _computedTextPaddingBottom }) {
-        if (textTrim) {
-          return 'vertical-align:-1em';
-        }
+      _afterStyle({ _computedTextPaddingBottom }) {
         if (_computedTextPaddingBottom) {
-          return `vertical-align:calc(-1 * ${_computedTextPaddingBottom});`;
+          return `vertical-align:calc(-1em + (-1 * ${_computedTextPaddingBottom}));`;
+        }
+        return '';
+      },
+      _wrapperStyle({ _computedTextPaddingBottom }) {
+        // Chrome and Safari use 0-width inline elements for text selection
+        if ((CHROME_VERSION || SAFARI_VERSION) && _computedTextPaddingBottom) {
+          return `clip-path:inset(0 0 calc(0.5em + ${_computedTextPaddingBottom}) 0)`;
         }
         return '';
       },
     })
-    .html`<div id=wrapper text-trim={textTrim}><span id=before mdw-if={!!_beforeStyle} style={_beforeStyle}></span><span id=after mdw-if={!!_afterStyle} style={_afterStyle}></span></div>`
-    .recompose(({ refs: { after, slot } }) => {
-      // Chrome improperly renders slot::after display:inline-block
-      // Use real element instead
-      after.before(slot);
-      slot.setAttribute('text-trim', '{textTrim}');
+    .html`
+      <div id=wrapper style={_wrapperStyle} before={!!_beforeStyle} after={!!_afterStyle}
+        ><span id=before mdw-if={!!_beforeStyle} style={_beforeStyle} text-leading={textLeading}></span
+        ><span id=content before={!!_beforeStyle} after={!!_afterStyle}><span id=after mdw-if={!!_afterStyle} style={_afterStyle}></span></span
+      ></div>
+      `
+    .recompose(({ refs: { content, slot } }) => {
+      content.prepend(slot);
     })
     .css`
       :host {
         display: block;
       }
 
-      :host([text-trim]) {
-        display: flow-root;
+      :host(:where([text-padding],[text-padding-top],[text-padding-bottom])) {
+        display: flex;
       }
 
       #wrapper {
         display: contents;
+
+      }
+      
+      #wrapper:where([before], [after]) {
+        display: flex;
+        align-items: baseline; /* Allows growing element upwards without affecting text selection */
+
+        pointer-events: none;
       }
 
-      #wrapper[text-trim] {
-        display: block;
+      #wrapper[before] {
+        margin-block-start: -1em;
+      }
 
-        margin-block: -1em;
+      #wrapper[after] {
+        margin-block-end: -1em;
       }
 
       #before {
         display: inline-block;
 
         block-size: 1.4ex; /* Estimate */
+        padding-block-start: 1em; /* Padding to be cropped by wrapper */
       }
       @supports(height:1cap) {
         #before {
@@ -94,10 +109,24 @@ export default function TypographyMixin(Base) {
         }
       }
 
+      #before[text-leading] {
+        block-size: 0;
+      }
+
+      #content {
+        display: contents;
+      }
+      
+      #content:where([before], [after]) {
+        display: block;
+
+        pointer-events: auto;
+      }
+
       #after {
         display: inline-block;
 
-        min-block-size: 1px; /* Safari workaround */
+        padding-block-end: 1em; /* Padding to be cropped by wrapper */
       }
 
     `;
