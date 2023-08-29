@@ -1,10 +1,12 @@
 /* https://m3.material.io/foundations/layout/applying-layout/window-size-classes */
 
 import CustomElement from '../core/CustomElement.js';
+import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 
 export default CustomElement
   .extend()
+  .mixin(DelegatesFocusMixin)
   .mixin(ResizeObserverMixin)
   .observe({
     paneOne: {
@@ -38,16 +40,18 @@ export default CustomElement
   `
   .css`
     :host {
-      --mdw-page__max-width: 1040px;
-      --mdw-page__margin: 16px;
-      --mdw-page__padding-inline: max(var(--mdw-page__margin), calc((100% - var(--mdw-page__max-width)) / 2));
-      display: contents;
+      --mdw-pane__max-width: 1040px;
+      --mdw-pane__margin-inline: 16px;
+      --mdw-pane__padding-inline: max(var(--mdw-pane__margin-inline), calc((100% - var(--mdw-pane__max-width)) / 2));
+      --mdw-pane__border-radius: variable-exists;
+      --mdw-pane__shape__size: 0;
+      display: grid;
       column-gap: var(--mdw-page__margin);
       grid-auto-columns: 1fr;
       grid-auto-flow: column;
       grid-template-columns: 1fr;
 
-      padding-inline: var(--mdw-page__margin);
+      padding: 0;
 
       
 
@@ -62,7 +66,13 @@ export default CustomElement
 
     @media (min-width: 648px) {
       :host {
-        --mdw-page__margin: 24px;
+        --mdw-pane__margin-inline: 24px;
+      }
+    }
+
+    @media (min-width: 728px) {
+      :host {
+        --mdw-pane__shape__size: var(--mdw-shape__large);
       }
     }
 

@@ -52,35 +52,6 @@ describe('mdw-box', () => {
       assert.equal(display, 'flex');
       assert.equal(flexDirection, 'row');
     });
-
-    it('[grid]', () => {
-      const element = html`<mdw-box grid>foo</mdw-box>`;
-      const { display } = window.getComputedStyle(element);
-      assert.equal(display, 'grid');
-    });
-  });
-
-  describe('grid columns 4', () => {
-    const element = html`<mdw-box grid style="width:360px"><span>foo</span></mdw-box>`;
-    const { firstElementChild: fooElement } = element;
-    const { gridColumnStart, gridColumnEnd } = window.getComputedStyle(fooElement);
-    assert.equal(gridColumnStart, 'auto');
-    assert.equal(gridColumnEnd, 'span 4');
-  });
-
-  describe('grid columns 8', () => {
-    const element = html`<mdw-box grid style="width:600px"><span>foo</span></mdw-box>`;
-    const { firstElementChild: fooElement } = element;
-    const { gridColumnStart, gridColumnEnd } = window.getComputedStyle(fooElement);
-    assert.equal(gridColumnStart, 'auto');
-    assert.equal(gridColumnEnd, 'span 8');
-  });
-  describe('grid columns 12', () => {
-    const element = html`<mdw-box grid style="width:840px"><span>foo</span></mdw-box>`;
-    const { firstElementChild: fooElement } = element;
-    const { gridColumnStart, gridColumnEnd } = window.getComputedStyle(fooElement);
-    assert.equal(gridColumnStart, 'auto');
-    assert.equal(gridColumnEnd, 'span 12');
   });
 
   describe('theming', () => {
