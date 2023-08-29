@@ -154,17 +154,19 @@ export default function StateMixin(Base) {
       }
 
       #state {
+        --mdw-state__opacity: calc(
+          var(--mdw-state__hovered-opacity) +
+          var(--mdw-state__focused-opacity) +
+          var(--mdw-state__pressed-opacity) +
+          var(--mdw-state__dragged-opacity)
+        );
+
         position: absolute;
         inset: 0;
 
         pointer-events: none;
 
-        opacity: calc(
-            var(--mdw-state__hovered-opacity) +
-            var(--mdw-state__focused-opacity) +
-            var(--mdw-state__pressed-opacity) +
-            var(--mdw-state__dragged-opacity)
-          );
+        opacity: var(--mdw-state__opacity);
         /* opacity handled by theme engine */
         background-color: currentColor;
         border-radius: inherit;
@@ -173,6 +175,18 @@ export default function StateMixin(Base) {
         transition-duration: 000ms;
         transition-property: opacity, color, background-color;
         will-change: opacity;
+      }
+
+      /** Reduce RAM usage by not creating stack contexts */
+      @supports(background-color: color-mix(in srgb, red calc(100%), red)) {
+        #state {
+          opacity: 1;
+
+          background-color: color-mix(in srgb, currentColor calc(100% * var(--mdw-state__opacity)), transparent);
+
+          transition-property: color, background-color;
+          will-change: color, background-color;
+        }
       }
 
       #state[touched] {
