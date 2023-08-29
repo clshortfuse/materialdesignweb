@@ -2,11 +2,17 @@
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function PopupMixin(Base: typeof import('../core/CustomElement.js').default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+    _resizeObserverEnabled: boolean;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    onResizeObserved(entry: ResizeObserverEntry): void;
+    observeResize(): void;
+    unobserveResize(): void;
+}, any[]> & import("../core/CustomElement.js").Class<{
     delegatesFocus: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     open: boolean;
     modal: boolean;
-    _isNativeModal: boolean;
+    native: boolean;
     scrollable: boolean;
     matchSourceWidth: boolean;
     _currentFlow: string;
@@ -60,12 +66,20 @@ export default function PopupMixin(Base: typeof import('../core/CustomElement.js
      */
     close(returnValue?: any, returnFocus?: boolean): boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    onResizeObserved(entry: ResizeObserverEntry): void;
+}, any[]> & import("../core/CustomElement.js").Class<{
     _ariaHidden(this: import("../core/CustomElement.js").default & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
         delegatesFocus: boolean;
     } & {
         open: boolean;
         modal: boolean;
-        _isNativeModal: boolean;
+        native: boolean;
         scrollable: boolean;
         matchSourceWidth: boolean;
         _currentFlow: string;
@@ -118,12 +132,20 @@ export default function PopupMixin(Base: typeof import('../core/CustomElement.js
          * @return {boolean} handled
          */
         close(returnValue?: any, returnFocus?: boolean): boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
     }, { open }: import("../core/CustomElement.js").default & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
         delegatesFocus: boolean;
     } & {
         open: boolean;
         modal: boolean;
-        _isNativeModal: boolean;
+        native: boolean;
         scrollable: boolean;
         matchSourceWidth: boolean;
         _currentFlow: string;
@@ -176,6 +198,8 @@ export default function PopupMixin(Base: typeof import('../core/CustomElement.js
          * @return {boolean} handled
          */
         close(returnValue?: any, returnFocus?: boolean): boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
     }): "false" | "true";
 }, any[]>;
 export type PopupStack = {
@@ -184,7 +208,6 @@ export type PopupStack = {
     centered?: boolean;
     state?: Record<string, any>;
     previousState?: Record<string, any>;
-    originalEvent?: MouseEvent | PointerEvent | HTMLElement | Element;
     pendingResizeOperation?: any;
     scrollRestoration?: (Window & typeof globalThis)['history']['scrollRestoration'];
 };

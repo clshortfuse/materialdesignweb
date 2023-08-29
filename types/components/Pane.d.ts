@@ -1,4 +1,4 @@
-declare const _default: typeof CustomElement & import("../core/CustomElement.js").Class<{
+declare const _default: typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
     hovered: boolean;
@@ -19,7 +19,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     touchedState: boolean;
     pointedState: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    stateTargetElement: CustomElement & {
+    stateTargetElement: import("../core/CustomElement.js").default & {
         disabled: boolean;
         focused: boolean;
         hovered: boolean;
@@ -61,5 +61,4 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     padding: string;
 }, any[]>;
 export default _default;
-import CustomElement from '../core/CustomElement.js';
-//# sourceMappingURL=Surface.d.ts.map
+//# sourceMappingURL=Pane.d.ts.map

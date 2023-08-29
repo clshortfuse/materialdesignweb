@@ -8,6 +8,6 @@ export default function FlexableMixin(Base: typeof import('../core/CustomElement
     x: string;
     y: string;
     gap: number;
-    padding: number;
+    padding: string;
 }, any[]>;
 //# sourceMappingURL=FlexableMixin.d.ts.map

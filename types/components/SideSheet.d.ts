@@ -74,7 +74,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     x: string;
     y: string;
     gap: number;
-    padding: number;
+    padding: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     fixed: boolean;
     open: boolean;
@@ -92,12 +92,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     autoClose: number;
     fixedBreakpoint: number;
     _isSideSheetRtl: boolean;
+    color: string;
+    fixedColor: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     /** @type {InstanceType<Scrim>} */
     _scrim: InstanceType<typeof CustomElement & import("../core/CustomElement.js").Class<{
         hidden: boolean;
     }, any[]>>;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    _styles: string;
     hostStyles: import("../core/customTypes.js").ElementStylerOptions | {
         styles: {
             marginLeft: string | number;

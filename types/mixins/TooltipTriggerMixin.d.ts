@@ -139,7 +139,7 @@ export type Tooltip = typeof import("../core/CustomElement.js").default & import
     shapeStyle: string;
     outlined: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _ariaRole: string; /** @type {HTMLElement[]} */
+    _ariaRole: string; /** @type {any} */
 }, any[]> & import("../core/CustomElement.js").Class<{
     open: boolean;
 }, any[]>;

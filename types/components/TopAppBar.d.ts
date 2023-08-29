@@ -48,6 +48,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onConnectAriaValues: Map<string, string>;
+    /**
+     * Top App Bars should have a background-color that is identical to
+     * `transparent`, though an explicit value allows updating the environment's
+     * to match the app bar (eg: color system bar).
+     *
+     * Top corners are shaped when not scrolling to allow matching with pane, but
+     * removed when raised
+     */
     hasFiredConnected: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
@@ -130,12 +138,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     headline: string;
     size: "small" | "medium" | "large";
     color: string;
+    raisedColor: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _hostRaisedStyle: import("../core/customTypes.js").ElementStylerOptions | {
-        styles: {
-            backgroundColor: string;
-        };
-    };
+    _styles: string;
     _headlineStyle: import("../core/customTypes.js").ElementStylerOptions | {
         target: string;
         styles: {
@@ -196,6 +201,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         _ariaRole: string;
     } & {
         onConnectAriaValues: Map<string, string>;
+        /**
+         * Top App Bars should have a background-color that is identical to
+         * `transparent`, though an explicit value allows updating the environment's
+         * to match the app bar (eg: color system bar).
+         *
+         * Top corners are shaped when not scrolling to allow matching with pane, but
+         * removed when raised
+         */
         hasFiredConnected: boolean;
     } & {
         readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
@@ -278,12 +291,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         headline: string;
         size: "small" | "medium" | "large";
         color: string;
+        raisedColor: string;
     } & {
-        _hostRaisedStyle: import("../core/customTypes.js").ElementStylerOptions | {
-            styles: {
-                backgroundColor: string;
-            };
-        };
+        _styles: string;
         _headlineStyle: import("../core/customTypes.js").ElementStylerOptions | {
             target: string;
             styles: {
@@ -343,6 +353,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         _ariaRole: string;
     } & {
         onConnectAriaValues: Map<string, string>;
+        /**
+         * Top App Bars should have a background-color that is identical to
+         * `transparent`, though an explicit value allows updating the environment's
+         * to match the app bar (eg: color system bar).
+         *
+         * Top corners are shaped when not scrolling to allow matching with pane, but
+         * removed when raised
+         */
         hasFiredConnected: boolean;
     } & {
         readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
@@ -425,12 +443,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         headline: string;
         size: "small" | "medium" | "large";
         color: string;
+        raisedColor: string;
     } & {
-        _hostRaisedStyle: import("../core/customTypes.js").ElementStylerOptions | {
-            styles: {
-                backgroundColor: string;
-            };
-        };
+        _styles: string;
         _headlineStyle: import("../core/customTypes.js").ElementStylerOptions | {
             target: string;
             styles: {

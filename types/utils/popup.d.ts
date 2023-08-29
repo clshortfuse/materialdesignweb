@@ -1,11 +1,20 @@
 /**
+ * @typedef {Object} DOMRectLike
+ * @prop {number} left
+ * @prop {number} right
+ * @prop {number} top
+ * @prop {number} bottom
+ * @prop {number} width
+ * @prop {number} height
+ */
+/**
  * @typedef {Object} CanAnchorPopUpOptions
- * @prop {Element|DOMRect} [anchor]
+ * @prop {Element|DOMRectLike} [anchor]
  * @prop {number|'left'|'center'|'right'} [clientX]
  * @prop {number|'top'|'center'|'bottom'} [clientY]
  * @prop {number} [pageX]
  * @prop {number} [pageY]
- * @prop {Element|DOMRect} [popup]
+ * @prop {Element|{width:number, height:number}} [popup]
  * @prop {number} [width]
  * @prop {number} [height]
  * @prop {number} [offsetX] Offset from anchor
@@ -22,14 +31,24 @@ export function canAnchorPopup(options: CanAnchorPopUpOptions): {
     bottom: number;
     left: number;
     visibility: number;
-    transformOriginX: string;
-    transformOriginY: string;
-    anchor?: Element | DOMRect;
+    styles: {
+        top: string;
+        bottom: string;
+        left: string;
+        right: string;
+        maxWidth: string;
+        maxHeight: string;
+        transformOrigin: string;
+    };
+    anchor?: Element | DOMRectLike;
     clientX?: number | 'left' | 'center' | 'right';
     clientY?: number | 'top' | 'center' | 'bottom';
     pageX?: number;
     pageY?: number;
-    popup?: Element | DOMRect;
+    popup?: Element | {
+        width: number;
+        height: number;
+    };
     width?: number;
     height?: number;
     /**
@@ -48,13 +67,24 @@ export function canAnchorPopup(options: CanAnchorPopUpOptions): {
     directionY?: 'up' | 'center' | 'down';
     force?: boolean;
 };
+export type DOMRectLike = {
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+    width: number;
+    height: number;
+};
 export type CanAnchorPopUpOptions = {
-    anchor?: Element | DOMRect;
+    anchor?: Element | DOMRectLike;
     clientX?: number | 'left' | 'center' | 'right';
     clientY?: number | 'top' | 'center' | 'bottom';
     pageX?: number;
     pageY?: number;
-    popup?: Element | DOMRect;
+    popup?: Element | {
+        width: number;
+        height: number;
+    };
     width?: number;
     height?: number;
     /**

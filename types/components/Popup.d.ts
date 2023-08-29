@@ -1,9 +1,15 @@
 declare const _default: typeof CustomElement & import("../core/CustomElement.js").Class<{
+    _resizeObserverEnabled: boolean;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    onResizeObserved(entry: ResizeObserverEntry): void;
+    observeResize(): void;
+    unobserveResize(): void;
+}, any[]> & import("../core/CustomElement.js").Class<{
     delegatesFocus: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     open: boolean;
     modal: boolean;
-    _isNativeModal: boolean;
+    native: boolean;
     scrollable: boolean;
     matchSourceWidth: boolean;
     _currentFlow: string;
@@ -26,12 +32,20 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     show(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
     close(returnValue?: any, returnFocus?: boolean): boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    onResizeObserved(entry: ResizeObserverEntry): void;
+}, any[]> & import("../core/CustomElement.js").Class<{
     _ariaHidden(this: CustomElement & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
         delegatesFocus: boolean;
     } & {
         open: boolean;
         modal: boolean;
-        _isNativeModal: boolean;
+        native: boolean;
         scrollable: boolean;
         matchSourceWidth: boolean;
         _currentFlow: string;
@@ -53,12 +67,20 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         showModal(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
         show(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
         close(returnValue?: any, returnFocus?: boolean): boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
     }, { open }: CustomElement & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
         delegatesFocus: boolean;
     } & {
         open: boolean;
         modal: boolean;
-        _isNativeModal: boolean;
+        native: boolean;
         scrollable: boolean;
         matchSourceWidth: boolean;
         _currentFlow: string;
@@ -80,6 +102,8 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         showModal(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
         show(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
         close(returnValue?: any, returnFocus?: boolean): boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
     }): "false" | "true";
 }, any[]> & import("../core/CustomElement.js").Class<{
     disabled: boolean;

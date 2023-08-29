@@ -85,7 +85,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     x: string;
     y: string;
     gap: number;
-    padding: number;
+    padding: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
 }, any[]>;

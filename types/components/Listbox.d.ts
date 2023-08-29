@@ -123,247 +123,17 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
 }, any[]> & import("../core/CustomElement.js").Class<{
     density: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _resizeObserverEnabled: boolean;
-}, any[]> & import("../core/CustomElement.js").Class<{
-    onResizeObserved(entry: ResizeObserverEntry): void;
-    observeResize(): void;
-    unobserveResize(): void;
-}, any[]> & import("../core/CustomElement.js").Class<{
     block: boolean;
     inline: boolean;
     row: boolean;
     x: string;
     y: string;
     gap: number;
-    padding: number;
+    padding: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
     typeStyle: string;
-}, any[]> & import("../core/CustomElement.js").Class<{
-    grid: boolean;
-    columns: number;
-    _autoColumns: number;
-}, any[]> & import("../core/CustomElement.js").Class<{
-    _resizeObserverEnabled: boolean;
-}, any[]> & import("../core/CustomElement.js").Class<{
-    onResizeObserved(entry: ResizeObserverEntry): void;
-}, any[]> & import("../core/CustomElement.js").Class<{
-    _computedColumns(this: import("../core/CustomElement.js").default & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-        observeResize(): void;
-        unobserveResize(): void;
-    } & {
-        block: boolean;
-        inline: boolean;
-        row: boolean;
-        x: string;
-        y: string;
-        gap: number;
-        padding: number;
-    } & {
-        color: string;
-        ink: string;
-        typeStyle: string;
-    } & {
-        grid: boolean;
-        columns: number;
-        _autoColumns: number;
-    } & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-    }, { columns, _autoColumns }: import("../core/CustomElement.js").default & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-        observeResize(): void;
-        unobserveResize(): void;
-    } & {
-        block: boolean;
-        inline: boolean;
-        row: boolean;
-        x: string;
-        y: string;
-        gap: number;
-        padding: number;
-    } & {
-        color: string;
-        ink: string;
-        typeStyle: string;
-    } & {
-        grid: boolean;
-        columns: number;
-        _autoColumns: number;
-    } & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-    }): string;
-}, any[]> & import("../core/CustomElement.js").Class<{
-    _isFlex(this: import("../core/CustomElement.js").default & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-        observeResize(): void;
-        unobserveResize(): void;
-    } & {
-        block: boolean;
-        inline: boolean;
-        row: boolean;
-        x: string;
-        y: string;
-        gap: number;
-        padding: number;
-    } & {
-        color: string;
-        ink: string;
-        typeStyle: string;
-    } & {
-        grid: boolean;
-        columns: number;
-        _autoColumns: number;
-    } & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-    } & {
-        _computedColumns(this: import("../core/CustomElement.js").default & {
-            _resizeObserverEnabled: boolean;
-        } & {
-            onResizeObserved(entry: ResizeObserverEntry): void;
-            observeResize(): void;
-            unobserveResize(): void;
-        } & {
-            block: boolean;
-            inline: boolean;
-            row: boolean;
-            x: string;
-            y: string;
-            gap: number;
-            padding: number;
-        } & {
-            color: string;
-            ink: string;
-            typeStyle: string;
-        } & {
-            grid: boolean;
-            columns: number;
-            _autoColumns: number;
-        } & {
-            _resizeObserverEnabled: boolean;
-        } & {
-            onResizeObserved(entry: ResizeObserverEntry): void;
-        }, { columns, _autoColumns }: import("../core/CustomElement.js").default & {
-            _resizeObserverEnabled: boolean;
-        } & {
-            onResizeObserved(entry: ResizeObserverEntry): void;
-            observeResize(): void;
-            unobserveResize(): void;
-        } & {
-            block: boolean;
-            inline: boolean;
-            row: boolean;
-            x: string;
-            y: string;
-            gap: number;
-            padding: number;
-        } & {
-            color: string;
-            ink: string;
-            typeStyle: string;
-        } & {
-            grid: boolean;
-            columns: number;
-            _autoColumns: number;
-        } & {
-            _resizeObserverEnabled: boolean;
-        } & {
-            onResizeObserved(entry: ResizeObserverEntry): void;
-        }): string;
-    }, { block, grid }: import("../core/CustomElement.js").default & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-        observeResize(): void;
-        unobserveResize(): void;
-    } & {
-        block: boolean;
-        inline: boolean;
-        row: boolean;
-        x: string;
-        y: string;
-        gap: number;
-        padding: number;
-    } & {
-        color: string;
-        ink: string;
-        typeStyle: string;
-    } & {
-        grid: boolean;
-        columns: number;
-        _autoColumns: number;
-    } & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-    } & {
-        _computedColumns(this: import("../core/CustomElement.js").default & {
-            _resizeObserverEnabled: boolean;
-        } & {
-            onResizeObserved(entry: ResizeObserverEntry): void;
-            observeResize(): void;
-            unobserveResize(): void;
-        } & {
-            block: boolean;
-            inline: boolean;
-            row: boolean;
-            x: string;
-            y: string;
-            gap: number;
-            padding: number;
-        } & {
-            color: string;
-            ink: string;
-            typeStyle: string;
-        } & {
-            grid: boolean;
-            columns: number;
-            _autoColumns: number;
-        } & {
-            _resizeObserverEnabled: boolean;
-        } & {
-            onResizeObserved(entry: ResizeObserverEntry): void;
-        }, { columns, _autoColumns }: import("../core/CustomElement.js").default & {
-            _resizeObserverEnabled: boolean;
-        } & {
-            onResizeObserved(entry: ResizeObserverEntry): void;
-            observeResize(): void;
-            unobserveResize(): void;
-        } & {
-            block: boolean;
-            inline: boolean;
-            row: boolean;
-            x: string;
-            y: string;
-            gap: number;
-            padding: number;
-        } & {
-            color: string;
-            ink: string;
-            typeStyle: string;
-        } & {
-            grid: boolean;
-            columns: number;
-            _autoColumns: number;
-        } & {
-            _resizeObserverEnabled: boolean;
-        } & {
-            onResizeObserved(entry: ResizeObserverEntry): void;
-        }): string;
-    }): boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
     color: {
@@ -35529,7 +35299,54 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
                 } & {
                     disabledState: boolean;
                 }): string;
-                computedIconVariation(this: import("../core/CustomElement.js").default & ... 15 more ... & {
+                computedIconVariation(this: import("../core/CustomElement.js").default & {
+                    href: string;
+                    target: string;
+                    download: string;
+                    ping: string;
+                    rel: string;
+                    hreflang: string;
+                    referrerPolicy: string;
+                } & {
+                    origin: string;
+                    protocol: string;
+                    username: string;
+                    password: string;
+                    host: string;
+                    hostname: string;
+                    port: string;
+                    pathname: string;
+                    search: string;
+                    hash: string;
+                } & object & {
+                    _ariaRole: string;
+                } & {
+                    onConnectAriaValues: Map<string, string>;
+                    hasFiredConnected: boolean;
+                } & {
+                    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
+                    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
+                } & {
+                    disabled: boolean;
+                    focused: boolean;
+                    hovered: boolean;
+                    pressed: boolean;
+                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                    _hovered: boolean;
+                    _focused: boolean;
+                    _focusedSynthetic: boolean;
+                    _keyPressed: boolean;
+                    _keyReleased: boolean;
+                    _pointerPressed: boolean;
+                    stateLayer: boolean;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & ... 7 more ... & {
                     ...;
                 }, { iconVariation }: import("../core/CustomElement.js").default & {
                     href: string;
@@ -35571,8 +35388,147 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
                     _keyReleased: boolean;
                     _pointerPressed: boolean;
                     stateLayer: boolean;
-                } & ... 8 more ... & {
-                    ...;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: import("../core/CustomElement.js").default & {
+                        disabled: boolean;
+                        focused: boolean;
+                        hovered: boolean;
+                        pressed: boolean;
+                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                        _hovered: boolean;
+                        _focused: boolean;
+                        _focusedSynthetic: boolean;
+                        _keyPressed: boolean;
+                        _keyReleased: boolean;
+                        _pointerPressed: boolean;
+                        stateLayer: boolean;
+                    } & {
+                        disabledState: boolean;
+                        hoveredState: boolean;
+                        focusedState: boolean;
+                        pressedState: boolean;
+                        touchedState: boolean;
+                        pointedState: boolean;
+                    };
+                } & {
+                    _lastRippleWeakRef: WeakRef<import("../core/CustomElement.js").default & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    }>;
+                    _rippleAdded: boolean;
+                } & {
+                    _lastRipple: import("../core/CustomElement.js").default & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    addRipple(x?: number, y?: number, hold?: boolean): import("../core/CustomElement.js").default & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    color: string;
+                    ink: string;
+                    typeStyle: string;
+                } & {
+                    _ariaRole: string;
+                    stateLayer: boolean;
+                } & {
+                    leading: string;
+                    avatar: string;
+                    avatarColor: string;
+                    avatarSrc: string;
+                    src: string;
+                    alt: string;
+                    icon: string;
+                    iconInk: string;
+                    iconSrc: string;
+                    iconVariation: string;
+                    checkbox: string;
+                    radio: string;
+                    selectionColor: string;
+                    selected: boolean;
+                    supporting: string;
+                    trailing: string;
+                    trailingIcon: string;
+                    trailingIconInk: string;
+                    trailingIconSrc: string;
+                    divider: boolean;
+                    video: boolean;
+                    lines: number;
+                    _supportingSlotted: boolean;
+                } & {
+                    disabledState: boolean;
                 }): string;
             } & ... 4 more ... & {
                 ...;

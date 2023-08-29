@@ -1,4 +1,4 @@
-declare const _default: typeof CustomElement & import("../core/CustomElement.js").Class<{
+declare const _default: typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     href: string;
     target: string;
     download: string;
@@ -48,7 +48,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     touchedState: boolean;
     pointedState: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    stateTargetElement: CustomElement & {
+    stateTargetElement: import("../core/CustomElement.js").default & {
         disabled: boolean;
         focused: boolean;
         hovered: boolean;
@@ -141,7 +141,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     x: string;
     y: string;
     gap: number;
-    padding: number;
+    padding: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
@@ -153,7 +153,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     stateTargetElement: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    showBlocker: (this: CustomElement & {
+    showBlocker: (this: import("../core/CustomElement.js").default & {
         href: string;
         target: string;
         download: string;
@@ -203,7 +203,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
+        stateTargetElement: import("../core/CustomElement.js").default & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -294,7 +294,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         x: string;
         y: string;
         gap: number;
-        padding: number;
+        padding: string;
     } & {
         _ariaRole: string;
     } & {
@@ -305,7 +305,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         onaction: EventListener;
     } & {
         stateTargetElement: HTMLElement;
-    }, { disabledState }: CustomElement & {
+    }, { disabledState, disabled }: import("../core/CustomElement.js").default & {
         href: string;
         target: string;
         download: string;
@@ -355,7 +355,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
+        stateTargetElement: import("../core/CustomElement.js").default & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -446,7 +446,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         x: string;
         y: string;
         gap: number;
-        padding: number;
+        padding: string;
     } & {
         _ariaRole: string;
     } & {
@@ -458,7 +458,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     } & {
         stateTargetElement: HTMLElement;
     }) => boolean;
-    showButton: (this: CustomElement & {
+    showButton: (this: import("../core/CustomElement.js").default & {
         href: string;
         target: string;
         download: string;
@@ -508,7 +508,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
+        stateTargetElement: import("../core/CustomElement.js").default & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -599,7 +599,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         x: string;
         y: string;
         gap: number;
-        padding: number;
+        padding: string;
     } & {
         _ariaRole: string;
     } & {
@@ -610,7 +610,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         onaction: EventListener;
     } & {
         stateTargetElement: HTMLElement;
-    }, { actionable, href }: CustomElement & {
+    }, { actionable, href }: import("../core/CustomElement.js").default & {
         href: string;
         target: string;
         download: string;
@@ -660,7 +660,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
+        stateTargetElement: import("../core/CustomElement.js").default & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -751,7 +751,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         x: string;
         y: string;
         gap: number;
-        padding: number;
+        padding: string;
     } & {
         _ariaRole: string;
     } & {
@@ -767,5 +767,4 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     focus(): void;
 }, any[]>;
 export default _default;
-import CustomElement from '../core/CustomElement.js';
 //# sourceMappingURL=Card.d.ts.map

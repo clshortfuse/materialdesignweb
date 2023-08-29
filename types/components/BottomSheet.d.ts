@@ -74,7 +74,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     x: string;
     y: string;
     gap: number;
-    padding: number;
+    padding: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     shapeTop: boolean;
     modal: boolean;
