@@ -1,23 +1,20 @@
-import CustomElement from '../core/CustomElement.js';
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import ElevationMixin from '../mixins/ElevationMixin.js';
-import FlexableMixin from '../mixins/FlexableMixin.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
-import ThemableMixin from '../mixins/ThemableMixin.js';
+
+import Box from './Box.js';
 
 /* https://m3.material.io/components/cards/specs */
 
 const SUPPORTS_INERT = 'inert' in HTMLElement.prototype;
 
-export default CustomElement
+export default Box
   .extend()
-  .mixin(ThemableMixin)
-  .mixin(FlexableMixin)
   .mixin(StateMixin)
   .mixin(ElevationMixin)
   .mixin(ShapeMixin)
@@ -39,7 +36,7 @@ export default CustomElement
     stateTargetElement() { return this.actionable ? this.refs.action : this; },
   })
   .expressions({
-    showBlocker: ({ disabledState }) => !SUPPORTS_INERT && disabledState,
+    showBlocker: ({ disabledState, disabled }) => disabledState && (!disabled || !SUPPORTS_INERT),
     showButton: ({ actionable, href }) => Boolean(actionable || href),
   })
   .methods({
@@ -57,20 +54,21 @@ export default CustomElement
       hreflang={hreflang}
       referrerpolicy={referrerPolicy} id=action disabled={disabledState}></mdw-button>
     <div mdw-if={showBlocker} id=inert-blocker></div>
-    <slot id=slot disabled={disabledState}></slot>
   `
-  .recompose(({ refs: { anchor } }) => { anchor.remove(); })
+  .recompose(({ refs: { anchor, inertBlocker, slot } }) => {
+    anchor.remove();
+    slot.setAttribute('disabled', '{disabledState}');
+    inertBlocker.before(slot);
+  })
   .css`
     :host {
-      --mdw-shape__size: 12px;
+      --mdw-shape__size: var(--mdw-shape__medium);
 
       /* padding-inline: 12px; */
 
-      --mdw-bg: var(--mdw-color__surface-container);
+      --mdw-bg: var(--mdw-color__surface);
       --mdw-ink: var(--mdw-color__on-surface);
       position: relative;
-
-      color: rgb(var(--mdw-ink));
 
       font: var(--mdw-type__font);
       letter-spacing: var(--mdw-type__letter-spacing);
@@ -79,7 +77,7 @@ export default CustomElement
       will-change: filter;
     }
 
-    :host(:where([elevated],[filled],[color])) {
+    :host(:where([elevated],[filled],[outlined])) {
       background-color: rgb(var(--mdw-bg));
     }
 
@@ -107,6 +105,8 @@ export default CustomElement
     }
 
     :host([disabled]) {
+      cursor: not-allowed;
+
       filter: grayscale();
       opacity: 0.38;
 
@@ -135,6 +135,10 @@ export default CustomElement
 
     :host([disabled][elevated]) {
       background-color: rgba(var(--mdw-color__surface-container-highest));
+    }
+
+    :host([disabled][filled]) {
+      background-color: rgba(var(--mdw-color__surface));
     }
 
     #action {
