@@ -81,6 +81,7 @@ export default function ThemableMixin(Base) {
       
       /* Quality-of-life */
       :host([color="surface-primary"]) {
+        --mdw-bg: var(--mdw-color__surface);
         --mdw-ink: var(--mdw-color__primary);
       }
       
@@ -96,11 +97,6 @@ export default function ThemableMixin(Base) {
       
       :host([color="inverse-primary"]) {
         --mdw-ink: var(--mdw-color__inverse-primary);
-      }
-      
-      :host([color][disabled]) {
-        /* background-color: rgba(var(--mdw-color__on-surface), 0.12); */
-        /* color: rgba(var(--mdw-color__on-surface), 0.38); */
       }
       `
     .css(inkAttributeCSS)
