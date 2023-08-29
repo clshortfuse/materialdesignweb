@@ -1,5 +1,3 @@
-import { CHROME_VERSION, SAFARI_VERSION } from '../core/dom.js';
-
 import DelegatesFocusMixin from './DelegatesFocusMixin.js';
 
 /**
@@ -51,13 +49,6 @@ export default function TypographyMixin(Base) {
         }
         return '';
       },
-      _wrapperStyle({ _computedTextPaddingBottom }) {
-        // Chrome and Safari use 0-width inline elements for text selection
-        if ((CHROME_VERSION || SAFARI_VERSION) && _computedTextPaddingBottom) {
-          return `clip-path:inset(0 0 calc(0.5em + ${_computedTextPaddingBottom}) 0)`;
-        }
-        return '';
-      },
     })
     .html`
       <div id=wrapper style={_wrapperStyle} before={!!_beforeStyle} after={!!_afterStyle}
@@ -86,7 +77,6 @@ export default function TypographyMixin(Base) {
         display: flex;
         align-items: baseline; /* Allows growing element upwards without affecting text selection */
 
-        pointer-events: none;
       }
 
       #wrapper[before] {
@@ -119,8 +109,6 @@ export default function TypographyMixin(Base) {
       
       #content:where([before], [after]) {
         display: block;
-
-        pointer-events: auto;
       }
 
       #after {
