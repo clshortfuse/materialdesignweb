@@ -394,55 +394,7 @@ declare const _default: {
         _computedSVGPath: string;
         _computedViewBox: string;
         _showFontIcon: boolean;
-        showSVG(this: CustomElement & {
-            color: string;
-            ink: string;
-            typeStyle: string;
-        } & {
-            _img: HTMLImageElement;
-        } & {
-            naturalWidth: number;
-            naturalHeight: number;
-            complete: boolean;
-            currentSrc: string;
-            x: number;
-            y: number;
-            decode: () => Promise<void>;
-        } & {
-            icon: string;
-            disabled: boolean;
-            alt: string;
-            src: string;
-            svg: string;
-            svgPath: string;
-            srcset: string;
-            sizes: string;
-            variation: string;
-            crossOrigin: string;
-            useMap: string;
-            isMap: boolean;
-            referrerPolicy: string;
-            decoding: "auto" | "async" | "sync";
-            loading: "eager" | "lazy";
-            width: number;
-            height: number;
-            forceFont: boolean;
-            _linkLoaded: boolean;
-            viewBox: string;
-            fontClass: string;
-            fontLibrary: string;
-            _isConnected: boolean;
-        } & {
-            _svgAlias: {
-                path: string;
-                viewBox: string;
-            };
-        } & {
-            _computedSVGPath: string;
-            _computedViewBox: string;
-        } & {
-            _showFontIcon: boolean;
-        }, { svg, _computedSVGPath }: CustomElement & {
+        showSVG({ svg, _computedSVGPath }: CustomElement & {
             color: string;
             ink: string;
             typeStyle: string;
@@ -511,8 +463,8 @@ declare const _default: {
     autoRegistration: boolean;
     registrations: Map<string, typeof CustomElement>;
     expressions: <CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends {
-        [x: string]: (this: INSTANCE, data?: INSTANCE, state?: Record<string, any>) => string | boolean;
-    }>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & import("../core/CustomElement.js").Class<PROPS, ARGS>;
+        [x: string]: (data?: INSTANCE, state?: Record<string, any>) => string | boolean;
+    } & ThisType<INSTANCE>>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & import("../core/CustomElement.js").Class<PROPS, ARGS>;
     methods: typeof CustomElement.set;
     overrides: <CLASS_1 extends typeof CustomElement, ARGS_1 extends ConstructorParameters<CLASS_1>, INSTANCE_1 extends InstanceType<CLASS_1>, PROPS_1 extends Partial<INSTANCE_1>>(this: CLASS_1, source: PROPS_1 & ThisType<PROPS_1 & INSTANCE_1>, options?: Partial<PropertyDescriptor>) => CLASS_1 & import("../core/CustomElement.js").Class<PROPS_1, ARGS_1>;
     props: <CLASS_2 extends typeof CustomElement, ARGS_2 extends ConstructorParameters<CLASS_2>, INSTANCE_2 extends InstanceType<CLASS_2>, KEY extends string, OPTIONS extends import("../core/observe.js").ObserverPropertyType | import("../core/CustomElement.js").ObserverOptions<import("../core/observe.js").ObserverPropertyType, unknown, INSTANCE_2> | ((this: INSTANCE_2, data: Partial<INSTANCE_2>, fn?: () => any) => any), VALUE extends Record<KEY, OPTIONS extends (...args2: any[]) => infer R ? R : OPTIONS extends import("../core/observe.js").ObserverPropertyType ? import("../core/observe.js").ParsedObserverPropertyType<OPTIONS> : OPTIONS extends {

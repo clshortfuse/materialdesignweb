@@ -27,35 +27,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _isFlex(this: import("../core/CustomElement.js").default & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-        observeResize(): void;
-        unobserveResize(): void;
-    } & {
-        block: boolean;
-        inline: boolean;
-        row: boolean;
-        x: string;
-        y: string;
-        gap: number;
-        padding: string;
-    } & {
-        color: string;
-        ink: string;
-        typeStyle: string;
-    } & {
-        grid: boolean;
-        columns: number;
-        _autoColumns: number;
-        _lastInlineSize: number;
-    } & {
-        _resizeObserverEnabled: boolean;
-        _computedColumns: string;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-    }, { block, grid }: import("../core/CustomElement.js").default & {
+    _isFlex({ block, grid }: import("../core/CustomElement.js").default & {
         _resizeObserverEnabled: boolean;
     } & {
         onResizeObserved(entry: ResizeObserverEntry): void;

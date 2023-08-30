@@ -258,8 +258,8 @@ export default class CustomElement extends HTMLElement {
    *  ARGS extends ConstructorParameters<CLASS>,
    *  INSTANCE extends InstanceType<CLASS>,
    *  PROPS extends {
-   *    [K in keyof any]: ((this: INSTANCE, data?: INSTANCE, state?: Record<string, any>) => string|boolean|null)
-   *  }
+   *    [K in keyof any]: ((data?: INSTANCE, state?: Record<string, any>) => string|boolean|null)
+   *  } & ThisType<INSTANCE>
    *  >(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>):
    *  CLASS & Class<PROPS,ARGS>
    * }}

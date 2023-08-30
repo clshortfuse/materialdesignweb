@@ -68,73 +68,7 @@ export default function PopupMixin(Base: typeof import('../core/CustomElement.js
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _ariaHidden(this: import("../core/CustomElement.js").default & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-        observeResize(): void;
-        unobserveResize(): void;
-    } & {
-        delegatesFocus: boolean;
-    } & {
-        open: boolean;
-        modal: boolean;
-        native: boolean;
-        scrollable: boolean;
-        matchSourceWidth: boolean;
-        _currentFlow: string;
-        flow: string;
-        popupMargin: number;
-    } & {
-        useHistory: boolean;
-        returnValue: string;
-        _closing: boolean;
-        _useScrim: boolean;
-    } & {
-        _dialog: HTMLDialogElement;
-    } & {
-        /**
-         * @param {DOMRect|Element} [anchor]
-         * @return {void}
-         */
-        updatePopupPosition(anchor?: DOMRect | Element): void;
-        /**
-         * @param {Event & {currentTarget: HTMLSlotElement}} event
-         * @return {void}
-         */
-        onSlotChange({ currentTarget }: Event & {
-            currentTarget: HTMLSlotElement;
-        }): void;
-        /**
-         * @param {MouseEvent|PointerEvent|HTMLElement|Event} [source]
-         * @param {boolean} focus
-         * @param {string} flow
-         * @return {boolean} handled
-         */
-        showPopup(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
-        /**
-         * @param {MouseEvent|PointerEvent|HTMLElement|Event} [source]
-         * @param {boolean} [focus]
-         * @param {string} [flow]
-         * @return {boolean} handled
-         */
-        showModal(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
-        /**
-         * @param {MouseEvent|PointerEvent|HTMLElement|Event} [source]
-         * @param {boolean} [focus]
-         * @param {string} [flow]
-         * @return {boolean} handled
-         */
-        show(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
-        /**
-         * @param {any} [returnValue]
-         * @param {boolean} [returnFocus=true]
-         * @return {boolean} handled
-         */
-        close(returnValue?: any, returnFocus?: boolean): boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-    }, { open }: import("../core/CustomElement.js").default & {
+    _ariaHidden({ open }: import("../core/CustomElement.js").default & {
         _resizeObserverEnabled: boolean;
     } & {
         onResizeObserved(entry: ResizeObserverEntry): void;

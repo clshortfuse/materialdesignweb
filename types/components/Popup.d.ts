@@ -34,42 +34,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _ariaHidden(this: CustomElement & {
-        _resizeObserverEnabled: boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-        observeResize(): void;
-        unobserveResize(): void;
-    } & {
-        delegatesFocus: boolean;
-    } & {
-        open: boolean;
-        modal: boolean;
-        native: boolean;
-        scrollable: boolean;
-        matchSourceWidth: boolean;
-        _currentFlow: string;
-        flow: string;
-        popupMargin: number;
-    } & {
-        useHistory: boolean;
-        returnValue: string;
-        _closing: boolean;
-        _useScrim: boolean;
-    } & {
-        _dialog: HTMLDialogElement;
-    } & {
-        updatePopupPosition(anchor?: Element | DOMRect): void;
-        onSlotChange({ currentTarget }: Event & {
-            currentTarget: HTMLSlotElement;
-        }): void;
-        showPopup(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
-        showModal(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
-        show(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
-        close(returnValue?: any, returnFocus?: boolean): boolean;
-    } & {
-        onResizeObserved(entry: ResizeObserverEntry): void;
-    }, { open }: CustomElement & {
+    _ariaHidden({ open }: CustomElement & {
         _resizeObserverEnabled: boolean;
     } & {
         onResizeObserved(entry: ResizeObserverEntry): void;
