@@ -23,27 +23,7 @@ export default function TooltipTriggerMixin(Base: ReturnType<typeof import("./St
     touchedState: boolean;
     pointedState: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    stateTargetElement: import("../core/CustomElement.js").default & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
+    stateTargetElement: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
     TOOLTIP_MOUSE_IDLE_MS: number;
     TOOLTIP_TOUCH_IDLE_MS: number;
@@ -106,27 +86,7 @@ export type Tooltip = typeof import("../core/CustomElement.js").default & import
     touchedState: boolean;
     pointedState: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    stateTargetElement: import("../core/CustomElement.js").default & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
+    stateTargetElement: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;

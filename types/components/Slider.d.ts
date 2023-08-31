@@ -21,27 +21,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     touchedState: boolean;
     pointedState: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
+    stateTargetElement: HTMLElement;
 }, any[]> & {
     formAssociated: true;
 } & import("../core/CustomElement.js").Class<{
@@ -140,27 +120,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
@@ -342,27 +302,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
@@ -459,27 +399,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -661,27 +581,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
@@ -778,27 +678,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -980,27 +860,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
@@ -1097,27 +957,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;

@@ -25,27 +25,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     touchedState: boolean;
     pointedState: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
+    stateTargetElement: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
@@ -159,27 +139,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
@@ -294,27 +254,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -426,27 +366,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -561,27 +481,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -693,27 +593,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -828,27 +708,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -960,27 +820,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -1095,27 +935,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -1227,27 +1047,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -1362,27 +1162,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -1494,27 +1274,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -1630,27 +1390,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -1762,27 +1502,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -1897,27 +1617,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -2029,27 +1729,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -2164,27 +1844,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -2296,27 +1956,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -2431,27 +2071,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -2563,27 +2183,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -2698,27 +2298,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -2830,27 +2410,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -2965,27 +2525,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -3097,27 +2637,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -3233,27 +2753,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -3365,27 +2865,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -3500,27 +2980,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -3632,27 +3092,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -3767,27 +3207,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -3899,27 +3319,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -4034,27 +3434,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -4166,27 +3546,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -4301,27 +3661,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -4433,27 +3773,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -4568,27 +3888,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -4700,27 +4000,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -4922,27 +4202,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
@@ -5069,27 +4329,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -5251,27 +4491,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -5436,27 +4656,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -5645,27 +4845,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -5827,27 +5007,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -6012,27 +5172,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -6219,27 +5359,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -6401,27 +5521,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -6586,27 +5686,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -6793,27 +5873,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -6975,27 +6035,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -7160,27 +6200,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -7368,27 +6388,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -7550,27 +6550,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -7735,27 +6715,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -7944,27 +6904,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -8126,27 +7066,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -8311,27 +7231,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -8518,27 +7418,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -8700,27 +7580,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -8885,27 +7745,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -9092,27 +7932,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -9274,27 +8094,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -9459,27 +8259,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -9669,27 +8449,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -9851,27 +8611,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -10036,27 +8776,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -10245,27 +8965,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -10427,27 +9127,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -10612,27 +9292,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -10819,27 +9479,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -11001,27 +9641,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -11186,27 +9806,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -11393,27 +9993,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -11575,27 +10155,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -11760,27 +10320,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -11968,27 +10508,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -12150,27 +10670,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -12335,27 +10835,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -12544,27 +11024,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -12726,27 +11186,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -12911,27 +11351,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -13118,27 +11538,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -13300,27 +11700,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -13485,27 +11865,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -13692,27 +12052,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -13874,27 +12214,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -14059,27 +12379,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -14276,27 +12576,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -14458,27 +12738,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -14643,27 +12903,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -14852,27 +13092,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -15034,27 +13254,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -15219,27 +13419,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -15426,27 +13606,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -15608,27 +13768,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -15793,27 +13933,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -16000,27 +14120,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -16182,27 +14282,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -16367,27 +14447,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -16575,27 +14635,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -16757,27 +14797,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -16942,27 +14962,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -17151,27 +15151,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -17333,27 +15313,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -17518,27 +15478,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -17725,27 +15665,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -17907,27 +15827,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -18092,27 +15992,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -18299,27 +16179,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -18481,27 +16341,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -18666,27 +16506,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -18875,27 +16695,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -19057,27 +16857,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -19242,27 +17022,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -19451,27 +17211,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -19633,27 +17373,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -19818,27 +17538,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -20025,27 +17725,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -20207,27 +17887,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -20392,27 +18052,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -20599,27 +18239,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -20781,27 +18401,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -20966,27 +18566,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -21174,27 +18754,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -21356,27 +18916,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -21541,27 +19081,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -21750,27 +19270,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -21932,27 +19432,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -22117,27 +19597,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -22324,27 +19784,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -22506,27 +19946,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -22691,27 +20111,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -22898,27 +20298,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -23080,27 +20460,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -23265,27 +20625,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -23483,27 +20823,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
@@ -23630,27 +20950,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -23812,27 +21112,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -23997,27 +21277,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -24206,27 +21466,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -24388,27 +21628,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -24573,27 +21793,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -24780,27 +21980,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -24962,27 +22142,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -25147,27 +22307,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -25354,27 +22494,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -25536,27 +22656,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -25721,27 +22821,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -25929,27 +23009,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -26111,27 +23171,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -26296,27 +23336,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -26505,27 +23525,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -26687,27 +23687,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -26872,27 +23852,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -27079,27 +24039,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -27261,27 +24201,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -27446,27 +24366,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -27653,27 +24553,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -27835,27 +24715,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -28020,27 +24880,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -28230,27 +25070,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -28412,27 +25232,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -28597,27 +25397,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -28806,27 +25586,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -28988,27 +25748,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -29173,27 +25913,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -29380,27 +26100,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -29562,27 +26262,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -29747,27 +26427,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -29954,27 +26614,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -30136,27 +26776,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -30321,27 +26941,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -30529,27 +27129,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -30711,27 +27291,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -30896,27 +27456,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -31105,27 +27645,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -31287,27 +27807,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -31472,27 +27972,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -31679,27 +28159,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -31861,27 +28321,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -32046,27 +28486,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -32253,27 +28673,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -32435,27 +28835,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -32620,27 +29000,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -32837,27 +29197,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -33019,27 +29359,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -33204,27 +29524,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -33413,27 +29713,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -33595,27 +29875,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -33780,27 +30040,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -33987,27 +30227,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -34169,27 +30389,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -34354,27 +30554,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -34561,27 +30741,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -34743,27 +30903,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -34928,27 +31068,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -35136,27 +31256,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -35318,27 +31418,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -35503,27 +31583,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -35712,27 +31772,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -35894,27 +31934,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -36079,27 +32099,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -36286,27 +32286,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -36468,27 +32448,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -36653,27 +32613,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -36860,27 +32800,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -37042,27 +32962,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -37227,27 +33127,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -37436,27 +33316,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -37618,27 +33478,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -37803,27 +33643,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -38012,27 +33832,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -38194,27 +33994,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -38379,27 +34159,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -38586,27 +34346,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -38768,27 +34508,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -38953,27 +34673,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -39160,27 +34860,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -39342,27 +35022,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -39527,27 +35187,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -39735,27 +35375,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             touchedState: boolean;
             pointedState: boolean;
         }, any[]> & import("../core/CustomElement.js").Class<{
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         }, any[]> & import("../core/CustomElement.js").Class<{
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -39917,27 +35537,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -40102,27 +35702,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -40311,27 +35891,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -40493,27 +36053,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -40678,27 +36218,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     touchedState: boolean;
                     pointedState: boolean;
                 } & {
-                    stateTargetElement: CustomElement & {
-                        disabled: boolean;
-                        focused: boolean;
-                        hovered: boolean;
-                        pressed: boolean;
-                        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                        _hovered: boolean;
-                        _focused: boolean;
-                        _focusedSynthetic: boolean;
-                        _keyPressed: boolean;
-                        _keyReleased: boolean;
-                        _pointerPressed: boolean;
-                        stateLayer: boolean;
-                    } & {
-                        disabledState: boolean;
-                        hoveredState: boolean;
-                        focusedState: boolean;
-                        pressedState: boolean;
-                        touchedState: boolean;
-                        pointedState: boolean;
-                    };
+                    stateTargetElement: HTMLElement;
                 } & {
                     _lastRippleWeakRef: WeakRef<CustomElement & {
                         hadRippleHeld: boolean;
@@ -40885,7 +36405,148 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
+                stateTargetElement: HTMLElement;
+            } & {
+                _lastRippleWeakRef: WeakRef<CustomElement & {
+                    hadRippleHeld: boolean;
+                    hadRippleReleased: boolean;
+                    rippleStarted: boolean;
+                } & {
+                    rippleState: string;
+                    keepAlive: boolean;
+                    _positionX: number;
+                    _positionY: number;
+                    _radius: number;
+                    holdRipple: boolean;
+                } & {
+                    _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                        styles: {
+                            minHeight: string;
+                            minWidth: string;
+                            boxShadow: string;
+                            top: string;
+                            left: string;
+                        };
+                    };
+                } & {
+                    updatePosition(x?: number, y?: number, size?: number): void;
+                    handleRippleComplete(): void;
+                }>;
+                _rippleAdded: boolean;
+            } & {
+                _lastRipple: CustomElement & {
+                    hadRippleHeld: boolean;
+                    hadRippleReleased: boolean;
+                    rippleStarted: boolean;
+                } & {
+                    rippleState: string;
+                    keepAlive: boolean;
+                    _positionX: number;
+                    _positionY: number;
+                    _radius: number;
+                    holdRipple: boolean;
+                } & {
+                    _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                        styles: {
+                            minHeight: string;
+                            minWidth: string;
+                            boxShadow: string;
+                            top: string;
+                            left: string;
+                        };
+                    };
+                } & {
+                    updatePosition(x?: number, y?: number, size?: number): void;
+                    handleRippleComplete(): void;
+                };
+            } & {
+                addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
+                    hadRippleHeld: boolean;
+                    hadRippleReleased: boolean;
+                    rippleStarted: boolean;
+                } & {
+                    rippleState: string;
+                    keepAlive: boolean;
+                    _positionX: number;
+                    _positionY: number;
+                    _radius: number;
+                    holdRipple: boolean;
+                } & {
+                    _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                        styles: {
+                            minHeight: string;
+                            minWidth: string;
+                            boxShadow: string;
+                            top: string;
+                            left: string;
+                        };
+                    };
+                } & {
+                    updatePosition(x?: number, y?: number, size?: number): void;
+                    handleRippleComplete(): void;
+                };
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                _ariaRole: string;
+                stateLayer: boolean;
+            } & {
+                leading: string;
+                avatar: string;
+                avatarColor: string;
+                avatarSrc: string;
+                src: string;
+                alt: string;
+                icon: string;
+                iconInk: string;
+                iconSrc: string;
+                iconVariation: string;
+                checkbox: string;
+                radio: string;
+                selectionColor: string;
+                selected: boolean;
+                supporting: string;
+                trailing: string;
+                trailingIcon: string;
+                trailingIconInk: string;
+                trailingIconSrc: string;
+                divider: boolean;
+                video: boolean;
+                lines: number;
+                _supportingSlotted: boolean;
+            } & {
+                disabledState: boolean;
+            } & {
+                isInteractive({ href }: CustomElement & {
+                    href: string;
+                    target: string;
+                    download: string;
+                    ping: string;
+                    rel: string;
+                    hreflang: string;
+                    referrerPolicy: string;
+                } & {
+                    origin: string;
+                    protocol: string;
+                    username: string;
+                    password: string;
+                    host: string;
+                    hostname: string;
+                    port: string;
+                    pathname: string;
+                    search: string;
+                    hash: string;
+                } & object & {
+                    _ariaRole: string;
+                } & {
+                    onConnectAriaValues: Map<string, string>;
+                    hasFiredConnected: boolean;
+                } & {
+                    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
+                    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
+                } & {
                     disabled: boolean;
                     focused: boolean;
                     hovered: boolean;
@@ -40899,18 +36560,3746 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                     _pointerPressed: boolean;
                     stateLayer: boolean;
                 } & {
-                    ...;
-                };
-            } & ... 12 more ... & {
-                ...;
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    _lastRippleWeakRef: WeakRef<CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    }>;
+                    _rippleAdded: boolean;
+                } & {
+                    _lastRipple: CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    color: string;
+                    ink: string;
+                    typeStyle: string;
+                } & {
+                    _ariaRole: string;
+                    stateLayer: boolean;
+                } & {
+                    leading: string;
+                    avatar: string;
+                    avatarColor: string;
+                    avatarSrc: string;
+                    src: string;
+                    alt: string;
+                    icon: string;
+                    iconInk: string;
+                    iconSrc: string;
+                    iconVariation: string;
+                    checkbox: string;
+                    radio: string;
+                    selectionColor: string;
+                    selected: boolean;
+                    supporting: string;
+                    trailing: string;
+                    trailingIcon: string;
+                    trailingIconInk: string;
+                    trailingIconSrc: string;
+                    divider: boolean;
+                    video: boolean;
+                    lines: number;
+                    _supportingSlotted: boolean;
+                } & {
+                    disabledState: boolean;
+                }): boolean;
+                hasSupporting(): boolean;
+                checkboxClass(): string;
+                radioClass(): string;
+                computedIconVariation({ iconVariation }: CustomElement & {
+                    href: string;
+                    target: string;
+                    download: string;
+                    ping: string;
+                    rel: string;
+                    hreflang: string;
+                    referrerPolicy: string;
+                } & {
+                    origin: string;
+                    protocol: string;
+                    username: string;
+                    password: string;
+                    host: string;
+                    hostname: string;
+                    port: string;
+                    pathname: string;
+                    search: string;
+                    hash: string;
+                } & object & {
+                    _ariaRole: string;
+                } & {
+                    onConnectAriaValues: Map<string, string>;
+                    hasFiredConnected: boolean;
+                } & {
+                    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
+                    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
+                } & {
+                    disabled: boolean;
+                    focused: boolean;
+                    hovered: boolean;
+                    pressed: boolean;
+                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                    _hovered: boolean;
+                    _focused: boolean;
+                    _focusedSynthetic: boolean;
+                    _keyPressed: boolean;
+                    _keyReleased: boolean;
+                    _pointerPressed: boolean;
+                    stateLayer: boolean;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    _lastRippleWeakRef: WeakRef<CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    }>;
+                    _rippleAdded: boolean;
+                } & {
+                    _lastRipple: CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    color: string;
+                    ink: string;
+                    typeStyle: string;
+                } & {
+                    _ariaRole: string;
+                    stateLayer: boolean;
+                } & {
+                    leading: string;
+                    avatar: string;
+                    avatarColor: string;
+                    avatarSrc: string;
+                    src: string;
+                    alt: string;
+                    icon: string;
+                    iconInk: string;
+                    iconSrc: string;
+                    iconVariation: string;
+                    checkbox: string;
+                    radio: string;
+                    selectionColor: string;
+                    selected: boolean;
+                    supporting: string;
+                    trailing: string;
+                    trailingIcon: string;
+                    trailingIconInk: string;
+                    trailingIconSrc: string;
+                    divider: boolean;
+                    video: boolean;
+                    lines: number;
+                    _supportingSlotted: boolean;
+                } & {
+                    disabledState: boolean;
+                }): string;
+            } & {
+                _ariaRole: string;
+                _index: number;
+                _selectedDirty: boolean;
+                isInteractive: boolean;
+            } & {
+                _label: string;
+                defaultSelected: boolean;
+                _selected: boolean;
+                _value: string;
+                _formDisabled: boolean;
+            } & {
+                selected: boolean;
+                disabledState: boolean;
+            } & {
+                index: number;
+                form: any;
+                label: string;
+                value: string;
+            } & {
+                formDisabledCallback(formDisabled: boolean): void;
+                focus(options?: FocusOptions): void;
             }): string;
-            computedIconVariation({ iconVariation, selected }: CustomElement & ... 22 more ... & {
-                ...;
+            computedIconVariation({ iconVariation, selected }: CustomElement & {
+                delegatesFocus: boolean;
+            } & {
+                href: string;
+                target: string;
+                download: string;
+                ping: string;
+                rel: string;
+                hreflang: string;
+                referrerPolicy: string;
+            } & {
+                origin: string;
+                protocol: string;
+                username: string;
+                password: string;
+                host: string;
+                hostname: string;
+                port: string;
+                pathname: string;
+                search: string;
+                hash: string;
+            } & object & {
+                _ariaRole: string;
+            } & {
+                onConnectAriaValues: Map<string, string>;
+                hasFiredConnected: boolean;
+            } & {
+                readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
+                updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
+            } & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                _lastRippleWeakRef: WeakRef<CustomElement & {
+                    hadRippleHeld: boolean;
+                    hadRippleReleased: boolean;
+                    rippleStarted: boolean;
+                } & {
+                    rippleState: string;
+                    keepAlive: boolean;
+                    _positionX: number;
+                    _positionY: number;
+                    _radius: number;
+                    holdRipple: boolean;
+                } & {
+                    _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                        styles: {
+                            minHeight: string;
+                            minWidth: string;
+                            boxShadow: string;
+                            top: string;
+                            left: string;
+                        };
+                    };
+                } & {
+                    updatePosition(x?: number, y?: number, size?: number): void;
+                    handleRippleComplete(): void;
+                }>;
+                _rippleAdded: boolean;
+            } & {
+                _lastRipple: CustomElement & {
+                    hadRippleHeld: boolean;
+                    hadRippleReleased: boolean;
+                    rippleStarted: boolean;
+                } & {
+                    rippleState: string;
+                    keepAlive: boolean;
+                    _positionX: number;
+                    _positionY: number;
+                    _radius: number;
+                    holdRipple: boolean;
+                } & {
+                    _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                        styles: {
+                            minHeight: string;
+                            minWidth: string;
+                            boxShadow: string;
+                            top: string;
+                            left: string;
+                        };
+                    };
+                } & {
+                    updatePosition(x?: number, y?: number, size?: number): void;
+                    handleRippleComplete(): void;
+                };
+            } & {
+                addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
+                    hadRippleHeld: boolean;
+                    hadRippleReleased: boolean;
+                    rippleStarted: boolean;
+                } & {
+                    rippleState: string;
+                    keepAlive: boolean;
+                    _positionX: number;
+                    _positionY: number;
+                    _radius: number;
+                    holdRipple: boolean;
+                } & {
+                    _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                        styles: {
+                            minHeight: string;
+                            minWidth: string;
+                            boxShadow: string;
+                            top: string;
+                            left: string;
+                        };
+                    };
+                } & {
+                    updatePosition(x?: number, y?: number, size?: number): void;
+                    handleRippleComplete(): void;
+                };
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                _ariaRole: string;
+                stateLayer: boolean;
+            } & {
+                leading: string;
+                avatar: string;
+                avatarColor: string;
+                avatarSrc: string;
+                src: string;
+                alt: string;
+                icon: string;
+                iconInk: string;
+                iconSrc: string;
+                iconVariation: string;
+                checkbox: string;
+                radio: string;
+                selectionColor: string;
+                selected: boolean;
+                supporting: string;
+                trailing: string;
+                trailingIcon: string;
+                trailingIconInk: string;
+                trailingIconSrc: string;
+                divider: boolean;
+                video: boolean;
+                lines: number;
+                _supportingSlotted: boolean;
+            } & {
+                disabledState: boolean;
+            } & {
+                isInteractive({ href }: CustomElement & {
+                    href: string;
+                    target: string;
+                    download: string;
+                    ping: string;
+                    rel: string;
+                    hreflang: string;
+                    referrerPolicy: string;
+                } & {
+                    origin: string;
+                    protocol: string;
+                    username: string;
+                    password: string;
+                    host: string;
+                    hostname: string;
+                    port: string;
+                    pathname: string;
+                    search: string;
+                    hash: string;
+                } & object & {
+                    _ariaRole: string;
+                } & {
+                    onConnectAriaValues: Map<string, string>;
+                    hasFiredConnected: boolean;
+                } & {
+                    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
+                    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
+                } & {
+                    disabled: boolean;
+                    focused: boolean;
+                    hovered: boolean;
+                    pressed: boolean;
+                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                    _hovered: boolean;
+                    _focused: boolean;
+                    _focusedSynthetic: boolean;
+                    _keyPressed: boolean;
+                    _keyReleased: boolean;
+                    _pointerPressed: boolean;
+                    stateLayer: boolean;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    _lastRippleWeakRef: WeakRef<CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    }>;
+                    _rippleAdded: boolean;
+                } & {
+                    _lastRipple: CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    color: string;
+                    ink: string;
+                    typeStyle: string;
+                } & {
+                    _ariaRole: string;
+                    stateLayer: boolean;
+                } & {
+                    leading: string;
+                    avatar: string;
+                    avatarColor: string;
+                    avatarSrc: string;
+                    src: string;
+                    alt: string;
+                    icon: string;
+                    iconInk: string;
+                    iconSrc: string;
+                    iconVariation: string;
+                    checkbox: string;
+                    radio: string;
+                    selectionColor: string;
+                    selected: boolean;
+                    supporting: string;
+                    trailing: string;
+                    trailingIcon: string;
+                    trailingIconInk: string;
+                    trailingIconSrc: string;
+                    divider: boolean;
+                    video: boolean;
+                    lines: number;
+                    _supportingSlotted: boolean;
+                } & {
+                    disabledState: boolean;
+                }): boolean;
+                hasSupporting(): boolean;
+                checkboxClass(): string;
+                radioClass(): string;
+                computedIconVariation({ iconVariation }: CustomElement & {
+                    href: string;
+                    target: string;
+                    download: string;
+                    ping: string;
+                    rel: string;
+                    hreflang: string;
+                    referrerPolicy: string;
+                } & {
+                    origin: string;
+                    protocol: string;
+                    username: string;
+                    password: string;
+                    host: string;
+                    hostname: string;
+                    port: string;
+                    pathname: string;
+                    search: string;
+                    hash: string;
+                } & object & {
+                    _ariaRole: string;
+                } & {
+                    onConnectAriaValues: Map<string, string>;
+                    hasFiredConnected: boolean;
+                } & {
+                    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
+                    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
+                } & {
+                    disabled: boolean;
+                    focused: boolean;
+                    hovered: boolean;
+                    pressed: boolean;
+                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                    _hovered: boolean;
+                    _focused: boolean;
+                    _focusedSynthetic: boolean;
+                    _keyPressed: boolean;
+                    _keyReleased: boolean;
+                    _pointerPressed: boolean;
+                    stateLayer: boolean;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    _lastRippleWeakRef: WeakRef<CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    }>;
+                    _rippleAdded: boolean;
+                } & {
+                    _lastRipple: CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
+                        hadRippleHeld: boolean;
+                        hadRippleReleased: boolean;
+                        rippleStarted: boolean;
+                    } & {
+                        rippleState: string;
+                        keepAlive: boolean;
+                        _positionX: number;
+                        _positionY: number;
+                        _radius: number;
+                        holdRipple: boolean;
+                    } & {
+                        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
+                            styles: {
+                                minHeight: string;
+                                minWidth: string;
+                                boxShadow: string;
+                                top: string;
+                                left: string;
+                            };
+                        };
+                    } & {
+                        updatePosition(x?: number, y?: number, size?: number): void;
+                        handleRippleComplete(): void;
+                    };
+                } & {
+                    color: string;
+                    ink: string;
+                    typeStyle: string;
+                } & {
+                    _ariaRole: string;
+                    stateLayer: boolean;
+                } & {
+                    leading: string;
+                    avatar: string;
+                    avatarColor: string;
+                    avatarSrc: string;
+                    src: string;
+                    alt: string;
+                    icon: string;
+                    iconInk: string;
+                    iconSrc: string;
+                    iconVariation: string;
+                    checkbox: string;
+                    radio: string;
+                    selectionColor: string;
+                    selected: boolean;
+                    supporting: string;
+                    trailing: string;
+                    trailingIcon: string;
+                    trailingIconInk: string;
+                    trailingIconSrc: string;
+                    divider: boolean;
+                    video: boolean;
+                    lines: number;
+                    _supportingSlotted: boolean;
+                } & {
+                    disabledState: boolean;
+                }): string;
+            } & {
+                _ariaRole: string;
+                _index: number;
+                _selectedDirty: boolean;
+                isInteractive: boolean;
+            } & {
+                _label: string;
+                defaultSelected: boolean;
+                _selected: boolean;
+                _value: string;
+                _formDisabled: boolean;
+            } & {
+                selected: boolean;
+                disabledState: boolean;
+            } & {
+                index: number;
+                form: any;
+                label: string;
+                value: string;
+            } & {
+                formDisabledCallback(formDisabled: boolean): void;
+                focus(options?: FocusOptions): void;
             }): string;
         }, any[]>;
         onListboxClick(event: Event): void;
     };
-}, any[]> & import("../core/CustomElement.js").Class<...> & import("../core/CustomElement.js").Class<...> & import("../core/CustomElement.js").Class<...> & import("../core/CustomElement.js").Class<...>;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    /** @type {EventListener} */
+    _onListboxChangeListener: EventListener;
+    /** @type {EventListener} */
+    _onListboxClickListener: EventListener;
+    /** @type {EventListener} */
+    _onPopupFocusoutListener: EventListener;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    stateTargetElement: HTMLElement;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    onResizeObserved(): void;
+    /**
+     * Listbox should close if clicking own selection
+     * @param {Event} event
+     */
+    onListboxClick(event: Event): void;
+    /**
+     * @param {Event} event
+     */
+    onListboxChange(event: Event): void;
+    /** @param {FocusEvent} Event */
+    onPopupFocusout({ relatedTarget }: FocusEvent): void;
+    applyAutocompleteList(): void;
+    showListbox(): void;
+    closeListbox(): void;
+    toggleListbox(): void;
+    /**
+     * @param {{label:string, value:string}} option
+     * @return {void}
+     */
+    selectOption(option: {
+        label: string;
+        value: string;
+    }): void;
+    /**
+     * @param {{label:string, value:string}} option
+     * @return {void}
+     */
+    suggestOption(option: {
+        label: string;
+        value: string;
+    }): void;
+    acceptSuggestion(): void;
+    /**
+     * @param {Object} options
+     * @param {boolean} [options.first] first option
+     * @param {boolean} [options.last] first option
+     * @param {boolean} [options.next] next fosuable option
+     * @param {boolean} [options.previous] previous focusable option
+     * @param {string} [options.startsWith] option label starsWith
+     * @param {string} [options.value] matches option value
+     * @param {string} [options.label] matches option label
+     */
+    changeSuggestion({ first, last, next, previous, startsWith, value, label }: {
+        first?: boolean;
+        last?: boolean;
+        next?: boolean;
+        previous?: boolean;
+        startsWith?: string;
+        value?: string;
+        label?: string;
+    }): void;
+    resetSuggestion(): void;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    computedTrailingIcon({ trailingIcon, _listbox, _expanded }: CustomElement & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
+        disabled: boolean;
+        focused: boolean;
+        hovered: boolean;
+        pressed: boolean;
+        _lastInteraction: "key" | "mouse" | "touch" | "pen";
+        _hovered: boolean;
+        _focused: boolean;
+        _focusedSynthetic: boolean;
+        _keyPressed: boolean;
+        _keyReleased: boolean;
+        _pointerPressed: boolean;
+        stateLayer: boolean;
+    } & {
+        disabledState: boolean;
+        hoveredState: boolean;
+        focusedState: boolean;
+        pressedState: boolean;
+        touchedState: boolean;
+        pointedState: boolean;
+    } & {
+        stateTargetElement: HTMLElement;
+    } & {
+        color: string;
+        ink: string;
+        typeStyle: string;
+    } & {
+        shapeTop: boolean;
+        shapeBottom: boolean;
+        shapeStart: boolean;
+        shapeEnd: boolean;
+        shapeStyle: string;
+        outlined: boolean;
+    } & {
+        density: number;
+    } & {
+        delegatesFocus: boolean;
+    } & {
+        _ipcListener: EventListener;
+        _ipcTarget: EventTarget;
+    } & {
+        ariaControls: string;
+        autocomplete: string;
+        name: string;
+        readOnly: boolean;
+        defaultChecked: boolean;
+        _checkedDirty: boolean;
+        _checked: boolean;
+        required: boolean;
+        type: string;
+        _defaultValue: string;
+        _value: string;
+        _valueDirty: boolean;
+        _userInteracted: boolean;
+        _invalid: boolean;
+        _badInput: boolean;
+        _validationMessage: string;
+        _formDisabled: boolean;
+        _formReset: boolean;
+    } & {
+        erroredState: boolean;
+        defaultValue: string;
+        _valueBehavior: "default" | "value" | "default/on" | "filename";
+    } & {
+        _onSetValue(value: string): void;
+        _onSetChecked(checked: boolean): void;
+    } & {
+        value: string;
+        checked: boolean;
+    } & {
+        form: HTMLFormElement;
+        validity: ValidityState;
+        validationMessage: string;
+        willValidate: boolean;
+        labels: NodeList;
+    } & {
+        disabledState: boolean;
+    } & {
+        checkValidity(): boolean;
+        reportValidity(): boolean;
+        setCustomValidity(error: string): void;
+        _notifyRadioChange(key: string, value: string): void;
+        refreshFormAssociation(): void;
+        formAssociatedCallback(form: HTMLFormElement): void;
+        formIPCEvent(event: CustomEvent<[string, string]>): void;
+        formDisabledCallback(disabled: boolean): void;
+        formResetCallback(): void;
+        formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+        _updateFormAssociatedValue(): void;
+    } & {
+        ariaLabel: string;
+        _slotInnerText: string;
+    } & {
+        focusableOnDisabled: boolean;
+        controlTagName: string;
+        controlVoidElement: boolean;
+        _slotMutationObserver: any;
+    } & {
+        onValueChangingContentAttribute(): void;
+        focus(options?: FocusOptions): void;
+        click(): void;
+    } & {
+        stateTargetElement: HTMLElement;
+    } & {
+        checkValidity(): boolean;
+        reportValidity(): boolean;
+        setCustomValidity(error: string): void;
+    } & {
+        _computedAriaLabel: string;
+    } & {
+        _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+            delegatesFocus: boolean;
+        } & {
+            disabled: boolean;
+            focused: boolean;
+            hovered: boolean;
+            pressed: boolean;
+            _lastInteraction: "key" | "mouse" | "touch" | "pen";
+            _hovered: boolean;
+            _focused: boolean;
+            _focusedSynthetic: boolean;
+            _keyPressed: boolean;
+            _keyReleased: boolean;
+            _pointerPressed: boolean;
+            stateLayer: boolean;
+        } & {
+            disabledState: boolean;
+            hoveredState: boolean;
+            focusedState: boolean;
+            pressedState: boolean;
+            touchedState: boolean;
+            pointedState: boolean;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            _ipcListener: EventListener;
+            _ipcTarget: EventTarget;
+        } & {
+            ariaControls: string;
+            autocomplete: string;
+            name: string;
+            readOnly: boolean;
+            defaultChecked: boolean;
+            _checkedDirty: boolean;
+            _checked: boolean;
+            required: boolean;
+            type: string;
+            _defaultValue: string;
+            _value: string;
+            _valueDirty: boolean;
+            _userInteracted: boolean;
+            _invalid: boolean;
+            _badInput: boolean;
+            _validationMessage: string;
+            _formDisabled: boolean;
+            _formReset: boolean;
+        } & {
+            erroredState: boolean;
+            defaultValue: string;
+            _valueBehavior: "default" | "value" | "default/on" | "filename";
+        } & {
+            _onSetValue(value: string): void;
+            _onSetChecked(checked: boolean): void;
+        } & {
+            value: string;
+            checked: boolean;
+        } & {
+            form: HTMLFormElement;
+            validity: ValidityState;
+            validationMessage: string;
+            willValidate: boolean;
+            labels: NodeList;
+        } & {
+            disabledState: boolean;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+            _notifyRadioChange(key: string, value: string): void;
+            refreshFormAssociation(): void;
+            formAssociatedCallback(form: HTMLFormElement): void;
+            formIPCEvent(event: CustomEvent<[string, string]>): void;
+            formDisabledCallback(disabled: boolean): void;
+            formResetCallback(): void;
+            formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+            _updateFormAssociatedValue(): void;
+        } & {
+            ariaLabel: string;
+            _slotInnerText: string;
+        } & {
+            focusableOnDisabled: boolean;
+            controlTagName: string;
+            controlVoidElement: boolean;
+            _slotMutationObserver: any;
+        } & {
+            onValueChangingContentAttribute(): void;
+            focus(options?: FocusOptions): void;
+            click(): void;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+        } & {
+            _computedAriaLabel: string;
+        }): string;
+    } & {
+        stateLayer: boolean;
+    } & {
+        type: string;
+        icon: string;
+        iconVariation: string;
+        label: string;
+        filled: boolean;
+        outlined: boolean;
+        inputPrefix: string;
+        inputSuffix: string;
+        trailingIcon: string;
+        trailingIconInk: string;
+        trailingIconLabel: string;
+        supporting: string;
+        error: string;
+        placeholder: string;
+    } & {
+        erroredState: boolean;
+    } & {
+        computePlaceholder({ filled, outlined, label, placeholder }: CustomElement & {
+            disabled: boolean;
+            focused: boolean;
+            hovered: boolean;
+            pressed: boolean;
+            _lastInteraction: "key" | "mouse" | "touch" | "pen";
+            _hovered: boolean;
+            _focused: boolean;
+            _focusedSynthetic: boolean;
+            _keyPressed: boolean;
+            _keyReleased: boolean;
+            _pointerPressed: boolean;
+            stateLayer: boolean;
+        } & {
+            disabledState: boolean;
+            hoveredState: boolean;
+            focusedState: boolean;
+            pressedState: boolean;
+            touchedState: boolean;
+            pointedState: boolean;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            shapeTop: boolean;
+            shapeBottom: boolean;
+            shapeStart: boolean;
+            shapeEnd: boolean;
+            shapeStyle: string;
+            outlined: boolean;
+        } & {
+            density: number;
+        } & {
+            delegatesFocus: boolean;
+        } & {
+            _ipcListener: EventListener;
+            _ipcTarget: EventTarget;
+        } & {
+            ariaControls: string;
+            autocomplete: string;
+            name: string;
+            readOnly: boolean;
+            defaultChecked: boolean;
+            _checkedDirty: boolean;
+            _checked: boolean;
+            required: boolean;
+            type: string;
+            _defaultValue: string;
+            _value: string;
+            _valueDirty: boolean;
+            _userInteracted: boolean;
+            _invalid: boolean;
+            _badInput: boolean;
+            _validationMessage: string;
+            _formDisabled: boolean;
+            _formReset: boolean;
+        } & {
+            erroredState: boolean;
+            defaultValue: string;
+            _valueBehavior: "default" | "value" | "default/on" | "filename";
+        } & {
+            _onSetValue(value: string): void;
+            _onSetChecked(checked: boolean): void;
+        } & {
+            value: string;
+            checked: boolean;
+        } & {
+            form: HTMLFormElement;
+            validity: ValidityState;
+            validationMessage: string;
+            willValidate: boolean;
+            labels: NodeList;
+        } & {
+            disabledState: boolean;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+            _notifyRadioChange(key: string, value: string): void;
+            refreshFormAssociation(): void;
+            formAssociatedCallback(form: HTMLFormElement): void;
+            formIPCEvent(event: CustomEvent<[string, string]>): void;
+            formDisabledCallback(disabled: boolean): void;
+            formResetCallback(): void;
+            formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+            _updateFormAssociatedValue(): void;
+        } & {
+            ariaLabel: string;
+            _slotInnerText: string;
+        } & {
+            focusableOnDisabled: boolean;
+            controlTagName: string;
+            controlVoidElement: boolean;
+            _slotMutationObserver: any;
+        } & {
+            onValueChangingContentAttribute(): void;
+            focus(options?: FocusOptions): void;
+            click(): void;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+        } & {
+            _computedAriaLabel: string;
+        } & {
+            _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                delegatesFocus: boolean;
+            } & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            }): string;
+        } & {
+            stateLayer: boolean;
+        } & {
+            type: string;
+            icon: string;
+            iconVariation: string;
+            label: string;
+            filled: boolean;
+            outlined: boolean;
+            inputPrefix: string;
+            inputSuffix: string;
+            trailingIcon: string;
+            trailingIconInk: string;
+            trailingIconLabel: string;
+            supporting: string;
+            error: string;
+            placeholder: string;
+        } & {
+            erroredState: boolean;
+        }): string;
+        shouldShowSupporting({ erroredState, supporting }: CustomElement & {
+            disabled: boolean;
+            focused: boolean;
+            hovered: boolean;
+            pressed: boolean;
+            _lastInteraction: "key" | "mouse" | "touch" | "pen";
+            _hovered: boolean;
+            _focused: boolean;
+            _focusedSynthetic: boolean;
+            _keyPressed: boolean;
+            _keyReleased: boolean;
+            _pointerPressed: boolean;
+            stateLayer: boolean;
+        } & {
+            disabledState: boolean;
+            hoveredState: boolean;
+            focusedState: boolean;
+            pressedState: boolean;
+            touchedState: boolean;
+            pointedState: boolean;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            shapeTop: boolean;
+            shapeBottom: boolean;
+            shapeStart: boolean;
+            shapeEnd: boolean;
+            shapeStyle: string;
+            outlined: boolean;
+        } & {
+            density: number;
+        } & {
+            delegatesFocus: boolean;
+        } & {
+            _ipcListener: EventListener;
+            _ipcTarget: EventTarget;
+        } & {
+            ariaControls: string;
+            autocomplete: string;
+            name: string;
+            readOnly: boolean;
+            defaultChecked: boolean;
+            _checkedDirty: boolean;
+            _checked: boolean;
+            required: boolean;
+            type: string;
+            _defaultValue: string;
+            _value: string;
+            _valueDirty: boolean;
+            _userInteracted: boolean;
+            _invalid: boolean;
+            _badInput: boolean;
+            _validationMessage: string;
+            _formDisabled: boolean;
+            _formReset: boolean;
+        } & {
+            erroredState: boolean;
+            defaultValue: string;
+            _valueBehavior: "default" | "value" | "default/on" | "filename";
+        } & {
+            _onSetValue(value: string): void;
+            _onSetChecked(checked: boolean): void;
+        } & {
+            value: string;
+            checked: boolean;
+        } & {
+            form: HTMLFormElement;
+            validity: ValidityState;
+            validationMessage: string;
+            willValidate: boolean;
+            labels: NodeList;
+        } & {
+            disabledState: boolean;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+            _notifyRadioChange(key: string, value: string): void;
+            refreshFormAssociation(): void;
+            formAssociatedCallback(form: HTMLFormElement): void;
+            formIPCEvent(event: CustomEvent<[string, string]>): void;
+            formDisabledCallback(disabled: boolean): void;
+            formResetCallback(): void;
+            formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+            _updateFormAssociatedValue(): void;
+        } & {
+            ariaLabel: string;
+            _slotInnerText: string;
+        } & {
+            focusableOnDisabled: boolean;
+            controlTagName: string;
+            controlVoidElement: boolean;
+            _slotMutationObserver: any;
+        } & {
+            onValueChangingContentAttribute(): void;
+            focus(options?: FocusOptions): void;
+            click(): void;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+        } & {
+            _computedAriaLabel: string;
+        } & {
+            _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                delegatesFocus: boolean;
+            } & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            }): string;
+        } & {
+            stateLayer: boolean;
+        } & {
+            type: string;
+            icon: string;
+            iconVariation: string;
+            label: string;
+            filled: boolean;
+            outlined: boolean;
+            inputPrefix: string;
+            inputSuffix: string;
+            trailingIcon: string;
+            trailingIconInk: string;
+            trailingIconLabel: string;
+            supporting: string;
+            error: string;
+            placeholder: string;
+        } & {
+            erroredState: boolean;
+        }): boolean;
+        computeSupportingText({ error, erroredState, _validationMessage, supporting }: CustomElement & {
+            disabled: boolean;
+            focused: boolean;
+            hovered: boolean;
+            pressed: boolean;
+            _lastInteraction: "key" | "mouse" | "touch" | "pen";
+            _hovered: boolean;
+            _focused: boolean;
+            _focusedSynthetic: boolean;
+            _keyPressed: boolean;
+            _keyReleased: boolean;
+            _pointerPressed: boolean;
+            stateLayer: boolean;
+        } & {
+            disabledState: boolean;
+            hoveredState: boolean;
+            focusedState: boolean;
+            pressedState: boolean;
+            touchedState: boolean;
+            pointedState: boolean;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            shapeTop: boolean;
+            shapeBottom: boolean;
+            shapeStart: boolean;
+            shapeEnd: boolean;
+            shapeStyle: string;
+            outlined: boolean;
+        } & {
+            density: number;
+        } & {
+            delegatesFocus: boolean;
+        } & {
+            _ipcListener: EventListener;
+            _ipcTarget: EventTarget;
+        } & {
+            ariaControls: string;
+            autocomplete: string;
+            name: string;
+            readOnly: boolean;
+            defaultChecked: boolean;
+            _checkedDirty: boolean;
+            _checked: boolean;
+            required: boolean;
+            type: string;
+            _defaultValue: string;
+            _value: string;
+            _valueDirty: boolean;
+            _userInteracted: boolean;
+            _invalid: boolean;
+            _badInput: boolean;
+            _validationMessage: string;
+            _formDisabled: boolean;
+            _formReset: boolean;
+        } & {
+            erroredState: boolean;
+            defaultValue: string;
+            _valueBehavior: "default" | "value" | "default/on" | "filename";
+        } & {
+            _onSetValue(value: string): void;
+            _onSetChecked(checked: boolean): void;
+        } & {
+            value: string;
+            checked: boolean;
+        } & {
+            form: HTMLFormElement;
+            validity: ValidityState;
+            validationMessage: string;
+            willValidate: boolean;
+            labels: NodeList;
+        } & {
+            disabledState: boolean;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+            _notifyRadioChange(key: string, value: string): void;
+            refreshFormAssociation(): void;
+            formAssociatedCallback(form: HTMLFormElement): void;
+            formIPCEvent(event: CustomEvent<[string, string]>): void;
+            formDisabledCallback(disabled: boolean): void;
+            formResetCallback(): void;
+            formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+            _updateFormAssociatedValue(): void;
+        } & {
+            ariaLabel: string;
+            _slotInnerText: string;
+        } & {
+            focusableOnDisabled: boolean;
+            controlTagName: string;
+            controlVoidElement: boolean;
+            _slotMutationObserver: any;
+        } & {
+            onValueChangingContentAttribute(): void;
+            focus(options?: FocusOptions): void;
+            click(): void;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+        } & {
+            _computedAriaLabel: string;
+        } & {
+            _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                delegatesFocus: boolean;
+            } & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            }): string;
+        } & {
+            stateLayer: boolean;
+        } & {
+            type: string;
+            icon: string;
+            iconVariation: string;
+            label: string;
+            filled: boolean;
+            outlined: boolean;
+            inputPrefix: string;
+            inputSuffix: string;
+            trailingIcon: string;
+            trailingIconInk: string;
+            trailingIconLabel: string;
+            supporting: string;
+            error: string;
+            placeholder: string;
+        } & {
+            erroredState: boolean;
+        }): string;
+        populatedState({ value, _badInput }: CustomElement & {
+            disabled: boolean;
+            focused: boolean;
+            hovered: boolean;
+            pressed: boolean;
+            _lastInteraction: "key" | "mouse" | "touch" | "pen";
+            _hovered: boolean;
+            _focused: boolean;
+            _focusedSynthetic: boolean;
+            _keyPressed: boolean;
+            _keyReleased: boolean;
+            _pointerPressed: boolean;
+            stateLayer: boolean;
+        } & {
+            disabledState: boolean;
+            hoveredState: boolean;
+            focusedState: boolean;
+            pressedState: boolean;
+            touchedState: boolean;
+            pointedState: boolean;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            shapeTop: boolean;
+            shapeBottom: boolean;
+            shapeStart: boolean;
+            shapeEnd: boolean;
+            shapeStyle: string;
+            outlined: boolean;
+        } & {
+            density: number;
+        } & {
+            delegatesFocus: boolean;
+        } & {
+            _ipcListener: EventListener;
+            _ipcTarget: EventTarget;
+        } & {
+            ariaControls: string;
+            autocomplete: string;
+            name: string;
+            readOnly: boolean;
+            defaultChecked: boolean;
+            _checkedDirty: boolean;
+            _checked: boolean;
+            required: boolean;
+            type: string;
+            _defaultValue: string;
+            _value: string;
+            _valueDirty: boolean;
+            _userInteracted: boolean;
+            _invalid: boolean;
+            _badInput: boolean;
+            _validationMessage: string;
+            _formDisabled: boolean;
+            _formReset: boolean;
+        } & {
+            erroredState: boolean;
+            defaultValue: string;
+            _valueBehavior: "default" | "value" | "default/on" | "filename";
+        } & {
+            _onSetValue(value: string): void;
+            _onSetChecked(checked: boolean): void;
+        } & {
+            value: string;
+            checked: boolean;
+        } & {
+            form: HTMLFormElement;
+            validity: ValidityState;
+            validationMessage: string;
+            willValidate: boolean;
+            labels: NodeList;
+        } & {
+            disabledState: boolean;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+            _notifyRadioChange(key: string, value: string): void;
+            refreshFormAssociation(): void;
+            formAssociatedCallback(form: HTMLFormElement): void;
+            formIPCEvent(event: CustomEvent<[string, string]>): void;
+            formDisabledCallback(disabled: boolean): void;
+            formResetCallback(): void;
+            formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+            _updateFormAssociatedValue(): void;
+        } & {
+            ariaLabel: string;
+            _slotInnerText: string;
+        } & {
+            focusableOnDisabled: boolean;
+            controlTagName: string;
+            controlVoidElement: boolean;
+            _slotMutationObserver: any;
+        } & {
+            onValueChangingContentAttribute(): void;
+            focus(options?: FocusOptions): void;
+            click(): void;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+        } & {
+            _computedAriaLabel: string;
+        } & {
+            _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                delegatesFocus: boolean;
+            } & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            }): string;
+        } & {
+            stateLayer: boolean;
+        } & {
+            type: string;
+            icon: string;
+            iconVariation: string;
+            label: string;
+            filled: boolean;
+            outlined: boolean;
+            inputPrefix: string;
+            inputSuffix: string;
+            trailingIcon: string;
+            trailingIconInk: string;
+            trailingIconLabel: string;
+            supporting: string;
+            error: string;
+            placeholder: string;
+        } & {
+            erroredState: boolean;
+        }): boolean;
+        _showLabelText({ label, filled, outlined }: CustomElement & {
+            disabled: boolean;
+            focused: boolean;
+            hovered: boolean;
+            pressed: boolean;
+            _lastInteraction: "key" | "mouse" | "touch" | "pen";
+            _hovered: boolean;
+            _focused: boolean;
+            _focusedSynthetic: boolean;
+            _keyPressed: boolean;
+            _keyReleased: boolean;
+            _pointerPressed: boolean;
+            stateLayer: boolean;
+        } & {
+            disabledState: boolean;
+            hoveredState: boolean;
+            focusedState: boolean;
+            pressedState: boolean;
+            touchedState: boolean;
+            pointedState: boolean;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            shapeTop: boolean;
+            shapeBottom: boolean;
+            shapeStart: boolean;
+            shapeEnd: boolean;
+            shapeStyle: string;
+            outlined: boolean;
+        } & {
+            density: number;
+        } & {
+            delegatesFocus: boolean;
+        } & {
+            _ipcListener: EventListener;
+            _ipcTarget: EventTarget;
+        } & {
+            ariaControls: string;
+            autocomplete: string;
+            name: string;
+            readOnly: boolean;
+            defaultChecked: boolean;
+            _checkedDirty: boolean;
+            _checked: boolean;
+            required: boolean;
+            type: string;
+            _defaultValue: string;
+            _value: string;
+            _valueDirty: boolean;
+            _userInteracted: boolean;
+            _invalid: boolean;
+            _badInput: boolean;
+            _validationMessage: string;
+            _formDisabled: boolean;
+            _formReset: boolean;
+        } & {
+            erroredState: boolean;
+            defaultValue: string;
+            _valueBehavior: "default" | "value" | "default/on" | "filename";
+        } & {
+            _onSetValue(value: string): void;
+            _onSetChecked(checked: boolean): void;
+        } & {
+            value: string;
+            checked: boolean;
+        } & {
+            form: HTMLFormElement;
+            validity: ValidityState;
+            validationMessage: string;
+            willValidate: boolean;
+            labels: NodeList;
+        } & {
+            disabledState: boolean;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+            _notifyRadioChange(key: string, value: string): void;
+            refreshFormAssociation(): void;
+            formAssociatedCallback(form: HTMLFormElement): void;
+            formIPCEvent(event: CustomEvent<[string, string]>): void;
+            formDisabledCallback(disabled: boolean): void;
+            formResetCallback(): void;
+            formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+            _updateFormAssociatedValue(): void;
+        } & {
+            ariaLabel: string;
+            _slotInnerText: string;
+        } & {
+            focusableOnDisabled: boolean;
+            controlTagName: string;
+            controlVoidElement: boolean;
+            _slotMutationObserver: any;
+        } & {
+            onValueChangingContentAttribute(): void;
+            focus(options?: FocusOptions): void;
+            click(): void;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+        } & {
+            _computedAriaLabel: string;
+        } & {
+            _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                delegatesFocus: boolean;
+            } & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            }): string;
+        } & {
+            stateLayer: boolean;
+        } & {
+            type: string;
+            icon: string;
+            iconVariation: string;
+            label: string;
+            filled: boolean;
+            outlined: boolean;
+            inputPrefix: string;
+            inputSuffix: string;
+            trailingIcon: string;
+            trailingIconInk: string;
+            trailingIconLabel: string;
+            supporting: string;
+            error: string;
+            placeholder: string;
+        } & {
+            erroredState: boolean;
+        }): boolean;
+    } & {
+        _shapeShapeTop({ shapeTop, filled }: CustomElement & {
+            disabled: boolean;
+            focused: boolean;
+            hovered: boolean;
+            pressed: boolean;
+            _lastInteraction: "key" | "mouse" | "touch" | "pen";
+            _hovered: boolean;
+            _focused: boolean;
+            _focusedSynthetic: boolean;
+            _keyPressed: boolean;
+            _keyReleased: boolean;
+            _pointerPressed: boolean;
+            stateLayer: boolean;
+        } & {
+            disabledState: boolean;
+            hoveredState: boolean;
+            focusedState: boolean;
+            pressedState: boolean;
+            touchedState: boolean;
+            pointedState: boolean;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            shapeTop: boolean;
+            shapeBottom: boolean;
+            shapeStart: boolean;
+            shapeEnd: boolean;
+            shapeStyle: string;
+            outlined: boolean;
+        } & {
+            density: number;
+        } & {
+            delegatesFocus: boolean;
+        } & {
+            _ipcListener: EventListener;
+            _ipcTarget: EventTarget;
+        } & {
+            ariaControls: string;
+            autocomplete: string;
+            name: string;
+            readOnly: boolean;
+            defaultChecked: boolean;
+            _checkedDirty: boolean;
+            _checked: boolean;
+            required: boolean;
+            type: string;
+            _defaultValue: string;
+            _value: string;
+            _valueDirty: boolean;
+            _userInteracted: boolean;
+            _invalid: boolean;
+            _badInput: boolean;
+            _validationMessage: string;
+            _formDisabled: boolean;
+            _formReset: boolean;
+        } & {
+            erroredState: boolean;
+            defaultValue: string;
+            _valueBehavior: "default" | "value" | "default/on" | "filename";
+        } & {
+            _onSetValue(value: string): void;
+            _onSetChecked(checked: boolean): void;
+        } & {
+            value: string;
+            checked: boolean;
+        } & {
+            form: HTMLFormElement;
+            validity: ValidityState;
+            validationMessage: string;
+            willValidate: boolean;
+            labels: NodeList;
+        } & {
+            disabledState: boolean;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+            _notifyRadioChange(key: string, value: string): void;
+            refreshFormAssociation(): void;
+            formAssociatedCallback(form: HTMLFormElement): void;
+            formIPCEvent(event: CustomEvent<[string, string]>): void;
+            formDisabledCallback(disabled: boolean): void;
+            formResetCallback(): void;
+            formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+            _updateFormAssociatedValue(): void;
+        } & {
+            ariaLabel: string;
+            _slotInnerText: string;
+        } & {
+            focusableOnDisabled: boolean;
+            controlTagName: string;
+            controlVoidElement: boolean;
+            _slotMutationObserver: any;
+        } & {
+            onValueChangingContentAttribute(): void;
+            focus(options?: FocusOptions): void;
+            click(): void;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+        } & {
+            _computedAriaLabel: string;
+        } & {
+            _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                delegatesFocus: boolean;
+            } & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            }): string;
+        } & {
+            stateLayer: boolean;
+        } & {
+            type: string;
+            icon: string;
+            iconVariation: string;
+            label: string;
+            filled: boolean;
+            outlined: boolean;
+            inputPrefix: string;
+            inputSuffix: string;
+            trailingIcon: string;
+            trailingIconInk: string;
+            trailingIconLabel: string;
+            supporting: string;
+            error: string;
+            placeholder: string;
+        } & {
+            erroredState: boolean;
+        } & {
+            computePlaceholder({ filled, outlined, label, placeholder }: CustomElement & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                shapeTop: boolean;
+                shapeBottom: boolean;
+                shapeStart: boolean;
+                shapeEnd: boolean;
+                shapeStyle: string;
+                outlined: boolean;
+            } & {
+                density: number;
+            } & {
+                delegatesFocus: boolean;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            } & {
+                _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                    delegatesFocus: boolean;
+                } & {
+                    disabled: boolean;
+                    focused: boolean;
+                    hovered: boolean;
+                    pressed: boolean;
+                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                    _hovered: boolean;
+                    _focused: boolean;
+                    _focusedSynthetic: boolean;
+                    _keyPressed: boolean;
+                    _keyReleased: boolean;
+                    _pointerPressed: boolean;
+                    stateLayer: boolean;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    _ipcListener: EventListener;
+                    _ipcTarget: EventTarget;
+                } & {
+                    ariaControls: string;
+                    autocomplete: string;
+                    name: string;
+                    readOnly: boolean;
+                    defaultChecked: boolean;
+                    _checkedDirty: boolean;
+                    _checked: boolean;
+                    required: boolean;
+                    type: string;
+                    _defaultValue: string;
+                    _value: string;
+                    _valueDirty: boolean;
+                    _userInteracted: boolean;
+                    _invalid: boolean;
+                    _badInput: boolean;
+                    _validationMessage: string;
+                    _formDisabled: boolean;
+                    _formReset: boolean;
+                } & {
+                    erroredState: boolean;
+                    defaultValue: string;
+                    _valueBehavior: "default" | "value" | "default/on" | "filename";
+                } & {
+                    _onSetValue(value: string): void;
+                    _onSetChecked(checked: boolean): void;
+                } & {
+                    value: string;
+                    checked: boolean;
+                } & {
+                    form: HTMLFormElement;
+                    validity: ValidityState;
+                    validationMessage: string;
+                    willValidate: boolean;
+                    labels: NodeList;
+                } & {
+                    disabledState: boolean;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                    _notifyRadioChange(key: string, value: string): void;
+                    refreshFormAssociation(): void;
+                    formAssociatedCallback(form: HTMLFormElement): void;
+                    formIPCEvent(event: CustomEvent<[string, string]>): void;
+                    formDisabledCallback(disabled: boolean): void;
+                    formResetCallback(): void;
+                    formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                    _updateFormAssociatedValue(): void;
+                } & {
+                    ariaLabel: string;
+                    _slotInnerText: string;
+                } & {
+                    focusableOnDisabled: boolean;
+                    controlTagName: string;
+                    controlVoidElement: boolean;
+                    _slotMutationObserver: any;
+                } & {
+                    onValueChangingContentAttribute(): void;
+                    focus(options?: FocusOptions): void;
+                    click(): void;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                } & {
+                    _computedAriaLabel: string;
+                }): string;
+            } & {
+                stateLayer: boolean;
+            } & {
+                type: string;
+                icon: string;
+                iconVariation: string;
+                label: string;
+                filled: boolean;
+                outlined: boolean;
+                inputPrefix: string;
+                inputSuffix: string;
+                trailingIcon: string;
+                trailingIconInk: string;
+                trailingIconLabel: string;
+                supporting: string;
+                error: string;
+                placeholder: string;
+            } & {
+                erroredState: boolean;
+            }): string;
+            shouldShowSupporting({ erroredState, supporting }: CustomElement & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                shapeTop: boolean;
+                shapeBottom: boolean;
+                shapeStart: boolean;
+                shapeEnd: boolean;
+                shapeStyle: string;
+                outlined: boolean;
+            } & {
+                density: number;
+            } & {
+                delegatesFocus: boolean;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            } & {
+                _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                    delegatesFocus: boolean;
+                } & {
+                    disabled: boolean;
+                    focused: boolean;
+                    hovered: boolean;
+                    pressed: boolean;
+                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                    _hovered: boolean;
+                    _focused: boolean;
+                    _focusedSynthetic: boolean;
+                    _keyPressed: boolean;
+                    _keyReleased: boolean;
+                    _pointerPressed: boolean;
+                    stateLayer: boolean;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    _ipcListener: EventListener;
+                    _ipcTarget: EventTarget;
+                } & {
+                    ariaControls: string;
+                    autocomplete: string;
+                    name: string;
+                    readOnly: boolean;
+                    defaultChecked: boolean;
+                    _checkedDirty: boolean;
+                    _checked: boolean;
+                    required: boolean;
+                    type: string;
+                    _defaultValue: string;
+                    _value: string;
+                    _valueDirty: boolean;
+                    _userInteracted: boolean;
+                    _invalid: boolean;
+                    _badInput: boolean;
+                    _validationMessage: string;
+                    _formDisabled: boolean;
+                    _formReset: boolean;
+                } & {
+                    erroredState: boolean;
+                    defaultValue: string;
+                    _valueBehavior: "default" | "value" | "default/on" | "filename";
+                } & {
+                    _onSetValue(value: string): void;
+                    _onSetChecked(checked: boolean): void;
+                } & {
+                    value: string;
+                    checked: boolean;
+                } & {
+                    form: HTMLFormElement;
+                    validity: ValidityState;
+                    validationMessage: string;
+                    willValidate: boolean;
+                    labels: NodeList;
+                } & {
+                    disabledState: boolean;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                    _notifyRadioChange(key: string, value: string): void;
+                    refreshFormAssociation(): void;
+                    formAssociatedCallback(form: HTMLFormElement): void;
+                    formIPCEvent(event: CustomEvent<[string, string]>): void;
+                    formDisabledCallback(disabled: boolean): void;
+                    formResetCallback(): void;
+                    formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                    _updateFormAssociatedValue(): void;
+                } & {
+                    ariaLabel: string;
+                    _slotInnerText: string;
+                } & {
+                    focusableOnDisabled: boolean;
+                    controlTagName: string;
+                    controlVoidElement: boolean;
+                    _slotMutationObserver: any;
+                } & {
+                    onValueChangingContentAttribute(): void;
+                    focus(options?: FocusOptions): void;
+                    click(): void;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                } & {
+                    _computedAriaLabel: string;
+                }): string;
+            } & {
+                stateLayer: boolean;
+            } & {
+                type: string;
+                icon: string;
+                iconVariation: string;
+                label: string;
+                filled: boolean;
+                outlined: boolean;
+                inputPrefix: string;
+                inputSuffix: string;
+                trailingIcon: string;
+                trailingIconInk: string;
+                trailingIconLabel: string;
+                supporting: string;
+                error: string;
+                placeholder: string;
+            } & {
+                erroredState: boolean;
+            }): boolean;
+            computeSupportingText({ error, erroredState, _validationMessage, supporting }: CustomElement & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                shapeTop: boolean;
+                shapeBottom: boolean;
+                shapeStart: boolean;
+                shapeEnd: boolean;
+                shapeStyle: string;
+                outlined: boolean;
+            } & {
+                density: number;
+            } & {
+                delegatesFocus: boolean;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            } & {
+                _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                    delegatesFocus: boolean;
+                } & {
+                    disabled: boolean;
+                    focused: boolean;
+                    hovered: boolean;
+                    pressed: boolean;
+                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                    _hovered: boolean;
+                    _focused: boolean;
+                    _focusedSynthetic: boolean;
+                    _keyPressed: boolean;
+                    _keyReleased: boolean;
+                    _pointerPressed: boolean;
+                    stateLayer: boolean;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    _ipcListener: EventListener;
+                    _ipcTarget: EventTarget;
+                } & {
+                    ariaControls: string;
+                    autocomplete: string;
+                    name: string;
+                    readOnly: boolean;
+                    defaultChecked: boolean;
+                    _checkedDirty: boolean;
+                    _checked: boolean;
+                    required: boolean;
+                    type: string;
+                    _defaultValue: string;
+                    _value: string;
+                    _valueDirty: boolean;
+                    _userInteracted: boolean;
+                    _invalid: boolean;
+                    _badInput: boolean;
+                    _validationMessage: string;
+                    _formDisabled: boolean;
+                    _formReset: boolean;
+                } & {
+                    erroredState: boolean;
+                    defaultValue: string;
+                    _valueBehavior: "default" | "value" | "default/on" | "filename";
+                } & {
+                    _onSetValue(value: string): void;
+                    _onSetChecked(checked: boolean): void;
+                } & {
+                    value: string;
+                    checked: boolean;
+                } & {
+                    form: HTMLFormElement;
+                    validity: ValidityState;
+                    validationMessage: string;
+                    willValidate: boolean;
+                    labels: NodeList;
+                } & {
+                    disabledState: boolean;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                    _notifyRadioChange(key: string, value: string): void;
+                    refreshFormAssociation(): void;
+                    formAssociatedCallback(form: HTMLFormElement): void;
+                    formIPCEvent(event: CustomEvent<[string, string]>): void;
+                    formDisabledCallback(disabled: boolean): void;
+                    formResetCallback(): void;
+                    formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                    _updateFormAssociatedValue(): void;
+                } & {
+                    ariaLabel: string;
+                    _slotInnerText: string;
+                } & {
+                    focusableOnDisabled: boolean;
+                    controlTagName: string;
+                    controlVoidElement: boolean;
+                    _slotMutationObserver: any;
+                } & {
+                    onValueChangingContentAttribute(): void;
+                    focus(options?: FocusOptions): void;
+                    click(): void;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                } & {
+                    _computedAriaLabel: string;
+                }): string;
+            } & {
+                stateLayer: boolean;
+            } & {
+                type: string;
+                icon: string;
+                iconVariation: string;
+                label: string;
+                filled: boolean;
+                outlined: boolean;
+                inputPrefix: string;
+                inputSuffix: string;
+                trailingIcon: string;
+                trailingIconInk: string;
+                trailingIconLabel: string;
+                supporting: string;
+                error: string;
+                placeholder: string;
+            } & {
+                erroredState: boolean;
+            }): string;
+            populatedState({ value, _badInput }: CustomElement & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                shapeTop: boolean;
+                shapeBottom: boolean;
+                shapeStart: boolean;
+                shapeEnd: boolean;
+                shapeStyle: string;
+                outlined: boolean;
+            } & {
+                density: number;
+            } & {
+                delegatesFocus: boolean;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            } & {
+                _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                    delegatesFocus: boolean;
+                } & {
+                    disabled: boolean;
+                    focused: boolean;
+                    hovered: boolean;
+                    pressed: boolean;
+                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                    _hovered: boolean;
+                    _focused: boolean;
+                    _focusedSynthetic: boolean;
+                    _keyPressed: boolean;
+                    _keyReleased: boolean;
+                    _pointerPressed: boolean;
+                    stateLayer: boolean;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    _ipcListener: EventListener;
+                    _ipcTarget: EventTarget;
+                } & {
+                    ariaControls: string;
+                    autocomplete: string;
+                    name: string;
+                    readOnly: boolean;
+                    defaultChecked: boolean;
+                    _checkedDirty: boolean;
+                    _checked: boolean;
+                    required: boolean;
+                    type: string;
+                    _defaultValue: string;
+                    _value: string;
+                    _valueDirty: boolean;
+                    _userInteracted: boolean;
+                    _invalid: boolean;
+                    _badInput: boolean;
+                    _validationMessage: string;
+                    _formDisabled: boolean;
+                    _formReset: boolean;
+                } & {
+                    erroredState: boolean;
+                    defaultValue: string;
+                    _valueBehavior: "default" | "value" | "default/on" | "filename";
+                } & {
+                    _onSetValue(value: string): void;
+                    _onSetChecked(checked: boolean): void;
+                } & {
+                    value: string;
+                    checked: boolean;
+                } & {
+                    form: HTMLFormElement;
+                    validity: ValidityState;
+                    validationMessage: string;
+                    willValidate: boolean;
+                    labels: NodeList;
+                } & {
+                    disabledState: boolean;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                    _notifyRadioChange(key: string, value: string): void;
+                    refreshFormAssociation(): void;
+                    formAssociatedCallback(form: HTMLFormElement): void;
+                    formIPCEvent(event: CustomEvent<[string, string]>): void;
+                    formDisabledCallback(disabled: boolean): void;
+                    formResetCallback(): void;
+                    formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                    _updateFormAssociatedValue(): void;
+                } & {
+                    ariaLabel: string;
+                    _slotInnerText: string;
+                } & {
+                    focusableOnDisabled: boolean;
+                    controlTagName: string;
+                    controlVoidElement: boolean;
+                    _slotMutationObserver: any;
+                } & {
+                    onValueChangingContentAttribute(): void;
+                    focus(options?: FocusOptions): void;
+                    click(): void;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                } & {
+                    _computedAriaLabel: string;
+                }): string;
+            } & {
+                stateLayer: boolean;
+            } & {
+                type: string;
+                icon: string;
+                iconVariation: string;
+                label: string;
+                filled: boolean;
+                outlined: boolean;
+                inputPrefix: string;
+                inputSuffix: string;
+                trailingIcon: string;
+                trailingIconInk: string;
+                trailingIconLabel: string;
+                supporting: string;
+                error: string;
+                placeholder: string;
+            } & {
+                erroredState: boolean;
+            }): boolean;
+            _showLabelText({ label, filled, outlined }: CustomElement & {
+                disabled: boolean;
+                focused: boolean;
+                hovered: boolean;
+                pressed: boolean;
+                _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                _hovered: boolean;
+                _focused: boolean;
+                _focusedSynthetic: boolean;
+                _keyPressed: boolean;
+                _keyReleased: boolean;
+                _pointerPressed: boolean;
+                stateLayer: boolean;
+            } & {
+                disabledState: boolean;
+                hoveredState: boolean;
+                focusedState: boolean;
+                pressedState: boolean;
+                touchedState: boolean;
+                pointedState: boolean;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                color: string;
+                ink: string;
+                typeStyle: string;
+            } & {
+                shapeTop: boolean;
+                shapeBottom: boolean;
+                shapeStart: boolean;
+                shapeEnd: boolean;
+                shapeStyle: string;
+                outlined: boolean;
+            } & {
+                density: number;
+            } & {
+                delegatesFocus: boolean;
+            } & {
+                _ipcListener: EventListener;
+                _ipcTarget: EventTarget;
+            } & {
+                ariaControls: string;
+                autocomplete: string;
+                name: string;
+                readOnly: boolean;
+                defaultChecked: boolean;
+                _checkedDirty: boolean;
+                _checked: boolean;
+                required: boolean;
+                type: string;
+                _defaultValue: string;
+                _value: string;
+                _valueDirty: boolean;
+                _userInteracted: boolean;
+                _invalid: boolean;
+                _badInput: boolean;
+                _validationMessage: string;
+                _formDisabled: boolean;
+                _formReset: boolean;
+            } & {
+                erroredState: boolean;
+                defaultValue: string;
+                _valueBehavior: "default" | "value" | "default/on" | "filename";
+            } & {
+                _onSetValue(value: string): void;
+                _onSetChecked(checked: boolean): void;
+            } & {
+                value: string;
+                checked: boolean;
+            } & {
+                form: HTMLFormElement;
+                validity: ValidityState;
+                validationMessage: string;
+                willValidate: boolean;
+                labels: NodeList;
+            } & {
+                disabledState: boolean;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+                _notifyRadioChange(key: string, value: string): void;
+                refreshFormAssociation(): void;
+                formAssociatedCallback(form: HTMLFormElement): void;
+                formIPCEvent(event: CustomEvent<[string, string]>): void;
+                formDisabledCallback(disabled: boolean): void;
+                formResetCallback(): void;
+                formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                _updateFormAssociatedValue(): void;
+            } & {
+                ariaLabel: string;
+                _slotInnerText: string;
+            } & {
+                focusableOnDisabled: boolean;
+                controlTagName: string;
+                controlVoidElement: boolean;
+                _slotMutationObserver: any;
+            } & {
+                onValueChangingContentAttribute(): void;
+                focus(options?: FocusOptions): void;
+                click(): void;
+            } & {
+                stateTargetElement: HTMLElement;
+            } & {
+                checkValidity(): boolean;
+                reportValidity(): boolean;
+                setCustomValidity(error: string): void;
+            } & {
+                _computedAriaLabel: string;
+            } & {
+                _computedAriaLabelledby({ _computedAriaLabel }: CustomElement & {
+                    delegatesFocus: boolean;
+                } & {
+                    disabled: boolean;
+                    focused: boolean;
+                    hovered: boolean;
+                    pressed: boolean;
+                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
+                    _hovered: boolean;
+                    _focused: boolean;
+                    _focusedSynthetic: boolean;
+                    _keyPressed: boolean;
+                    _keyReleased: boolean;
+                    _pointerPressed: boolean;
+                    stateLayer: boolean;
+                } & {
+                    disabledState: boolean;
+                    hoveredState: boolean;
+                    focusedState: boolean;
+                    pressedState: boolean;
+                    touchedState: boolean;
+                    pointedState: boolean;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    _ipcListener: EventListener;
+                    _ipcTarget: EventTarget;
+                } & {
+                    ariaControls: string;
+                    autocomplete: string;
+                    name: string;
+                    readOnly: boolean;
+                    defaultChecked: boolean;
+                    _checkedDirty: boolean;
+                    _checked: boolean;
+                    required: boolean;
+                    type: string;
+                    _defaultValue: string;
+                    _value: string;
+                    _valueDirty: boolean;
+                    _userInteracted: boolean;
+                    _invalid: boolean;
+                    _badInput: boolean;
+                    _validationMessage: string;
+                    _formDisabled: boolean;
+                    _formReset: boolean;
+                } & {
+                    erroredState: boolean;
+                    defaultValue: string;
+                    _valueBehavior: "default" | "value" | "default/on" | "filename";
+                } & {
+                    _onSetValue(value: string): void;
+                    _onSetChecked(checked: boolean): void;
+                } & {
+                    value: string;
+                    checked: boolean;
+                } & {
+                    form: HTMLFormElement;
+                    validity: ValidityState;
+                    validationMessage: string;
+                    willValidate: boolean;
+                    labels: NodeList;
+                } & {
+                    disabledState: boolean;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                    _notifyRadioChange(key: string, value: string): void;
+                    refreshFormAssociation(): void;
+                    formAssociatedCallback(form: HTMLFormElement): void;
+                    formIPCEvent(event: CustomEvent<[string, string]>): void;
+                    formDisabledCallback(disabled: boolean): void;
+                    formResetCallback(): void;
+                    formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+                    _updateFormAssociatedValue(): void;
+                } & {
+                    ariaLabel: string;
+                    _slotInnerText: string;
+                } & {
+                    focusableOnDisabled: boolean;
+                    controlTagName: string;
+                    controlVoidElement: boolean;
+                    _slotMutationObserver: any;
+                } & {
+                    onValueChangingContentAttribute(): void;
+                    focus(options?: FocusOptions): void;
+                    click(): void;
+                } & {
+                    stateTargetElement: HTMLElement;
+                } & {
+                    checkValidity(): boolean;
+                    reportValidity(): boolean;
+                    setCustomValidity(error: string): void;
+                } & {
+                    _computedAriaLabel: string;
+                }): string;
+            } & {
+                stateLayer: boolean;
+            } & {
+                type: string;
+                icon: string;
+                iconVariation: string;
+                label: string;
+                filled: boolean;
+                outlined: boolean;
+                inputPrefix: string;
+                inputSuffix: string;
+                trailingIcon: string;
+                trailingIconInk: string;
+                trailingIconLabel: string;
+                supporting: string;
+                error: string;
+                placeholder: string;
+            } & {
+                erroredState: boolean;
+            }): boolean;
+        }): boolean;
+        computedIconVariation({ iconVariation, outlined }: CustomElement & {
+            disabled: boolean;
+            focused: boolean;
+            hovered: boolean;
+            pressed: boolean;
+            _lastInteraction: "key" | "mouse" | "touch" | "pen";
+            _hovered: boolean;
+            _focused: boolean;
+            _focusedSynthetic: boolean;
+            _keyPressed: boolean;
+            _keyReleased: boolean;
+            _pointerPressed: boolean;
+            stateLayer: boolean;
+        } & {
+            disabledState: boolean;
+            hoveredState: boolean;
+            focusedState: boolean;
+            pressedState: boolean;
+            touchedState: boolean;
+            pointedState: boolean;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            color: string;
+            ink: string;
+            typeStyle: string;
+        } & {
+            shapeTop: boolean;
+            shapeBottom: boolean;
+            shapeStart: boolean;
+            shapeEnd: boolean;
+            shapeStyle: string;
+            outlined: boolean;
+        } & {
+            density: number;
+        } & {
+            delegatesFocus: boolean;
+        } & {
+            _ipcListener: EventListener;
+            _ipcTarget: EventTarget;
+        } & {
+            ariaControls: string;
+            autocomplete: string;
+            name: string;
+            readOnly: boolean;
+            defaultChecked: boolean;
+            _checkedDirty: boolean;
+            _checked: boolean;
+            required: boolean;
+            type: string;
+            _defaultValue: string;
+            _value: string;
+            _valueDirty: boolean;
+            _userInteracted: boolean;
+            _invalid: boolean;
+            _badInput: boolean;
+            _validationMessage: string;
+            _formDisabled: boolean;
+            _formReset: boolean;
+        } & {
+            erroredState: boolean;
+            defaultValue: string;
+            _valueBehavior: "default" | "value" | "default/on" | "filename";
+        } & {
+            _onSetValue(value: string): void;
+            _onSetChecked(checked: boolean): void;
+        } & {
+            value: string;
+            checked: boolean;
+        } & {
+            form: HTMLFormElement;
+            validity: ValidityState;
+            validationMessage: string;
+            willValidate: boolean;
+            labels: NodeList;
+        } & {
+            disabledState: boolean;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+            _notifyRadioChange(key: string, value: string): void;
+            refreshFormAssociation(): void;
+            formAssociatedCallback(form: HTMLFormElement): void;
+            formIPCEvent(event: CustomEvent<[string, string]>): void;
+            formDisabledCallback(disabled: boolean): void;
+            formResetCallback(): void;
+            formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
+            _updateFormAssociatedValue(): void;
+        } & {
+            ariaLabel: string;
+            _slotInnerText: string;
+        } & {
+            focusableOnDisabled: boolean;
+            controlTagName: string;
+            controlVoidElement: boolean;
+            _slotMutationObserver: any;
+        } & {
+            onValueChangingContentAttribute(): void;
+            focus(options?: FocusOptions): void;
+            click(): void;
+        } & {
+            stateTargetElement: HTMLElement;
+        } & {
+            checkValidity(): boolean;
+            reportValidity(): boolean;
+            setCustomValidity(error: string): void;
+        } & ... 5 more ... & {
+            ...;
+        }): string;
+    } & ... 13 more ... & {
+        ...;
+    }): string;
+    ... 6 more ...;
+    populatedState({ value, _badInput, _draftInput }: CustomElement & ... 42 more ... & {
+        ...;
+    }): boolean;
+}, any[]>;
 export default _default;
 export type Listbox = typeof CustomElement & import("../core/CustomElement.js").Class<{
     delegatesFocus: boolean;
@@ -40959,27 +40348,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
     touchedState: boolean;
     pointedState: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
+    stateTargetElement: HTMLElement;
 }, any[]> & {
     formAssociated: true;
 } & import("../core/CustomElement.js").Class<{
@@ -41108,27 +40477,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         touchedState: boolean;
         pointedState: boolean;
     }, any[]> & import("../core/CustomElement.js").Class<{
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     }, any[]> & import("../core/CustomElement.js").Class<{
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
@@ -41290,27 +40639,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -41475,27 +40804,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -41684,27 +40993,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -41866,27 +41155,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -42051,27 +41320,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -42258,27 +41507,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -42440,27 +41669,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -42625,27 +41834,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -42832,27 +42021,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -43014,27 +42183,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -43199,27 +42348,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -43407,27 +42536,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         touchedState: boolean;
         pointedState: boolean;
     }, any[]> & import("../core/CustomElement.js").Class<{
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     }, any[]> & import("../core/CustomElement.js").Class<{
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
@@ -43589,27 +42698,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -43774,27 +42863,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -43983,27 +43052,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -44165,27 +43214,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -44350,27 +43379,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -44557,27 +43566,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -44739,27 +43728,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -44924,27 +43893,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -45131,27 +44080,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -45313,27 +44242,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -45498,27 +44407,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -45708,27 +44597,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         touchedState: boolean;
         pointedState: boolean;
     }, any[]> & import("../core/CustomElement.js").Class<{
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     }, any[]> & import("../core/CustomElement.js").Class<{
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
@@ -45890,27 +44759,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -46075,27 +44924,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -46284,27 +45113,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -46466,27 +45275,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -46651,27 +45440,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -46858,27 +45627,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -47040,27 +45789,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -47225,27 +45954,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -47432,27 +46141,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -47614,27 +46303,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -47799,27 +46468,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -48007,27 +46656,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         touchedState: boolean;
         pointedState: boolean;
     }, any[]> & import("../core/CustomElement.js").Class<{
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     }, any[]> & import("../core/CustomElement.js").Class<{
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
@@ -48189,27 +46818,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -48374,27 +46983,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -48583,27 +47172,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -48765,27 +47334,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -48950,27 +47499,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -49157,27 +47686,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -49339,27 +47848,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -49524,27 +48013,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -49731,27 +48200,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -49913,27 +48362,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -50098,27 +48527,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -50315,27 +48724,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         touchedState: boolean;
         pointedState: boolean;
     }, any[]> & import("../core/CustomElement.js").Class<{
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     }, any[]> & import("../core/CustomElement.js").Class<{
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
@@ -50497,27 +48886,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -50682,27 +49051,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -50891,27 +49240,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -51073,27 +49402,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -51258,27 +49567,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -51465,27 +49754,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -51647,27 +49916,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -51832,27 +50081,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -52039,27 +50268,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -52221,27 +50430,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -52406,27 +50595,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -52614,27 +50783,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         touchedState: boolean;
         pointedState: boolean;
     }, any[]> & import("../core/CustomElement.js").Class<{
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     }, any[]> & import("../core/CustomElement.js").Class<{
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
@@ -52796,27 +50945,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -52981,27 +51110,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -53190,27 +51299,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -53372,27 +51461,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -53557,27 +51626,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -53764,27 +51813,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -53946,27 +51975,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -54131,27 +52140,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -54338,27 +52327,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -54520,27 +52489,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -54705,27 +52654,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -54914,27 +52843,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         touchedState: boolean;
         pointedState: boolean;
     }, any[]> & import("../core/CustomElement.js").Class<{
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     }, any[]> & import("../core/CustomElement.js").Class<{
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
@@ -55096,27 +53005,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -55281,27 +53170,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -55490,27 +53359,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -55672,27 +53521,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -55857,27 +53686,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -56064,27 +53873,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -56246,27 +54035,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -56431,27 +54200,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -56638,27 +54387,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -56820,27 +54549,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -57005,27 +54714,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -57213,27 +54902,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         touchedState: boolean;
         pointedState: boolean;
     }, any[]> & import("../core/CustomElement.js").Class<{
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     }, any[]> & import("../core/CustomElement.js").Class<{
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
@@ -57395,27 +55064,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -57580,27 +55229,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -57789,27 +55418,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -57971,27 +55580,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -58156,27 +55745,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -58363,27 +55932,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -58545,27 +56094,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -58730,27 +56259,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -58937,27 +56446,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: CustomElement & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
@@ -59119,27 +56608,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;
@@ -59304,27 +56773,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: CustomElement & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _lastRippleWeakRef: WeakRef<CustomElement & {
                     hadRippleHeld: boolean;

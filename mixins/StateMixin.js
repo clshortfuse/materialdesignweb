@@ -42,6 +42,7 @@ export default function StateMixin(Base) {
       },
     })
     .define({
+      /** @return {HTMLElement} */
       stateTargetElement() { return this; },
     })
     .html`

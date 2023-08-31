@@ -19,27 +19,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     touchedState: boolean;
     pointedState: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    stateTargetElement: CustomElement & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
+    stateTargetElement: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
@@ -94,27 +74,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -169,27 +129,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: CustomElement & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;

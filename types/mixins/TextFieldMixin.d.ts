@@ -23,27 +23,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
     touchedState: boolean;
     pointedState: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    stateTargetElement: import("../core/CustomElement.js").default & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    };
+    stateTargetElement: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
@@ -157,27 +137,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: import("../core/CustomElement.js").default & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
@@ -292,27 +252,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: import("../core/CustomElement.js").default & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -424,27 +364,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -559,27 +479,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: import("../core/CustomElement.js").default & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -691,27 +591,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -826,27 +706,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: import("../core/CustomElement.js").default & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -958,27 +818,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -1093,27 +933,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: import("../core/CustomElement.js").default & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -1225,27 +1045,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -1360,27 +1160,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: import("../core/CustomElement.js").default & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -1492,27 +1272,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -1628,27 +1388,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: import("../core/CustomElement.js").default & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -1760,27 +1500,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -1895,27 +1615,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -2027,27 +1727,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -2162,27 +1842,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -2294,27 +1954,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -2429,27 +2069,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -2561,27 +2181,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -2696,27 +2296,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -2828,27 +2408,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -2963,27 +2523,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -3095,27 +2635,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -3231,27 +2751,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
         touchedState: boolean;
         pointedState: boolean;
     } & {
-        stateTargetElement: import("../core/CustomElement.js").default & {
-            disabled: boolean;
-            focused: boolean;
-            hovered: boolean;
-            pressed: boolean;
-            _lastInteraction: "key" | "mouse" | "touch" | "pen";
-            _hovered: boolean;
-            _focused: boolean;
-            _focusedSynthetic: boolean;
-            _keyPressed: boolean;
-            _keyReleased: boolean;
-            _pointerPressed: boolean;
-            stateLayer: boolean;
-        } & {
-            disabledState: boolean;
-            hoveredState: boolean;
-            focusedState: boolean;
-            pressedState: boolean;
-            touchedState: boolean;
-            pointedState: boolean;
-        };
+        stateTargetElement: HTMLElement;
     } & {
         color: string;
         ink: string;
@@ -3363,27 +2863,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             _ipcListener: EventListener;
             _ipcTarget: EventTarget;
@@ -3498,27 +2978,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -3630,27 +3090,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -3765,27 +3205,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -3897,27 +3317,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -4032,27 +3432,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -4164,27 +3544,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -4299,27 +3659,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -4431,27 +3771,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
@@ -4566,27 +3886,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
             touchedState: boolean;
             pointedState: boolean;
         } & {
-            stateTargetElement: import("../core/CustomElement.js").default & {
-                disabled: boolean;
-                focused: boolean;
-                hovered: boolean;
-                pressed: boolean;
-                _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                _hovered: boolean;
-                _focused: boolean;
-                _focusedSynthetic: boolean;
-                _keyPressed: boolean;
-                _keyReleased: boolean;
-                _pointerPressed: boolean;
-                stateLayer: boolean;
-            } & {
-                disabledState: boolean;
-                hoveredState: boolean;
-                focusedState: boolean;
-                pressedState: boolean;
-                touchedState: boolean;
-                pointedState: boolean;
-            };
+            stateTargetElement: HTMLElement;
         } & {
             color: string;
             ink: string;
@@ -4698,27 +3998,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
                 touchedState: boolean;
                 pointedState: boolean;
             } & {
-                stateTargetElement: import("../core/CustomElement.js").default & {
-                    disabled: boolean;
-                    focused: boolean;
-                    hovered: boolean;
-                    pressed: boolean;
-                    _lastInteraction: "key" | "mouse" | "touch" | "pen";
-                    _hovered: boolean;
-                    _focused: boolean;
-                    _focusedSynthetic: boolean;
-                    _keyPressed: boolean;
-                    _keyReleased: boolean;
-                    _pointerPressed: boolean;
-                    stateLayer: boolean;
-                } & {
-                    disabledState: boolean;
-                    hoveredState: boolean;
-                    focusedState: boolean;
-                    pressedState: boolean;
-                    touchedState: boolean;
-                    pointedState: boolean;
-                };
+                stateTargetElement: HTMLElement;
             } & {
                 _ipcListener: EventListener;
                 _ipcTarget: EventTarget;
