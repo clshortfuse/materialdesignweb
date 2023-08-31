@@ -427,8 +427,8 @@ export default class CustomElement extends HTMLElement {
    * Extends base class into a new class.
    * Use to avoid mutating base class.
    * @type {{
-   * <T1 extends typeof CustomElement, T2 extends T1>
-   * (this: T1,customExtender?: (Base:T1) => T2): T2;
+   * <T1 extends typeof CustomElement, T2 extends T1, T3 extends (Base:T1) => T2>
+   * (this: T1,customExtender?: T3|null): T3 extends null ? T1 : T2;
    * }}
    */
   static extend(customExtender) {

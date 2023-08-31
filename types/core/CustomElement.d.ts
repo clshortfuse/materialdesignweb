@@ -159,7 +159,7 @@ export default class CustomElement extends HTMLElement {
     static css<T1_1 extends typeof CustomElement, T2_1 extends string | TemplateStringsArray | CSSStyleSheet | HTMLStyleElement>(this: T1_1, array: T2_1, ...rest: T2_1 extends string ? any : T2_1 extends TemplateStringsArray ? any[] : (CSSStyleSheet | HTMLStyleElement)[]): T1_1;
     static autoRegister<T_4 extends typeof CustomElement>(this: T_4, elementName: string): T_4;
     static html<T_5 extends typeof CustomElement>(this: T_5, string: TemplateStringsArray, ...substitutions: (string | Element | ((this: InstanceType<T_5>, data: InstanceType<T_5>, injections?: any) => any))[]): T_5;
-    static extend<T1_2 extends typeof CustomElement, T2_2 extends T1_2>(this: T1_2, customExtender?: (Base: T1_2) => T2_2): T2_2;
+    static extend<T1_2 extends typeof CustomElement, T2_2 extends T1_2, T3_1 extends (Base: T1_2) => T2_2>(this: T1_2, customExtender?: T3_1): T3_1 extends null ? T1_2 : T2_2;
     static setStatic<T1_3 extends typeof CustomElement, T2_3 extends {
         [x: string]: string | number | boolean | object | any[] | ((this: T1_3, ...args: any[]) => any);
     }>(this: T1_3, source: T2_3 & ThisType<T1_3 & T2_3>): T1_3 & T2_3;
@@ -198,7 +198,7 @@ export default class CustomElement extends HTMLElement {
         [x: string]: import("./Composition.js").CompositionEventListenerObject<InstanceType<T_8>>;
     }, options?: Partial<import("./Composition.js").CompositionEventListener<InstanceType<T_8>, string>>): T_8;
     static rootEvents<T_7 extends typeof CustomElement>(this: T_7, listeners?: import("./Composition.js").CompositionEventListenerObject<InstanceType<T_7>>, options?: Partial<import("./Composition.js").CompositionEventListener<InstanceType<T_7>, string>>): T_7;
-    static on<T1_5 extends typeof CustomElement, T2_5 extends InstanceType<T1_5>, T3_1 extends CompositionCallback<T2_5, T2_5>, T4 extends keyof T3_1>(this: T1_5, name: T3_1 | T4, callbacks?: T3_1[T4] & ThisType<T2_5>): T1_5;
+    static on<T1_5 extends typeof CustomElement, T2_5 extends InstanceType<T1_5>, T3_2 extends CompositionCallback<T2_5, T2_5>, T4 extends keyof T3_2>(this: T1_5, name: T3_2 | T4, callbacks?: T3_2[T4] & ThisType<T2_5>): T1_5;
     static onPropChanged<T1_6 extends typeof CustomElement, T2_6 extends InstanceType<T1_6>>(this: T1_6, options: ObjectOrObjectEntries<{ [P_1 in keyof T2_6]?: (this: T2_6, oldValue: T2_6[P_1], newValue: T2_6[P_1], changes: any, element: T2_6) => void; }>): T1_6;
     static onAttributeChanged<T1_7 extends typeof CustomElement, T2_7 extends InstanceType<T1_7>>(this: T1_7, options: {
         [x: string]: (this: T2_7, oldValue: string, newValue: string, element: T2_7) => void;
