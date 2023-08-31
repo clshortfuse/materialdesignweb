@@ -9,52 +9,21 @@ export default CustomElement
   .extend()
   .mixin(ScrollListenerMixin)
   .mixin(DelegatesFocusMixin)
-  .observe({
-    _startSlotted: 'boolean',
-    _bottomSlotted: 'boolean',
-    _bottomFixedSlotted: 'boolean',
-    _endSlotted: 'boolean',
-  })
   .set({
     /** @type {ResizeObserver} */
     _bottomResizeObserver: null,
   })
-  .expressions({
-    _customStyle({ _startSlotted, _bottomSlotted, _bottomFixedSlotted, _endSlotted }) {
-      // Optimize single block layout if not using custom slots
-      return (_startSlotted || _bottomSlotted || _bottomFixedSlotted || _endSlotted)
-        ? ':host{display:grid}'
-        : ':host{display:contents}';
-    },
-  })
   .html`
-    <style>{_customStyle}</style>
-    <slot id=start name=start slotted={_startSlotted}></slot>
-    <div slotted={_bottomSlotted} id=bottom>
+    <slot id=start name=start></slot>
+    <div id=bottom>
       <slot id=bottom-slot name=bottom></slot>
     </div>
-    <div slotted={_bottomFixedSlotted} id=bottom-fixed>
+    <div id=bottom-fixed>
       <slot id=bottom-fixed-slot name=bottom-fixed></slot>
     </div>
     <slot id=slot></slot>
-    <slot id=end name=end slotted={_endSlotted}></slot>
+    <slot id=end name=end></slot>
   `
-  .rootEvents({
-    slotchange({ target }) {
-      const slotElement = /** @type {HTMLSlotElement} */(target);
-      let key;
-      switch (slotElement.name) {
-        case 'start': key = '_startSlotted'; break;
-        case 'bottom': key = '_bottomSlotted'; break;
-        case 'bottom-fixed': key = '_bottomFixedSlotted'; break;
-        case 'end': key = '_endSlotted'; break;
-        default: return;
-      }
-
-      // @ts-expect-error keyof this
-      this[key] = slotElement.assignedNodes().length !== 0;
-    },
-  })
   .observe({
     _bottomHeight: { type: 'float', empty: 0 },
     _bottomOffsetY: { type: 'float', empty: 0 },
@@ -162,6 +131,7 @@ export default CustomElement
     :host {
       position: relative;
 
+      display: grid;
       grid-template:
         "start top     end" auto
         "start content end" minmax(auto, 1fr)
@@ -176,12 +146,8 @@ export default CustomElement
     }
 
     #start {
-      display: none;
-      grid-area: start;
-    }
-
-    #start[slotted] {
       display: flex;
+      grid-area: start;
     }
 
     #slot {
@@ -203,17 +169,13 @@ export default CustomElement
       position: sticky;
       inset-block-end: 0;
 
-      display: none;
+      display: block;
       grid-area: bottom;
       overflow-y: hidden;
 
       pointer-events: none;
 
       z-index: 1;
-    }
-
-    #bottom[slotted] {
-      display: block;
     }
 
     #bottom-slot {
@@ -229,16 +191,12 @@ export default CustomElement
       position: sticky;
       inset-block-end: 0;
 
-      display: none;
+      display: block;
       grid-area: bottom; /* Takes but does not dictate size of bottom area */
 
       pointer-events: none;
 
       z-index: 2;
-    }
-
-    #bottom-fixed[slotted] {
-      display: block;
     }
 
     #bottom-fixed-slot {
