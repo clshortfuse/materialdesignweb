@@ -2779,7 +2779,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         interpolatesTemplate: boolean;
         supportsElementInternals: boolean;
         supportsElementInternalsRole: boolean;
-        templatable: boolean; /** @type {ListOption} */
+        templatable: boolean;
         defined: boolean;
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
@@ -5481,7 +5481,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         interpolatesTemplate: boolean;
         supportsElementInternals: boolean;
         supportsElementInternalsRole: boolean;
-        templatable: boolean; /** @type {ListOption} */
+        templatable: boolean;
         defined: boolean;
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
@@ -8184,7 +8184,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         interpolatesTemplate: boolean;
         supportsElementInternals: boolean;
         supportsElementInternalsRole: boolean;
-        templatable: boolean; /** @type {ListOption} */
+        templatable: boolean;
         defined: boolean;
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
@@ -10885,7 +10885,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         interpolatesTemplate: boolean;
         supportsElementInternals: boolean;
         supportsElementInternalsRole: boolean;
-        templatable: boolean; /** @type {ListOption} */
+        templatable: boolean;
         defined: boolean;
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
@@ -13595,7 +13595,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         interpolatesTemplate: boolean;
         supportsElementInternals: boolean;
         supportsElementInternalsRole: boolean;
-        templatable: boolean; /** @type {ListOption} */
+        templatable: boolean;
         defined: boolean;
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
@@ -16296,7 +16296,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         interpolatesTemplate: boolean;
         supportsElementInternals: boolean;
         supportsElementInternalsRole: boolean;
-        templatable: boolean; /** @type {ListOption} */
+        templatable: boolean;
         defined: boolean;
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
@@ -19002,7 +19002,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         interpolatesTemplate: boolean;
         supportsElementInternals: boolean;
         supportsElementInternalsRole: boolean;
-        templatable: boolean; /** @type {ListOption} */
+        templatable: boolean;
         defined: boolean;
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;
@@ -21707,7 +21707,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         interpolatesTemplate: boolean;
         supportsElementInternals: boolean;
         supportsElementInternalsRole: boolean;
-        templatable: boolean; /** @type {ListOption} */
+        templatable: boolean;
         defined: boolean;
         autoRegistration: boolean;
         registrations: Map<string, typeof import("../core/CustomElement.js").default>;

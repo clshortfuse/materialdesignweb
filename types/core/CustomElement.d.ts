@@ -277,7 +277,7 @@ export type ClassOf<T extends {
     prototype: unknown;
 }> = T;
 export type Class<T extends unknown = any, A extends any[] = any[]> = new (...args: A) => T;
-export type HTMLTemplater<T1 extends unknown, T2 extends unknown = T1> = (string: TemplateStringsArray, ...substitutions: (string | Element | DocumentFragment | ((this: T1, data: T2) => any))[][]) => DocumentFragment;
+export type HTMLTemplater<T1 extends unknown, T2 extends unknown = T1> = (string: TemplateStringsArray, ...substitutions: (string | Element | DocumentFragment | ((this: T1, data: T2) => any))[]) => DocumentFragment;
 export type CallbackArguments<T1 extends unknown = any, T2 extends unknown = T1> = {
     composition: Composition<T1>;
     refs: Record<string, HTMLElement>;

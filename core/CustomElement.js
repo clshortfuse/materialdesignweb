@@ -47,7 +47,7 @@ import { addInlineFunction, html } from './template.js';
  * @template {any} [T2=T1]
  * @callback HTMLTemplater
  * @param {TemplateStringsArray} string
- * @param {...(string|DocumentFragment|Element|((this:T1, data:T2) => any))[]} substitutions
+ * @param {...(string|DocumentFragment|Element|((this:T1, data:T2) => any))} substitutions
  * @return {DocumentFragment}
  */
 
