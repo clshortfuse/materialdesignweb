@@ -97,15 +97,18 @@ export default class CustomElement extends HTMLElement {
      *  ARGS extends ConstructorParameters<CLASS>,
      *  INSTANCE extends InstanceType<CLASS>,
      *  PROPS extends {
-     *    [K in keyof any]: ((data?: INSTANCE, state?: Record<string, any>) => string|boolean|null)
+     *    [K in keyof any]: K extends `_${any}` ? ((data: INSTANCE, state?: Record<string, any>) => string|boolean|null)
+     *      : ((data?: INSTANCE, state?: Record<string, any>) => string|boolean|null)
      *  } & ThisType<INSTANCE>
      *  >(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>):
-     *  CLASS & Class<PROPS,ARGS>
+     *  CLASS & Class<{
+     *    [K in keyof PROPS]: K extends `_${any}` ? never : () =>  ReturnType<PROPS[K]> }
+     *    ,ARGS>
      * }}
      */
     static expressions: <CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends {
         [x: string]: (data?: INSTANCE, state?: Record<string, any>) => string | boolean | null;
-    } & ThisType<INSTANCE>>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & Class<PROPS, ARGS>;
+    } & ThisType<INSTANCE>>(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>) => CLASS & Class<{ [K_2 in keyof PROPS]: K_2 extends `_${any}` ? never : () => ReturnType<PROPS[K_2]>; }, ARGS>;
     static methods: typeof CustomElement.set;
     /**
      * @type {{
@@ -153,7 +156,7 @@ export default class CustomElement extends HTMLElement {
      * @param {K} collection
      * @param {T[K] extends (infer R)[] ? R : never} callback
      */
-    static _addCallback<T_2 extends typeof CustomElement, K_2 extends keyof T_2>(this: T_2, collection: K_2, callback: T_2[K_2] extends (infer R_3)[] ? R_3 : never): void;
+    static _addCallback<T_2 extends typeof CustomElement, K_3 extends keyof T_2>(this: T_2, collection: K_3, callback: T_2[K_3] extends (infer R_3)[] ? R_3 : never): void;
     static append<T_3 extends typeof CustomElement>(this: T_3, ...parts: import("./Composition.js").CompositionPart<T>[]): T_3;
     static recompose<T1 extends typeof CustomElement, T2 extends InstanceType<T1>, T3 extends CompositionCallback<T2, T2>["composed"]>(this: T1, callback: T3): T1;
     static css<T1_1 extends typeof CustomElement, T2_1 extends string | TemplateStringsArray | CSSStyleSheet | HTMLStyleElement>(this: T1_1, array: T2_1, ...rest: T2_1 extends string ? any : T2_1 extends TemplateStringsArray ? any[] : (CSSStyleSheet | HTMLStyleElement)[]): T1_1;
@@ -276,13 +279,13 @@ export type ObserverOptions<T1 extends import("./observe.js").ObserverPropertyTy
 export type ClassOf<T extends {
     prototype: unknown;
 }> = T;
-export type Class<T extends unknown = any, A extends any[] = any[]> = new (...args: A) => T;
+export type Class<T extends unknown = any, A extends any[] = any[]> = abstract new (...args: A) => T;
 export type HTMLTemplater<T1 extends unknown, T2 extends unknown = T1> = (string: TemplateStringsArray, ...substitutions: (string | Element | DocumentFragment | ((this: T1, data: T2) => any))[]) => DocumentFragment;
 export type CallbackArguments<T1 extends unknown = any, T2 extends unknown = T1> = {
     composition: Composition<T1>;
     refs: Record<string, HTMLElement>;
     html: HTMLTemplater<T1, Partial<T2>>;
-    inline: (fn: (this: T1, data: { [K in keyof T2]?: T2[K]; }) => any) => string;
+    inline: (fn: (this: T1, data: T2) => any) => string;
     template: DocumentFragment;
     element: T1;
 };

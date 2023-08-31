@@ -39,7 +39,7 @@ import { addInlineFunction, html } from './template.js';
 /**
  * @template {any} [T=any]
  * @template {any[]} [A=any[]]
- * @typedef {new (...args: A) => T} Class
+ * @typedef {abstract new (...args: A) => T} Class
  */
 
 /**
@@ -58,7 +58,7 @@ import { addInlineFunction, html } from './template.js';
  * @prop {Composition<T1>} composition
  * @prop {Record<string, HTMLElement>} refs
  * @prop {HTMLTemplater<T1, Partial<T2>>} html
- * @prop {(fn: (this:T1, data: {[K in keyof T2]?: T2[K]}) => any) => string} inline
+ * @prop {(fn: (this:T1, data: T2) => any) => string} inline
  * @prop {DocumentFragment} template
  * @prop {T1} element
  */
@@ -258,10 +258,13 @@ export default class CustomElement extends HTMLElement {
    *  ARGS extends ConstructorParameters<CLASS>,
    *  INSTANCE extends InstanceType<CLASS>,
    *  PROPS extends {
-   *    [K in keyof any]: ((data?: INSTANCE, state?: Record<string, any>) => string|boolean|null)
+   *    [K in keyof any]: K extends `_${any}` ? ((data: INSTANCE, state?: Record<string, any>) => string|boolean|null)
+   *      : ((data?: INSTANCE, state?: Record<string, any>) => string|boolean|null)
    *  } & ThisType<INSTANCE>
    *  >(this: CLASS, expressions: PROPS & ThisType<INSTANCE & PROPS>):
-   *  CLASS & Class<PROPS,ARGS>
+   *  CLASS & Class<{
+   *    [K in keyof PROPS]: K extends `_${any}` ? never : () =>  ReturnType<PROPS[K]> }
+   *    ,ARGS>
    * }}
    */
   static expressions = /** @type {any} */ (this.set);
