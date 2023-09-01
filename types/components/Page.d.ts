@@ -13,7 +13,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     paneTwoBreakpoint: number;
     _lastComputedInlineSize: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    expanded: boolean;
+    _isMultipane: boolean;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    _styles: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
 }, any[]>;
