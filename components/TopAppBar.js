@@ -1,5 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
-import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
+import { ELEMENT_ANIMATION_TYPE, ELEMENT_STYLE_TYPE } from '../core/customTypes.js';
 import AriaToolbarMixin from '../mixins/AriaToolbarMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import SemiStickyMixin from '../mixins/SemiStickyMixin.js';
@@ -27,15 +27,22 @@ export default CustomElement
     _headlineOpacity: { type: 'float', default: 0 },
     headline: 'string',
     size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
-    color: { empty: 'surface' },
-    raisedColor: { empty: 'surface-container' },
+    color: 'string',
+    raisedColor: 'string',
   })
   .observe({
-    _styles({ raisedColor }) {
-      return `:host{--mdw-top-app-bar__raised-rgb:var(--mdw-color__${raisedColor})}`;
+    _styles: {
+      ...ELEMENT_STYLE_TYPE,
+      get({ raisedColor }) {
+        if (raisedColor) {
+          return '#raised-background:where([raised])'
+         + `{background-color:rgb(var(--mdw-color__${raisedColor}))`
+         + '}';
+        }
+      },
     },
     _headlineStyle: {
-      ...ELEMENT_STYLER_TYPE,
+      ...ELEMENT_ANIMATION_TYPE,
       get({ size, _headlineOpacity }) {
         if (size !== 'medium' && size !== 'large') return null;
         return {
@@ -56,7 +63,6 @@ export default CustomElement
     },
   })
   .html`
-    <style id=styles>{_styles}</style>
     <div id=raised-background raised={_raised}></div>
     <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
     <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
@@ -142,8 +148,8 @@ export default CustomElement
       transition: background-color 200ms;
     }
 
-    #raised-background[raised] {
-      background-color: rgb(var(--mdw-top-app-bar__raised-rgb, var(--mdw-bg)));
+    #raised-background:where([raised]) {
+      background-color: rgb(var(--mdw-color__surface-container));
     }
 
     #leading {

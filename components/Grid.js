@@ -1,3 +1,4 @@
+import { ELEMENT_STYLE_TYPE } from '../core/customTypes.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 
 import Box from './Box.js';
@@ -24,9 +25,9 @@ export default Box
       },
     },
     _computedColumns({ columns, _autoColumns }) {
-      if (columns) return `${columns}`;
-      if (_autoColumns) return `${_autoColumns}`;
-      return null;
+      if (columns) return columns;
+      if (_autoColumns) return _autoColumns;
+      return 4;
     },
   })
   .overrides({
@@ -57,18 +58,18 @@ export default Box
     },
   })
   .observe({
-    _styles({ _computedColumns }) {
-      return `:host{grid-template-columns:repeat(${_computedColumns || 4},1fr)}`;
+    _styles: {
+      ...ELEMENT_STYLE_TYPE,
+      get({ _computedColumns }) {
+        if ((_computedColumns || 4) === 4) return '';
+        return { gridTemplateColumns: `repeat(${_computedColumns},1fr)` };
+      },
     },
   })
   .recompose(({ refs: { slot } }) => {
     slot.setAttribute('grid', '{grid}');
     slot.setAttribute('flex', '{_isFlex}');
     slot.setAttribute('columns', '{_computedColumns}');
-  })
-  .html`<style id=styles>{_styles}</style>`
-  .recompose(({ refs: { styles } }) => {
-    styles.parentNode.prepend(styles);
   })
   .css`
     :host {

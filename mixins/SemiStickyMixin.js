@@ -1,4 +1,4 @@
-import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
+import { ELEMENT_ANIMATION_TYPE } from '../core/customTypes.js';
 
 import ScrollListenerMixin from './ScrollListenerMixin.js';
 
@@ -31,7 +31,7 @@ export default function SemiStickyMixin(Base) {
     })
     .observe({
       _semiStickyStyleStyle: {
-        ...ELEMENT_STYLER_TYPE,
+        ...ELEMENT_ANIMATION_TYPE,
         get({
           _semiStickyMeasured, _semiStickyTranslateY, _semiStickyDuration, _semiStickyEasing,
         }) {

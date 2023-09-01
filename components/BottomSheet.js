@@ -1,5 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
-import { ELEMENT_STYLER_TYPE, EVENT_HANDLER_TYPE } from '../core/customTypes.js';
+import { ELEMENT_ANIMATION_TYPE, EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import FlexableMixin from '../mixins/FlexableMixin.js';
@@ -143,7 +143,7 @@ export default CustomElement
   })
   .observe({
     hostStyles: {
-      ...ELEMENT_STYLER_TYPE,
+      ...ELEMENT_ANIMATION_TYPE,
       get({
         open, modal, _lastComputedBlockSize, _translateY,
         _animationDuration, _animationEasing,

@@ -1,5 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
-import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
+import { ELEMENT_ANIMATION_TYPE } from '../core/customTypes.js';
 
 export default CustomElement
   .extend()
@@ -27,7 +27,7 @@ export default CustomElement
   })
   .observe({
     _positionStyle: {
-      ...ELEMENT_STYLER_TYPE,
+      ...ELEMENT_ANIMATION_TYPE,
       get({ _positionX, _positionY, _radius }) {
         // Skip if not measured
         if (_radius == null) return null;

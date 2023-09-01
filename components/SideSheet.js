@@ -1,5 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
-import { ELEMENT_STYLER_TYPE, EVENT_HANDLER_TYPE } from '../core/customTypes.js';
+import { ELEMENT_ANIMATION_TYPE, ELEMENT_STYLE_TYPE, EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import { isRtl } from '../core/dom.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
@@ -71,19 +71,24 @@ export default CustomElement
       empty: 0,
     },
     _isSideSheetRtl: 'boolean',
-    color: { empty: 'surface-container-low' },
-    fixedColor: { empty: 'surface' },
+    color: 'string',
+    fixedColor: 'string',
   })
   .set({
     /** @type {InstanceType<Scrim>} */
     _scrim: null,
   })
   .observe({
-    _styles({ fixed, color, fixedColor }) {
-      return `:host{--mdw-side-sheet__bg:var(--mdw-color__${fixed ? fixedColor : color})}`;
+    _styles: {
+      ...ELEMENT_STYLE_TYPE,
+      get({ fixed, fixedColor }) {
+        if (fixed && fixedColor) {
+          return { backgroundColor: `rgb(var(--mdw-color__${fixedColor}))` };
+        }
+      },
     },
     hostStyles: {
-      ...ELEMENT_STYLER_TYPE,
+      ...ELEMENT_ANIMATION_TYPE,
       get({
         open, fixed, _isSideSheetRtl, _lastComputedInlineSize, _translateX,
         _animationDuration, _animationEasing,
@@ -103,10 +108,7 @@ export default CustomElement
       },
     },
   })
-  .html`
-    <style id=styles>{_styles}</style>
-    <slot id=slot></slot>
-  `
+  .html`<slot id=slot></slot>`
   .methods({
     checkForScrim(animate = false) {
       let { open, fixed, _scrim } = this;
@@ -269,11 +271,10 @@ export default CustomElement
 
       z-index: 24;
 
-      background-color: rgb(var(--mdw-side-sheet__bg, var(--mdw-bg)));
+      background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
 
       transition: visibility 200ms;
-      
       will-change: transform, margin-inline-start, margin-inline-end, visibility;
     }
 

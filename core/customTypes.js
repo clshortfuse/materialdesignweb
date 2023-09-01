@@ -1,5 +1,7 @@
 /** @typedef {import('./CustomElement').default} CustomElement */
 
+import { attrNameFromPropName } from './dom.js';
+
 /**
  * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
  * @type {import('./observe.js').ObserverOptions<'function',EventListener, unknown>}
@@ -133,7 +135,7 @@ const pendingConnections = new ResizeObserver((entries) => {
 });
 
 /** @type {import('./observe.js').ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
-export const ELEMENT_STYLER_TYPE = {
+export const ELEMENT_ANIMATION_TYPE = {
   type: 'object',
   reflect: false,
   diff: null, // Skip computing entire change
@@ -165,6 +167,76 @@ export const ELEMENT_STYLER_TYPE = {
     } else {
       pendingResizeCallbacks.set(this, [callback]);
       pendingConnections.observe(this);
+    }
+  },
+};
+
+/**
+ * @type {WeakMap<CustomElement, Map<string, HTMLStyleElement|CSSStyleSheet>>}
+ */
+const styleReferences = new WeakMap();
+
+/** @type {boolean} */
+let useAdoptedStyleSheets = null;
+
+/** @type {import('./observe.js').ObserverOptions<'string',string, CustomElement>} */
+export const ELEMENT_STYLE_TYPE = {
+  type: 'string',
+  reflect: false,
+  /**
+   * @param {string|Record<keyof CSSStyleDeclaration & string, string|number>} value
+   * @return {string}
+   */
+  parser(value) {
+    if (!value || typeof value === 'string') {
+      return /** @type {string} */ (value);
+    }
+    return `:host{${
+      Object.entries(value).map(([key, rule]) => `${attrNameFromPropName(key)}:${rule}`)
+        .join(';')
+    }}`;
+  },
+  propChangedCallback(name, oldValue, newValue) {
+    let mapOfStyles;
+
+    /** @type {HTMLStyleElement|CSSStyleSheet} */
+    let styles;
+    if (styleReferences.has(this)) {
+      mapOfStyles = styleReferences.get(this);
+      if (mapOfStyles.has(name)) {
+        styles = mapOfStyles.get(name);
+      }
+    } else {
+      // Skip build if blank
+      if (!newValue) return;
+      mapOfStyles = new Map();
+      styleReferences.set(this, mapOfStyles);
+    }
+
+    useAdoptedStyleSheets ??= 'adoptedStyleSheets' in ShadowRoot.prototype;
+    if (!styles) {
+      if (useAdoptedStyleSheets) {
+        styles = new CSSStyleSheet();
+        this.shadowRoot.adoptedStyleSheets = [
+          ...this.shadowRoot.adoptedStyleSheets,
+          styles,
+        ];
+      } else {
+        const styleElement = this.ownerDocument.createElement('style');
+        this.shadowRoot.prepend(styleElement);
+        styles = styleElement;
+      }
+      mapOfStyles.set(name, styles);
+    }
+    if (newValue) {
+      if (useAdoptedStyleSheets) {
+        /** @type {CSSStyleSheet} */(styles).replaceSync(newValue);
+      } else if (newValue) {
+        /** @type {HTMLStyleElement} */(styles).textContent = newValue;
+      }
+      styles.disabled = false;
+    } else {
+      styles.disabled = true;
     }
   },
 };

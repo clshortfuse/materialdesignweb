@@ -1,7 +1,7 @@
 /* https://m3.material.io/foundations/layout/applying-layout/window-size-classes */
 
 import CustomElement from '../core/CustomElement.js';
-import { ELEMENT_STYLER_TYPE } from '../core/customTypes.js';
+import { ELEMENT_ANIMATION_TYPE } from '../core/customTypes.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 
@@ -46,7 +46,7 @@ export default CustomElement
   })
   .observe({
     _bottomSlotStyle: {
-      ...ELEMENT_STYLER_TYPE,
+      ...ELEMENT_ANIMATION_TYPE,
       get({ _sharedBottomStyle }) {
         if (!_sharedBottomStyle) return null;
         return {
@@ -56,7 +56,7 @@ export default CustomElement
       },
     },
     _bottomFixedSlotStyle: {
-      ...ELEMENT_STYLER_TYPE,
+      ...ELEMENT_ANIMATION_TYPE,
       get({ _sharedBottomStyle }) {
         if (!_sharedBottomStyle) return null;
         return {

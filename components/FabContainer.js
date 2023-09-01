@@ -1,4 +1,5 @@
 import CustomElement from '../core/CustomElement.js';
+import { ELEMENT_STYLE_TYPE } from '../core/customTypes.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 
 export default CustomElement
@@ -8,20 +9,20 @@ export default CustomElement
     hideBreakpoint: { value: 728 },
   })
   .observe({
-    _styles({ hideBreakpoint }) {
-      if (hideBreakpoint) {
-        return `@media (min-width: ${hideBreakpoint}px) {:host{--mdw-fab-container__display: none}}`;
-      }
-      return undefined;
+    _styles: {
+      ...ELEMENT_STYLE_TYPE,
+      get({ hideBreakpoint }) {
+        if (hideBreakpoint) {
+          return `@media(min-width:${hideBreakpoint}px){:host{display:none}}`;
+        }
+        return undefined;
+      },
     },
   })
-  .html`
-    <style id=styles>{_styles}</style>
-    <slot id=slot></slot>
-  `
+  .html`<slot id=slot></slot>`
   .css`
     :host {
-      display: var(--mdw-fab-container__display, grid);
+      display: grid;
       align-items: flex-end;
       grid-template:
         "fab" auto

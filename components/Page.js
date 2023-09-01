@@ -1,6 +1,7 @@
 /* https://m3.material.io/foundations/layout/applying-layout/window-size-classes */
 
 import CustomElement from '../core/CustomElement.js';
+import { ELEMENT_STYLE_TYPE } from '../core/customTypes.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 
@@ -31,19 +32,20 @@ export default CustomElement
     },
   })
   .observe({
-    _styles({ _isMultipane, paneOne, paneTwoActive }) {
-      if (_isMultipane) {
-        return `:host{grid-template-columns:${paneOne === 'fixed' ? '360px' : '1fr'} ${this.paneTwo === 'fixed' ? '360px' : '1fr'}}`;
-      }
-      if (paneTwoActive) {
-        return '--host{grid-template-columns: 1fr 0} #slot{display:none}';
-      }
-      return '--host{grid-template-columns: 1fr 0} #two{display:none}';
+    _styles: {
+      ...ELEMENT_STYLE_TYPE,
+      get({ _isMultipane, paneOne, paneTwoActive }) {
+        if (_isMultipane) {
+          return `:host{grid-template-columns:${paneOne === 'fixed' ? '360px' : '1fr'} ${this.paneTwo === 'fixed' ? '360px' : '1fr'}}`;
+        }
+        if (paneTwoActive) {
+          return ':host{grid-template-columns:1fr 0}#slot{display:none}';
+        }
+        return ':host{grid-template-columns:1fr 0}#two{display:none}';
+      },
     },
-
   })
   .html`
-    <style id=styles>{_styles}</style>
     <slot id=slot mutli-pane={_isMultipane}></slot>
     <slot id=two name=two mutli-pane={_isMultipane}></slot>
   `
