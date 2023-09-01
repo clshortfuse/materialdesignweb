@@ -103,6 +103,8 @@
     "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
     "test:custom": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1",
     "test:chromium": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium",
+    "test:firefox": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers firefox --concurrency 1",
+    "test:webkit": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers webkit",
     "test:screenshot": "web-test-runner \"test/screenshot/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
     "test:spec": "web-test-runner \"test/spec/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit",
     "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1 --watch",
