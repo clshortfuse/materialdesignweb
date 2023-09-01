@@ -10,12 +10,12 @@ import NavigationListenerMixin from './NavigationListenerMixin.js';
 function buildHyperlinkDefinition(name) {
   return {
     get() {
-      return new URL(this.href)[name];
+      return new URL(this.href, window.location.href)[name];
     },
     set(value) {
       const { href } = this;
       if (!href) return;
-      const url = new URL(href);
+      const url = new URL(href, window.location.href);
       url[name] = value;
       this.href = url.href;
     },
