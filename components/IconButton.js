@@ -8,7 +8,7 @@ export default Button
   .extend()
   .mixin(TooltipTriggerMixin)
   .set({
-    _allowedTypes: ['button', 'submit', 'reset', 'checkbox'],
+    _allowedTypes: ['button', 'submit', 'reset', 'checkbox', 'file'],
   })
   .observe({
     _ariaPressed: {

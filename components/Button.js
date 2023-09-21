@@ -26,7 +26,7 @@ export default CustomElement
   })
   .set({
     stateLayer: true,
-    _allowedTypes: ['button', 'submit', 'reset'],
+    _allowedTypes: ['button', 'submit', 'reset', 'file'],
   })
   .observe({
     type: {

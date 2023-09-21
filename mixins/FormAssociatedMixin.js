@@ -23,6 +23,8 @@ export default function FormAssociatedMixin(Base) {
       _ipcListener: null,
       /** @type {EventTarget} */
       _ipcTarget: null,
+      /** @type {FileList} */
+      _files: null,
     })
     .observe({
       ariaControls: 'string',
@@ -94,14 +96,13 @@ export default function FormAssociatedMixin(Base) {
         reflect: false,
         get({ _valueBehavior, _defaultValue, _value }) {
           switch (_valueBehavior) {
+            case 'filename':
             default:
               return _value;
             case 'default':
               return _defaultValue ?? '';
             case 'default/on':
               return _defaultValue ?? 'on';
-            case 'filename':
-              throw new Error('Not supported!');
           }
         },
         /** @param {string} v */
@@ -110,6 +111,14 @@ export default function FormAssociatedMixin(Base) {
             case 'value':
               this._valueDirty = true;
               this._onSetValue(v);
+              break;
+            case 'filename':
+              if (v == null || v === '') {
+                this._files = null;
+                // Presume overriding class will interpet null as empty
+              } else {
+                throw new DOMException('InvalidStateError');
+              }
               break;
             default:
               this.defaultValue = v;
@@ -291,7 +300,19 @@ export default function FormAssociatedMixin(Base) {
           case 'reset':
             this.elementInternals.setFormValue(null);
             break;
-          default:
+          case 'file': {
+            const { elementInternals, _files, name } = this;
+            if (!_files || _files.length) {
+              elementInternals.setFormValue(null);
+            } else {
+              const fd = new FormData();
+              for (const entry of _files) {
+                fd.append(name, entry);
+              }
+              elementInternals.setFormValue(fd);
+            }
+            break;
+          } default:
             // console.debug('FormAssociatedMixin: setFormValue', this.name, this.value, this);
             this.elementInternals.setFormValue(this.value);
         }
@@ -313,6 +334,11 @@ export default function FormAssociatedMixin(Base) {
       },
       valueChanged() {
         this._updateFormAssociatedValue();
+      },
+      _valueBehaviorChanged(previous, current) {
+        if (previous !== 'filename' && current === 'filename') {
+          this.value = '';
+        }
       },
       typeChanged() {
         this._updateFormAssociatedValue();

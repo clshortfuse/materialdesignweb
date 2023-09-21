@@ -345,7 +345,18 @@ export default function InputMixin(Base) {
       },
     })
     .define({
-      files() { return this._input.files; },
+      files: {
+        get() { return this._input.files; },
+        set(value) {
+          if (value == null && this.type === 'file') {
+            // TODO: Clean up single-loop recursion
+            this._input.value = ''; // Clears files
+            this.value = '';
+          } else {
+            this._input.files = value;
+          }
+        },
+      },
 
       selectionDirection: {
         get() { return this._input.selectionDirection; },
@@ -401,5 +412,10 @@ export default function InputMixin(Base) {
           this._width = value;
         },
       },
-    });
+    })
+    .css`
+      #control::-webkit-file-upload-button {
+        display: none;
+      }
+    `;
 }

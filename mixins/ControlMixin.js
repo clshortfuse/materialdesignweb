@@ -236,15 +236,12 @@ export default function ControlMixin(Base) {
       
         cursor: auto;
         outline: none;
-      
-        pointer-events: auto;
-      
         transform: translateX(-50%) translateY(-50%);
       
         /* Safari and Chrome will emit two click events if not at top of stack */
         /* Allows up to 3 other layers (eg: ripple, outline) */
         z-index: 4;
-      
+
         background-color: transparent;
       
         border-radius: 0;
