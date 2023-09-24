@@ -220,7 +220,7 @@ export default CustomElement
           inputElement.setSelectionRange(selectionStart, suggestionText.length);
         }
         if (!_expanded) {
-          this.acceptSuggestion();
+          this.acceptSuggestion(true);
         }
       }
     },
