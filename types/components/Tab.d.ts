@@ -80,7 +80,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
             styles: {
                 minHeight: string;
-                minWidth: string; /** @type {HTMLElement['focus']} */
+                minWidth: string;
                 boxShadow: string;
                 top: string;
                 left: string;
@@ -107,7 +107,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
             styles: {
                 minHeight: string;
-                minWidth: string; /** @type {HTMLElement['focus']} */
+                minWidth: string;
                 boxShadow: string;
                 top: string;
                 left: string;
@@ -133,7 +133,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
             styles: {
                 minHeight: string;
-                minWidth: string; /** @type {HTMLElement['focus']} */
+                minWidth: string;
                 boxShadow: string;
                 top: string;
                 left: string;

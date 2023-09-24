@@ -16,6 +16,7 @@
     "target": "esnext"
   },
   "include": [
+    "./index.js",
     "./bin/**/*.js",
     "./constants/**/*.js",
     "./components/**/*.js",

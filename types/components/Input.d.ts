@@ -46,6 +46,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 } & import("../core/CustomElement.js").Class<{
     _ipcListener: EventListener;
     _ipcTarget: EventTarget;
+    _files: FileList;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaControls: string;
     autocomplete: string;
@@ -256,6 +257,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
+        _files: FileList;
     } & {
         ariaControls: string;
         autocomplete: string;
@@ -329,9 +331,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         size: number;
     } & {
         _ariaRole: string;
-        _optionsCollection: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        _optionsCollection: HTMLCollectionOf<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -339,7 +341,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -350,15 +352,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -371,16 +373,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -407,7 +409,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -433,7 +435,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -459,14 +461,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -490,46 +492,44 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]>> & HTMLOptionsCollection;
-        _selectedOptionsCollection: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        }> & HTMLOptionsCollection;
+        _selectedOptionsCollection: HTMLCollectionOf<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -537,7 +537,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -548,15 +548,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -569,16 +569,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -605,7 +605,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -631,7 +631,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -657,14 +657,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -688,48 +688,46 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]>>;
+        }>;
         _handlingSelectedness: boolean;
     } & {
-        options: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        options: HTMLCollectionOf<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -737,7 +735,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -748,15 +746,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -769,16 +767,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -805,7 +803,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -831,7 +829,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -857,14 +855,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -888,46 +886,44 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]>> & HTMLOptionsCollection;
-        selectedOptions: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        }> & HTMLOptionsCollection;
+        selectedOptions: HTMLCollectionOf<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -935,7 +931,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -946,15 +942,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -967,16 +963,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -1003,7 +999,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -1029,7 +1025,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -1055,14 +1051,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -1086,55 +1082,53 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]>>;
+        }>;
         type: string;
         kbdNavQuery: string;
         kbdNavFocusableWhenDisabled: boolean;
     } & {
         length: number;
         selectedIndex: any;
-        value: any;
+        value: string;
         add: (element: HTMLOptGroupElement | HTMLOptionElement, before?: number | HTMLElement) => void;
     } & {
-        _selectedOptionsGenerator(): Generator<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        _selectedOptionsGenerator(): Generator<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -1142,7 +1136,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -1153,15 +1147,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -1174,16 +1168,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -1210,7 +1204,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -1236,7 +1230,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -1262,14 +1256,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -1293,46 +1287,44 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]> & HTMLOptionElement, void, unknown>;
-        [Symbol.iterator](): Generator<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        } & HTMLOptionElement, void, unknown>;
+        [Symbol.iterator](): Generator<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -1340,7 +1332,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -1351,15 +1343,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -1372,16 +1364,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -1408,7 +1400,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -1434,7 +1426,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -1460,14 +1452,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -1491,43 +1483,41 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]> & HTMLOptionElement, void, unknown>;
+        } & HTMLOptionElement, void, unknown>;
         focus(): void;
         item(index: number): typeof CustomElement & import("../core/CustomElement.js").Class<{
             delegatesFocus: boolean;
@@ -1989,6 +1979,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     } & {
         _ipcListener: EventListener;
         _ipcTarget: EventTarget;
+        _files: FileList;
     } & {
         ariaControls: string;
         autocomplete: string;
@@ -2062,9 +2053,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         size: number;
     } & {
         _ariaRole: string;
-        _optionsCollection: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        _optionsCollection: HTMLCollectionOf<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -2072,7 +2063,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -2083,15 +2074,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -2104,16 +2095,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2140,7 +2131,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2166,7 +2157,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2192,14 +2183,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -2223,46 +2214,44 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]>> & HTMLOptionsCollection;
-        _selectedOptionsCollection: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        }> & HTMLOptionsCollection;
+        _selectedOptionsCollection: HTMLCollectionOf<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -2270,7 +2259,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -2281,15 +2270,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -2302,16 +2291,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2338,7 +2327,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2364,7 +2353,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2390,14 +2379,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -2421,48 +2410,46 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]>>;
+        }>;
         _handlingSelectedness: boolean;
     } & {
-        options: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        options: HTMLCollectionOf<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -2470,7 +2457,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -2481,15 +2468,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -2502,16 +2489,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2538,7 +2525,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2564,7 +2551,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2590,14 +2577,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -2621,46 +2608,44 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]>> & HTMLOptionsCollection;
-        selectedOptions: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        }> & HTMLOptionsCollection;
+        selectedOptions: HTMLCollectionOf<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -2668,7 +2653,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -2679,15 +2664,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -2700,16 +2685,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2736,7 +2721,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2762,7 +2747,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2788,14 +2773,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -2819,55 +2804,53 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]>>;
+        }>;
         type: string;
         kbdNavQuery: string;
         kbdNavFocusableWhenDisabled: boolean;
     } & {
         length: number;
         selectedIndex: any;
-        value: any;
+        value: string;
         add: (element: HTMLOptGroupElement | HTMLOptionElement, before?: number | HTMLElement) => void;
     } & {
-        _selectedOptionsGenerator(): Generator<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        _selectedOptionsGenerator(): Generator<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -2875,7 +2858,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -2886,15 +2869,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -2907,16 +2890,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2943,7 +2926,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2969,7 +2952,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -2995,14 +2978,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -3026,46 +3009,44 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]> & HTMLOptionElement, void, unknown>;
-        [Symbol.iterator](): Generator<typeof CustomElement & import("../core/CustomElement.js").Class<{
+        } & HTMLOptionElement, void, unknown>;
+        [Symbol.iterator](): Generator<CustomElement & {
             delegatesFocus: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             href: string;
             target: string;
             download: string;
@@ -3073,7 +3054,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             rel: string;
             hreflang: string;
             referrerPolicy: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             origin: string;
             protocol: string;
             username: string;
@@ -3084,15 +3065,15 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             pathname: string;
             search: string;
             hash: string;
-        }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+        } & object & {
             _ariaRole: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             onConnectAriaValues: Map<string, string>;
             hasFiredConnected: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
             updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabled: boolean;
             focused: boolean;
             hovered: boolean;
@@ -3105,16 +3086,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             _keyReleased: boolean;
             _pointerPressed: boolean;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
             hoveredState: boolean;
             focusedState: boolean;
             pressedState: boolean;
             touchedState: boolean;
             pointedState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             stateTargetElement: HTMLElement;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRippleWeakRef: WeakRef<CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -3141,7 +3122,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 handleRippleComplete(): void;
             }>;
             _rippleAdded: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _lastRipple: CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -3167,7 +3148,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
                 hadRippleHeld: boolean;
                 hadRippleReleased: boolean;
@@ -3193,14 +3174,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
                 updatePosition(x?: number, y?: number, size?: number): void;
                 handleRippleComplete(): void;
             };
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             color: string;
             ink: string;
             typeStyle: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             stateLayer: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             leading: string;
             avatar: string;
             avatarColor: string;
@@ -3224,43 +3205,41 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
             video: boolean;
             lines: number;
             _supportingSlotted: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             isInteractive: () => boolean;
             hasSupporting: () => boolean;
             checkboxClass: () => string;
             radioClass: () => string;
             computedIconVariation: () => string;
-        }, any[]> & {
-            formAssociated: true;
-        } & import("../core/CustomElement.js").Class<{
+        } & {
             _ariaRole: string;
             _index: number;
             _selectedDirty: boolean;
             isInteractive: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             _label: string;
             defaultSelected: boolean;
             _selected: boolean;
             _value: string;
             _formDisabled: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             selected: boolean;
             disabledState: boolean;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             index: number;
             form: any;
             label: string;
             value: string;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             formDisabledCallback(formDisabled: boolean): void;
             focus(options?: FocusOptions): void;
-        }, any[]> & import("../core/CustomElement.js").Class<{
+        } & {
             anchorAriaLabelledBy: () => string;
             anchorAriaDescribedBy: () => string;
             computedIconVariation: () => string;
-        }, any[]> & HTMLOptionElement, void, unknown>;
+        } & HTMLOptionElement, void, unknown>;
         focus(): void;
         item(index: number): typeof CustomElement & import("../core/CustomElement.js").Class<{
             delegatesFocus: boolean;
@@ -3690,19 +3669,11 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
      * @param {{label:string, value:string}} option
      * @return {void}
      */
-    selectOption(option: {
-        label: string;
-        value: string;
-    }): void;
-    /**
-     * @param {{label:string, value:string}} option
-     * @return {void}
-     */
     suggestOption(option: {
         label: string;
         value: string;
     }): void;
-    acceptSuggestion(): void;
+    acceptSuggestion(emitChange?: boolean): void;
     /**
      * @param {Object} options
      * @param {boolean} [options.first] first option
@@ -3787,6 +3758,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
 } & import("../core/CustomElement.js").Class<{
     _ipcListener: EventListener;
     _ipcTarget: EventTarget;
+    _files: FileList;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaControls: string;
     autocomplete: string;
@@ -3860,9 +3832,9 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
     size: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
-    _optionsCollection: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+    _optionsCollection: HTMLCollectionOf<CustomElement & {
         delegatesFocus: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         href: string;
         target: string;
         download: string;
@@ -3870,7 +3842,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         rel: string;
         hreflang: string;
         referrerPolicy: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         origin: string;
         protocol: string;
         username: string;
@@ -3881,15 +3853,15 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         pathname: string;
         search: string;
         hash: string;
-    }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+    } & object & {
         _ariaRole: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         onConnectAriaValues: Map<string, string>;
         hasFiredConnected: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
         updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabled: boolean;
         focused: boolean;
         hovered: boolean;
@@ -3902,16 +3874,16 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         _keyReleased: boolean;
         _pointerPressed: boolean;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
         hoveredState: boolean;
         focusedState: boolean;
         pressedState: boolean;
         touchedState: boolean;
         pointedState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         stateTargetElement: HTMLElement;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -3938,7 +3910,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             handleRippleComplete(): void;
         }>;
         _rippleAdded: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRipple: CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -3964,7 +3936,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -3990,14 +3962,14 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         color: string;
         ink: string;
         typeStyle: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         leading: string;
         avatar: string;
         avatarColor: string;
@@ -4021,46 +3993,44 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         video: boolean;
         lines: number;
         _supportingSlotted: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         isInteractive: () => boolean;
         hasSupporting: () => boolean;
         checkboxClass: () => string;
         radioClass: () => string;
         computedIconVariation: () => string;
-    }, any[]> & {
-        formAssociated: true;
-    } & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         _index: number;
         _selectedDirty: boolean;
         isInteractive: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _label: string;
         defaultSelected: boolean;
         _selected: boolean;
         _value: string;
         _formDisabled: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         selected: boolean;
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         index: number;
         form: any;
         label: string;
         value: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         formDisabledCallback(formDisabled: boolean): void;
         focus(options?: FocusOptions): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         anchorAriaLabelledBy: () => string;
         anchorAriaDescribedBy: () => string;
         computedIconVariation: () => string;
-    }, any[]>> & HTMLOptionsCollection;
-    _selectedOptionsCollection: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+    }> & HTMLOptionsCollection;
+    _selectedOptionsCollection: HTMLCollectionOf<CustomElement & {
         delegatesFocus: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         href: string;
         target: string;
         download: string;
@@ -4068,7 +4038,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         rel: string;
         hreflang: string;
         referrerPolicy: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         origin: string;
         protocol: string;
         username: string;
@@ -4079,15 +4049,15 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         pathname: string;
         search: string;
         hash: string;
-    }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+    } & object & {
         _ariaRole: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         onConnectAriaValues: Map<string, string>;
         hasFiredConnected: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
         updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabled: boolean;
         focused: boolean;
         hovered: boolean;
@@ -4100,16 +4070,16 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         _keyReleased: boolean;
         _pointerPressed: boolean;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
         hoveredState: boolean;
         focusedState: boolean;
         pressedState: boolean;
         touchedState: boolean;
         pointedState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         stateTargetElement: HTMLElement;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4136,7 +4106,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             handleRippleComplete(): void;
         }>;
         _rippleAdded: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRipple: CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4162,7 +4132,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4188,14 +4158,14 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         color: string;
         ink: string;
         typeStyle: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         leading: string;
         avatar: string;
         avatarColor: string;
@@ -4219,48 +4189,46 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         video: boolean;
         lines: number;
         _supportingSlotted: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         isInteractive: () => boolean;
         hasSupporting: () => boolean;
         checkboxClass: () => string;
         radioClass: () => string;
         computedIconVariation: () => string;
-    }, any[]> & {
-        formAssociated: true;
-    } & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         _index: number;
         _selectedDirty: boolean;
         isInteractive: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _label: string;
         defaultSelected: boolean;
         _selected: boolean;
         _value: string;
         _formDisabled: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         selected: boolean;
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         index: number;
         form: any;
         label: string;
         value: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         formDisabledCallback(formDisabled: boolean): void;
         focus(options?: FocusOptions): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         anchorAriaLabelledBy: () => string;
         anchorAriaDescribedBy: () => string;
         computedIconVariation: () => string;
-    }, any[]>>;
+    }>;
     _handlingSelectedness: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    options: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+    options: HTMLCollectionOf<CustomElement & {
         delegatesFocus: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         href: string;
         target: string;
         download: string;
@@ -4268,7 +4236,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         rel: string;
         hreflang: string;
         referrerPolicy: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         origin: string;
         protocol: string;
         username: string;
@@ -4279,15 +4247,15 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         pathname: string;
         search: string;
         hash: string;
-    }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+    } & object & {
         _ariaRole: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         onConnectAriaValues: Map<string, string>;
         hasFiredConnected: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
         updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabled: boolean;
         focused: boolean;
         hovered: boolean;
@@ -4300,16 +4268,16 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         _keyReleased: boolean;
         _pointerPressed: boolean;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
         hoveredState: boolean;
         focusedState: boolean;
         pressedState: boolean;
         touchedState: boolean;
         pointedState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         stateTargetElement: HTMLElement;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4336,7 +4304,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             handleRippleComplete(): void;
         }>;
         _rippleAdded: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRipple: CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4362,7 +4330,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4388,14 +4356,14 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         color: string;
         ink: string;
         typeStyle: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         leading: string;
         avatar: string;
         avatarColor: string;
@@ -4419,46 +4387,44 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         video: boolean;
         lines: number;
         _supportingSlotted: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         isInteractive: () => boolean;
         hasSupporting: () => boolean;
         checkboxClass: () => string;
         radioClass: () => string;
         computedIconVariation: () => string;
-    }, any[]> & {
-        formAssociated: true;
-    } & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         _index: number;
         _selectedDirty: boolean;
         isInteractive: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _label: string;
         defaultSelected: boolean;
         _selected: boolean;
         _value: string;
         _formDisabled: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         selected: boolean;
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         index: number;
         form: any;
         label: string;
         value: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         formDisabledCallback(formDisabled: boolean): void;
         focus(options?: FocusOptions): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         anchorAriaLabelledBy: () => string;
         anchorAriaDescribedBy: () => string;
         computedIconVariation: () => string;
-    }, any[]>> & HTMLOptionsCollection;
-    selectedOptions: HTMLCollectionOf<typeof CustomElement & import("../core/CustomElement.js").Class<{
+    }> & HTMLOptionsCollection;
+    selectedOptions: HTMLCollectionOf<CustomElement & {
         delegatesFocus: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         href: string;
         target: string;
         download: string;
@@ -4466,7 +4432,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         rel: string;
         hreflang: string;
         referrerPolicy: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         origin: string;
         protocol: string;
         username: string;
@@ -4477,15 +4443,15 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         pathname: string;
         search: string;
         hash: string;
-    }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+    } & object & {
         _ariaRole: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         onConnectAriaValues: Map<string, string>;
         hasFiredConnected: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
         updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabled: boolean;
         focused: boolean;
         hovered: boolean;
@@ -4498,16 +4464,16 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         _keyReleased: boolean;
         _pointerPressed: boolean;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
         hoveredState: boolean;
         focusedState: boolean;
         pressedState: boolean;
         touchedState: boolean;
         pointedState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         stateTargetElement: HTMLElement;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4534,7 +4500,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             handleRippleComplete(): void;
         }>;
         _rippleAdded: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRipple: CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4560,7 +4526,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4586,14 +4552,14 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         color: string;
         ink: string;
         typeStyle: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         leading: string;
         avatar: string;
         avatarColor: string;
@@ -4617,55 +4583,53 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         video: boolean;
         lines: number;
         _supportingSlotted: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         isInteractive: () => boolean;
         hasSupporting: () => boolean;
         checkboxClass: () => string;
         radioClass: () => string;
         computedIconVariation: () => string;
-    }, any[]> & {
-        formAssociated: true;
-    } & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         _index: number;
         _selectedDirty: boolean;
         isInteractive: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _label: string;
         defaultSelected: boolean;
         _selected: boolean;
         _value: string;
         _formDisabled: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         selected: boolean;
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         index: number;
         form: any;
         label: string;
         value: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         formDisabledCallback(formDisabled: boolean): void;
         focus(options?: FocusOptions): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         anchorAriaLabelledBy: () => string;
         anchorAriaDescribedBy: () => string;
         computedIconVariation: () => string;
-    }, any[]>>;
+    }>;
     type: string;
     kbdNavQuery: string;
     kbdNavFocusableWhenDisabled: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     length: number;
     selectedIndex: any;
-    value: any;
+    value: string;
     add: (element: HTMLOptGroupElement | HTMLOptionElement, before?: number | HTMLElement) => void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _selectedOptionsGenerator(): Generator<typeof CustomElement & import("../core/CustomElement.js").Class<{
+    _selectedOptionsGenerator(): Generator<CustomElement & {
         delegatesFocus: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         href: string;
         target: string;
         download: string;
@@ -4673,7 +4637,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         rel: string;
         hreflang: string;
         referrerPolicy: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         origin: string;
         protocol: string;
         username: string;
@@ -4684,15 +4648,15 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         pathname: string;
         search: string;
         hash: string;
-    }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+    } & object & {
         _ariaRole: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         onConnectAriaValues: Map<string, string>;
         hasFiredConnected: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
         updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabled: boolean;
         focused: boolean;
         hovered: boolean;
@@ -4705,16 +4669,16 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         _keyReleased: boolean;
         _pointerPressed: boolean;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
         hoveredState: boolean;
         focusedState: boolean;
         pressedState: boolean;
         touchedState: boolean;
         pointedState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         stateTargetElement: HTMLElement;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4741,7 +4705,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             handleRippleComplete(): void;
         }>;
         _rippleAdded: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRipple: CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4767,7 +4731,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4793,14 +4757,14 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         color: string;
         ink: string;
         typeStyle: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         leading: string;
         avatar: string;
         avatarColor: string;
@@ -4824,46 +4788,44 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         video: boolean;
         lines: number;
         _supportingSlotted: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         isInteractive: () => boolean;
         hasSupporting: () => boolean;
         checkboxClass: () => string;
         radioClass: () => string;
         computedIconVariation: () => string;
-    }, any[]> & {
-        formAssociated: true;
-    } & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         _index: number;
         _selectedDirty: boolean;
         isInteractive: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _label: string;
         defaultSelected: boolean;
         _selected: boolean;
         _value: string;
         _formDisabled: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         selected: boolean;
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         index: number;
         form: any;
         label: string;
         value: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         formDisabledCallback(formDisabled: boolean): void;
         focus(options?: FocusOptions): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         anchorAriaLabelledBy: () => string;
         anchorAriaDescribedBy: () => string;
         computedIconVariation: () => string;
-    }, any[]> & HTMLOptionElement, void, unknown>;
-    [Symbol.iterator](): Generator<typeof CustomElement & import("../core/CustomElement.js").Class<{
+    } & HTMLOptionElement, void, unknown>;
+    [Symbol.iterator](): Generator<CustomElement & {
         delegatesFocus: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         href: string;
         target: string;
         download: string;
@@ -4871,7 +4833,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         rel: string;
         hreflang: string;
         referrerPolicy: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         origin: string;
         protocol: string;
         username: string;
@@ -4882,15 +4844,15 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         pathname: string;
         search: string;
         hash: string;
-    }, any[]> & import("../core/CustomElement.js").Class<object, any[]> & import("../core/CustomElement.js").Class<{
+    } & object & {
         _ariaRole: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         onConnectAriaValues: Map<string, string>;
         hasFiredConnected: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
         updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabled: boolean;
         focused: boolean;
         hovered: boolean;
@@ -4903,16 +4865,16 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         _keyReleased: boolean;
         _pointerPressed: boolean;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
         hoveredState: boolean;
         focusedState: boolean;
         pressedState: boolean;
         touchedState: boolean;
         pointedState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         stateTargetElement: HTMLElement;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRippleWeakRef: WeakRef<CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4939,7 +4901,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             handleRippleComplete(): void;
         }>;
         _rippleAdded: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _lastRipple: CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4965,7 +4927,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
             hadRippleHeld: boolean;
             hadRippleReleased: boolean;
@@ -4991,14 +4953,14 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
             updatePosition(x?: number, y?: number, size?: number): void;
             handleRippleComplete(): void;
         };
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         color: string;
         ink: string;
         typeStyle: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         stateLayer: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         leading: string;
         avatar: string;
         avatarColor: string;
@@ -5022,43 +4984,41 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
         video: boolean;
         lines: number;
         _supportingSlotted: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         isInteractive: () => boolean;
         hasSupporting: () => boolean;
         checkboxClass: () => string;
         radioClass: () => string;
         computedIconVariation: () => string;
-    }, any[]> & {
-        formAssociated: true;
-    } & import("../core/CustomElement.js").Class<{
+    } & {
         _ariaRole: string;
         _index: number;
         _selectedDirty: boolean;
         isInteractive: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         _label: string;
         defaultSelected: boolean;
         _selected: boolean;
         _value: string;
         _formDisabled: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         selected: boolean;
         disabledState: boolean;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         index: number;
         form: any;
         label: string;
         value: string;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         formDisabledCallback(formDisabled: boolean): void;
         focus(options?: FocusOptions): void;
-    }, any[]> & import("../core/CustomElement.js").Class<{
+    } & {
         anchorAriaLabelledBy: () => string;
         anchorAriaDescribedBy: () => string;
         computedIconVariation: () => string;
-    }, any[]> & HTMLOptionElement, void, unknown>;
+    } & HTMLOptionElement, void, unknown>;
     focus(): void;
     item(index: number): typeof CustomElement & import("../core/CustomElement.js").Class<{
         delegatesFocus: boolean;

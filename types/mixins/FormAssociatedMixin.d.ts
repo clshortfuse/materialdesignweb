@@ -30,6 +30,8 @@ export default function FormAssociatedMixin(Base: ReturnType<typeof import("./St
     _ipcListener: EventListener;
     /** @type {EventTarget} */
     _ipcTarget: EventTarget;
+    /** @type {FileList} */
+    _files: FileList;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaControls: string;
     autocomplete: string;

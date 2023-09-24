@@ -31,6 +31,7 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
 } & import("../core/CustomElement.js").Class<{
     _ipcListener: EventListener;
     _ipcTarget: EventTarget;
+    _files: FileList;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaControls: string;
     autocomplete: string;
@@ -73,10 +74,10 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
     reportValidity(): boolean;
     setCustomValidity(error: string): void;
     _notifyRadioChange(key: string, value: string): void;
-    refreshFormAssociation(): void; /** @type {HTMLInputElement} */
+    refreshFormAssociation(): void;
     formAssociatedCallback(form: HTMLFormElement): void;
     formIPCEvent(event: CustomEvent<[string, string]>): void;
-    formDisabledCallback(disabled: boolean): void; /** @param {MouseEvent} event */
+    formDisabledCallback(disabled: boolean): void;
     formResetCallback(): void;
     formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
     _updateFormAssociatedValue(): void;

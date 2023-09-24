@@ -46,6 +46,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 } & import("../core/CustomElement.js").Class<{
     _ipcListener: EventListener;
     _ipcTarget: EventTarget;
+    _files: FileList;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaControls: string;
     autocomplete: string;
@@ -102,10 +103,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     focusableOnDisabled: boolean;
     controlTagName: string;
     controlVoidElement: boolean;
-    _slotMutationObserver: any; /**
-     * @param {string} value
-     * @param {*} internalSet
-     */
+    _slotMutationObserver: any;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onValueChangingContentAttribute(): void;
     focus(options?: FocusOptions): void;

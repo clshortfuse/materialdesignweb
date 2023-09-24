@@ -1,4 +1,4 @@
-declare const _default: typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+declare const _default: typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     href: string;
     target: string;
     download: string;
@@ -54,6 +54,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
 } & import("../core/CustomElement.js").Class<{
     _ipcListener: EventListener;
     _ipcTarget: EventTarget;
+    _files: FileList;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaControls: string;
     autocomplete: string;

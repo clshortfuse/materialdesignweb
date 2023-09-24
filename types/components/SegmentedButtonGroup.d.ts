@@ -1,4 +1,4 @@
-declare const _default: typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+declare const _default: typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onConnectAriaValues: Map<string, string>;

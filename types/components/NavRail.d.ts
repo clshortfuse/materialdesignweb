@@ -1,4 +1,4 @@
-declare const _default: typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+declare const _default: typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     _resizeObserverEnabled: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
@@ -75,11 +75,13 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     color: string;
     fixedColor: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _scrim: import("../core/CustomElement.js").default & {
+    _scrim: import("../index.js").CustomElement & {
         hidden: boolean;
     };
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _styles: string;
+    _styles: string | {
+        backgroundColor: string;
+    };
     hostStyles: import("../core/customTypes.js").ElementStylerOptions | {
         styles: {
             marginLeft: string | number;

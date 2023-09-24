@@ -2,7 +2,7 @@
 /**
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
-export default function RippleMixin(Base: ReturnType<typeof import("./StateMixin.js").default>): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+export default function RippleMixin(Base: ReturnType<typeof import("./StateMixin.js").default>): typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
     hovered: boolean;
@@ -30,7 +30,7 @@ export default function RippleMixin(Base: ReturnType<typeof import("./StateMixin
     /** Flag set if ripple was added this event loop. */
     _rippleAdded: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _lastRipple: import("../core/CustomElement.js").default & {
+    _lastRipple: import("../index.js").CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
         rippleStarted: boolean;
@@ -64,7 +64,7 @@ export default function RippleMixin(Base: ReturnType<typeof import("./StateMixin
      */
     addRipple(x?: number, y?: number, hold?: boolean): InstanceType<Ripple>;
 }, any[]>;
-export type Ripple = typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+export type Ripple = typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     hadRippleHeld: boolean;
     hadRippleReleased: boolean;
     rippleStarted: boolean;

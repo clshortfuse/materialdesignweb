@@ -1,4 +1,4 @@
-declare const _default: typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+declare const _default: typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     delegatesFocus: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     href: string;
@@ -50,7 +50,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
 }, any[]> & import("../core/CustomElement.js").Class<{
     stateTargetElement: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _lastRippleWeakRef: WeakRef<import("../core/CustomElement.js").default & {
+    _lastRippleWeakRef: WeakRef<import("../index.js").CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
         rippleStarted: boolean;
@@ -77,7 +77,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     }>;
     _rippleAdded: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _lastRipple: import("../core/CustomElement.js").default & {
+    _lastRipple: import("../index.js").CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
         rippleStarted: boolean;
@@ -103,7 +103,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
         handleRippleComplete(): void;
     };
 }, any[]> & import("../core/CustomElement.js").Class<{
-    addRipple(x?: number, y?: number, hold?: boolean): import("../core/CustomElement.js").default & {
+    addRipple(x?: number, y?: number, hold?: boolean): import("../index.js").CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
         rippleStarted: boolean;

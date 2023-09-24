@@ -33,6 +33,7 @@ export default function ControlMixin(Base: ReturnType<typeof import("./StateMixi
 } & import("../core/CustomElement.js").Class<{
     _ipcListener: EventListener;
     _ipcTarget: EventTarget;
+    _files: FileList;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaControls: string;
     autocomplete: string;

@@ -1,4 +1,4 @@
-declare const _default: typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+declare const _default: typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     _resizeObserverEnabled: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
@@ -23,13 +23,15 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     _lastInlineSize: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _resizeObserverEnabled: boolean;
-    _computedColumns: string;
+    _computedColumns: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _isFlex: never;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _styles: string;
+    _styles: string | {
+        gridTemplateColumns: string;
+    };
 }, any[]>;
 export default _default;
 //# sourceMappingURL=Grid.d.ts.map

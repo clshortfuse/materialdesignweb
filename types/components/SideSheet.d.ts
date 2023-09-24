@@ -80,7 +80,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         hidden: boolean;
     }, any[]>>;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _styles: string;
+    _styles: string | {
+        backgroundColor: string;
+    };
     hostStyles: import("../core/customTypes.js").ElementStylerOptions | {
         styles: {
             marginLeft: string | number;

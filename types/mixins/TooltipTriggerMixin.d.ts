@@ -2,7 +2,7 @@
 /**
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
-export default function TooltipTriggerMixin(Base: ReturnType<typeof import("./StateMixin.js").default>): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+export default function TooltipTriggerMixin(Base: ReturnType<typeof import("./StateMixin.js").default>): typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
     hovered: boolean;
@@ -57,7 +57,7 @@ export default function TooltipTriggerMixin(Base: ReturnType<typeof import("./St
     recloneTooltip(): void;
     closeIfNotHovered(): void;
 }, any[]>;
-export type Tooltip = typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+export type Tooltip = typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onConnectAriaValues: Map<string, string>;

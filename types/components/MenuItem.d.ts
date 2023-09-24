@@ -1,4 +1,4 @@
-declare const _default: typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+declare const _default: typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
     hovered: boolean;
@@ -25,6 +25,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
 } & import("../core/CustomElement.js").Class<{
     _ipcListener: EventListener;
     _ipcTarget: EventTarget;
+    _files: FileList;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaControls: string;
     autocomplete: string;
@@ -104,7 +105,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
     updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _lastRippleWeakRef: WeakRef<import("../core/CustomElement.js").default & {
+    _lastRippleWeakRef: WeakRef<import("../index.js").CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
         rippleStarted: boolean;
@@ -131,7 +132,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     }>;
     _rippleAdded: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _lastRipple: import("../core/CustomElement.js").default & {
+    _lastRipple: import("../index.js").CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
         rippleStarted: boolean;
@@ -158,7 +159,7 @@ declare const _default: typeof import("../core/CustomElement.js").default & impo
     };
 }, any[]> & import("../core/CustomElement.js").Class<{
     /** Never returns null */
-    addRipple(x?: number, y?: number, hold?: boolean): import("../core/CustomElement.js").default & {
+    addRipple(x?: number, y?: number, hold?: boolean): import("../index.js").CustomElement & {
         hadRippleHeld: boolean;
         hadRippleReleased: boolean;
         rippleStarted: boolean;

@@ -3,7 +3,7 @@
  * Uses `filter:drop-shadow` to display elevation.
  * @param {ReturnType<import('./StateMixin.js').default> & ReturnType<import('./ThemableMixin.js').default>} Base
  */
-export default function ElevationMixin(Base: ReturnType<typeof import("./StateMixin.js").default> & ReturnType<typeof import("./ThemableMixin.js").default>): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+export default function ElevationMixin(Base: ReturnType<typeof import("./StateMixin.js").default> & ReturnType<typeof import("./ThemableMixin.js").default>): typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
     hovered: boolean;
