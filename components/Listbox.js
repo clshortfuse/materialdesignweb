@@ -20,9 +20,9 @@ export default List
   })
   .set({
     _ariaRole: 'listbox',
-    /** @type {HTMLCollectionOf<ListOption> & HTMLOptionsCollection} */
+    /** @type {HTMLCollectionOf<InstanceType<ListOption>> & HTMLOptionsCollection} */
     _optionsCollection: null,
-    /** @type {HTMLCollectionOf<ListOption>} */
+    /** @type {HTMLCollectionOf<InstanceType<ListOption>>} */
     _selectedOptionsCollection: null,
     _handlingSelectedness: false,
   })
@@ -39,12 +39,12 @@ export default List
       return this._optionsCollection;
     },
 
-    /** @return {HTMLCollectionOf<ListOption>} */
+    /** @return {HTMLCollectionOf<InstanceType<ListOption>>} */
     selectedOptions() {
       // eslint-disable-next-line no-return-assign
       return (this._selectedOptionsCollection
         ??= (
-          /** @type {HTMLCollectionOf<ListOption>} */
+          /** @type {HTMLCollectionOf<InstanceType<ListOption>>} */
           (this.getElementsByClassName('mdw-list-option__selected')))
       );
     },
@@ -194,7 +194,7 @@ export default List
       if (this.multiple) return;
       if (this._handlingSelectedness) return;
 
-      const target = /** @type {ListOption} */ (/** @type {unknown} */ (event.target));
+      const target = /** @type {InstanceType<ListOption>} */ (/** @type {unknown} */ (event.target));
       if (target.selected) return;
       this._handlingSelectedness = true;
 

@@ -100,8 +100,16 @@ export default CustomElement
      * @param {Event} event
      */
     onListboxChange(event) {
-      const selectedItem = this._listbox.selectedOptions.item(0);
-      this.selectOption(selectedItem);
+      const option = this._listbox.selectedOptions.item(0);
+      this.render({
+        selectedOption: option,
+      });
+
+      const { label: suggestionText, value: suggestionValue } = option;
+      this._suggestedText = suggestionText;
+      this._suggestedValue = suggestionValue;
+      this._hasSuggestion = true;
+      this.acceptSuggestion(false);
       this.closeListbox();
       this.refs.control.focus();
     },
@@ -166,22 +174,6 @@ export default CustomElement
         this.showListbox();
       }
     },
-
-    /**
-     * @param {{label:string, value:string}} option
-     * @return {void}
-     */
-    selectOption(option) {
-      this.render({
-        selectedOption: option,
-      });
-
-      const { label: suggestionText, value: suggestionValue } = option;
-      this._suggestedText = suggestionText;
-      this._suggestedValue = suggestionValue;
-      this._hasSuggestion = true;
-      this.acceptSuggestion();
-    },
     /**
      * @param {{label:string, value:string}} option
      * @return {void}
@@ -205,7 +197,7 @@ export default CustomElement
       this._suggestedValue = suggestionValue;
       this._hasSuggestion = true;
       if (autoSelect) {
-        this.acceptSuggestion();
+        this.acceptSuggestion(true);
         return;
       }
 
@@ -232,13 +224,16 @@ export default CustomElement
         }
       }
     },
-    acceptSuggestion() {
+    acceptSuggestion(emitChange = false) {
       if (!this._hasSuggestion) return;
       const { _suggestedText, _suggestedValue, _input } = this;
       this.value = _suggestedValue;
       _input.value = _suggestedText;
       this._draftInput = _suggestedText;
       this._listbox.value = _suggestedValue;
+      if (emitChange) {
+        this.dispatchEvent(new Event('change', { bubbles: true }));
+      }
     },
     /**
      * @param {Object} options
@@ -419,7 +414,7 @@ export default CustomElement
           case 'Escape':
             if (!this._expanded) return;
             if (this.acceptOnEscape) {
-              this.acceptSuggestion();
+              this.acceptSuggestion(true);
             } else {
               this.resetSuggestion();
             }
@@ -427,12 +422,12 @@ export default CustomElement
             break;
           case 'Tab':
             this.closeListbox();
-            this.acceptSuggestion();
+            this.acceptSuggestion(true);
             event.stopPropagation();
             return;
           case 'Enter':
             if (!this._expanded) return;
-            this.acceptSuggestion();
+            this.acceptSuggestion(true);
             this.closeListbox();
             break;
           case ' ':
