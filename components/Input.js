@@ -120,6 +120,7 @@ export default CustomElement
       if (relatedTarget) {
         if (this === relatedTarget) return;
         if (this.contains(relatedTarget)) return;
+        if (getSharedPopup().contains(relatedTarget)) return;
       }
       this.closeListbox();
     },
