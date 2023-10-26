@@ -60,6 +60,8 @@ export default CustomElement
       grid-auto-columns: 1fr;
       grid-auto-flow: column;
 
+      block-size: 100%;
+
       padding: 0;
 
       font: var(--mdw-typescale__body-large__font);
