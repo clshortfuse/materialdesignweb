@@ -1,3 +1,4 @@
+import { ELEMENT_STYLE_TYPE } from '../core/customTypes.js';
 import TooltipTriggerMixin from '../mixins/TooltipTriggerMixin.js';
 
 import Button from './Button.js';
@@ -43,22 +44,40 @@ export default Button
       },
     },
   })
-  .recompose(({ refs: { icon, control, outline, state, rippleContainer } }) => {
-    // Because selected state does not write to light DOM,
-    // it must be cloned into shadow root for styling.
-    for (const el of [state, icon, rippleContainer]) {
-      el.classList.add('colored');
-      el.setAttribute('toggle', '{_isToggle}');
-      el.setAttribute('selected', '{checked}');
-      el.setAttribute('filled', '{filled}');
-      el.setAttribute('color', '{color}');
-    }
+  .recompose(({ refs: { icon, control, outline } }) => {
     icon.removeAttribute('mdw-if');
 
     control.setAttribute('aria-pressed', '{_ariaPressed}');
 
     outline.setAttribute('toggle', '{_isToggle}');
     outline.setAttribute('selected', '{checked}');
+  })
+  .observe({
+    _styles: {
+      ...ELEMENT_STYLE_TYPE,
+      get({ checked, disabled, filled, outlined, _isToggle }) {
+        if (!_isToggle) return null;
+        if (disabled) return null;
+        if (outlined) {
+          if (checked) {
+            return {
+              backgroundColor: 'rgb(var(--mdw-bg))',
+            };
+          }
+          return {
+            color: 'rgb(var(--mdw-color__on-surface-variant))',
+          };
+        }
+        if (checked) return null; // All else uses checked state
+        if (filled == null) return null;
+        return {
+          backgroundColor: 'rgb(var(--mdw-color__surface-container-highest))',
+          color: filled === 'tonal'
+            ? 'rgb(var(--mdw-color__on-surface-variant))'
+            : 'rgb(var(--mdw-bg))',
+        };
+      },
+    },
   })
   .css`
     :host {
@@ -72,9 +91,9 @@ export default Button
 
       padding: max(8px, calc(8px + (var(--mdw-density) * 2px)));
 
-      background-color: transparent;
-
       font-size: 24px;
+
+      transition-property: background-color, box-shadow;
     }
 
     :host(:where([type="checkbox"])) {
@@ -96,6 +115,7 @@ export default Button
     /** Outlined | Outlined Unchecked */
     :host(:where([outlined])) {
       --mdw-ink: var(--mdw-color__on-surface-variant);
+      background-color: transparent;
     }
 
     /** Outlined | Outlined Unchecked */
@@ -107,20 +127,12 @@ export default Button
     #slot { display: none; }
 
     #icon {
-      position: absolute;
-      z-index: 0;
-      inset: 0;
-
-      padding: inherit;
-
       pointer-events: none;
-
-      background-color: inherit;
-      border-radius: inherit;
 
       font-size: inherit;
 
-      transition-property: background-color, color;
+      /* stylelint-disable-next-line liberty/use-logical-spec */
+      transition-property: color, inline-size, width;
     }
 
     #state {
@@ -129,68 +141,6 @@ export default Button
 
     #ripple-container {
       z-index:2;
-    }
-
-    .colored[toggle] {
-      color: rgb(var(--mdw-color__on-surface-variant));
-    }
-
-    .colored[selected] {
-      /* background-color: rgb(var(--mdw-bg)); */
-      color: rgb(var(--mdw-ink));
-    }
-
-    #icon:is([filled],[color]) {
-      background-color: rgb(var(--mdw-bg));
-    }
-
-    #icon:is([filled],[color])[toggle] {
-      background-color: rgb(var(--mdw-color__surface-container-highest));
-    }
-
-    .colored:is([filled],[color])[toggle] {
-      color: rgb(var(--mdw-bg));
-    }
-
-    #icon[filled="tonal"][toggle] {
-      /* Redundant */
-      /* background-color: rgb(var(--mdw-color__surface-container-highest)); */
-    }
-
-    .colored[filled="tonal"][toggle] {
-      color: rgb(var(--mdw-color__on-surface-variant));
-    }
-
-    #icon:is([filled],[color])[selected] {
-      background-color: rgb(var(--mdw-bg));
-    }
-
-    .colored:is([filled],[color])[selected] {
-      color: rgb(var(--mdw-ink));
-    }
-
-    #icon[outlined] {
-      background-color: transparent;
-    }
-
-    .colored[outlined] {
-      color: inherit;
-    }
-
-    #icon[outlined][toggle] {
-      background-color: transparent;
-    }
-
-    .colored[outlined][toggle] {
-      color: rgb(var(--mdw-color__on-surface-variant));
-    }
-
-    #icon[outlined][selected] {
-      background-color: rgb(var(--mdw-bg));
-    }
-
-    .colored[outlined][selected] {
-      color: rgb(var(--mdw-ink));
     }
 
     #outline[focused] {
@@ -203,25 +153,8 @@ export default Button
       color: rgb(var(--mdw-color__outline));
     }
 
-    #outline[selected] {
+    #outline[selected]:not([disabled]) {
       opacity: 0;
-    }
-
-    /** Disabled */
-    .colored[disabled] {
-      cursor: not-allowed;
-
-      color: rgba(var(--mdw-color__on-surface), 0.38);
-    }
-
-    #icon[disabled]:is([filled],[color]),
-    #icon[disabled][outlined][selected] {
-      background-color: rgba(var(--mdw-color__on-surface), 0.12);
-    }
-
-    .colored[disabled]:is([filled],[color]),
-    .colored[disabled][outlined][selected] {
-      color: rgba(var(--mdw-color__on-surface), 0.38);
     }
 
   `
