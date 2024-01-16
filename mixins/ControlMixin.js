@@ -175,7 +175,7 @@ export default function ControlMixin(Base) {
           this.checkValidity();
         },
       },
-      slot: (FIREFOX_VERSION < 116 || SAFARI_VERSION <= 17) ? {
+      slot: (FIREFOX_VERSION < 116 || SAFARI_VERSION) ? {
         slotchange({ currentTarget }) {
           // Firefox and Safari will not apply label from slots.
           // https://bugzilla.mozilla.org/show_bug.cgi?id=1826194
