@@ -352,6 +352,10 @@ export default CustomElement
       will-change: transform;
     }
 
+    :host(:where([color])) {
+      background-color: rgb(var(--mdw-bg));
+    }
+
     #indicator {
       --corner: 3;
       --width: 24;
