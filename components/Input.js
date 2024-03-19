@@ -119,8 +119,8 @@ export default CustomElement
       // Ignore if focus lost to pop-up (likely pointerdown).
       if (relatedTarget) {
         if (this === relatedTarget) return;
-        if (this.contains(relatedTarget)) return;
-        if (getSharedPopup().contains(relatedTarget)) return;
+        if (this.contains(/** @type {any} */ (relatedTarget))) return;
+        if (getSharedPopup().contains(/** @type {any} */ (relatedTarget))) return;
       }
       this.closeListbox();
     },
@@ -368,7 +368,7 @@ export default CustomElement
           event.preventDefault();
           return;
         }
-        const value = event.currentTarget.value;
+        const value = /** @type {HTMLInputElement} */ (event.currentTarget).value;
         this._draftInput = value;
         if (this.autocompleteList != null && this.autocompleteList !== 'custom') {
           this.applyAutocompleteList();
@@ -487,7 +487,7 @@ export default CustomElement
       // Ignore if focus lost to pop-up (likely pointerdown).
       const popup = getSharedPopup();
       if (popup === relatedTarget) return;
-      if (relatedTarget && popup.contains(relatedTarget)) return;
+      if (relatedTarget && popup.contains(/** @type {Node} */ (relatedTarget))) return;
       if (popup.matches(':focus-within,:focus')) return;
       this.closeListbox();
     },

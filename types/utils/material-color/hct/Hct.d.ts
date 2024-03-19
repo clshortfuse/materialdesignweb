@@ -40,7 +40,7 @@ export default class Hct {
      * Chroma may decrease because chroma has a different maximum for any given
      * hue and tone.
      */
-    set hue(arg: number);
+    set hue(newHue: number);
     /**
      * A number, in degrees, representing ex. red, orange, yellow, etc.
      * Ranges from 0 <= hue < 360.
@@ -52,7 +52,7 @@ export default class Hct {
      * Chroma may decrease because chroma has a different maximum for any given
      * hue and tone.
      */
-    set chroma(arg: number);
+    set chroma(newChroma: number);
     /** @return {number} */
     get chroma(): number;
     /**
@@ -60,7 +60,7 @@ export default class Hct {
      * Chroma may decrease because chroma has a different maximum for any given
      * hue and tone.
      */
-    set tone(arg: number);
+    set tone(newTone: number);
     /**
      * Lightness. Ranges from 0 to 100.
      * @return {number}

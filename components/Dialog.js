@@ -19,10 +19,10 @@ function listTabbables(root) {
   const focusables = [];
   /** @type {HTMLElement} */
   let node;
-  while ((node = /** @type {Element} */ (treeWalker.nextNode()))) {
+  while ((node = /** @type {HTMLElement} */ (treeWalker.nextNode()))) {
     if (node.tagName === 'SLOT') {
       for (const el of (/** @type {HTMLSlotElement} */ (node)).assignedElements()) {
-        if (el.tabIndex >= 0 && !el.matches(':disabled')) {
+        if ((/** @type {HTMLElement} */ (el)).tabIndex >= 0 && !el.matches(':disabled')) {
           focusables.push(el);
         }
         focusables.push(...listTabbables(el));
@@ -146,7 +146,7 @@ export default CustomElement
     onFormSlotChange({ currentTarget }) {
       /** @type {HTMLFormElement} */
       const [form] = currentTarget.assignedNodes();
-      form?.addEventListener('submit', (e) => this.onFormSubmit(e));
+      form?.addEventListener('submit', /** @type {SubmitEvent} */ (e) => this.onFormSubmit(e));
     },
     focus() {
       focusOnTree(this.shadowRoot, true, true);
@@ -194,6 +194,7 @@ export default CustomElement
       --mdw-bg: var(--mdw-color__surface-container-high);
       --mdw-ink: var(--mdw-color__on-surface);
       position: fixed;
+
       display: flex;
       align-items: flex-start;
       flex-direction: column;
@@ -307,7 +308,7 @@ export default CustomElement
   .events({
     keydown(event) {
       if (event.key === 'Tab') {
-        if (!this._isNativeModal) {
+        if (!this.native) {
           // Tab trap
           event.preventDefault();
           const tabbables = listTabbables(this.shadowRoot);
@@ -383,7 +384,7 @@ export default CustomElement
       '~click'(event) {
         // Track if click on backdrop
         if (event.target !== event.currentTarget) return;
-        if (!this._isNativeModal) return;
+        if (!this.native) return;
         if (event.offsetX >= 0 && event.offsetX < event.currentTarget.offsetWidth
         && event.offsetY >= 0 && event.offsetY < event.currentTarget.offsetHeight) return;
         const cancelEvent = new Event('cancel', { cancelable: true });

@@ -313,6 +313,17 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     autoTooltip: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     iconVariation: () => string;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    _styles: string | {
+        backgroundColor: string;
+        color?: undefined;
+    } | {
+        color: string;
+        backgroundColor?: undefined;
+    } | {
+        backgroundColor: string;
+        color: string;
+    };
 }, any[]>;
 export default _default;
 //# sourceMappingURL=IconButton.d.ts.map

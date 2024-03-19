@@ -47,7 +47,7 @@ export default ListItem
   })
   .define({
     index() { return this._index; },
-    form() { return (this.parentElement)?.form; },
+    form() { return /** @type {HTMLInputElement} */ (this.parentElement)?.form; },
     label: {
       get() { return this._label ?? this.textContent; },
       /** @param {string} value */
@@ -83,7 +83,7 @@ export default ListItem
       return selected ? 'filled' : null;
     },
   })
-  .recompose(({ inline, refs: { checkbox, radio, icon, anchor, state, content } }) => {
+  .recompose(({ inline, refs: { checkbox, radio, anchor, state, content } }) => {
     // Form Associated elements cannot receive focus unless using delegatesFocus
     // Workaround by redirecting focus to an inner element
     // Reuse HTMLAnchorElement with no HREF

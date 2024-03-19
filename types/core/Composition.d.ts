@@ -242,6 +242,9 @@ export type CompositionEventListenerObject<T> = {
     beforeinput?: (keyof T & string) | CompositionEventListener<T, "beforeinput"> | ((this: T, event: InputEvent & {
         currentTarget: HTMLElement;
     }) => any);
+    beforetoggle?: (keyof T & string) | CompositionEventListener<T, "beforetoggle"> | ((this: T, event: Event & {
+        currentTarget: HTMLElement;
+    }) => any);
     blur?: (keyof T & string) | CompositionEventListener<T, "blur"> | ((this: T, event: FocusEvent & {
         currentTarget: HTMLElement;
     }) => any);
@@ -435,6 +438,9 @@ export type CompositionEventListenerObject<T> = {
         currentTarget: HTMLElement;
     }) => any);
     scroll?: (keyof T & string) | CompositionEventListener<T, "scroll"> | ((this: T, event: Event & {
+        currentTarget: HTMLElement;
+    }) => any);
+    scrollend?: (keyof T & string) | CompositionEventListener<T, "scrollend"> | ((this: T, event: Event & {
         currentTarget: HTMLElement;
     }) => any);
     securitypolicyviolation?: (keyof T & string) | CompositionEventListener<T, "securitypolicyviolation"> | ((this: T, event: SecurityPolicyViolationEvent & {
