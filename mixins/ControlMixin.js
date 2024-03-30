@@ -131,6 +131,14 @@ export default function ControlMixin(Base) {
           }
         }
       },
+      readOnlyChanged(oldValue, newValue) {
+        const control = /** @type {HTMLControlElement} */ (this.refs.control);
+        if (this.type === 'checkbox') {
+          control.setAttribute('aria-readonly', newValue ? 'true' : 'false');
+        } else {
+          control.removeAttribute('aria-readonly');
+        }
+      },
       constructed() {
         const control = /** @type {HTMLControlElement} */ (this.refs.control);
         this._value = control.value;
@@ -151,7 +159,8 @@ export default function ControlMixin(Base) {
     .childEvents({
       control: {
         click(e) {
-          if (this.focusableOnDisabled && this.disabledState) {
+          if ((this.type === 'checkbox' && this.readOnly)
+           || (this.focusableOnDisabled && this.disabledState)) {
             e.preventDefault();
             e.stopImmediatePropagation();
           }
