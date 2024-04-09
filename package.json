@@ -65,6 +65,7 @@
     "/constants",
     "/components",
     "/core",
+    "/dom",
     "/loaders",
     "/mixins",
     "/services",
