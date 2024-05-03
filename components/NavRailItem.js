@@ -9,11 +9,14 @@ export default NavItem
       grid-auto-flow: row;
       grid-auto-rows: minmax(20px, auto);
       grid-template-rows: [icon] minmax(32px, 1fr);
-      grid-template-columns: [icon] minmax(56px, 1fr);
+      grid-template-columns: [icon] minmax(72px, 1fr);
 
       min-block-size: 56px;
       flex: none;
-      padding-inline: 12px;
+      padding-inline: 4px;
+
+      font: var(--mdw-typescale__label-medium__font);
+      letter-spacing: var(--mdw-typescale__label-medium__letter-spacing);
     }
 
     #slot {
