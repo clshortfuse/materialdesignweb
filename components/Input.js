@@ -109,7 +109,7 @@ export default CustomElement
       this._suggestedText = suggestionText;
       this._suggestedValue = suggestionValue;
       this._hasSuggestion = true;
-      this.acceptSuggestion(false);
+      this.acceptSuggestion(true);
       this.closeListbox();
       this.refs.control.focus();
     },
