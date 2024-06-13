@@ -1414,6 +1414,7 @@ export default class Composition {
           if (element.hasAttribute('mdw-for')) {
             while (element.contains(node = treeWalker.nextNode()));
             this.#interpolateIterable(element, options);
+            continue;
           } else {
             const idAttr = element.attributes.id;
             if (idAttr) {
