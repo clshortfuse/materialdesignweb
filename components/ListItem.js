@@ -44,7 +44,7 @@ export default CustomElement
     trailingIcon: 'string',
     trailingIconInk: 'string',
     trailingIconSrc: 'string',
-    divider: 'boolean',
+    divider: 'string',
     video: 'boolean',
     lines: 'integer',
     _supportingSlotted: 'boolean',
@@ -87,7 +87,7 @@ export default CustomElement
     </div>
     <mdw-icon mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} src={trailingIconSrc} aria-hidden=true icon={trailingIcon}></mdw-icon>
     <slot id=trailing name=trailing role=note>{trailing}</slot>
-    <mdw-divider mdw-if={divider} id=divider divder={divider}></mdw-divider>
+    <mdw-divider mdw-if={divider} id=divider divider={divider}></mdw-divider>
   `
   .recompose(({ refs: { state, rippleContainer, anchor } }) => {
     anchor.setAttribute('mdw-if', '{href}');
@@ -185,6 +185,7 @@ export default CustomElement
     #divider {
       position: absolute;
       inset-block-end: 0;
+      inset-inline: 0;
 
       display: block;
 
