@@ -6,15 +6,15 @@ import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
 /**
  * @template {ObserverPropertyType} T
  * @typedef {(
-* T extends 'boolean' ? boolean
-* : T extends 'string' ? string
-* : T extends 'float' | 'integer' ? number
-* : T extends 'array' ? any[]
-* : T extends 'object' ? any
-* : T extends 'function' ? (...args:any) => any
-* : unknown
-* )} ParsedObserverPropertyType
-*/
+ * T extends 'boolean' ? boolean
+ * : T extends 'string' ? string
+ * : T extends 'float' | 'integer' ? number
+ * : T extends 'array' ? any[]
+ * : T extends 'object' ? any
+ * : T extends 'function' ? (...args:any) => any
+ * : unknown
+ * )} ParsedObserverPropertyType
+ */
 
 /**
  * @template {ObserverPropertyType} T1
@@ -51,7 +51,6 @@ import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
  * @prop {Set<keyof C>} [props]
  */
 
-
 /**
  * @template {ObserverPropertyType} T1
  * @template {any} [T2=any]
@@ -59,7 +58,6 @@ import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
  * @template {Object} [C=any]
  * @typedef {ObserverOptions<T1, T2, C> & { key: K, values?: WeakMap<C, T2>; attrValues?: WeakMap<C, string> }} ObserverConfiguration
  */
-
 
 /**
  * @param {ObserverPropertyType} type
@@ -95,9 +93,11 @@ function emptyFromType(type) {
  * @return {T}
  */
 function buildProxy(proxyTarget, set, deepSet, prefix) {
+  // @ts-ignore
   proxyTarget ??= {};
   return new Proxy(proxyTarget, {
     get(target, p) {
+      // @ts-ignore
       const value = target[p];
       if (typeof p !== 'symbol') {
         const arg = prefix ? `${prefix}.${p}` : p;
@@ -283,9 +283,11 @@ export function parseObserverOptions(name, typeOrOptions, object) {
   /** @type {ObserverPropertyType} */
   if (!type) {
     if (value == null) {
+      // @ts-ignore
       type = 'string';
     } else {
       const parsed = typeof value;
+      // @ts-ignore
       type = (parsed === 'number')
         ? (Number.isInteger(value) ? 'integer' : 'number')
         : parsed;
@@ -321,6 +323,7 @@ export function parseObserverOptions(name, typeOrOptions, object) {
     : ((type === 'array') ? () => false : Object.is);
 
   if (diff === undefined) {
+    // @ts-ignore
     diff = ((type === 'object') ? (a, b) => buildMergePatch(a, b, 'reference') : null);
   }
 
@@ -420,6 +423,7 @@ function detectChange(config, oldValue, value) {
  */
 export function defineObservableProperty(object, key, options) {
   /** @type {ObserverConfiguration<T1,T2,K,C>} */
+  // @ts-ignore
   const config = parseObserverOptions(key, options, object);
 
   /**
@@ -436,8 +440,8 @@ export function defineObservableProperty(object, key, options) {
    * @return {void}
    */
   function internalSet(value) {
+    // @ts-ignore
     const oldValue = this[key];
-    // console.log(key, 'internalSet', oldValue, '=>', value);
     detectChange.call(this, config, oldValue, value);
   }
 
@@ -448,7 +452,6 @@ export function defineObservableProperty(object, key, options) {
 
     const oldValue = config.computedValues?.get(this);
     const newValue = this[key];
-    // console.debug('observe: onInvalidate called for', key, oldValue, '=>', newValue, this);
     config.needsSelfInvalidation?.delete(this);
     detectChange.call(this, config, oldValue, newValue);
   }
@@ -464,10 +467,24 @@ export function defineObservableProperty(object, key, options) {
    * @return {T2}
    */
   function cachedGet() {
+    let oldValue;
+    let hadValue;
+    if (config.computedValues) {
+      hadValue = config.computedValues.has(this);
+      if (hadValue) {
+        oldValue = config.computedValues.get(this);
+      }
+    } else {
+      // @ts-expect-error Skip cast
+      config.computedValues = new WeakMap();
+    }
+    // Accessing value may invoke change if value is computed
     const newValue = config.get.call(this, this, internalGet.bind(this));
     // Store computed value internally. Used by onInvalidate to get previous value
-    const computedValues = (config.computedValues ??= new WeakMap());
-    computedValues.set(this, newValue);
+    config.computedValues.set(this, newValue);
+    if (hadValue) {
+      detectChange.call(this, config, oldValue, newValue);
+    }
     return newValue;
   }
 
