@@ -467,24 +467,10 @@ export function defineObservableProperty(object, key, options) {
    * @return {T2}
    */
   function cachedGet() {
-    let oldValue;
-    let hadValue;
-    if (config.computedValues) {
-      hadValue = config.computedValues.has(this);
-      if (hadValue) {
-        oldValue = config.computedValues.get(this);
-      }
-    } else {
-      // @ts-expect-error Skip cast
-      config.computedValues = new WeakMap();
-    }
-    // Accessing value may invoke change if value is computed
     const newValue = config.get.call(this, this, internalGet.bind(this));
     // Store computed value internally. Used by onInvalidate to get previous value
-    config.computedValues.set(this, newValue);
-    if (hadValue) {
-      detectChange.call(this, config, oldValue, newValue);
-    }
+    const computedValues = (config.computedValues ??= new WeakMap());
+    computedValues.set(this, newValue);
     return newValue;
   }
 
