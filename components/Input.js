@@ -538,8 +538,8 @@ export default CustomElement
       if (_hasListbox) return 'combobox';
       return null;
     },
-    populatedState({ value, _badInput, _draftInput }) {
-      return !!value || _badInput || !!_draftInput;
+    populatedState({ value, _badInput, _draftInput, type }) {
+      return !!value || _badInput || !!_draftInput || type === 'datetime-local';
     },
   })
   .recompose(({ refs: { control, trailingIcon, shape, labelText } }) => {
