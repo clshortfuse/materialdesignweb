@@ -47,8 +47,8 @@ export default function TextFieldMixin(Base) {
         return (error || (erroredState && _validationMessage) || supporting) ?? '';
       },
 
-      populatedState({ value, _badInput }) {
-        return !!value || _badInput;
+      populatedState({ value, _badInput, type }) {
+        return !!value || _badInput || type === 'datetime-local';
       },
       _showLabelText({ label, filled, outlined }) {
         return label && (filled || outlined);
