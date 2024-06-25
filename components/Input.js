@@ -503,8 +503,15 @@ export default CustomElement
       return null;
     },
     controlTypeAttrValue({ _isSelect, type }) {
-      if (_isSelect) return 'button';
+      if (_isSelect) return 'text';
       return type;
+    },
+    controlReadonlyAttrValue({ _isSelect, type, readOnly }) {
+      if (_isSelect) return true;
+      return readOnly;
+    },
+    controlIsSelect({ _isSelect, type }) {
+      return _isSelect;
     },
     ariaExpandedAttrValue({ _hasListbox, _expanded }) {
       if (!_hasListbox) return null;
@@ -543,6 +550,8 @@ export default CustomElement
     control.setAttribute('aria-expanded', '{ariaExpandedAttrValue}');
     control.setAttribute('type', '{controlTypeAttrValue}');
     control.setAttribute('role', '{controlRoleAttrValue}');
+    control.setAttribute('is-select', '{controlIsSelect}');
+    control.setAttribute('autocomplete', 'off');
     trailingIcon.setAttribute('mdw-if', '{computedTrailingIcon}');
     trailingIcon.setAttribute('icon', '{computedTrailingIcon}');
     shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
@@ -581,8 +590,15 @@ export default CustomElement
       align-self: center;
     }
 
-    #control:where([type="button"]) {
+    #control:where([type="button"], [is-select]) {
       cursor: pointer;
     }
   `
+  .extend((Base) => class Input extends Base {
+    /** @type {InstanceType<ReturnType<RippleMixin>>['addRipple']} */
+    addRipple(...args) {
+      if (!this.active) return null;
+      return super.addRipple(...args);
+    }
+  })
   .autoRegister('mdw-input');
