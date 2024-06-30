@@ -523,7 +523,7 @@ export default CustomElement
     },
     ariaAutocompleteAttrValue({ _hasListbox, autocompleteList, _isSelect }) {
       if (!_hasListbox) return null;
-      if (!_isSelect) return null;
+      if (_isSelect) return null;
       if (autocompleteList != null) {
         return 'both';
       }
@@ -550,8 +550,9 @@ export default CustomElement
     control.setAttribute('aria-expanded', '{ariaExpandedAttrValue}');
     control.setAttribute('type', '{controlTypeAttrValue}');
     control.setAttribute('role', '{controlRoleAttrValue}');
-    control.setAttribute('is-select', '{controlIsSelect}');
+    control.setAttribute('readonly', '{controlReadonlyAttrValue}');
     control.setAttribute('autocomplete', 'off');
+    control.setAttribute('is-select', '{controlIsSelect}');
     trailingIcon.setAttribute('mdw-if', '{computedTrailingIcon}');
     trailingIcon.setAttribute('icon', '{computedTrailingIcon}');
     shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
