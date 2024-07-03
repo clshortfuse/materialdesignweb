@@ -481,6 +481,16 @@ export default function PopupMixin(Base) {
     .css`
     /* https://m3.material.io/components/dialogs/specs */
 
+    :host([popover]) {
+      margin: 0;
+      border: 0;
+      padding: 0;
+    }
+
+    :host(::backdrop) {
+      display: none;
+    }
+
     :host {
       --mdw-popup__expand-duration: var(--mdw-motion-expand-duration, 250ms);
       --mdw-popup__simple-duration: var(--mdw-motion-simple-duration, 100ms);
@@ -541,7 +551,7 @@ export default function PopupMixin(Base) {
     }
 
     :host([open]) {
-      pointer-events: auto;
+      pointer-events: inherit;
 
       opacity: 1;
 
@@ -577,7 +587,7 @@ export default function PopupMixin(Base) {
       padding: inherit;
       padding: 0;
 
-      pointer-events: auto;
+      pointer-events: inherit;
 
       filter: inherit;
 
@@ -635,7 +645,7 @@ export default function PopupMixin(Base) {
       flex: inherit;
       padding: inherit;
 
-      pointer-events: auto;
+      pointer-events: inherit;
 
       filter: inherit;
       transform: inherit;
