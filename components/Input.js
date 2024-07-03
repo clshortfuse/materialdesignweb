@@ -143,7 +143,13 @@ export default CustomElement
       const { ariaListbox, shape } = this.refs;
       ariaListbox.setAttribute('aria-hidden', 'false');
       const popup = getSharedPopup();
-      document.body.append(popup);
+      if ('popover' in popup) {
+        this.insertAdjacentElement('afterend', popup);
+        popup.popover = 'manual';
+        popup.showPopover();
+      } else {
+        document.body.append(popup);
+      }
       popup.replaceChildren(_listbox);
       popup.showPopup(shape, false);
       popup.addEventListener('focusout', this._onPopupFocusoutListener);
