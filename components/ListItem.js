@@ -127,6 +127,20 @@ export default CustomElement
       text-decoration: none;
     }
 
+    :host(:where([color])) {
+      background-color: rgb(var(--mdw-bg));
+      color: rgb(var(--mdw-ink));
+    }
+
+    :host(:is([color="none"],[color="transparent"])) {
+      background-color: transparent;
+      color: inherit;
+    }
+    
+    :host([ink]) {
+      color: rgb(var(--mdw-ink));
+    }
+
     :host([href]) {
       cursor: pointer;
     }
