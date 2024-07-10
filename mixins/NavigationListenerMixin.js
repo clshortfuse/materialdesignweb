@@ -16,7 +16,10 @@ export default function NavigationListenerMixin(Base) {
           composed: true,
           cancelable: true,
           detail: {
+            download: target.download,
             href: target.href,
+            hreflang: target.hreflang,
+            target: target.target,
           },
         }));
         if (!actionAllowed) {
