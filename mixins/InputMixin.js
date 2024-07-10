@@ -59,7 +59,9 @@ export default function InputMixin(Base) {
       //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
       _width: { attr: 'width', type: 'integer' },
     })
-
+    .set({
+      _useFormImplicitSubmission: false,
+    })
     .define({
       // Alias for typescript
       _input() { return /** @type {HTMLInputElement} */ (this.refs.control); },
@@ -153,6 +155,7 @@ export default function InputMixin(Base) {
        * @return {void}
        */
       performImplicitSubmission(event) {
+        if (!this._useFormImplicitSubmission) return;
         const form = this.form;
         if (!form) return;
         /** @type {HTMLInputElement} */

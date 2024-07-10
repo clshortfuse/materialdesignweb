@@ -233,6 +233,7 @@ export default CustomElement
     },
     acceptSuggestion(emitChange = false) {
       if (!this._hasSuggestion) return;
+      if (this.readOnly) return;
       const { _suggestedText, _suggestedValue, _input } = this;
       this.value = _suggestedValue;
       _input.value = _suggestedText;
@@ -352,6 +353,7 @@ export default CustomElement
     control: {
       click() {
         if (!this._isSelect) return;
+        if (this.readOnly) return;
         this.toggleListbox();
       },
       input(event) {
@@ -394,14 +396,17 @@ export default CustomElement
         switch (event.key) {
           case 'Home':
             if (!this._isSelect) return;
+            if (this.readOnly) return;
             this.changeSuggestion({ first: true });
             break;
           case 'End':
             if (!this._isSelect) return;
+            if (this.readOnly) return;
             this.changeSuggestion({ last: true });
             break;
           case 'ArrowDown':
           case 'Down':
+            if (this.readOnly) return;
             if (event.altKey) {
               this.toggleListbox();
               break;
@@ -420,6 +425,8 @@ export default CustomElement
             break;
           case 'Escape':
             if (!this._expanded) return;
+            event.stopImmediatePropagation();
+            event.preventDefault();
             if (this.acceptOnEscape) {
               this.acceptSuggestion(true);
             } else {
@@ -434,6 +441,8 @@ export default CustomElement
             return;
           case 'Enter':
             if (!this._expanded) return;
+            event.stopImmediatePropagation();
+            event.preventDefault();
             this.acceptSuggestion(true);
             this.closeListbox();
             break;
@@ -499,6 +508,15 @@ export default CustomElement
     },
   })
   .expressions({
+    showTrailingIcon({ trailingIcon, _listbox, _expanded, readOnly }) {
+      if (trailingIcon != null) {
+        return trailingIcon;
+      }
+      if (_listbox && !readOnly) {
+        return _expanded ? 'arrow_drop_up' : 'arrow_drop_down';
+      }
+      return null;
+    },
     computedTrailingIcon({ trailingIcon, _listbox, _expanded }) {
       if (trailingIcon != null) {
         return trailingIcon;
@@ -559,7 +577,7 @@ export default CustomElement
     control.setAttribute('readonly', '{controlReadonlyAttrValue}');
     control.setAttribute('autocomplete', 'off');
     control.setAttribute('is-select', '{controlIsSelect}');
-    trailingIcon.setAttribute('mdw-if', '{computedTrailingIcon}');
+    trailingIcon.setAttribute('mdw-if', '{showTrailingIcon}');
     trailingIcon.setAttribute('icon', '{computedTrailingIcon}');
     shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
     labelText.setAttribute('trailing-icon', '{computedTrailingIcon}');
@@ -570,6 +588,9 @@ export default CustomElement
       this._listbox.value = current;
       this._draftInput = current;
       this.changeSuggestion({ value: current });
+    },
+    _expandedChanged(previous, current) {
+      this._useFormImplicitSubmission = !current;
     },
     constructed() {
       this._onListboxChangeListener = this.onListboxChange.bind(this);
