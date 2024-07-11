@@ -313,7 +313,19 @@ export default function FormAssociatedMixin(Base) {
               elementInternals.setFormValue(fd);
             }
             break;
-          } default:
+          }
+          case 'select-multiple': {
+            const formData = new FormData();
+            if (this.name) {
+              for (const option of this.selectedOptions) {
+                formData.append(this.name, option.value);
+              }
+            }
+            this.elementInternals.setFormValue(formData);
+            break;
+          }
+          // case 'select-one':
+          default:
             // console.debug('FormAssociatedMixin: setFormValue', this.name, this.value, this);
             this.elementInternals.setFormValue(this.value);
         }

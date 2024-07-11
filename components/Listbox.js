@@ -49,7 +49,7 @@ export default List
       );
     },
 
-    type() { return 'select'; },
+    type() { return this.multiple ? 'select-multiple' : 'select-one'; },
 
     kbdNavQuery() { return ListOption.elementName; },
 
@@ -170,6 +170,7 @@ export default List
 
       this._value = this.value;
       this._handlingSelectedness = false;
+      this._updateFormAssociatedValue();
 
       if (sendUpdateNotifications) {
         this.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
