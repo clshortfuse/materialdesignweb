@@ -60,7 +60,7 @@ export default function InputMixin(Base) {
       _width: { attr: 'width', type: 'integer' },
     })
     .set({
-      _useFormImplicitSubmission: false,
+      _useFormImplicitSubmission: true,
     })
     .define({
       // Alias for typescript
