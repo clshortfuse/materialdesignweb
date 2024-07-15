@@ -116,7 +116,7 @@ export default CustomElement
 
       border: none;
       padding-block: 8px;
-      padding-inline: 16px 24px;
+      padding-inline: 16px;
 
       cursor: auto;
 
