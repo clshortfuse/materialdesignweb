@@ -52,26 +52,27 @@
         </mdw-list>
       </mdw-dialog>
       <mdw-dialog id=dialog-slider icon=volume_up headline="Volume Control" default="confirm">
-        <form slot="form" method="dialog">
+        <form id=dialog-slider-form method="dialog">
           <mdw-slider name="volume" autofocus></mdw-slider>
-          <mdw-dialog-actions>
-            <input type="submit" hidden value=confirm aria-hidden="true" />
-            <!-- Forms submit nearest type=submit control on ENTER key -->
-            <mdw-button type="submit" name=cancel value="cancel">Cancel</mdw-button>
-            <mdw-button type="submit" name=confirm value="confirm">Confirm</mdw-button>
-          </mdw-dialog-actions>
         </form>
+        <div slot=actions>
+          <input type="submit" form=dialog-slider-form hidden value=confirm aria-hidden="true" />
+          <!-- Forms submit nearest type=submit control on ENTER key -->
+          <button type="submit" form=dialog-slider-form name=cancel value="cancel" formnovalidate>Cancel</button>
+          <mdw-button type="submit" form=dialog-slider-form name=confirm value="confirm">Confirm</mdw-button>
+        </div>
       </mdw-dialog>
       <mdw-dialog id=dialog-input icon=edit headline="Custom form" default="confirm">
-        <form slot="form" method="dialog">
-          <mdw-input name="sample" autofocus filled label="Label"></mdw-input>
-          <mdw-dialog-actions>
-            <input type="submit" hidden value=confirm tabindex=-1 aria-hidden="true" />
-            <!-- Forms submit nearest type=submit control on ENTER key -->
-            <mdw-button type="submit" name=cancel value="cancel">Cancel</mdw-button>
-            <mdw-button type="submit" name=confirm value="confirm">Confirm</mdw-button>
-          </mdw-dialog-actions>
+        <form id=dialog-input-form method="dialog">
+          <mdw-input name="sample" autofocus filled label="Label" required></mdw-input>
         </form>
+        <div slot=actions>
+          <input type="submit" hidden form=dialog-input-form value=confirm tabindex=-1 aria-hidden="true" />
+          <!-- Forms submit nearest type=submit control on ENTER key -->
+          <mdw-button type="submit" form=dialog-input-form name=cancel value="cancel" formnovalidate>Cancel</mdw-button>
+          <mdw-button type="submit" form=dialog-input-form name=confirm value="confirm">Confirm</mdw-button>
+        </div>
+        
       </mdw-dialog>
     </div>
   </demo-page>

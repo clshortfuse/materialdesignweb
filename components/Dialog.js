@@ -124,30 +124,6 @@ export default CustomElement
       || (node.nodeType === node.TEXT_NODE && node.nodeValue.trim().length));
       currentTarget.toggleAttribute('slotted', hasContent);
     },
-
-    /**
-     * @param {SubmitEvent & {currentTarget: HTMLFormElement}} event
-     * @return {void}
-     */
-    onFormSubmit(event) {
-      if (event.currentTarget.assignedSlot) {
-        // Custom form.
-        // @ts-ignore Skip cast
-        const returnValue = event.submitter?.value;
-        this.close(returnValue);
-        event.preventDefault();
-      }
-    },
-
-    /**
-     * @param {Event & {currentTarget: HTMLFormElement}} event
-     * @return {void}
-     */
-    onFormSlotChange({ currentTarget }) {
-      /** @type {HTMLFormElement} */
-      const [form] = currentTarget.assignedNodes();
-      form?.addEventListener('submit', /** @type {SubmitEvent} */ (e) => this.onFormSubmit(e));
-    },
     focus() {
       focusOnTree(this.shadowRoot, true, true);
     },
@@ -165,14 +141,10 @@ export default CustomElement
     </div>
     <div id=append>
       <mdw-divider id=divider-bottom size={dividers}></mdw-divider>
-      <slot name=form id=form-slot on-slotchange={onFormSlotChange}>
-        <form id=form method=dialog role=none on-submit={onFormSubmit}>
-          <mdw-dialog-actions>
-            <mdw-button id=cancel type=submit value=cancel
-              autofocus={cancelAutoFocus}>{cancel}</mdw-button>
-            <mdw-button id=confirm type=submit value=confirm
-              autofocus={confirmAutoFocus}>{confirm}</mdw-button>
-          </mdw-dialog-actions>
+      <slot id=actions name=actions>
+        <form method=dialog role=none>
+          <mdw-button id=cancel type=submit value=cancel autofocus={cancelAutoFocus} formnovalidate>{cancel}</mdw-button>
+          <mdw-button id=confirm type=submit value=confirm autofocus={confirmAutoFocus}>{confirm}</mdw-button>
         </form>
       </slot>
     </div>
@@ -301,8 +273,12 @@ export default CustomElement
       display: contents;
     }
 
-    #form-slot::slotted(form) {
-      display: contents;
+    #actions {
+      display: flex;
+      align-self: flex-end;
+
+      margin-block: 24px;
+      padding-inline: 24px;
     }
   `
   .events({
@@ -366,6 +342,14 @@ export default CustomElement
         // Invoke cancel without returning focus
         this.close(undefined, false);
       });
+    },
+    submit(event) {
+      if (event.defaultPrevented) return;
+      const form = event.target;
+      if (form instanceof HTMLFormElement === false) return;
+      if (form.method !== 'dialog') return;
+      const returnValue = event.submitter?.value;
+      this.close(returnValue);
     },
   })
   .childEvents({
