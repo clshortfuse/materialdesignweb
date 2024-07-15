@@ -260,10 +260,6 @@ export default function TextFieldMixin(Base) {
         --mdw-shape__size__bottom-end-size: 0px;
       }
 
-      #inline:where([filled],[outlined]) {
-        padding-inline: 16px;
-      }
-
       #prefix,
       #suffix,
       #control::placeholder {

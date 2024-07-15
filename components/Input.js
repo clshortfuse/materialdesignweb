@@ -682,6 +682,10 @@ export default CustomElement
     #chips:empty {
       padding-inline-end: 0px;
     }
+
+    #inline:where([filled],[outlined]) {
+      padding-inline: 16px;
+    }
   `
   .recompose(({ refs: { inline, chips } }) => {
     inline.prepend(chips);
