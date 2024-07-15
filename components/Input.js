@@ -371,6 +371,15 @@ export default CustomElement
         this.changeSuggestion({ value: this._listboxValue });
       }
     },
+    populateInputFromListbox() {
+      if (!this._isSelect) return;
+      if (!this._listbox) return;
+      this._listbox.value = this._value;
+      const [option] = this._listbox.selectedOptions;
+      if (option) {
+        this._input.value = option.label;
+      }
+    },
   })
   .childEvents({
     control: {
@@ -508,6 +517,7 @@ export default CustomElement
 
           listbox.addEventListener('change', this._onListboxChangeListener);
           listbox.addEventListener('click', this._onListboxChangeListener);
+          this.populateInputFromListbox();
         }
       },
     },
@@ -608,12 +618,7 @@ export default CustomElement
   .overrides({
     _onSetValue(value) {
       if (this._isSelect) {
-        this._listbox.value = value;
-        const [option] = this._listbox.selectedOptions;
-        if (option) {
-          this._input.value = option.label;
-        }
-        this._value = value;
+        this.populateInputFromListbox();
       } else {
       // Apply user value to input and read back result to apply control to parse
         this._input.value = value;
@@ -623,7 +628,9 @@ export default CustomElement
   })
   .on({
     _valueChanged(previous, current) {
-      if (!this.multiple) {
+      if (this._isSelect) {
+        this.populateInputFromListbox();
+      } else if (!this.multiple) {
         this._listboxValue = current;
       }
     },
@@ -640,6 +647,7 @@ export default CustomElement
       this._onListboxChangeListener = this.onListboxChange.bind(this);
       this._onListboxClickListener = this.onListboxClick.bind(this);
       this._onPopupFocusoutListener = this.onPopupFocusout.bind(this);
+      document.addEventListener('DOMContentLoaded', () => this.populateInputFromListbox(), { once: true });
     },
   })
   .html`
