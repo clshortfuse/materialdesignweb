@@ -31,6 +31,7 @@ export default function FormAssociatedMixin(Base) {
       autocomplete: DOMString,
       name: DOMString,
       readOnly: { attr: 'readonly', type: 'boolean' },
+      formNoValidate: { attr: 'formnovalidate', type: 'boolean' },
       defaultChecked: { attr: 'checked', type: 'boolean' },
       _checkedDirty: 'boolean',
       /* "Checkedness" */
@@ -148,7 +149,7 @@ export default function FormAssociatedMixin(Base) {
       validity() { return this.elementInternals.validity; },
       validationMessage() { return this.elementInternals.validationMessage; },
       willValidate() {
-        if (this.type === 'submit') return true;
+        if (this.type === 'submit') return !this.formNoValidate;
         if (this.type === 'button' || this.type === 'reset') return false;
         return this.elementInternals.willValidate;
       },

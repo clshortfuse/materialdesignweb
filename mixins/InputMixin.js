@@ -42,7 +42,6 @@ export default function InputMixin(Base) {
       _formAction: { attr: 'formaction' },
       formEnctype: { attr: 'formenctype', ...DOMString },
       formMethod: { attr: 'formmethod', ...DOMString },
-      formNoValidate: { attr: 'formNoValidate', type: 'boolean' },
       formTarget: { attr: 'formtarget', ...DOMString },
       _height: { attr: 'height', type: 'integer' },
       _indeterminate: 'boolean',
