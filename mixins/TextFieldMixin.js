@@ -66,9 +66,12 @@ export default function TextFieldMixin(Base) {
       <div id=shape role=none filled={filled} icon={icon} trailing-icon={trailingIcon}
       populated={populatedState} focused={focusedState} label={label} outlined={outlined}
       shape-top={_shapeShapeTop}>
-        <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon} variation={computedIconVariation} ></mdw-icon>
-        <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
-        <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
+        <mdw-icon mdw-if={icon} id=icon aria-hidden=true disabled={disabledState} icon={icon} variation={computedIconVariation}></mdw-icon>
+        <div id=inline role=none filled={filled} icon={icon} trailing-icon={trailingIcon}
+          populated={populatedState} focused={focusedState} label={label} outlined={outlined}>
+          <span mdw-if={inputPrefix} class=inline id=prefix aria-hidden=true focused={focusedState} populated={populatedState}>{inputPrefix}</span>
+          <span mdw-if={inputSuffix} class=inline id=suffix aria-hidden=true focused={focusedState} populated={populatedState}>{inputSuffix}</span>
+        </div>
         <mdw-icon-button tabindex=-1 disabled={disabledState} mdw-if={trailingIcon} id=trailing-icon ink={trailingIconInk} disabled={disabledState} icon={trailingIcon}>{trailingIconLabel}</mdw-icon-button>
         <div mdw-if={filled} id=indicator aria-hidden=true focused={focusedState} hovered={hoveredState} errored={erroredState} disabled={disabledState}></div>
       </div>
@@ -86,7 +89,7 @@ export default function TextFieldMixin(Base) {
       </div>
       
     `
-    .recompose(({ html, refs: { control, outline, state, shape } }) => {
+    .recompose(({ html, refs: { control, outline, state, shape, inline } }) => {
       control.setAttribute('placeholder', '{computePlaceholder}');
       control.setAttribute('aria-label', '{label}');
       control.setAttribute('input-suffix', '{inputSuffix}');
@@ -106,9 +109,8 @@ export default function TextFieldMixin(Base) {
       `);
       outline.setAttribute('label', '{label}');
       outline.setAttribute('errored', '{erroredState}');
-      shape.prepend(outline, state, control);
-
-      outline.after(state, control);
+      shape.prepend(outline, state);
+      inline.prepend(control);
     })
     .on({
       sizeChanged(oldValue, newValue) {
@@ -190,9 +192,6 @@ export default function TextFieldMixin(Base) {
 
         display: flex;
 
-        align-items: center;
-        overflow: visible;
-
         cursor: inherit;
 
         z-index: 0;
@@ -213,9 +212,26 @@ export default function TextFieldMixin(Base) {
         transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
       }
 
-      #shape:where([filled],[outlined]) {
-        padding-inline: 16px;
+      #inline {
+        display: flex;
+
+        align-items: center;
+        overflow: visible;
+
+        flex: 1;
+
+        cursor: inherit;
+
+        font-weight: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        font-family: inherit;
+        letter-spacing: inherit;
+
+        transition: none 200ms cubic-bezier(0.0, 0.0, 0.2, 1);
       }
+
+      
 
       #shape:where([filled],[color]) {
         background-color: rgb(var(--mdw-bg));
@@ -235,14 +251,6 @@ export default function TextFieldMixin(Base) {
         color: rgb(var(--mdw-ink))
       }
 
-      #shape:where([filled],[outlined])[icon] {
-        padding-inline-start: 12px;
-      }
-
-      #shape[trailing-icon] {
-        padding-inline-end: 0;
-      }
-
       #shape[focused] {
         transition: none 100ms cubic-bezier(0.4, 0.0, 1, 1);
       }
@@ -250,6 +258,10 @@ export default function TextFieldMixin(Base) {
       #shape[shape-top] {
         --mdw-shape__size__bottom-start-size: 0px;
         --mdw-shape__size__bottom-end-size: 0px;
+      }
+
+      #inline:where([filled],[outlined]) {
+        padding-inline: 16px;
       }
 
       #prefix,
@@ -340,7 +352,7 @@ export default function TextFieldMixin(Base) {
       #icon {
         order: -2;
 
-        margin-inline-end: 16px;
+        margin-inline-start: 12px;
 
         font-size: 24px;
       }
@@ -357,7 +369,7 @@ export default function TextFieldMixin(Base) {
         order: 2;
 
         /* stylelint-disable-next-line declaration-property-value-disallowed-list */
-        margin-inline: 8px 4px;
+        margin-inline-end: 12px;
       }
 
       #indicator {
@@ -650,7 +662,7 @@ export default function TextFieldMixin(Base) {
         padding: 0;
       }
 
-      #shape[label][filled] {
+      #inline[label][filled] {
         align-items: flex-start;
       }
 

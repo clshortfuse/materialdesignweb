@@ -54,16 +54,17 @@ export default CustomElement
     _focusedPosInSet: { value: -1 },
     _listboxSize: { value: -1 },
     _draftInput: { type: 'string', nullable: false },
-    _suggestedText: { type: 'string', nullable: false },
-    _suggestedValue: { type: 'string', nullable: false },
     _hasSuggestion: 'boolean',
+    _listboxValue: 'string',
+    _lastComputedListboxValue: { type: 'string', nullable: false },
+    _values: { value: [] },
   })
   .observe({
     _hasListbox({ _listbox }) {
       return !!_listbox;
     },
     _isSelect({ type }) {
-      return type.toLowerCase() === 'select-one';
+      return type.toLowerCase() === 'select-one' || type.toLocaleLowerCase() === 'select-multiple';
     },
   })
   .define({
@@ -78,6 +79,10 @@ export default CustomElement
     _onListboxClickListener: null,
     /** @type {EventListener} */
     _onPopupFocusoutListener: null,
+    _suggestionText: '',
+    _suggestionValue: '',
+    /** @type {HTMLOptionElement} */
+    _suggestionOption: null,
   })
   .define({
     stateTargetElement() { return this.refs.control; },
@@ -106,8 +111,9 @@ export default CustomElement
       });
 
       const { label: suggestionText, value: suggestionValue } = option;
-      this._suggestedText = suggestionText;
-      this._suggestedValue = suggestionValue;
+      this._suggestionText = suggestionText;
+      this._suggestionValue = suggestionValue;
+      this._suggestionOption = option;
       this._hasSuggestion = true;
       this.acceptSuggestion(true);
       this.closeListbox();
@@ -153,7 +159,7 @@ export default CustomElement
       popup.replaceChildren(_listbox);
       popup.showPopup(shape, false);
       popup.addEventListener('focusout', this._onPopupFocusoutListener);
-      _listbox.value = this.value;
+      _listbox.value = this._listboxValue;
       const [option] = _listbox.selectedOptions;
       if (option) {
         option.scrollIntoView({
@@ -200,8 +206,9 @@ export default CustomElement
       } = this;
       const { label: suggestionText, value: suggestionValue } = option;
 
-      this._suggestedText = suggestionText;
-      this._suggestedValue = suggestionValue;
+      this._suggestionText = suggestionText;
+      this._suggestionValue = suggestionValue;
+      this._suggestionOption = option;
       this._hasSuggestion = true;
       if (autoSelect) {
         this.acceptSuggestion(true);
@@ -234,11 +241,27 @@ export default CustomElement
     acceptSuggestion(emitChange = false) {
       if (!this._hasSuggestion) return;
       if (this.readOnly) return;
-      const { _suggestedText, _suggestedValue, _input } = this;
-      this.value = _suggestedValue;
-      _input.value = _suggestedText;
-      this._draftInput = _suggestedText;
-      this._listbox.value = _suggestedValue;
+      const { _suggestionText, _suggestionValue, _input, multiple, _listbox, _values } = this;
+      if (multiple) {
+        const newArray = [..._values, _suggestionText];
+        this._values = [..._values, _suggestionText];
+        const newChip = document.createElement('mdw-chip');
+        newChip.label = _suggestionText;
+        newChip.value = _suggestionValue;
+        newChip.textContent = _suggestionText;
+        newChip.icon = this._suggestionOption?.icon;
+        this.refs.chips.appendChild(newChip);
+        this._value = newArray.join(',');
+        _input.value = '';
+        this._draftInput = '';
+        _listbox.value = '';
+        this._listboxValue = '';
+      } else {
+        this.value = _suggestionValue;
+        _input.value = _suggestionText;
+        this._draftInput = _suggestionText;
+        _listbox.value = _suggestionValue;
+      }
       if (emitChange) {
         this.dispatchEvent(new Event('change', { bubbles: true }));
       }
@@ -345,7 +368,7 @@ export default CustomElement
       if (this._isSelect) {
         this.changeSuggestion({ label: this._draftInput });
       } else {
-        this.changeSuggestion({ value: this.value });
+        this.changeSuggestion({ value: this._listboxValue });
       }
     },
   })
@@ -582,8 +605,29 @@ export default CustomElement
     shape.setAttribute('trailing-icon', '{computedTrailingIcon}');
     labelText.setAttribute('trailing-icon', '{computedTrailingIcon}');
   })
+  .overrides({
+    _onSetValue(value) {
+      if (this._isSelect) {
+        this._listbox.value = value;
+        const [option] = this._listbox.selectedOptions;
+        if (option) {
+          this._input.value = option.label;
+        }
+        this._value = value;
+      } else {
+      // Apply user value to input and read back result to apply control to parse
+        this._input.value = value;
+        this._value = this._input.value;
+      }
+    },
+  })
   .on({
-    valueChanged(previous, current) {
+    _valueChanged(previous, current) {
+      if (!this.multiple) {
+        this._listboxValue = current;
+      }
+    },
+    _listboxValueChanged(previous, current) {
       if (!this._hasListbox) return;
       this._listbox.value = current;
       this._draftInput = current;
@@ -599,6 +643,7 @@ export default CustomElement
     },
   })
   .html`
+    <div id=chips mdw-if={multiple}></div>
     <slot id=slot></slot>
     <div id=aria-listbox role=listbox mdw-if={_hasListbox}>
       <div id=aria-active role=option aria-hidden=false aria-label={selectedOption.label}
@@ -621,7 +666,26 @@ export default CustomElement
     #control:where([type="button"], [is-select]) {
       cursor: pointer;
     }
+
+    #chips {
+      order:-1;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      padding-inline-end: 8px;
+
+      transition: 100ms;
+    }
+
+    #chips:empty {
+      padding-inline-end: 0px;
+    }
   `
+  .recompose(({ refs: { inline, chips } }) => {
+    inline.prepend(chips);
+  })
   .extend((Base) => class Input extends Base {
     /** @type {InstanceType<ReturnType<RippleMixin>>['addRipple']} */
     addRipple(...args) {
