@@ -54,14 +54,15 @@ export function buildMergePatch(previous, current, arrayStrategy = 'reference') 
       return structuredClone(current);
     }
     for (const [index, value] of current.entries()) {
-      if (value == null) {
-        console.warn('Nullish value found at', index);
+      if (value === null) {
+        patch[index] = null;
         continue;
       }
+      if (value == null) {
+        continue; // Skip undefined
+      }
       const changes = buildMergePatch(previous[index], value, arrayStrategy);
-      if (changes === null) {
-        continue;
-      } else {
+      if (changes !== null) {
         patch[index] = changes;
       }
     }
@@ -77,14 +78,15 @@ export function buildMergePatch(previous, current, arrayStrategy = 'reference') 
   const previousKeys = new Set(Object.keys(previous));
   for (const [key, value] of Object.entries(current)) {
     previousKeys.delete(key);
-    if (value == null) {
-      console.warn('Nullish value found at', key);
+    if (value === null) {
+      patch[key] = null;
       continue;
     }
+    if (value == null) {
+      continue; // Skip undefined
+    }
     const changes = buildMergePatch(previous[key], value, arrayStrategy);
-    if (changes === null) {
-      // console.log('keeping', key);
-    } else {
+    if (changes !== null) {
       patch[key] = changes;
     }
   }
