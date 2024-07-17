@@ -235,8 +235,8 @@ export default CustomElement
     #trailing {
       color: var(--mdw-color__on-surface-variant);
 
-      font: var(--mdw-typescale__body-medium__font);
-      letter-spacing: var(--mdw-typescale__body-medium__letter-spacing);
+      font: var(--mdw-typescale__label-small__font);
+      letter-spacing: var(--mdw-typescale__label-small__letter-spacing);
     }
 
     #slot, #supporting {
