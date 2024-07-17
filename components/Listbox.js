@@ -66,9 +66,11 @@ export default List
       },
       set(value) {
         const itemToSelect = this.options[value];
+        this._handlingSelectedness = true;
         for (const option of this.options) {
           option.selected = (option === itemToSelect);
         }
+        this._handlingSelectedness = false;
         this._value = this.value;
       },
     },
@@ -80,11 +82,13 @@ export default List
       set(v) {
         let newValue = '';
         const vString = `${v}`;
+        this._handlingSelectedness = true;
         for (const option of this.options) {
           if ((option.selected = (option.value === vString))) {
             newValue = vString;
           }
         }
+        this._handlingSelectedness = false;
         this._value = newValue;
       },
     },

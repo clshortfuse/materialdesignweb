@@ -159,7 +159,9 @@ export default CustomElement
       popup.replaceChildren(_listbox);
       popup.showPopup(shape, false);
       popup.addEventListener('focusout', this._onPopupFocusoutListener);
-      _listbox.value = this._listboxValue;
+      if (!this._isSelect) {
+        _listbox.value = this._listboxValue;
+      }
       const [option] = _listbox.selectedOptions;
       if (option) {
         option.scrollIntoView({
@@ -618,7 +620,7 @@ export default CustomElement
   .overrides({
     _onSetValue(value) {
       if (this._isSelect) {
-        this.populateInputFromListbox();
+        this._value = value;
       } else {
       // Apply user value to input and read back result to apply control to parse
         this._input.value = value;
