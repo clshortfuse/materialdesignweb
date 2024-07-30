@@ -14,11 +14,11 @@ export default function DensityMixin(Base) {
       
       :host([density="-1"]) { --mdw-density: -1; }
       :host([density="-2"]) { --mdw-density: -2; }
-      :host([density="-3"]) { --mdw-density: -2; }
+      :host([density="-3"]) { --mdw-density: -3; }
       :host([density="-4"]) { --mdw-density: -4; }
       :host([density="1"]) { --mdw-density: 1; }
       :host([density="2"]) { --mdw-density: 2; }
       :host([density="3"]) { --mdw-density: 3; }
-      :host([density="4"]) { --mdw-density: 3; }
+      :host([density="4"]) { --mdw-density: 4; }
     `;
 }
