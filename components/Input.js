@@ -380,6 +380,7 @@ export default CustomElement
       const [option] = this._listbox.selectedOptions;
       if (option) {
         this._input.value = option.label;
+        this._draftInput = option.label;
       }
     },
   })
