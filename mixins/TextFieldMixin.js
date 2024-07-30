@@ -219,6 +219,7 @@ export default function TextFieldMixin(Base) {
         overflow: visible;
 
         flex: 1;
+        padding-block: var(--control__margin-top) var(--control__margin-bottom);
 
         cursor: inherit;
 
@@ -287,11 +288,10 @@ export default function TextFieldMixin(Base) {
         box-sizing: border-box;
 
         block-size: auto;
-        min-block-size: none;
+        min-block-size: 0;
         inline-size: 100%;
-        min-inline-size: none;
+        min-inline-size: 0;
         flex: 1;
-        border-block-start: solid var(--control__margin-top) transparent;
         border-block-end: solid var(--control__margin-bottom) transparent;
         padding-block: var(--control__padding-top) var(--control__padding-bottom);
 
@@ -323,7 +323,6 @@ export default function TextFieldMixin(Base) {
       #suffix,
       #prefix {
         /* Symmetrical to allow centering */
-        margin-block: var(--control__margin-top) var(--control__margin-bottom);
         padding-block: var(--control__padding-top) var(--control__padding-bottom);
       }
 

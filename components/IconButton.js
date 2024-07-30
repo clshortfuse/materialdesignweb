@@ -87,6 +87,7 @@ export default Button
       align-items: center;
       justify-content: center;
 
+      min-block-size: 1em;
       min-inline-size: 1em;
 
       padding: max(8px, calc(8px + (var(--mdw-density) * 2px)));

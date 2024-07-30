@@ -57,7 +57,12 @@ export default CustomElement
     _hasSuggestion: 'boolean',
     _listboxValue: 'string',
     _lastComputedListboxValue: { type: 'string', nullable: false },
-    _values: { value: [] },
+    _values: {
+      type: 'array',
+      /** @type {string[]} */
+      value: [],
+    },
+    _chipSelected: 'boolean',
   })
   .observe({
     _hasListbox({ _listbox }) {
@@ -105,6 +110,14 @@ export default CustomElement
      * @param {Event} event
      */
     onListboxChange(event) {
+      if (this.multiple) {
+        const values = [...this._listbox.selectedOptions].map((option) => option.value);
+        this._values = values;
+        if (this._input.value) {
+          this.closeListbox();
+        }
+        return;
+      }
       const option = this._listbox.selectedOptions.item(0);
       this.render({
         selectedOption: option,
@@ -159,7 +172,7 @@ export default CustomElement
       popup.replaceChildren(_listbox);
       popup.showPopup(shape, false);
       popup.addEventListener('focusout', this._onPopupFocusoutListener);
-      if (!this._isSelect) {
+      if (!this._isSelect && !this.multiple) {
         _listbox.value = this._listboxValue;
       }
       const [option] = _listbox.selectedOptions;
@@ -218,7 +231,7 @@ export default CustomElement
       }
 
       // Autocomplete Inline
-      if (_isSelect || autocompleteInline) {
+      if ((_isSelect && !this.multiple) || autocompleteInline) {
         let valueText = suggestionText;
         let selectionStart = 0;
         if (_expanded) {
@@ -245,19 +258,8 @@ export default CustomElement
       if (this.readOnly) return;
       const { _suggestionText, _suggestionValue, _input, multiple, _listbox, _values } = this;
       if (multiple) {
-        const newArray = [..._values, _suggestionText];
-        this._values = [..._values, _suggestionText];
-        const newChip = document.createElement('mdw-chip');
-        newChip.label = _suggestionText;
-        newChip.value = _suggestionValue;
-        newChip.textContent = _suggestionText;
-        newChip.icon = this._suggestionOption?.icon;
-        this.refs.chips.appendChild(newChip);
-        this._value = newArray.join(',');
-        _input.value = '';
-        this._draftInput = '';
-        _listbox.value = '';
-        this._listboxValue = '';
+        const newArray = [..._values.filter(Boolean), _suggestionText];
+        this._values = [...new Set(newArray)];
       } else {
         this.value = _suggestionValue;
         _input.value = _suggestionText;
@@ -383,6 +385,16 @@ export default CustomElement
         this._draftInput = option.label;
       }
     },
+    onChipClose({ currentTarget }) {
+      let prev = currentTarget;
+      let elementIndex = 0;
+      while ((prev = prev.previousSibling)) {
+        elementIndex++;
+      }
+      currentTarget.remove();
+      this._values.splice(elementIndex, 1);
+      this._values = [...this._values];
+    },
   })
   .childEvents({
     control: {
@@ -435,12 +447,14 @@ export default CustomElement
             this.changeSuggestion({ first: true });
             break;
           case 'End':
+            this._chipSelected = false;
             if (!this._isSelect) return;
             if (this.readOnly) return;
             this.changeSuggestion({ last: true });
             break;
           case 'ArrowDown':
           case 'Down':
+            this._chipSelected = false;
             if (this.readOnly) return;
             if (event.altKey) {
               this.toggleListbox();
@@ -455,6 +469,7 @@ export default CustomElement
               this.toggleListbox();
               break;
             }
+            this._chipSelected = false;
             if (!this._expanded && !this.autocompleteInline && !this._isSelect) return;
             this.changeSuggestion({ previous: true });
             break;
@@ -469,12 +484,38 @@ export default CustomElement
             }
             this.closeListbox();
             break;
+          case 'Space':
+            if (!this._isSelect) return;
+            if (!this._listbox) return;
+            if (this._expanded) {
+              if (this.multiple && this._suggestionOption) {
+                this._suggestionOption.selected = !this._suggestionOption.selected;
+                this.closeListbox();
+              }
+            } else {
+              this.showListbox();
+            }
+            break;
+          case 'Backspace':
+            if (!this.multiple) return;
+            if (this._isSelect) return;
+            if (!this._input.value) {
+              if (this._chipSelected) {
+                this._values.pop();
+                this._values = [...this._values];
+              } else if (this._values.length) {
+                this._chipSelected = true;
+              }
+            }
+            return;
           case 'Tab':
+            if (!this._expanded && this.multiple) return;
             this.closeListbox();
             this.acceptSuggestion(true);
             event.stopPropagation();
             return;
           case 'Enter':
+            this._chipSelected = false;
             if (!this._expanded) return;
             event.stopImmediatePropagation();
             event.preventDefault();
@@ -516,7 +557,9 @@ export default CustomElement
         this._listbox = listbox;
         if (listbox) {
           // Bind and store
-          listbox.required = true; // Don't allow unclick
+          if (!this.multiple) {
+            listbox.required = true; // Don't allow unclick
+          }
 
           listbox.addEventListener('change', this._onListboxChangeListener);
           listbox.addEventListener('click', this._onListboxChangeListener);
@@ -534,6 +577,7 @@ export default CustomElement
   })
   .events({
     blur({ relatedTarget }) {
+      this._chipSelected = false;
       if (!this._expanded) return;
       // Ignore if focus lost to pop-up (likely pointerdown).
       const popup = getSharedPopup();
@@ -620,7 +664,9 @@ export default CustomElement
   })
   .overrides({
     _onSetValue(value) {
-      if (this._isSelect) {
+      if (this.multiple) {
+        this._values = value.split(',').filter(Boolean);
+      } else if (this._isSelect) {
         this._value = value;
       } else {
       // Apply user value to input and read back result to apply control to parse
@@ -628,13 +674,71 @@ export default CustomElement
         this._value = this._input.value;
       }
     },
+    _onControlValue(value) {
+      // Only accept values from accepted suggestions
+      if (this.multiple) {
+        if (value) {
+          this._chipSelected = false;
+        }
+        return;
+      }
+      this._value = value;
+    },
   })
   .on({
     _valueChanged(previous, current) {
+      if (this.multiple) return; // Handled by _values
       if (this._isSelect) {
         this.populateInputFromListbox();
       } else if (!this.multiple) {
         this._listboxValue = current;
+      }
+    },
+    _valuesChanged(previous, current) {
+      if (this.multiple && current) {
+        this._value = current.join(',');
+        /** @type {InstanceType<import('./InputChip.js').default>} */
+        let element = this.refs.chips.firstElementChild;
+
+        for (let i = 0; i < current.length; i++) {
+          const currentValue = current[i];
+          let foundOption;
+          if (this.listbox) {
+            for (const option of this.listbox.options) {
+              if (option.value === currentValue) {
+                foundOption = option;
+                break;
+              }
+            }
+          }
+
+          element ??= this.refs.chips.appendChild(document.createElement('mdw-input-chip'));
+          element.closeButton = true;
+          element.textContent = foundOption?.label || currentValue;
+          // eslint-disable-next-line unicorn/prefer-add-event-listener
+          element.onclose ??= this.onChipClose.bind(this);
+          element = element.nextElementSibling;
+        }
+        while (element) {
+          const prev = element;
+          element = element.nextElementSibling;
+          prev.remove();
+        }
+        this._chipSelected = false;
+        this._input.value = '';
+        this._draftInput = '';
+        this._listboxValue = '';
+        for (const option of this.listbox.options) {
+          option.selected = current.includes(option.value);
+        }
+        console.log('_valuesChangedDone', previous, current);
+      }
+    },
+    _chipSelectedChanged(previous, current) {
+      if (!this.multiple) return;
+      const element = this.refs.chips.lastElementChild;
+      if (element) {
+        element.selected = current;
       }
     },
     _listboxValueChanged(previous, current) {
@@ -651,6 +755,11 @@ export default CustomElement
       this._onListboxClickListener = this.onListboxClick.bind(this);
       this._onPopupFocusoutListener = this.onPopupFocusout.bind(this);
       document.addEventListener('DOMContentLoaded', () => this.populateInputFromListbox(), { once: true });
+    },
+    multipleChanged(previous, current) {
+      if (this.listbox) {
+        this.listbox.multiple = current;
+      }
     },
   })
   .html`
@@ -678,28 +787,42 @@ export default CustomElement
       cursor: pointer;
     }
 
-    #chips {
-      order:-1;
-
-      display: flex;
-      align-items: center;
+    #inline[multiple] {
       gap: 8px;
-
-      padding-inline-end: 8px;
-
-      transition: 100ms;
     }
 
-    #chips:empty {
-      padding-inline-end: 0px;
+    mdw-input-chip {
+      align-self: baseline;
+
+    }
+
+    #control[multiple] {
+      align-self: baseline;
+    }
+
+    #chips {
+      display: contents;
+    }
+
+    #inline {
+      flex-wrap: wrap;
     }
 
     #inline:where([filled],[outlined]) {
       padding-inline: 16px;
     }
+
+    #control {
+      flex: 1 1 8ch;
+    }
+
+    #control[is-select][multiple] {
+      flex: 1 1 0px;
+    }
   `
   .recompose(({ refs: { inline, chips } }) => {
     inline.prepend(chips);
+    inline.setAttribute('multiple', '{multiple}');
   })
   .extend((Base) => class Input extends Base {
     /** @type {InstanceType<ReturnType<RippleMixin>>['addRipple']} */

@@ -147,6 +147,7 @@ export default List
     onListboxClick(event) {
       const target = event.target;
       if (!(target instanceof ListOption)) return;
+      event.stopImmediatePropagation();
       event.stopPropagation();
       if (target.disabledState) return;
 

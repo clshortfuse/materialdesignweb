@@ -30,6 +30,13 @@ export default function ControlMixin(Base) {
       _slotMutationObserver: null,
     })
     .methods({
+      /**
+       * Default behavior can be overridden
+       * @param {string} value
+       */
+      _onControlValue(value) {
+        this._value = value;
+      },
       onValueChangingContentAttribute() {
         const control = /** @type {HTMLControlElement} */ (this.refs.control);
 
@@ -40,7 +47,7 @@ export default function ControlMixin(Base) {
           control.setAttribute('value', ''); // Chrome needs to know to reset
         }
         // Changing control attribute may change the value (eg: min/max)
-        this._value = control.value;
+        this._onControlValue(control.value);
       },
       /** @type {HTMLElement['focus']} */
       focus(...options) {
@@ -141,7 +148,7 @@ export default function ControlMixin(Base) {
       },
       constructed() {
         const control = /** @type {HTMLControlElement} */ (this.refs.control);
-        this._value = control.value;
+        this._onControlValue(control.value);
       },
       connected() {
         // Expose this element as focusable
@@ -175,12 +182,12 @@ export default function ControlMixin(Base) {
             // Perform check in case user has validated
             this.checkValidity();
           }
-          this._value = control.value;
+          this._onControlValue(control.value);
         },
         change({ currentTarget }) {
           const control = /** @type {HTMLControlElement} */ (currentTarget);
           this._valueDirty = true;
-          this._value = control.value;
+          this._onControlValue(control.value);
           this.checkValidity();
         },
       },
