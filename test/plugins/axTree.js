@@ -44,7 +44,7 @@ export function* iterateMeaningfulAXNodes(rootAXNode) {
     case 'form':
     case 'grid':
     case 'gridcell':
-    case 'group':
+    // case 'group':
     case 'heading':
     case 'img':
     case 'input':
