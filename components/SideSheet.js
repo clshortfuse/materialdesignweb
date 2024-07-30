@@ -56,7 +56,7 @@ export default CustomElement
     _dragStartX: 'float',
     _translateX: { value: '-100%' },
     _lastChildScrollTime: 'float',
-    onopen: EVENT_HANDLER_TYPE,
+    ontoggle: EVENT_HANDLER_TYPE,
     onclose: EVENT_HANDLER_TYPE,
     autoOpen: {
       type: 'float',
@@ -222,6 +222,7 @@ export default CustomElement
       this._translateX = open ? '0' : (this.inlineEnd ? '100%' : '-100%');
       this._animationEasing = open ? 'ease-in' : 'ease-out';
       this.checkForScrim(true);
+      this.dispatchEvent(new Event('toggle'));
     },
     fixedChanged() {
       this._animationDuration = 0;
