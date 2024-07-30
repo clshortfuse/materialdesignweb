@@ -9,7 +9,8 @@
   "plugins": [
     "stylelint-no-unsupported-browser-features",
     "stylelint-order",
-    "stylelint-use-logical-spec"
+    "stylelint-use-logical-spec",
+    "@stylistic/stylelint-plugin"
   ],
   "overrides": [
     {
@@ -19,8 +20,8 @@
       ],
       "customSyntax": "postcss-jsx",
       "rules": {
-        "indentation": null,
-        "no-eol-whitespace": null
+        "@stylistic/indentation": null,
+        "@stylistic/no-eol-whitespace": null
       }
     }
   ],
@@ -54,15 +55,14 @@
     "property-no-vendor-prefix": null,
     "value-no-vendor-prefix": null,
     "selector-no-qualifying-type": null,
-    "number-no-trailing-zeros": null,
-    "string-quotes": null,
+    "@stylistic/number-no-trailing-zeros": null,
+    "@stylistic/string-quotes": null,
     "font-family-no-missing-generic-family-keyword": null,
-    "color-hex-length": null,
-    "color-hex-case": null,
+    "@stylistic/color-hex-case": null,
     "selector-nested-pattern": "^(\\s+|((:root|&|[a-z0-9A-Z._-])(:not\\([^\\)]*\\))*(\\[[^\\]]*\\])*([^\\s>~+])*)|&::?|[&+~>])*$",
     "no-empty-source": null,
     "block-no-empty": true,
-    "no-extra-semicolons": true,
+    "@stylistic/no-extra-semicolons": true,
     "rule-empty-line-before": [
       "always-multi-line",
       {
@@ -82,20 +82,20 @@
         ]
       }
     ],
-    "no-eol-whitespace": true,
+    "@stylistic/no-eol-whitespace": true,
     "shorthand-property-no-redundant-values": null,
     "selector-max-universal": 0,
-    "selector-attribute-brackets-space-inside": "never",
-    "selector-attribute-operator-space-after": "never",
-    "selector-attribute-operator-space-before": "never",
+    "@stylistic/selector-attribute-brackets-space-inside": "never",
+    "@stylistic/selector-attribute-operator-space-after": "never",
+    "@stylistic/selector-attribute-operator-space-before": "never",
     "selector-attribute-quotes": "always",
-    "selector-combinator-space-after": "always",
-    "selector-combinator-space-before": "always",
-    "selector-descendant-combinator-no-non-space": true,
-    "selector-pseudo-element-case": "lower",
-    "selector-pseudo-class-parentheses-space-inside": "never",
+    "@stylistic/selector-combinator-space-after": "always",
+    "@stylistic/selector-combinator-space-before": "always",
+    "@stylistic/selector-descendant-combinator-no-non-space": true,
+    "@stylistic/selector-pseudo-element-case": "lower",
+    "@stylistic/selector-pseudo-class-parentheses-space-inside": "never",
     "selector-type-case": "lower",
-    "selector-list-comma-space-before": "never",
+    "@stylistic/selector-list-comma-space-before": "never",
     "custom-property-no-missing-var-function": true,
     "declaration-property-value-disallowed-list": [
       {
@@ -116,7 +116,7 @@
       { "message": "Avoid using CSS variables for state since they will traverse down the entire tree" },
       { "message": "Avoid constructing containers on shadowed elements since they will not be exposed to children as their offsetParent" }
     ],
-    "indentation": [
+    "@stylistic/indentation": [
       2,
       {
         "baseIndentLevel": 1,
@@ -125,7 +125,7 @@
       }
     ],
     "no-duplicate-selectors": true,
-    "max-empty-lines": 1,
+    "@stylistic/max-empty-lines": 1,
     "selector-max-compound-selectors": [
       1,
       {
