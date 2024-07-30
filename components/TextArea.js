@@ -283,6 +283,10 @@ export default CustomElement
         max-block-size: calc((var(--max-rows) * var(--line-height)));
       }
 
+      #icon {
+        margin-inline-end: 16px;
+      }
+
       #control[icon] {
         padding-inline-start: 0;
       }
