@@ -22,6 +22,7 @@ import '../components/Headline.js';
 import '../components/Icon.js';
 import '../components/IconButton.js';
 import '../components/Input.js';
+import '../components/InputChip.js';
 import '../components/Label.js';
 import '../components/Root.js';
 import '../components/List.js';
