@@ -258,7 +258,7 @@ export default CustomElement
       if (this.readOnly) return;
       const { _suggestionText, _suggestionValue, _input, multiple, _listbox, _values } = this;
       if (multiple) {
-        const newArray = [..._values.filter(Boolean), _suggestionText];
+        const newArray = [..._values.filter(Boolean), _suggestionValue ?? _suggestionText];
         this._values = [...new Set(newArray)];
       } else {
         this.value = _suggestionValue;
