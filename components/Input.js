@@ -376,8 +376,49 @@ export default CustomElement
       }
     },
     populateInputFromListbox() {
+      if (this.multiple) {
+        const { _values } = this;
+        /** @type {InstanceType<import('./InputChip.js').default>} */
+        let element = this.refs.chips.firstElementChild;
+
+        for (let i = 0; i < _values.length; i++) {
+          const currentValue = _values[i];
+          let foundOption;
+          if (this.listbox) {
+            for (const option of this.listbox.options) {
+              if (option.value === currentValue) {
+                foundOption = option;
+                break;
+              }
+            }
+          }
+
+          element ??= this.refs.chips.appendChild(document.createElement('mdw-input-chip'));
+          element.closeButton = true;
+          element.textContent = foundOption?.label || currentValue;
+          // eslint-disable-next-line unicorn/prefer-add-event-listener
+          element.onclose ??= this.onChipClose.bind(this);
+          element = element.nextElementSibling;
+        }
+        while (element) {
+          const prev = element;
+          element = element.nextElementSibling;
+          prev.remove();
+        }
+        this._chipSelected = false;
+        this._input.value = '';
+        this._draftInput = '';
+        this._listboxValue = '';
+        if (this.listbox) {
+          for (const option of this.listbox.options) {
+            option.selected = _values.includes(option.value);
+          }
+        }
+        return;
+      }
       if (!this._isSelect) return;
       if (!this._listbox) return;
+
       this._listbox.value = this._value;
       const [option] = this._listbox.selectedOptions;
       if (option) {
@@ -690,48 +731,14 @@ export default CustomElement
       if (this.multiple) return; // Handled by _values
       if (this._isSelect) {
         this.populateInputFromListbox();
-      } else if (!this.multiple) {
+      } else {
         this._listboxValue = current;
       }
     },
     _valuesChanged(previous, current) {
       if (this.multiple && current) {
         this._value = current.join(',');
-        /** @type {InstanceType<import('./InputChip.js').default>} */
-        let element = this.refs.chips.firstElementChild;
-
-        for (let i = 0; i < current.length; i++) {
-          const currentValue = current[i];
-          let foundOption;
-          if (this.listbox) {
-            for (const option of this.listbox.options) {
-              if (option.value === currentValue) {
-                foundOption = option;
-                break;
-              }
-            }
-          }
-
-          element ??= this.refs.chips.appendChild(document.createElement('mdw-input-chip'));
-          element.closeButton = true;
-          element.textContent = foundOption?.label || currentValue;
-          // eslint-disable-next-line unicorn/prefer-add-event-listener
-          element.onclose ??= this.onChipClose.bind(this);
-          element = element.nextElementSibling;
-        }
-        while (element) {
-          const prev = element;
-          element = element.nextElementSibling;
-          prev.remove();
-        }
-        this._chipSelected = false;
-        this._input.value = '';
-        this._draftInput = '';
-        this._listboxValue = '';
-        for (const option of this.listbox.options) {
-          option.selected = current.includes(option.value);
-        }
-        console.log('_valuesChangedDone', previous, current);
+        this.populateInputFromListbox();
       }
     },
     _chipSelectedChanged(previous, current) {
@@ -759,6 +766,9 @@ export default CustomElement
     multipleChanged(previous, current) {
       if (this.listbox) {
         this.listbox.multiple = current;
+      }
+      if (current) {
+        this._onSetValue(this._input.value);
       }
     },
   })
