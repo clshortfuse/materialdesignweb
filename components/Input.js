@@ -149,7 +149,7 @@ export default CustomElement
 
       const lowerCase = _draftInput.toLowerCase();
       for (const option of _listbox) {
-        option.hidden = !option.value.toLowerCase().startsWith(lowerCase);
+        option.hidden = !option.label.toLowerCase().startsWith(lowerCase);
       }
     },
     showListbox() {

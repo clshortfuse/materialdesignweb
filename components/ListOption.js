@@ -58,7 +58,7 @@ export default ListItem
     value: {
       get() { return this._value ?? this.textContent; },
       /** @param {string} value */
-      set(value) { this._label = value; },
+      set(value) { this._value = value; },
     },
   })
   .methods({
