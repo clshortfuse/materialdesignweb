@@ -1,6 +1,5 @@
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
-import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 
@@ -12,7 +11,6 @@ import './IconButton.js';
 export default Box
   .extend()
   .mixin(ShapeMixin)
-  .mixin(FormAssociatedMixin) // Tap into FormAssociated for disabledState
   .mixin(DelegatesFocusMixin)
   .mixin(HyperlinkMixin)
   .observe({
@@ -20,6 +18,8 @@ export default Box
     closeButton: 'boolean',
     closeIcon: { empty: 'close' },
     closeInk: { empty: 'inherit' },
+    readOnly: { attr: 'readonly', type: 'boolean' },
+    disabled: 'boolean',
     icon: 'string',
     iconInk: 'string',
     src: 'string',
@@ -36,6 +36,9 @@ export default Box
     hasIcon({ icon, svg, src, svgPath } = this) {
       return icon ?? svg ?? src ?? svgPath;
     },
+    showCloseIcon({ disabled, readOnly, closeButton }) {
+      return closeButton && !disabled && !readOnly;
+    },
   })
   .html`
     <mdw-button
@@ -47,11 +50,11 @@ export default Box
       ping={ping}
       rel={rel}
       hreflang={hreflang}
-      referrerpolicy={referrerPolicy} id=action disabled={disabledState}></mdw-button>
-    <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabledState}
+      referrerpolicy={referrerPolicy} id=action disabled={disabled}></mdw-button>
+    <mdw-icon mdw-if={hasIcon} id=icon ink={iconInk} disabled={disabled}
       outlined={outlined} variation={iconVariation} aria-hidden=true svg={svg} src={src}
       svg-path={svgPath} view-box={viewBox} icon={icon} avatar={avatar}></mdw-icon>
-    <mdw-icon-button role=none disabled={disabledState} tabindex=-1 mdw-if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-icon-button>
+    <mdw-icon-button role=none disabled={disabled} tabindex=-1 mdw-if={showCloseIcon} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-icon-button>
   `
   .css`
     /* https://m3.material.io/components/chips/specs */
@@ -80,7 +83,7 @@ export default Box
       padding-inline-start: calc(4px + (var(--mdw-density) * 2px));
     }
 
-    :host(:where([close-button])) {
+    :host(:where([close-button]:not([disabled]):not([readonly]))) {
       padding-inline-end: calc(8px + 18px + 8px + (var(--mdw-density) * 2px));
     }
 
@@ -117,13 +120,12 @@ export default Box
       --mdw-ink: rgb(var(--mdw-color__on-surface-variant));
     }
 
-    #outline:is([ink],[color]) {
+    #outline:is([ink],[color],[disabled]) {
       /* stylelint-disable-next-line rule-selector-property-disallowed-list */
       --mdw-ink: inherit;
     }
 
-    #slot[disabled],
-    #icon[disabled] {
+    :host([disabled]) {
       color: rgba(var(--mdw-color__on-surface), 0.38);
     }
 
@@ -148,11 +150,12 @@ export default Box
   .recompose(({ refs: { anchor, slot, icon, outline } }) => {
     icon.after(slot);
     anchor.remove();
-    slot.setAttribute('disabled', '{disabledState}');
+    slot.setAttribute('disabled', '{disabled}');
     slot.removeAttribute('ink');
     slot.removeAttribute('color');
     outline.removeAttribute('mdw-if');
     outline.setAttribute('ink', '{ink}');
     outline.setAttribute('color', '{color}');
+    outline.setAttribute('disabled', '{disabled}');
   })
   .autoRegister('mdw-input-chip');

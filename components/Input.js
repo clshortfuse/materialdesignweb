@@ -375,45 +375,55 @@ export default CustomElement
         this.changeSuggestion({ value: this._listboxValue });
       }
     },
-    populateInputFromListbox() {
-      if (this.multiple) {
-        const { _values } = this;
-        /** @type {InstanceType<import('./InputChip.js').default>} */
-        let element = this.refs.chips.firstElementChild;
+    refreshMultiple() {
+      const { _values, multiple } = this;
+      if (!multiple) {
+        this.refs.chips.replaceChildren();
+        return;
+      }
+      /** @type {InstanceType<import('./InputChip.js').default>} */
+      let element = this.refs.chips.firstElementChild;
 
-        for (let i = 0; i < _values.length; i++) {
-          const currentValue = _values[i];
-          let foundOption;
-          if (this.listbox) {
-            for (const option of this.listbox.options) {
-              if (option.value === currentValue) {
-                foundOption = option;
-                break;
-              }
-            }
-          }
-
-          element ??= this.refs.chips.appendChild(document.createElement('mdw-input-chip'));
-          element.closeButton = true;
-          element.textContent = foundOption?.label || currentValue;
-          // eslint-disable-next-line unicorn/prefer-add-event-listener
-          element.onclose ??= this.onChipClose.bind(this);
-          element = element.nextElementSibling;
-        }
-        while (element) {
-          const prev = element;
-          element = element.nextElementSibling;
-          prev.remove();
-        }
-        this._chipSelected = false;
-        this._input.value = '';
-        this._draftInput = '';
-        this._listboxValue = '';
+      for (let i = 0; i < _values.length; i++) {
+        const currentValue = _values[i];
+        let foundOption;
         if (this.listbox) {
           for (const option of this.listbox.options) {
-            option.selected = _values.includes(option.value);
+            if (option.value === currentValue) {
+              foundOption = option;
+              break;
+            }
           }
         }
+
+        element ??= this.refs.chips.appendChild(document.createElement('mdw-input-chip'));
+        element.closeButton = true;
+        element.textContent = foundOption?.label || currentValue;
+        element.textContent = foundOption?.label || currentValue;
+        element.disabled = this.disabled;
+        element.readOnly = this.readOnly;
+        // eslint-disable-next-line unicorn/prefer-add-event-listener
+        element.onclose ??= this.onChipClose.bind(this);
+        element = element.nextElementSibling;
+      }
+      while (element) {
+        const prev = element;
+        element = element.nextElementSibling;
+        prev.remove();
+      }
+      this._chipSelected = false;
+      this._input.value = '';
+      this._draftInput = '';
+      this._listboxValue = '';
+      if (this.listbox) {
+        for (const option of this.listbox.options) {
+          option.selected = _values.includes(option.value);
+        }
+      }
+    },
+    populateInputFromListbox() {
+      if (this.multiple) {
+        this.refreshMultiple();
         return;
       }
       if (!this._isSelect) return;
@@ -495,6 +505,8 @@ export default CustomElement
             break;
           case 'ArrowDown':
           case 'Down':
+            if (this.disabled) return;
+            if (this.readOnly) return;
             this._chipSelected = false;
             if (this.readOnly) return;
             if (event.altKey) {
@@ -506,6 +518,8 @@ export default CustomElement
             break;
           case 'ArrowUp':
           case 'Up':
+            if (this.disabled) return;
+            if (this.readOnly) return;
             if (event.altKey) {
               this.toggleListbox();
               break;
@@ -526,6 +540,8 @@ export default CustomElement
             this.closeListbox();
             break;
           case 'Space':
+            if (this.disabled) return;
+            if (this.readOnly) return;
             if (!this._isSelect) return;
             if (!this._listbox) return;
             if (this._expanded) {
@@ -538,6 +554,8 @@ export default CustomElement
             }
             break;
           case 'Backspace':
+            if (this.disabled) return;
+            if (this.readOnly) return;
             if (!this.multiple) return;
             if (this._isSelect) return;
             if (!this._input.value) {
@@ -738,7 +756,7 @@ export default CustomElement
     _valuesChanged(previous, current) {
       if (this.multiple && current) {
         this._value = current.join(',');
-        this.populateInputFromListbox();
+        this.refreshMultiple();
       }
     },
     _chipSelectedChanged(previous, current) {
@@ -770,6 +788,16 @@ export default CustomElement
       if (current) {
         this._onSetValue(this._input.value);
       }
+    },
+    disabledStateChanged() {
+      this.refreshMultiple();
+      this._chipSelected = false;
+      this.closeListbox();
+    },
+    readOnlyChanged() {
+      this.refreshMultiple();
+      this._chipSelected = false;
+      this.closeListbox();
     },
   })
   .html`
