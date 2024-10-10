@@ -144,6 +144,7 @@ export default ListItem
     #content {
       -webkit-user-select: none;
       user-select: none;
+      pointer-events: none;
     }
     
     #content[selected] {
