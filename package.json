@@ -55,6 +55,7 @@
     "./constants/*": "./constants/*",
     "./components/*": "./components/*",
     "./core/*": "./core/*",
+    "./dom/*": "./dom/*",
     "./loaders/*": "./loaders/*",
     "./mixins/*": "./mixins/*",
     "./services/*": "./services/*",
