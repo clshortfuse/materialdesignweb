@@ -25,6 +25,7 @@ export default List
     /** @type {HTMLCollectionOf<InstanceType<ListOption>>} */
     _selectedOptionsCollection: null,
     _handlingSelectedness: false,
+    _handleFormReset: true,
   })
   .define({
     options() {
@@ -103,7 +104,9 @@ export default List
       this.updateAriaProperty('ariaMultiSelectable', newValue ? 'true' : 'false');
     },
     _formResetChanged(oldValue, newValue) {
-      // TODO: Unset dirty
+      if (!newValue) return;
+      if (!this._handleFormReset) return;
+      this.value = this.defaultValue;
     },
     connected() {
       if (!this.hasAttribute('tabindex')) {

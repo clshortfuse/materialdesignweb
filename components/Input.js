@@ -612,6 +612,7 @@ export default CustomElement
           // Unbind and release
           _listbox.removeEventListener('change', this._onListboxChangeListener);
           _listbox.removeEventListener('click', this._onListboxClickListener);
+          _listbox._handleFormReset = true;
         }
         this._listbox = listbox;
         if (listbox) {
@@ -620,6 +621,7 @@ export default CustomElement
             listbox.required = true; // Don't allow unclick
           }
 
+          _listbox._handleFormReset = false;
           listbox.addEventListener('change', this._onListboxChangeListener);
           listbox.addEventListener('click', this._onListboxChangeListener);
           this.populateInputFromListbox();
