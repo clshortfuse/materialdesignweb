@@ -133,13 +133,12 @@ export default CustomElement
     confirmAutoFocus({ default: d }) { return d === 'confirm'; },
   })
   .html`
-    <div id=prepend>
+    <div id=dialog-inner>
       <mdw-icon mdw-if={icon} id=icon class=content ink=secondary aria-hidden=true icon={icon}></mdw-icon>
       <slot id=headline name=headline on-slotchange={onSlotChange} role=header>{headline}</slot>
       <slot id=fixed name=fixed class=content on-slotchange={onSlotChange}></slot>
       <mdw-divider id=divider-top size={dividers}></mdw-divider>
-    </div>
-    <div id=append>
+      <slot id=content name=content></slot>
       <mdw-divider id=divider-bottom size={dividers}></mdw-divider>
       <slot id=actions name=actions>
         <form method=dialog role=none>
@@ -149,15 +148,17 @@ export default CustomElement
       </slot>
     </div>
   `
-  .recompose(({ refs: { prepend, append, dialog, slot } }) => {
+  .recompose(({ refs: { dialog, dialogInner, content, slot } }) => {
     dialog.setAttribute('aria-labelledby', 'headline');
     dialog.setAttribute('aria-describedby', 'slot');
-    slot.classList.add('content');
 
-    dialog.prepend(...prepend.childNodes);
-    dialog.append(...append.childNodes);
-    prepend.remove();
-    append.remove();
+    // Use content slot as content
+    // Use default slot as padded content
+    slot.classList.add('content');
+    content.append(slot);
+
+    dialog.prepend(...dialogInner.childNodes);
+    dialogInner.remove();
   })
   .css`
     /* https://m3.material.io/components/dialogs/specs */
