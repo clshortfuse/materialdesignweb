@@ -19,6 +19,7 @@ export { default as Headline } from "./components/Headline.js";
 export { default as Icon } from "./components/Icon.js";
 export { default as IconButton } from "./components/IconButton.js";
 export { default as Input } from "./components/Input.js";
+export { default as InputChip } from "./components/InputChip.js";
 export { default as Label } from "./components/Label.js";
 export { default as List } from "./components/List.js";
 export { default as ListItem } from "./components/ListItem.js";

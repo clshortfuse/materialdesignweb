@@ -23,13 +23,13 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     _dialog: HTMLDialogElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    updatePopupPosition(anchor?: Element | DOMRect): void;
+    updatePopupPosition(anchor?: DOMRect | Element): void;
     onSlotChange({ currentTarget }: Event & {
         currentTarget: HTMLSlotElement;
     }): void;
-    showPopup(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
-    showModal(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
-    show(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
+    showPopup(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+    showModal(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+    show(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
     close(returnValue?: any, returnFocus?: boolean): boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
@@ -90,24 +90,196 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     onSlotChange({ currentTarget }: Event & {
         currentTarget: HTMLSlotElement;
     }): void;
-    /**
-     * @param {SubmitEvent & {currentTarget: HTMLFormElement}} event
-     * @return {void}
-     */
-    onFormSubmit(event: SubmitEvent & {
-        currentTarget: HTMLFormElement;
-    }): void;
-    /**
-     * @param {Event & {currentTarget: HTMLFormElement}} event
-     * @return {void}
-     */
-    onFormSlotChange({ currentTarget }: Event & {
-        currentTarget: HTMLFormElement;
-    }): void;
     focus(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    cancelAutoFocus: () => boolean;
-    confirmAutoFocus: () => boolean;
+    cancelAutoFocus: () => ReturnType<({ default: d }: CustomElement & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
+        delegatesFocus: boolean;
+    } & {
+        open: boolean;
+        modal: boolean;
+        native: boolean;
+        scrollable: boolean;
+        matchSourceWidth: boolean;
+        _currentFlow: string;
+        flow: string;
+        popupMargin: number;
+    } & {
+        useHistory: boolean;
+        returnValue: string;
+        _closing: boolean;
+        _useScrim: boolean;
+    } & {
+        _dialog: HTMLDialogElement;
+    } & {
+        updatePopupPosition(anchor?: DOMRect | Element): void;
+        onSlotChange({ currentTarget }: Event & {
+            currentTarget: HTMLSlotElement;
+        }): void;
+        showPopup(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+        showModal(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+        show(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+        close(returnValue?: any, returnFocus?: boolean): boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+    } & {
+        _ariaHidden: never;
+    } & {
+        disabled: boolean;
+        focused: boolean;
+        hovered: boolean;
+        pressed: boolean;
+        _lastInteraction: "key" | "mouse" | "touch" | "pen";
+        _hovered: boolean;
+        _focused: boolean;
+        _focusedSynthetic: boolean;
+        _keyPressed: boolean;
+        _keyReleased: boolean;
+        _pointerPressed: boolean;
+        stateLayer: boolean;
+    } & {
+        disabledState: boolean;
+        hoveredState: boolean;
+        focusedState: boolean;
+        pressedState: boolean;
+        touchedState: boolean;
+        pointedState: boolean;
+    } & {
+        stateTargetElement: HTMLElement;
+    } & {
+        color: string;
+        ink: string;
+        typeStyle: string;
+    } & {
+        shapeTop: boolean;
+        shapeBottom: boolean;
+        shapeStart: boolean;
+        shapeEnd: boolean;
+        shapeStyle: string;
+        outlined: boolean;
+    } & {
+        returnValue: string;
+    } & {
+        dividers: "" | "inset" | "full";
+        headline: string;
+        icon: string;
+        default: string;
+        cancel: string;
+        confirm: string;
+    } & {
+        _anchor: any;
+    } & {
+        flow: string;
+        _useScrim: boolean;
+    } & {
+        /**
+         * @param {Event & {currentTarget: HTMLSlotElement}} event
+         * @return {void}
+         */
+        onSlotChange({ currentTarget }: Event & {
+            currentTarget: HTMLSlotElement;
+        }): void;
+        focus(): void;
+    }) => boolean>;
+    confirmAutoFocus: () => ReturnType<({ default: d }: CustomElement & {
+        _resizeObserverEnabled: boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+        observeResize(): void;
+        unobserveResize(): void;
+    } & {
+        delegatesFocus: boolean;
+    } & {
+        open: boolean;
+        modal: boolean;
+        native: boolean;
+        scrollable: boolean;
+        matchSourceWidth: boolean;
+        _currentFlow: string;
+        flow: string;
+        popupMargin: number;
+    } & {
+        useHistory: boolean;
+        returnValue: string;
+        _closing: boolean;
+        _useScrim: boolean;
+    } & {
+        _dialog: HTMLDialogElement;
+    } & {
+        updatePopupPosition(anchor?: DOMRect | Element): void;
+        onSlotChange({ currentTarget }: Event & {
+            currentTarget: HTMLSlotElement;
+        }): void;
+        showPopup(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+        showModal(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+        show(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+        close(returnValue?: any, returnFocus?: boolean): boolean;
+    } & {
+        onResizeObserved(entry: ResizeObserverEntry): void;
+    } & {
+        _ariaHidden: never;
+    } & {
+        disabled: boolean;
+        focused: boolean;
+        hovered: boolean;
+        pressed: boolean;
+        _lastInteraction: "key" | "mouse" | "touch" | "pen";
+        _hovered: boolean;
+        _focused: boolean;
+        _focusedSynthetic: boolean;
+        _keyPressed: boolean;
+        _keyReleased: boolean;
+        _pointerPressed: boolean;
+        stateLayer: boolean;
+    } & {
+        disabledState: boolean;
+        hoveredState: boolean;
+        focusedState: boolean;
+        pressedState: boolean;
+        touchedState: boolean;
+        pointedState: boolean;
+    } & {
+        stateTargetElement: HTMLElement;
+    } & {
+        color: string;
+        ink: string;
+        typeStyle: string;
+    } & {
+        shapeTop: boolean;
+        shapeBottom: boolean;
+        shapeStart: boolean;
+        shapeEnd: boolean;
+        shapeStyle: string;
+        outlined: boolean;
+    } & {
+        returnValue: string;
+    } & {
+        dividers: "" | "inset" | "full";
+        headline: string;
+        icon: string;
+        default: string;
+        cancel: string;
+        confirm: string;
+    } & {
+        _anchor: any;
+    } & {
+        flow: string;
+        _useScrim: boolean;
+    } & {
+        /**
+         * @param {Event & {currentTarget: HTMLSlotElement}} event
+         * @return {void}
+         */
+        onSlotChange({ currentTarget }: Event & {
+            currentTarget: HTMLSlotElement;
+        }): void;
+        focus(): void;
+    }) => boolean>;
 }, any[]>;
 export default _default;
 import CustomElement from '../core/CustomElement.js';

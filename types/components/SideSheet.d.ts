@@ -12,8 +12,8 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     onConnectAriaValues: Map<string, string>;
     hasFiredConnected: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDescription" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDescription" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
+    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot;
+    updateAriaProperty(name: keyof HTMLElement & keyof ElementInternals, value: string): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
@@ -66,7 +66,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     _dragStartX: number;
     _translateX: string;
     _lastChildScrollTime: number;
-    onopen: EventListener;
+    ontoggle: EventListener;
     onclose: EventListener;
     autoOpen: number;
     autoClose: number;

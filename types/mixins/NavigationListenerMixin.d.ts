@@ -4,5 +4,5 @@
  * Will be supported until Navigation API is widely available
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
-export default function NavigationListenerMixin(Base: typeof import('../core/CustomElement.js').default): typeof import("../core/CustomElement.js").default;
+export default function NavigationListenerMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default;
 //# sourceMappingURL=NavigationListenerMixin.d.ts.map

@@ -23,13 +23,13 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     _dialog: HTMLDialogElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    updatePopupPosition(anchor?: Element | DOMRect): void;
+    updatePopupPosition(anchor?: DOMRect | Element): void;
     onSlotChange({ currentTarget }: Event & {
         currentTarget: HTMLSlotElement;
     }): void;
-    showPopup(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
-    showModal(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
-    show(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
+    showPopup(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+    showModal(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
+    show(source?: MouseEvent | PointerEvent | HTMLElement | Event, focus?: boolean, flow?: string): boolean;
     close(returnValue?: any, returnFocus?: boolean): boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
@@ -68,6 +68,8 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     shapeEnd: boolean;
     shapeStyle: string;
     outlined: boolean;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    elevation: number;
 }, any[]>;
 export default _default;
 import CustomElement from '../core/CustomElement.js';

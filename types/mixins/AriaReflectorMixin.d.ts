@@ -1,5 +1,5 @@
 /** @param {typeof import('../core/CustomElement.js').default} Base */
-export default function AriaReflectorMixin(Base: typeof import('../core/CustomElement.js').default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+export default function AriaReflectorMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     /**

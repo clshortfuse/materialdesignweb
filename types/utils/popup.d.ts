@@ -41,8 +41,8 @@ export function canAnchorPopup(options: CanAnchorPopUpOptions): {
         transformOrigin: string;
     };
     anchor?: Element | DOMRectLike;
-    clientX?: number | 'left' | 'center' | 'right';
-    clientY?: number | 'top' | 'center' | 'bottom';
+    clientX?: number | "left" | "center" | "right";
+    clientY?: number | "top" | "center" | "bottom";
     pageX?: number;
     pageY?: number;
     popup?: Element | {
@@ -63,8 +63,8 @@ export function canAnchorPopup(options: CanAnchorPopUpOptions): {
      * Margin from page
      */
     margin?: number;
-    directionX?: 'left' | 'center' | 'right';
-    directionY?: 'up' | 'center' | 'down';
+    directionX?: "left" | "center" | "right";
+    directionY?: "up" | "center" | "down";
     force?: boolean;
 };
 export type DOMRectLike = {
@@ -77,8 +77,8 @@ export type DOMRectLike = {
 };
 export type CanAnchorPopUpOptions = {
     anchor?: Element | DOMRectLike;
-    clientX?: number | 'left' | 'center' | 'right';
-    clientY?: number | 'top' | 'center' | 'bottom';
+    clientX?: number | "left" | "center" | "right";
+    clientY?: number | "top" | "center" | "bottom";
     pageX?: number;
     pageY?: number;
     popup?: Element | {
@@ -99,8 +99,8 @@ export type CanAnchorPopUpOptions = {
      * Margin from page
      */
     margin?: number;
-    directionX?: 'left' | 'center' | 'right';
-    directionY?: 'up' | 'center' | 'down';
+    directionX?: "left" | "center" | "right";
+    directionY?: "up" | "center" | "down";
     force?: boolean;
 };
 //# sourceMappingURL=popup.d.ts.map

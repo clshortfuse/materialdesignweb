@@ -37,6 +37,7 @@ export default function FormAssociatedMixin(Base: ReturnType<typeof import("./St
     autocomplete: string;
     name: string;
     readOnly: boolean;
+    formNoValidate: boolean;
     defaultChecked: boolean;
     _checkedDirty: boolean;
     _checked: boolean;
@@ -111,11 +112,11 @@ export default function FormAssociatedMixin(Base: ReturnType<typeof import("./St
      * @param {string|FormData} state
      * @param {'autocomplete'|'restore'} mode
      */
-    formStateRestoreCallback(state: string | FormData, mode: 'autocomplete' | 'restore'): void;
+    formStateRestoreCallback(state: string | FormData, mode: "autocomplete" | "restore"): void;
     _updateFormAssociatedValue(): void;
 }, any[]>;
 export type HTMLControlElement = HTMLElement & {
     value: string;
 };
-export type CustomElement = import('../core/CustomElement.js').default;
+export type CustomElement = import("../core/CustomElement.js").default;
 //# sourceMappingURL=FormAssociatedMixin.d.ts.map

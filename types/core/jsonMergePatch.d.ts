@@ -19,7 +19,7 @@ export function applyMergePatch<T1, T2>(target: T1, patch: T2): T1 | T2 | (T1 & 
  * @param {'clone'|'object'|'reference'} [arrayStrategy='reference']
  * @return {any} Patch
  */
-export function buildMergePatch(previous: object | number | string | boolean, current: object | number | string | boolean, arrayStrategy?: 'clone' | 'object' | 'reference'): any;
+export function buildMergePatch(previous: object | number | string | boolean, current: object | number | string | boolean, arrayStrategy?: "clone" | "object" | "reference"): any;
 /**
  * Short-circuited JSON Merge Patch evaluation
  * @template T

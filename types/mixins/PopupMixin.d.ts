@@ -1,7 +1,7 @@
 /**
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
-export default function PopupMixin(Base: typeof import('../core/CustomElement.js').default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
+export default function PopupMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     _resizeObserverEnabled: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
@@ -77,6 +77,6 @@ export type PopupStack = {
     state?: Record<string, any>;
     previousState?: Record<string, any>;
     pendingResizeOperation?: any;
-    scrollRestoration?: (Window & typeof globalThis)['history']['scrollRestoration'];
+    scrollRestoration?: ScrollRestoration;
 };
 //# sourceMappingURL=PopupMixin.d.ts.map

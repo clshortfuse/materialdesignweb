@@ -38,7 +38,7 @@ export type ThemeOptions = {
      * Map()
      */
     custom?: Iterable<[string, string?]>;
-    lightness?: 'auto' | 'light' | 'dark';
+    lightness?: "auto" | "light" | "dark";
 };
 import { TYPOGRAPHY_DEFAULT } from '../constants/typography.js';
 import { SHAPE_ROUNDED_DEFAULT } from '../constants/shapes.js';

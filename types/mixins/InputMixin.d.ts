@@ -37,6 +37,7 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
     autocomplete: string;
     name: string;
     readOnly: boolean;
+    formNoValidate: boolean;
     defaultChecked: boolean;
     _checkedDirty: boolean;
     _checked: boolean;
@@ -75,7 +76,7 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
     setCustomValidity(error: string): void;
     _notifyRadioChange(key: string, value: string): void;
     refreshFormAssociation(): void;
-    formAssociatedCallback(form: HTMLFormElement): void;
+    formAssociatedCallback(form: HTMLFormElement | null): void;
     formIPCEvent(event: CustomEvent<[string, string]>): void;
     formDisabledCallback(disabled: boolean): void;
     formResetCallback(): void;
@@ -90,6 +91,7 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
     controlVoidElement: boolean;
     _slotMutationObserver: any;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    _onControlValue(value: string): void;
     onValueChangingContentAttribute(): void;
     focus(options?: FocusOptions): void;
     click(): void;
@@ -110,7 +112,6 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
     _formAction: string;
     formEnctype: string;
     formMethod: string;
-    formNoValidate: boolean;
     formTarget: string;
     _height: number;
     _indeterminate: boolean;
@@ -125,6 +126,8 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
     src: string;
     step: string;
     _width: number;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    _useFormImplicitSubmission: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _input: HTMLInputElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
@@ -151,7 +154,7 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
     /** @type {HTMLInputElement['setRangeText']} */
     setRangeText(replacement: string, start: number, end: number, selectionMode?: SelectionMode): void;
     /** @type {HTMLInputElement['setSelectionRange']} */
-    setSelectionRange(start: number, end: number, direction?: "none" | "forward" | "backward"): void;
+    setSelectionRange(start: number | null, end: number | null, direction?: "forward" | "backward" | "none"): void;
     /** @type {HTMLInputElement['showPicker']} */
     showPicker(): void;
     /** @type {HTMLInputElement['stepDown']} */
@@ -171,6 +174,6 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
     formAction: string;
     width: number;
 }, any[]>;
-export type DeprecatedHTMLInputElementProperties = 'align' | 'useMap';
-export type CustomElement = import('../core/CustomElement.js').default;
+export type DeprecatedHTMLInputElementProperties = "align" | "useMap";
+export type CustomElement = import("../core/CustomElement.js").default;
 //# sourceMappingURL=InputMixin.d.ts.map

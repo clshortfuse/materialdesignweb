@@ -43,9 +43,9 @@ export default function TooltipTriggerMixin(Base: ReturnType<typeof import("./St
 }, any[]> & import("../core/CustomElement.js").Class<{
     cancelShowTooltip(): void;
     /** @param {'mouse'|'touch'|'keyboard'} type */
-    scheduleHideTooltip(type: 'mouse' | 'touch' | 'keyboard'): void;
+    scheduleHideTooltip(type: "mouse" | "touch" | "keyboard"): void;
     /** @param {'mouse'|'touch'|'keyboard'} type */
-    scheduleShowTooltip(type: 'mouse' | 'touch' | 'keyboard'): void;
+    scheduleShowTooltip(type: "mouse" | "touch" | "keyboard"): void;
     showTooltip(): void;
     hideTooltip(cancelSchedule?: boolean): void;
     /**
@@ -63,8 +63,8 @@ export type Tooltip = typeof import("../index.js").CustomElement & import("../co
     onConnectAriaValues: Map<string, string>;
     hasFiredConnected: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    readAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDescription" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role"): string | ShadowRoot;
-    updateAriaProperty(name: "shadowRoot" | "ariaAtomic" | "ariaAutoComplete" | "ariaBusy" | "ariaChecked" | "ariaColCount" | "ariaColIndex" | "ariaColSpan" | "ariaCurrent" | "ariaDescription" | "ariaDisabled" | "ariaExpanded" | "ariaHasPopup" | "ariaHidden" | "ariaInvalid" | "ariaKeyShortcuts" | "ariaLabel" | "ariaLevel" | "ariaLive" | "ariaModal" | "ariaMultiLine" | "ariaMultiSelectable" | "ariaOrientation" | "ariaPlaceholder" | "ariaPosInSet" | "ariaPressed" | "ariaReadOnly" | "ariaRequired" | "ariaRoleDescription" | "ariaRowCount" | "ariaRowIndex" | "ariaRowSpan" | "ariaSelected" | "ariaSetSize" | "ariaSort" | "ariaValueMax" | "ariaValueMin" | "ariaValueNow" | "ariaValueText" | "role", value: string): void;
+    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot;
+    updateAriaProperty(name: keyof HTMLElement & keyof ElementInternals, value: string): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
@@ -99,7 +99,7 @@ export type Tooltip = typeof import("../index.js").CustomElement & import("../co
     shapeStyle: string;
     outlined: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _ariaRole: string; /** @type {any} */
+    _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     open: boolean;
 }, any[]>;

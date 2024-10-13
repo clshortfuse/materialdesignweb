@@ -39,6 +39,7 @@ export default function ControlMixin(Base: ReturnType<typeof import("./StateMixi
     autocomplete: string;
     name: string;
     readOnly: boolean;
+    formNoValidate: boolean;
     defaultChecked: boolean;
     _checkedDirty: boolean;
     _checked: boolean;
@@ -77,7 +78,7 @@ export default function ControlMixin(Base: ReturnType<typeof import("./StateMixi
     setCustomValidity(error: string): void;
     _notifyRadioChange(key: string, value: string): void;
     refreshFormAssociation(): void;
-    formAssociatedCallback(form: HTMLFormElement): void;
+    formAssociatedCallback(form: HTMLFormElement | null): void;
     formIPCEvent(event: CustomEvent<[string, string]>): void;
     formDisabledCallback(disabled: boolean): void;
     formResetCallback(): void;
@@ -92,6 +93,11 @@ export default function ControlMixin(Base: ReturnType<typeof import("./StateMixi
     controlVoidElement: boolean;
     _slotMutationObserver: any;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /**
+     * Default behavior can be overridden
+     * @param {string} value
+     */
+    _onControlValue(value: string): void;
     onValueChangingContentAttribute(): void;
     /** @type {HTMLElement['focus']} */
     focus(options?: FocusOptions): void;
@@ -112,7 +118,7 @@ export default function ControlMixin(Base: ReturnType<typeof import("./StateMixi
 }, any[]> & import("../core/CustomElement.js").Class<{
     _computedAriaLabelledby: never;
 }, any[]>;
-export type CustomElement = import('../core/CustomElement.js').default;
-export type DeprecatedHTMLInputElementProperties = 'align' | 'useMap';
+export type CustomElement = import("../core/CustomElement.js").default;
+export type DeprecatedHTMLInputElementProperties = "align" | "useMap";
 export type HTMLControlElement = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 //# sourceMappingURL=ControlMixin.d.ts.map

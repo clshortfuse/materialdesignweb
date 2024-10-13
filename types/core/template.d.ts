@@ -22,7 +22,7 @@ export function addInlineFunction(fn: (data: Partial<any>) => any): string;
  * @param  {...(string|DocumentFragment|Element|((this:T1, data:T2) => any))} substitutions
  * @return {DocumentFragment}
  */
-export function html<T1, T2>(strings: TemplateStringsArray, ...substitutions: (string | Element | DocumentFragment | ((this: T1, data: T2) => any))[]): DocumentFragment;
+export function html<T1, T2>(strings: TemplateStringsArray, ...substitutions: (string | DocumentFragment | Element | ((this: T1, data: T2) => any))[]): DocumentFragment;
 /** @type {Map<string, InlineFunctionEntry<?>>} */
 export const inlineFunctions: Map<string, InlineFunctionEntry<unknown>>;
 export type RenderOptions<T> = {

@@ -89,5 +89,4 @@ export type Ripple = typeof import("../index.js").CustomElement & import("../cor
     updatePosition(x?: number, y?: number, size?: number): void;
     handleRippleComplete(): void;
 }, any[]>;
-import Ripple from '../components/Ripple.js';
 //# sourceMappingURL=RippleMixin.d.ts.map

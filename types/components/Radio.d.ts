@@ -33,6 +33,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     autocomplete: string;
     name: string;
     readOnly: boolean;
+    formNoValidate: boolean;
     defaultChecked: boolean;
     _checkedDirty: boolean;
     _checked: boolean;
@@ -71,7 +72,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     setCustomValidity(error: string): void;
     _notifyRadioChange(key: string, value: string): void;
     refreshFormAssociation(): void;
-    formAssociatedCallback(form: HTMLFormElement): void;
+    formAssociatedCallback(form: HTMLFormElement | null): void;
     formIPCEvent(event: CustomEvent<[string, string]>): void;
     formDisabledCallback(disabled: boolean): void;
     formResetCallback(): void;
@@ -86,6 +87,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     controlVoidElement: boolean;
     _slotMutationObserver: any;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    _onControlValue(value: string): void;
     onValueChangingContentAttribute(): void;
     focus(options?: FocusOptions): void;
     click(): void;
@@ -106,7 +108,6 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     _formAction: string;
     formEnctype: string;
     formMethod: string;
-    formNoValidate: boolean;
     formTarget: string;
     _height: number;
     _indeterminate: boolean;
@@ -121,6 +122,8 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     src: string;
     step: string;
     _width: number;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    _useFormImplicitSubmission: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _input: HTMLInputElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
@@ -137,7 +140,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     setRangeText(replacement: string): void;
     setRangeText(replacement: string, start: number, end: number, selectionMode?: SelectionMode): void;
-    setSelectionRange(start: number, end: number, direction?: "none" | "forward" | "backward"): void;
+    setSelectionRange(start: number | null, end: number | null, direction?: "forward" | "backward" | "none"): void;
     showPicker(): void;
     stepDown(n?: number): void;
     stepUp(n?: number): void;
@@ -153,31 +156,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     formAction: string;
     width: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _lastRippleWeakRef: WeakRef<CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
-            styles: {
-                minHeight: string;
-                minWidth: string;
-                boxShadow: string;
-                top: string;
-                left: string;
-            };
-        };
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    }>;
+    _lastRippleWeakRef: WeakRef<InstanceType<import("../mixins/RippleMixin.js").Ripple>>;
     _rippleAdded: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _lastRipple: CustomElement & {
@@ -206,31 +185,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         handleRippleComplete(): void;
     };
 }, any[]> & import("../core/CustomElement.js").Class<{
-    addRipple(x?: number, y?: number, hold?: boolean): CustomElement & {
-        hadRippleHeld: boolean;
-        hadRippleReleased: boolean;
-        rippleStarted: boolean;
-    } & {
-        rippleState: string;
-        keepAlive: boolean;
-        _positionX: number;
-        _positionY: number;
-        _radius: number;
-        holdRipple: boolean;
-    } & {
-        _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
-            styles: {
-                minHeight: string;
-                minWidth: string;
-                boxShadow: string;
-                top: string;
-                left: string;
-            };
-        };
-    } & {
-        updatePosition(x?: number, y?: number, size?: number): void;
-        handleRippleComplete(): void;
-    };
+    addRipple(x?: number, y?: number, hold?: boolean): InstanceType<Ripple>;
 }, any[]> & import("../core/CustomElement.js").Class<{
     color: string;
     ink: string;
