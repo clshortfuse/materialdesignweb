@@ -18,13 +18,26 @@ export const EVENT_HANDLER_TYPE = {
       this[name] = null;
       return;
     }
-    // Assign to temp element, allow it to parse and then copy result.
-    // Let browser parse instead of using eval()
-    // CSP Violations will be thrown by browser on failure and result in `null`
-    const button = document.createElement('button');
-    button.setAttribute('onclick', newValue);
-    const fn = button.onclick;
-    button.remove();
+    let fn;
+    try {
+      // Use eval to include scope
+      // https://blog.ltgt.net/html-event-handlers/
+      const scopedCode = 'with(this.ownerDocument ?? document){'
+      + 'with(this.form ?? {}){'
+      + `with(this){${newValue}}`
+      + '}'
+      + '}';
+      // eslint-disable-next-line no-new-func
+      fn = new Function(`return function ${name}(event){${scopedCode}}`)();
+    } catch {
+      // Assign to temp element, allow it to parse and then copy result.
+      // Let browser parse instead of using eval()
+      // CSP Violations will be thrown by browser on failure and result in `null`
+      const button = (this.ownerDocument ?? document).createElement('button');
+      button.setAttribute('onclick', newValue);
+      fn = button.onclick;
+    }
+
     this[name] = fn;
   },
   propChangedCallback(name, oldValue, newValue) {
