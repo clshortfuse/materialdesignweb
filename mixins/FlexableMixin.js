@@ -10,13 +10,13 @@ export default function FlexableMixin(Base) {
       x: {
         type: 'string',
         empty: 'start',
-        /** @type {'start'|'center'|'end'|'between'|'around'|'stretch'} */
+        /** @type {'start'|'center'|'end'|'between'|'around'|'stretch'|'baseline'} */
         value: 'start',
       },
       y: {
         type: 'string',
         empty: 'start',
-        /** @type {'start'|'center'|'end'|'between'|'around'|'stretch'} */
+        /** @type {'start'|'center'|'end'|'between'|'around'|'stretch'|'baseline'} */
         value: 'start',
       },
       gap: 'float',
@@ -68,6 +68,10 @@ export default function FlexableMixin(Base) {
 
       :host(:is([row][y="around"], [x="around"]:not([row]))) {
         align-items: space-around;
+      }
+
+      :host(:is([row][y="baseline"], [x="baseline"]:not([row]))) {
+        align-items: baseline;
       }
 
       :host(:is([row][y="stretch"], [x="stretch"]:not([row]))) {
