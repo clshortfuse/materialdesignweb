@@ -1150,7 +1150,18 @@ export default class Composition {
         defaultValue,
         search,
       };
-      text.data = typeof defaultValue === 'string' ? defaultValue : '';
+      switch (typeof defaultValue) {
+        case 'string':
+          text.data = defaultValue;
+          break;
+        case 'number':
+          // Manually coerce to string (0 will be empty otherwise)
+          text.data = `${defaultValue}`;
+          break;
+        default:
+          text.data = '';
+          break;
+      }
     } else if (subnode) {
       action = {
         nodeIndex: this._interpolationState.nodeIndex,
