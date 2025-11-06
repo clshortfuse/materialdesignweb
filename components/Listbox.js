@@ -20,9 +20,9 @@ export default List
   })
   .set({
     _ariaRole: 'listbox',
-    /** @type {HTMLCollectionOf<InstanceType<ListOption>> & HTMLOptionsCollection} */
+    /** @type {HTMLCollectionOf<InstanceType<typeof ListOption>> & HTMLOptionsCollection} */
     _optionsCollection: null,
-    /** @type {HTMLCollectionOf<InstanceType<ListOption>>} */
+    /** @type {HTMLCollectionOf<InstanceType<typeof ListOption>>} */
     _selectedOptionsCollection: null,
     _handlingSelectedness: false,
     _handleFormReset: true,
@@ -30,9 +30,12 @@ export default List
   .define({
     options() {
       if (!this._optionsCollection) {
+        // eslint-disable-next-line operator-linebreak
+        const collection = /** @type {HTMLCollectionOf<InstanceType<typeof ListOption>>} */
+          (this.getElementsByTagName(ListOption.elementName));
         this._optionsCollection = constructHTMLOptionsCollectionProxy({
           host: this,
-          collection: this.getElementsByTagName(ListOption.elementName),
+          collection,
           OptionConstructor: ListOption,
           GroupConstructor: ListOption,
         });
@@ -40,12 +43,12 @@ export default List
       return this._optionsCollection;
     },
 
-    /** @return {HTMLCollectionOf<InstanceType<ListOption>>} */
+    /** @return {HTMLCollectionOf<InstanceType<typeof ListOption>>} */
     selectedOptions() {
       // eslint-disable-next-line no-return-assign
       return (this._selectedOptionsCollection
         ??= (
-          /** @type {HTMLCollectionOf<InstanceType<ListOption>>} */
+          /** @type {HTMLCollectionOf<InstanceType<typeof ListOption>>} */
           (this.getElementsByClassName('mdw-list-option__selected')))
       );
     },
@@ -131,12 +134,12 @@ export default List
     },
     /**
      * @param {number} index
-     * @return {ListOption|null}
+     * @return {InstanceType<typeof ListOption>|null}
      */
     item(index) { return this.options[index]; },
     /**
      * @param {string} name ID of ListOption
-     * @return {ListOption|null}
+     * @return {InstanceType<typeof ListOption>|null}
      */
     namedItem(name) {
       for (const option of this.options) {
@@ -152,17 +155,19 @@ export default List
       if (!(target instanceof ListOption)) return;
       event.stopImmediatePropagation();
       event.stopPropagation();
-      if (target.disabledState) return;
+
+      const listOption = /** @type {InstanceType<ListOption>} */ (target);
+      if (listOption.disabledState) return;
 
       let sendUpdateNotifications = false;
       this._handlingSelectedness = true;
 
       // Perform unselect
-      if (target.selected) {
+      if (listOption.selected) {
         // Unselect condition
         if (!this.required || (this.multiple && this.selectedOptions.length > 1)) {
           sendUpdateNotifications = true;
-          target.selected = false;
+          listOption.selected = false;
         }
       } else {
         if (!this.multiple) {
@@ -172,7 +177,7 @@ export default List
           }
         }
 
-        target.selected = true;
+        listOption.selected = true;
         sendUpdateNotifications = true;
       }
 
@@ -203,7 +208,7 @@ export default List
       if (this.multiple) return;
       if (this._handlingSelectedness) return;
 
-      const target = /** @type {InstanceType<ListOption>} */ (/** @type {unknown} */ (event.target));
+      const target = /** @type {InstanceType<typeof ListOption>} */ (event.target);
       if (target.selected) return;
       this._handlingSelectedness = true;
 

@@ -9,7 +9,7 @@ export default function SemiStickyMixin(Base: typeof import("../core/CustomEleme
     _scrollListenerLastScroll: number;
     _scrollListenerLastResize: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _scroller: WeakRef<EventTarget>;
+    _scroller: WeakRef<HTMLElement | Window>;
     _scrollerScrollListener: EventListener;
     _scrollerResizeListener: EventListener;
     _scrollDebounce: any;
@@ -34,6 +34,7 @@ export default function SemiStickyMixin(Base: typeof import("../core/CustomEleme
     _semiStickyMeasured: boolean;
     stickyAlways: boolean;
     stickyParent: boolean;
+    useSticky: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _refreshSemiStickyMetrics(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{

@@ -14,12 +14,15 @@ export default TopAppBar
     kbdNav: { empty: 'false' },
   })
   .define({
-    /** @return {HTMLInputElement} */
-    input() { return this.refs.input; },
+    input() {
+      return /** @type {HTMLInputElement} */ (this.refs.input).value;
+    },
     value: {
-      get() { return this.refs.input.value; },
+      get() {
+        return /** @type {HTMLInputElement} */ (this.refs.input).value;
+      },
       set(value) {
-        this.refs.input.value = value;
+        /** @type {HTMLInputElement} */ (this.refs.input).value = value;
       },
     },
   })

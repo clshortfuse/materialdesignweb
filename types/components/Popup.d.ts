@@ -20,10 +20,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     returnValue: string;
     _closing: boolean;
     _useScrim: boolean;
+    _source: MouseEvent | PointerEvent | HTMLElement | Event;
+    _anchor: MouseEvent | PointerEvent | HTMLElement | Event;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _dialog: HTMLDialogElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    updatePopupPosition(anchor?: DOMRect | Element): void;
+    _ariaHidden: never;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    updatePopupPosition(anchor?: DOMRectLike | Element): void;
     onSlotChange({ currentTarget }: Event & {
         currentTarget: HTMLSlotElement;
     }): void;
@@ -33,8 +37,6 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     close(returnValue?: any, returnFocus?: boolean): boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
-}, any[]> & import("../core/CustomElement.js").Class<{
-    _ariaHidden: never;
 }, any[]> & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;

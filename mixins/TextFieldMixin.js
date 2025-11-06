@@ -113,8 +113,11 @@ export default function TextFieldMixin(Base) {
       inline.prepend(control);
     })
     .on({
+      // @ts-ignore TODO: Missing observable size property
       sizeChanged(oldValue, newValue) {
-        this.refs.control.style.setProperty('--size', `${newValue}ch`);
+        // @ts-ignore TODO: Missing {this} context
+        const control = /** @type {HTMLElement} */ (this.refs.control);
+        control.style.setProperty('--size', `${newValue}ch`);
       },
     })
     .css`

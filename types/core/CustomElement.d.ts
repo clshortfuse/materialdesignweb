@@ -19,18 +19,18 @@ export default class CustomElement extends HTMLElement {
     static _props: Map<string, import("./observe.js").ObserverConfiguration<unknown, unknown, unknown>>;
     /** @type {Map<string, import('./observe.js').ObserverConfiguration<?,?,?>>} */
     static _attrs: Map<string, import("./observe.js").ObserverConfiguration<unknown, unknown, unknown>>;
-    /** @type {Map<string, Function[]>} */
-    static _propChangedCallbacks: Map<string, Function[]>;
-    /** @type {Map<string, Function[]>} */
-    static _attributeChangedCallbacks: Map<string, Function[]>;
-    /** @type {((callback: CallbackArguments) => any)[]} */
-    static _onComposeCallbacks: ((callback: CallbackArguments) => any)[];
-    /** @type {((callback: CallbackArguments) => any)[]} */
-    static _onConnectedCallbacks: ((callback: CallbackArguments) => any)[];
-    /** @type {((callback: CallbackArguments) => any)[]} */
-    static _onDisconnectedCallbacks: ((callback: CallbackArguments) => any)[];
-    /** @type {((callback: CallbackArguments) => any)[]} */
-    static _onConstructedCallbacks: ((callback: CallbackArguments) => any)[];
+    /** @type {Map<string, Array<(this: any, ...args: any[]) => any>>} */
+    static _propChangedCallbacks: Map<string, Array<(this: any, ...args: any[]) => any>>;
+    /** @type {Map<string, Array<(this: any, ...args: any[]) => any>>} */
+    static _attributeChangedCallbacks: Map<string, Array<(this: any, ...args: any[]) => any>>;
+    /** @type {Array<(callback: CallbackArguments) => any>} */
+    static _onComposeCallbacks: Array<(callback: CallbackArguments) => any>;
+    /** @type {Array<(callback: CallbackArguments) => any>} */
+    static _onConnectedCallbacks: Array<(callback: CallbackArguments) => any>;
+    /** @type {Array<(callback: CallbackArguments) => any>} */
+    static _onDisconnectedCallbacks: Array<(callback: CallbackArguments) => any>;
+    /** @type {Array<(callback: CallbackArguments) => any>} */
+    static _onConstructedCallbacks: Array<(callback: CallbackArguments) => any>;
     static interpolatesTemplate: boolean;
     static supportsElementInternals: boolean;
     static supportsElementInternalsRole: boolean;
@@ -158,12 +158,12 @@ export default class CustomElement extends HTMLElement {
      * @template {typeof CustomElement} T
      * @template {keyof T} K
      * @param {K} collection
-     * @param {T[K] extends (infer R)[] ? R : never} callback
+     * @param {Function} callback
      */
-    static _addCallback<T extends typeof CustomElement, K extends keyof T>(this: T, collection: K, callback: T[K] extends (infer R)[] ? R : never): void;
+    static _addCallback<T extends typeof CustomElement, K extends keyof T>(this: T, collection: K, callback: Function): void;
     static append<T extends typeof CustomElement>(this: T, ...parts: ConstructorParameters<typeof Composition<InstanceType<T>>>): T;
-    static recompose<T1 extends typeof CustomElement, T2 extends InstanceType<T1>, T3 extends CompositionCallback<T2, T2>["composed"]>(this: T1, callback: T3): T1;
-    static css<T1 extends typeof CustomElement, T2 extends TemplateStringsArray | HTMLStyleElement | CSSStyleSheet | string>(this: T1, array: T2, ...rest: T2 extends string ? any : T2 extends TemplateStringsArray ? any[] : (HTMLStyleElement | CSSStyleSheet)[]): T1;
+    static recompose<T1 extends (typeof CustomElement), T2 extends InstanceType<T1>, T3 extends CompositionCallback<T2, T2>["composed"]>(this: T1, callback: T3): T1;
+    static css<T1 extends (typeof CustomElement), T2 extends TemplateStringsArray | HTMLStyleElement | CSSStyleSheet | string>(this: T1, array: T2, ...rest: T2 extends string ? any : T2 extends TemplateStringsArray ? any[] : (HTMLStyleElement | CSSStyleSheet)[]): T1;
     static autoRegister<T extends typeof CustomElement>(this: T, elementName: string): T;
     static html<T extends typeof CustomElement>(this: T, string: TemplateStringsArray, ...substitutions: (string | Element | ((this: InstanceType<T>, data: InstanceType<T>, injections?: any) => any))[]): T;
     static extend<T1 extends typeof CustomElement, T2 extends T1, T3 extends (Base: T1) => T2>(this: T1, customExtender?: T3 | null): T3 extends null ? T1 : T2;
@@ -174,8 +174,8 @@ export default class CustomElement extends HTMLElement {
     static register<T extends typeof CustomElement>(this: T, elementName?: string, force?: boolean): T;
     static get propList(): Map<string, import("./observe.js").ObserverConfiguration<any, any, any, any>>;
     static get attrList(): Map<string, import("./observe.js").ObserverConfiguration<any, any, any, any>>;
-    static get propChangedCallbacks(): Map<string, Function[]>;
-    static get attributeChangedCallbacks(): Map<string, Function[]>;
+    static get propChangedCallbacks(): Map<string, ((this: any, ...args: any[]) => any)[]>;
+    static get attributeChangedCallbacks(): Map<string, ((this: any, ...args: any[]) => any)[]>;
     static prop<CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, KEY extends string, OPTIONS extends ObserverPropertyType | ObserverOptions<ObserverPropertyType, unknown, INSTANCE> | ((this: INSTANCE, data: Partial<INSTANCE>, fn?: () => any) => any), VALUE extends Record<KEY, OPTIONS extends (...args2: any[]) => infer R ? R : OPTIONS extends ObserverPropertyType ? import("./observe").ParsedObserverPropertyType<OPTIONS> : OPTIONS extends {
         type: "object";
     } & ObserverOptions<any, infer R> ? (unknown extends R ? object : R) : OPTIONS extends {
@@ -189,7 +189,7 @@ export default class CustomElement extends HTMLElement {
         get?: ((this: INSTANCE) => any);
         set?: (this: INSTANCE, value: any) => void;
     } | ((this: INSTANCE, ...args: any[]) => any); }, VALUE extends { [KEY in keyof PROPS]: PROPS[KEY] extends (...args2: any[]) => infer R ? R : PROPS[KEY] extends TypedPropertyDescriptor<infer R> ? R : never; }>(this: CLASS, props: PROPS & ThisType<PROPS & INSTANCE>): CLASS & Class<VALUE, ARGS>;
-    static undefine(name: any): typeof CustomElement;
+    static undefine<CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROP extends string, PROPS extends INSTANCE & Record<PROP, never>>(this: CLASS, name: PROP): CLASS & Class<PROPS, ARGS>;
     static observe<CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends IDLParameter<INSTANCE & VALUE>, VALUE extends { [KEY in keyof PROPS]: PROPS[KEY] extends (...args2: any[]) => infer R ? R : PROPS[KEY] extends ObserverPropertyType ? import("./observe").ParsedObserverPropertyType<PROPS[KEY]> : PROPS[KEY] extends {
         type: "object";
     } & ObserverOptions<any, infer R> ? (unknown extends R ? object : R) : PROPS[KEY] extends {
@@ -223,9 +223,7 @@ export default class CustomElement extends HTMLElement {
      * @param {any} data
      * @return {void}
      */
-    render: Function & {
-        target: Element;
-    };
+    render: import("./Composition.js").RenderDraw<any>;
     propChangedCallback<T extends CustomElement, K extends string = string>(this: T, name: K, oldValue: K extends keyof T ? T[K] : unknown, newValue: K extends keyof T ? T[K] : unknown, changes?: K extends keyof T ? T[K] extends object ? Partial<T[K]> : T[K] : unknown): void;
     /**
      * @param {string} name
@@ -240,6 +238,7 @@ export default class CustomElement extends HTMLElement {
      * @param {any} changes
      */
     _onObserverPropertyChanged(name: string, oldValue: any, newValue: any, changes: any): void;
+    /** @param {any} patch */
     patch(patch: any): void;
     patching: boolean;
     /**
@@ -251,16 +250,20 @@ export default class CustomElement extends HTMLElement {
     get attributeCache(): Map<any, any>;
     get static(): typeof CustomElement;
     get unique(): boolean;
+    /**
+     * @template {CustomElement} T
+     * @this {T}
+     */
     get callbackArguments(): CallbackArguments<any, any> | {
         composition: Composition<any>;
         refs: Record<string, HTMLElement>;
         html: any;
         inline: typeof addInlineFunction;
         template: DocumentFragment;
-        element: this;
+        element: T;
     };
     /** @return {Composition<?>} */
-    get composition(): Composition<any>;
+    get composition(): Composition<unknown>;
     connectedCallback(): void;
     disconnectedCallback(): void;
     delegatesFocus: boolean;

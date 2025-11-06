@@ -1,9 +1,22 @@
 import { createEmptyComment } from './optimizations.js';
 
 /**
+ * @template T
+ * @typedef {import('./Composition.js').default<T>} Composition
+ */
+
+/**
+ * @template T
+ * @typedef {import('./Composition.js').RenderOptions<T>} RenderOptions
+ */
+
+/**
+ * @template T
  * @typedef {Object} DomAdapterCreateOptions
  * @prop {Comment} anchorNode
  * @prop {(...args:any[]) => HTMLElement} [create]
+ * @prop {Composition<T>} composition
+ * @prop {RenderOptions<T>} renderOptions
  */
 
 /**
@@ -16,8 +29,9 @@ import { createEmptyComment } from './optimizations.js';
  * @prop {Comment} [comment]
  */
 
+/** @template T */
 export default class CompositionAdapter {
-  /** @param {DomAdapterCreateOptions} options */
+  /** @param {DomAdapterCreateOptions<T>} options */
   constructor(options) {
     this.anchorNode = options.anchorNode;
 
@@ -37,11 +51,10 @@ export default class CompositionAdapter {
      */
     this.needsArrayKeyFastPath = false;
 
+    /** @type {Composition<T>} */
     this.composition = options.composition;
+    /** @type {RenderOptions<T>} */
     this.renderOptions = options.renderOptions;
-
-    this.pendingRemoves = [];
-    // Batch objects
 
     /** @type {Map<any, ItemMetadata>} */
     this.metadataCache = null;
@@ -55,6 +68,11 @@ export default class CompositionAdapter {
     this.batchEndIndex = null;
   }
 
+  /**
+   * @param {Partial<T>} changes
+   * @param {T} data
+   * @return {import('./Composition.js').RenderDraw<T>}
+   */
   render(changes, data) {
     return this.composition.render(changes, data, this.renderOptions);
   }
@@ -66,7 +84,7 @@ export default class CompositionAdapter {
 
   writeBatch() {
     if (!this.queuedElements.length) return;
-    /** @type {Comment|Element} */
+    /** @type {Comment|Element|Document} */
     const previousSibling = this.metadata[this.batchStartIndex - 1]?.domNode ?? this.anchorNode;
     previousSibling.after(...this.queuedElements);
     this.queuedElements.length = 0;
@@ -226,7 +244,7 @@ export default class CompositionAdapter {
     }
 
     const render = this.render(changes, data);
-    const element = render.target;
+    const element = /** @type {Element} */ (render.target);
 
     this.metadata[newIndex] = {
       render,

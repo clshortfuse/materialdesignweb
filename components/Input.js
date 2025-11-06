@@ -12,6 +12,8 @@ import Popup from './Popup.js';
 
 /** @typedef {import('./Listbox.js').default} Listbox */
 
+/** @typedef {import('../mixins/RippleMixin.js').default} RippleMixin */
+
 /** @type {InstanceType<import('./Popup.js').default>} */
 let sharedPopup;
 
@@ -86,7 +88,7 @@ export default CustomElement
     _onPopupFocusoutListener: null,
     _suggestionText: '',
     _suggestionValue: '',
-    /** @type {HTMLOptionElement} */
+    /** @type {Pick<HTMLOptionElement, 'label'|'value'|'selected'>} */
     _suggestionOption: null,
   })
   .define({
@@ -203,7 +205,7 @@ export default CustomElement
       }
     },
     /**
-     * @param {{label:string, value:string}} option
+     * @param {Pick<HTMLOptionElement, 'label'|'value'|'selected'>} option
      * @return {void}
      */
     suggestOption(option) {
@@ -381,8 +383,7 @@ export default CustomElement
         this.refs.chips.replaceChildren();
         return;
       }
-      /** @type {InstanceType<import('./InputChip.js').default>} */
-      let element = this.refs.chips.firstElementChild;
+      let element = /** @type {InstanceType<import('./InputChip.js').default>} */ (this.refs.chips.firstElementChild);
 
       for (let i = 0; i < _values.length; i++) {
         const currentValue = _values[i];
@@ -396,7 +397,7 @@ export default CustomElement
           }
         }
 
-        element ??= this.refs.chips.appendChild(document.createElement('mdw-input-chip'));
+        element ??= /** @type {InstanceType<import('./InputChip.js').default>} */ (this.refs.chips.appendChild(document.createElement('mdw-input-chip')));
         element.closeButton = true;
         element.textContent = foundOption?.label || currentValue;
         element.textContent = foundOption?.label || currentValue;
@@ -404,11 +405,11 @@ export default CustomElement
         element.readOnly = this.readOnly;
         // eslint-disable-next-line unicorn/prefer-add-event-listener
         element.onclose ??= this.onChipClose.bind(this);
-        element = element.nextElementSibling;
+        element = /** @type {InstanceType<import('./InputChip.js').default>} */ (element.nextElementSibling);
       }
       while (element) {
         const prev = element;
-        element = element.nextElementSibling;
+        element = /** @type {InstanceType<import('./InputChip.js').default>} */ (element.nextElementSibling);
         prev.remove();
       }
       this._chipSelected = false;
@@ -436,7 +437,9 @@ export default CustomElement
         this._draftInput = option.label;
       }
     },
+    /** @param {CloseEvent & {currentTarget: HTMLElement}} event */
     onChipClose({ currentTarget }) {
+      /** @type {Node} */
       let prev = currentTarget;
       let elementIndex = 0;
       while ((prev = prev.previousSibling)) {
@@ -601,8 +604,7 @@ export default CustomElement
        */
       slotchange({ currentTarget }) {
         if (this._expanded) return;
-        /** @type {InstanceType<Listbox>[]} */
-        const [listbox] = currentTarget.assignedElements();
+        const [listbox] = /** @type {InstanceType<Listbox>[]} */ (currentTarget.assignedElements());
         const _listbox = this._listbox;
         if (_listbox === listbox) {
           // Internal already matches
@@ -763,7 +765,7 @@ export default CustomElement
     },
     _chipSelectedChanged(previous, current) {
       if (!this.multiple) return;
-      const element = this.refs.chips.lastElementChild;
+      const element = /** @type {HTMLOptionElement} */ (this.refs.chips.lastElementChild);
       if (element) {
         element.selected = current;
       }
@@ -867,7 +869,9 @@ export default CustomElement
   .extend((Base) => class Input extends Base {
     /** @type {InstanceType<ReturnType<RippleMixin>>['addRipple']} */
     addRipple(...args) {
+      // @ts-ignore TODO: Fix invalid cast
       if (!this.active) return null;
+      // @ts-ignore TODO: Fix invalid cast
       return super.addRipple(...args);
     }
   })

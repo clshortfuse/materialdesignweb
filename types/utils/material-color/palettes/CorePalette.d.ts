@@ -19,7 +19,7 @@ export default class CorePalette {
      * @param {CorePaletteColors} colors
      * @return {CorePalette}
      */
-    static "__#2@#createPaletteFromColors"(content: boolean, colors: CorePaletteColors): CorePalette;
+    static "__#private@#createPaletteFromColors"(content: boolean, colors: CorePaletteColors): CorePalette;
     /**
      * @param {number} argb ARGB representation of a color
      * @return {CorePalette}

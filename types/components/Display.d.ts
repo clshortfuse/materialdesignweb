@@ -15,11 +15,11 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
 }, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    onConnectAriaValues: Map<string, string>;
+    onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
     hasFiredConnected: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot;
-    updateAriaProperty(name: keyof HTMLElement & keyof ElementInternals, value: string): void;
+    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot | Element | readonly Element[];
+    updateAriaProperty<K extends StringKeyOfARIAMixin<keyof ARIAMixin>>(name: K, value: ARIAMixin[K]): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     block: boolean;
     inline: boolean;

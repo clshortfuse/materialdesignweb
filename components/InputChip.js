@@ -144,7 +144,8 @@ export default Box
   })
   .on({
     selectedChanged(previous, current) {
-      this.refs.action._focused = current;
+      const action = /** @type {InstanceType<typeof import('./Button.js').default>} */ (this.refs.action);
+      action._focused = current;
     },
   })
   .recompose(({ refs: { anchor, slot, icon, outline } }) => {

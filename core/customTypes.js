@@ -4,7 +4,7 @@ import { attrNameFromPropName } from './dom.js';
 
 /**
  * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
- * @type {import('./observe.js').ObserverOptions<'function',EventListener, unknown>}
+ * @type {import('./observe.js').ObserverOptions<'function',EventListener, CustomElement>}
  */
 export const EVENT_HANDLER_TYPE = {
   type: 'function',
@@ -15,6 +15,7 @@ export const EVENT_HANDLER_TYPE = {
     if (oldValue == null && newValue == null) return;
     // Must continue even if oldValue === newValue;
     if (newValue == null) {
+      // @ts-expect-error Can't verify key
       this[name] = null;
       return;
     }
@@ -38,6 +39,7 @@ export const EVENT_HANDLER_TYPE = {
       fn = button.onclick;
     }
 
+    // @ts-expect-error Can't verify key
     this[name] = fn;
   },
   propChangedCallback(name, oldValue, newValue) {
@@ -51,23 +53,23 @@ export const EVENT_HANDLER_TYPE = {
   },
 };
 
-const weakRefValues = new WeakMap();
+// const weakRefValues = new WeakMap();
 
-/**
- * @type {import('./observe.js').ObserverOptions<'object',HTMLElement>}
- */
-export const WEAKREF_TYPE = {
-  type: 'object',
-  reflect: false,
-  value: null,
-  parser(v) { return new WeakRef(v); },
-  get() {
-    if (weakRefValues.has(this)) {
-      return weakRefValues.get(this).deref();
-    }
-    return undefined;
-  },
-};
+// /**
+//  * @type {import('./observe.js').ObserverOptions<'object',HTMLElement>}
+//  */
+// export const WEAKREF_TYPE = {
+//   type: 'object',
+//   reflect: false,
+//   value: null,
+//   parser(v) { return new WeakRef(v); },
+//   get() {
+//     if (weakRefValues.has(this)) {
+//       return weakRefValues.get(this).deref();
+//     }
+//     return undefined;
+//   },
+// };
 
 /**
  * @typedef {Object} ElementStylerOptions
@@ -88,8 +90,10 @@ const queuedPropsByElement = new WeakMap();
 const previousAnimationsByElement = new WeakMap();
 
 /**
- * @param {string} name
- * @this {CustomElement}
+ * @template {CustomElement} T
+ * @template {keyof T & string} K
+ * @param {K} name
+ * @this {T & Record<K, ElementStylerOptions|null>}
  */
 function elementStylerMicrotaskCallback(name) {
   const previousAnimations = previousAnimationsByElement.get(this);

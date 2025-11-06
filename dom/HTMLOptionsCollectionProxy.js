@@ -5,8 +5,8 @@
  * @param {Object} options
  * @param {HTMLElement} options.host
  * @param {HTMLCollectionOf<T1>} options.collection
- * @param {typeof T1} options.OptionConstructor
- * @param {typeof T2} options.GroupConstructor
+ * @param {new (...args: any[]) => T1} options.OptionConstructor
+ * @param {new (...args: any[]) => T2} options.GroupConstructor
  * @return {HTMLCollectionOf<T1> & HTMLOptionsCollection}
  */
 export function constructHTMLOptionsCollectionProxy({ host, collection, OptionConstructor, GroupConstructor }) {
@@ -67,6 +67,7 @@ export function constructHTMLOptionsCollectionProxy({ host, collection, OptionCo
         case 'remove':
           return remove;
         default:
+          // @ts-ignore Use default behavior
           return target[p];
       }
     },
@@ -88,7 +89,7 @@ export function constructHTMLOptionsCollectionProxy({ host, collection, OptionCo
       }
       const currentSize = collection.length;
       while (index > collection.length) {
-        add(new OptionConstructor());
+        add(new OptionConstructor()); // ← revert to constructor usage
       }
       if (index === currentSize) {
         if (newValue != null) {
@@ -102,5 +103,6 @@ export function constructHTMLOptionsCollectionProxy({ host, collection, OptionCo
       }
     },
   });
+  // @ts-ignore Typescript doesn't parse proxies well
   return newCollection;
 }

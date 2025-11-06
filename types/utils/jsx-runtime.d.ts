@@ -1,13 +1,13 @@
 /** eslint-env browser */
-export const Fragment: "$FRAGMENT";
+export const FRAGMENT_TAG: "$FRAGMENT";
 /**
  * @param {string} tagName
- * @param {{ children?: DocumentFragment|string }} attrs
+ * @param {{ children?: DocumentFragment|string } & Record<string, any>} attrs
  * @return {HTMLElement|DocumentFragment}
  */
 export function jsx(tagName: string, attrs?: {
     children?: DocumentFragment | string;
-}): HTMLElement | DocumentFragment;
+} & Record<string, any>): HTMLElement | DocumentFragment;
 /**
  * @param {string} tagName
  * @param {Record<string, any> & { children: HTMLElement[], style:string|CSSStyleDeclaration }} attrs

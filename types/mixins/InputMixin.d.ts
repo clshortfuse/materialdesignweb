@@ -149,19 +149,12 @@ export default function InputMixin(Base: ReturnType<typeof import("./StateMixin.
     /** @param {MouseEvent} event */
     _handleInputClick(event: MouseEvent): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    /** @type {HTMLInputElement['setRangeText']} */
     setRangeText(replacement: string): void;
-    /** @type {HTMLInputElement['setRangeText']} */
     setRangeText(replacement: string, start: number, end: number, selectionMode?: SelectionMode): void;
-    /** @type {HTMLInputElement['setSelectionRange']} */
     setSelectionRange(start: number | null, end: number | null, direction?: "forward" | "backward" | "none"): void;
-    /** @type {HTMLInputElement['showPicker']} */
     showPicker(): void;
-    /** @type {HTMLInputElement['stepDown']} */
     stepDown(n?: number): void;
-    /** @type {HTMLInputElement['stepUp']} */
     stepUp(n?: number): void;
-    /** @type {HTMLInputElement['select']} */
     select(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     files: FileList;

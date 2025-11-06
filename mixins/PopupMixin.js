@@ -7,10 +7,12 @@ import ResizeObserverMixin from './ResizeObserverMixin.js';
 
 const supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 
+/** @typedef {import('../utils/popup.js').DOMRectLike} DOMRectLike */
+
 /**
  * @typedef {Object} PopupStack
- * @prop {Element} element
- * @prop {Element} previousFocus
+ * @prop {InstanceType<ReturnType<typeof PopupMixin>>} element
+ * @prop {HTMLElement} previousFocus
  * @prop {boolean} [centered=false]
  * @prop {Record<string, any>} [state]
  * @prop {Record<string, any>} [previousState]
@@ -95,15 +97,22 @@ export default function PopupMixin(Base) {
       returnValue: '',
       _closing: false,
       _useScrim: false,
+      /** @type {MouseEvent|PointerEvent|HTMLElement|Event} */
+      _source: null,
+      /** @type {MouseEvent|PointerEvent|HTMLElement|Event} */
+      _anchor: null,
     })
     .define({
       _dialog() {
         return /** @type {HTMLDialogElement} */ (this.refs.dialog);
       },
     })
+    .expressions({
+      _ariaHidden({ open }) { return (open ? 'false' : 'true'); },
+    })
     .methods({
       /**
-       * @param {DOMRect|Element} [anchor]
+       * @param {DOMRectLike|Element} [anchor]
        * @return {void}
        */
       updatePopupPosition(anchor = this._anchor) {
@@ -121,7 +130,7 @@ export default function PopupMixin(Base) {
         Object.assign(layoutElement.style, { width: 'auto', height: 'auto' });
 
         const width = (anchor && this.matchSourceWidth)
-          ? anchor.clientWidth
+          ? /** @type {Element} */ (anchor).clientWidth
           : 56 * Math.ceil(layoutElement.clientWidth / 56);
 
         layoutElement.style.setProperty('width', `${width}px`);
@@ -197,8 +206,7 @@ export default function PopupMixin(Base) {
          * - Open from center           9i             █·
          */
 
-        /** @type {import('../utils/popup.js').CanAnchorPopUpOptions[]} */
-        const preferences = [
+        const preferences = /** @type {import('../utils/popup.js').CanAnchorPopUpOptions[]} */ ([
           ((flow ?? 'corner') === 'corner') ? [
             { clientY: 'bottom', clientX: xStart },
             { clientY: 'bottom', clientX: xEnd },
@@ -228,7 +236,7 @@ export default function PopupMixin(Base) {
           ((flow ?? 'center') === 'center') ? [
             { clientY: 'center', clientX: 'center', directionX: 'center', directionY: 'center' },
           ] : [],
-        ].flat();
+        ].flat());
 
         let anchorResult;
         for (const preference of preferences) {
@@ -290,7 +298,9 @@ export default function PopupMixin(Base) {
           scrim.remove();
         }
 
-        const previousFocus = source instanceof HTMLElement ? source : document.activeElement;
+        const previousFocus = source instanceof HTMLElement
+          ? source
+          : /** @type {HTMLElement} */(document.activeElement);
 
         if (supportsHTMLDialogElement && focus // Calling show will force focus which is not intended for non-modals
           && !this._dialog.open) {
@@ -301,6 +311,7 @@ export default function PopupMixin(Base) {
 
         // Short first, then move
         // Native modals can fail update bounds on Chrome
+        // @ts-ignore `updatePopupPosition` has runtime check
         this.updatePopupPosition(source);
 
         let newState;
@@ -407,7 +418,8 @@ export default function PopupMixin(Base) {
           // Closing a native dialog will return focus automatically.
           this._dialog.close();
           if (!attemptFocus(previousFocus, { preventScroll: true })) {
-            document.activeElement?.blur?.();
+            const currentlyFocused = /** @type {SVGElement|HTMLElement} */ (document.activeElement);
+            currentlyFocused?.blur?.();
           }
         } else {
           this._dialog.returnValue = returnValue;
@@ -467,9 +479,6 @@ export default function PopupMixin(Base) {
         if (!this.open || this._closing) return;
         this.updatePopupPosition();
       },
-    })
-    .expressions({
-      _ariaHidden({ open }) { return (open ? 'false' : 'true'); },
     })
     .html`
       <mdw-scrim id=scrim tabindex=-1 aria-hidden=true></mdw-scrim>

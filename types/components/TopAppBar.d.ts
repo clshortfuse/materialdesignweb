@@ -7,7 +7,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     _scrollListenerLastScroll: number;
     _scrollListenerLastResize: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _scroller: WeakRef<EventTarget>;
+    _scroller: WeakRef<HTMLElement | Window>;
     _scrollerScrollListener: EventListener;
     _scrollerResizeListener: EventListener;
     _scrollDebounce: any;
@@ -32,6 +32,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     _semiStickyMeasured: boolean;
     stickyAlways: boolean;
     stickyParent: boolean;
+    useSticky: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _refreshSemiStickyMetrics(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
@@ -47,11 +48,11 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    onConnectAriaValues: Map<string, string>;
+    onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
     hasFiredConnected: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot;
-    updateAriaProperty(name: keyof HTMLElement & keyof ElementInternals, value: string): void;
+    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot | Element | readonly Element[];
+    updateAriaProperty<K extends StringKeyOfARIAMixin<keyof ARIAMixin>>(name: K, value: ARIAMixin[K]): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     kbdNav: string;
     _kbdFocusable: boolean;

@@ -27,11 +27,11 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    onConnectAriaValues: Map<string, string>;
+    onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
     hasFiredConnected: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot;
-    updateAriaProperty(name: keyof HTMLElement & keyof ElementInternals, value: string): void;
+    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot | Element | readonly Element[];
+    updateAriaProperty<K extends StringKeyOfARIAMixin<keyof ARIAMixin>>(name: K, value: ARIAMixin[K]): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     density: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
@@ -54,6 +54,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     closeIcon: string;
     closeInk: string;
     onaction: EventListener;
+    ontoggle: EventListener;
 }, any[]> & import("../core/CustomElement.js").Class<{
     close(): Promise<void>;
     show(): void;

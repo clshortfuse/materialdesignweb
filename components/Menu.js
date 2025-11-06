@@ -85,6 +85,7 @@ export default CustomElement
     }
   `
   .methods({
+    /** @param {Parameters<InstanceType<ReturnType<PopupMixin>>['showPopup']>} args */
     showModal(...args) {
       this._useScrim = true;
       const result = this.showPopup(...args);
@@ -107,16 +108,17 @@ export default CustomElement
   })
   .events({
     'mdw-menu-item:cascade'(event) {
-      const menuItem = event.target;
-      const subMenuId = event.detail;
+      const menuItem = /** @type {HTMLElement} */ (event.target);
+      const subMenuId = /** @type {CustomEvent<string>} */ (event).detail;
       event.stopPropagation();
 
-      const submenu = this.getRootNode().getElementById(subMenuId);
+      const root = /** @type {DocumentFragment|Document} */ (this.getRootNode());
+      const submenu = /** @type {typeof this} */ (root.getElementById(subMenuId));
       this.submenu = submenu;
       submenu.cascade(menuItem);
     },
     'mdw-menu-item:cascader-blur'() {
-      const submenu = this.submenu;
+      const submenu = /** @type {typeof this} */ (this.submenu);
       if (!submenu) return;
       // Wait for focus event (if mouse focus on sub menu item)
       queueMicrotask(() => {

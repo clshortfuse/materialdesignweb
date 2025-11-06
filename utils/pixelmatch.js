@@ -24,12 +24,14 @@ const DEFAULT_OPTIONS = {
   /** opacity of original image in diff output */
   alpha: 0.1,
   /* color of anti-aliased pixels in diff output */
+  /** @type {[number,number,number]} */
   aaColor: [255, 255, 0],
+  /** @type {[number,number,number]} */
   diffColor: [255, 0, 0], // color of different pixels in diff output
   /**
    * whether to detect dark on light differences between img1 and img2 and set
    * an alternative color to differentiate between the two
-   * @type {Array<number>}
+   * @type {[number,number,number]}
    */
   diffColorAlt: null,
   /** draw the diff over a transparent background (a mask) */
@@ -41,12 +43,13 @@ const DEFAULT_OPTIONS = {
  */
 function isPixelData(arr) {
   // work around instanceof Uint8Array not working properly in some Jest environments
-  return ArrayBuffer.isView(arr) && arr.constructor.BYTES_PER_ELEMENT === 1;
+  // @ts-ignore Bad typings
+  return ArrayBuffer.isView(arr) && (arr).constructor.BYTES_PER_ELEMENT === 1;
 }
 
 /**
  * Check if a pixel has 3+ adjacent pixels of the same color.
- * @param {Array<number>} img
+ * @param {ArrayLike<number>} img
  * @param {number} x1
  * @param {number} y1
  * @param {number} width
@@ -137,8 +140,8 @@ function yiqFromRGB(red, green, blue) {
  * calculate color difference according to the paper "Measuring perceived color
  * difference using YIQ NTSC transmission color space in mobile applications"
  * by Y. Kotsarenko and F. Ramos
- * @param {Array<number>} img1
- * @param {Array<number>} img2
+ * @param {ArrayLike<number>} img1
+ * @param {ArrayLike<number>} img2
  * @param {number} k
  * @param {number} m
  * @param {boolean} [yOnly]
@@ -222,12 +225,12 @@ function drawGrayPixel(source, index, alpha, destination) {
  *
  * Based on "Anti-aliased Pixel and Intensity Slope Detector" paper by V.
  * Vysniauskas, 2009
- * @param {Array<number>} img
+ * @param {ArrayLike<number>} img
  * @param {number} x1
  * @param {number} y1
  * @param {number} width
  * @param {number} height
- * @param {Array<number>} img2
+ * @param {ArrayLike<number>} img2
  */
 function antialiased(img, x1, y1, width, height, img2) {
   const x0 = Math.max(x1 - 1, 0);

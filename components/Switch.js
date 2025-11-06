@@ -97,12 +97,14 @@ export default CustomElement
 
       // this._isHoveringThumb = true;
 
-      let currentValue = this.refs.switch.dragValue;
+      const switchIcon = /** @type {InstanceType<import('./SwitchIcon.js').default>} */ (this.refs.switch);
+
+      let currentValue = switchIcon.dragValue;
       if (currentValue == null) {
         currentValue = this.checked ? 1 : 0;
       }
       const pixels = offsetX - (clientWidth / 2);
-      const currentPixels = this.refs.switch.clientWidth - (this.refs.switch.clientHeight);
+      const currentPixels = switchIcon.clientWidth - (switchIcon.clientHeight);
       // console.log(pixels, currentPixels, currentPixels * currentValue, pixels / currentPixels);
       const newRatio = pixels / currentPixels;
       const newValue = Math.max(Math.min(currentValue + newRatio, 1), 0);

@@ -21,6 +21,7 @@ export default ListItem
   .observe({
     // ListOption.prototype._form = ListOption.prop('_form');
     _label: { attr: 'label', reflect: true, nullParser: String },
+    _text: { attr: 'text', reflect: true, nullParser: String },
     defaultSelected: { attr: 'selected', reflect: true, type: 'boolean' },
     _selected: 'boolean',
     _value: { attr: 'value', reflect: true },
@@ -48,8 +49,16 @@ export default ListItem
   .define({
     index() { return this._index; },
     form() { return /** @type {HTMLInputElement} */ (this.parentElement)?.form; },
+    text: {
+      // Incomplete
+      get() { return this._text ?? this.textContent; },
+      /** @param {string} value */
+      set(value) {
+        this._text = value;
+      },
+    },
     label: {
-      get() { return this._label ?? this.textContent; },
+      get() { return this._label ?? this._text ?? this.textContent; },
       /** @param {string} value */
       set(value) {
         this._label = value;

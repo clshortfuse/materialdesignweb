@@ -8,17 +8,22 @@
  * @return {T1|T2|(T1 & T2)}
  */
 export function applyMergePatch(target, patch) {
+  // @ts-ignore Runtime check
   if (target === patch) return target;
   if (target == null || patch == null || typeof patch !== 'object') return patch;
   if (typeof target !== 'object') {
+    // @ts-ignore Forced cast to object
     target = {};
   }
   for (const [key, value] of Object.entries(patch)) {
     if (value == null) {
+      // @ts-ignore Runtime check
       if (key in target) {
+        // @ts-ignore T1 is always object
         delete target[key];
       }
     } else {
+      // @ts-ignore T1 is forced object
       target[key] = applyMergePatch(target[key], value);
     }
   }
@@ -55,20 +60,24 @@ export function buildMergePatch(previous, current, arrayStrategy = 'reference') 
     }
     for (const [index, value] of current.entries()) {
       if (value === null) {
+        // @ts-ignore patch is ArrayLike
         patch[index] = null;
         continue;
       }
       if (value == null) {
         continue; // Skip undefined
       }
+      // @ts-ignore previous is ArrayLike
       const changes = buildMergePatch(previous[index], value, arrayStrategy);
       if (changes !== null) {
+        // @ts-ignore patch is ArrayLike
         patch[index] = changes;
       }
     }
     // for (let i = current.length; i < previous.length; i++) {
     //   patch[i] = null;
     // }
+    // @ts-ignore previous is ArrayLike
     if (current.length !== previous.length) {
       patch.length = current.length;
     }
@@ -79,20 +88,23 @@ export function buildMergePatch(previous, current, arrayStrategy = 'reference') 
   for (const [key, value] of Object.entries(current)) {
     previousKeys.delete(key);
     if (value === null) {
+      // @ts-ignore patch is Object
       patch[key] = null;
       continue;
     }
     if (value == null) {
       continue; // Skip undefined
     }
+    // @ts-ignore previous is Object
     const changes = buildMergePatch(previous[key], value, arrayStrategy);
     if (changes !== null) {
+      // @ts-ignore patch is Object
       patch[key] = changes;
     }
   }
   for (const key of previousKeys) {
+    // @ts-ignore patch is Object
     patch[key] = null;
-    console.log('removing', key);
   }
 
   return patch;
@@ -113,9 +125,11 @@ export function hasMergePatch(target, patch) {
   }
   for (const [key, value] of Object.entries(patch)) {
     if (value == null) {
+      // @ts-ignore Runtime check
       if (key in target) {
         return true;
       }
+    // @ts-ignore T is object
     } else if (hasMergePatch(target[key], value)) {
       return true;
     }

@@ -22,40 +22,40 @@ import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
  * @template {Object} [C=any]
  * @typedef {Object} ObserverOptions
  * @prop {T1} [type]
+ * @prop {boolean} [enumerable]
+ * @prop {boolean|'write'|'read'} [reflect]
  * @prop {string} [attr]
  * @prop {boolean} [readonly]
- * @prop {boolean} [enumerable]
  * Defaults to false if type is boolean
  * @prop {boolean} [nullable]
  * @prop {T2} [empty]
  * @prop {T2} [value]
- * @prop {WeakMap<C,T2>} [values]
- * @prop {boolean|'write'|'read'} [reflect]
+ * @prop {(this:C, data:Partial<C>, fn?: () => T2) => T2} [get]
  * Function used when null passed
- * @prop {(this:C, value:null|undefined)=>T2} [nullParser]
  * @prop {(this:C, value:any)=>T2} [parser]
+ * @prop {(this:C, value:null|undefined)=>T2} [nullParser]
+ * @prop {(this:C, value: T2, fn?:(value2: T2) => any) => any} [set]
  * Function used when comparing
  * @prop {(this:C, a:T2, b:T2)=> any} [diff]
  * @prop {(this:C, a:T2, b:T2)=>boolean} [is]
- * @prop {(this:C, data:Partial<C>, fn?: () => T2) => T2} [get]
- * @prop {(this:C, value: T2, fn?:(value2: T2) => any) => any} [set]
  * Simple callback
  * @prop {(this:C, oldValue:T2, newValue:T2, changes:any)=>any} [changedCallback]
  * Named callback
  * @prop {(this:C, name:string, oldValue: T2, newValue: T2, changes:any) => any} [propChangedCallback]
  * Attribute callback
- * @prop  {(this:C, name:string, oldValue: string, newValue: string) => any} [attributeChangedCallback]
+ * @prop  {(this:C, name:keyof C & string, oldValue: string, newValue: string) => any} [attributeChangedCallback]
+ * @prop {[keyof C & string, (this:C, ...args:any[]) => any][]} [watchers]
+ * @prop {Set<keyof C & string>} [props]
+ * @prop {WeakMap<C,T2>} [values]
  * @prop {WeakMap<C, T2>} [computedValues]
- * @prop {[keyof C, (this:C, ...args:any[]) => any][]} [watchers]
  * @prop {WeakSet<C>} [needsSelfInvalidation]
- * @prop {Set<keyof C>} [props]
  */
 
 /**
  * @template {ObserverPropertyType} T1
  * @template {any} [T2=any]
- * @template {string} [K=string]
  * @template {Object} [C=any]
+ * @template {keyof C & string} [K=any]
  * @typedef {ObserverOptions<T1, T2, C> & { key: K, values?: WeakMap<C, T2>; attrValues?: WeakMap<C, string> }} ObserverConfiguration
  */
 
@@ -234,14 +234,18 @@ export function observeFunction(fn, ...args) {
   };
 }
 
+/** @return {null} */
+function defaultNullParser() { return null; }
+
 /**
  * @template {string} K
  * @template {ObserverPropertyType} [T1=any]
  * @template {any} [T2=ParsedObserverPropertyType<T1>]
+ * @template {Object} [C=any]
  * @param {K} name
  * @param {T1|ObserverOptions<T1,T2>} [typeOrOptions='string']
  * @param {any} [object]
- * @return {ObserverConfiguration<T1,T2,K> & ObserverOptions<T1,T2>}
+ * @return {ObserverConfiguration<T1,T2,C,K> & ObserverOptions<T1,T2,C>}
  */
 export function parseObserverOptions(name, typeOrOptions, object) {
   /** @type {Partial<ObserverOptions<T1,T2>>} */
@@ -295,13 +299,14 @@ export function parseObserverOptions(name, typeOrOptions, object) {
   }
 
   enumerable ??= name[0] !== '_';
-  reflect ??= enumerable ? type !== 'object' : (attr ? 'write' : false);
-  attr ??= (reflect ? attrNameFromPropName(name) : null);
   nullable ??= (type === 'boolean') ? false : (empty == null);
   if (!nullable) {
     empty ??= emptyFromType(type);
     value ??= empty;
   }
+
+  reflect ??= enumerable ? (type !== 'object') : (attr ? 'write' : false);
+  attr ??= (reflect ? attrNameFromPropName(name) : null);
 
   // if defined ? value
   // else if boolean ? false
@@ -310,7 +315,7 @@ export function parseObserverOptions(name, typeOrOptions, object) {
   parser ??= defaultParserFromType(type);
   if (!nullParser) {
     if (nullable) {
-      nullParser = () => null;
+      nullParser = defaultNullParser;
     } else {
       nullParser = (empty === null)
         ? () => emptyFromType(type)
@@ -340,7 +345,9 @@ export function parseObserverOptions(name, typeOrOptions, object) {
     parser,
     nullParser,
     key: name,
+    // @ts-ignore Can't cast
     props,
+    // @ts-ignore Can't cast
     watchers,
   };
 }
@@ -354,6 +361,7 @@ export function parsePropertyValue(value) {
   newValue = value == null
     ? this.nullParser.call(this, value)
     : this.parser.call(this, newValue);
+  return newValue;
 }
 
 /**
@@ -414,17 +422,16 @@ function detectChange(config, oldValue, value) {
 /**
  * @template {ObserverPropertyType} T1
  * @template {any} T2
- * @template {string} K
- * @template [C=any]
+ * @template {Object} C
+ * @template {keyof C & string} K
  * @param {C} object
  * @param {K} key
  * @param {ObserverOptions<T1, T2, C>} options
- * @return {ObserverConfiguration<T1,T2,K,C>}
+ * @return {ObserverConfiguration<T1,T2,C,K>}
  */
 export function defineObservableProperty(object, key, options) {
-  /** @type {ObserverConfiguration<T1,T2,K,C>} */
-  // @ts-ignore
-  const config = parseObserverOptions(key, options, object);
+  const config = /** @type {ObserverConfiguration<T1,T2,C,K>} */ (
+    parseObserverOptions(key, options, object));
 
   /**
    * @this {C}
@@ -469,6 +476,7 @@ export function defineObservableProperty(object, key, options) {
   function cachedGet() {
     const newValue = config.get.call(this, this, internalGet.bind(this));
     // Store computed value internally. Used by onInvalidate to get previous value
+    // eslint-disable-next-line no-multi-assign
     const computedValues = (config.computedValues ??= new WeakMap());
     computedValues.set(this, newValue);
     return newValue;

@@ -13,9 +13,9 @@ declare namespace DEFAULT_OPTIONS {
     let threshold: number;
     let includeAA: boolean;
     let alpha: number;
-    let aaColor: number[];
-    let diffColor: number[];
-    let diffColorAlt: Array<number>;
+    let aaColor: [number, number, number];
+    let diffColor: [number, number, number];
+    let diffColorAlt: [number, number, number];
     let diffMask: boolean;
 }
 export {};

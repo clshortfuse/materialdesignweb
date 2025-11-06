@@ -1,12 +1,8 @@
 /**
  * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
- * @type {import('./observe.js').ObserverOptions<'function',EventListener, unknown>}
+ * @type {import('./observe.js').ObserverOptions<'function',EventListener, CustomElement>}
  */
-export const EVENT_HANDLER_TYPE: import("./observe.js").ObserverOptions<"function", EventListener, unknown>;
-/**
- * @type {import('./observe.js').ObserverOptions<'object',HTMLElement>}
- */
-export const WEAKREF_TYPE: import("./observe.js").ObserverOptions<"object", HTMLElement>;
+export const EVENT_HANDLER_TYPE: import("./observe.js").ObserverOptions<"function", EventListener, CustomElement>;
 /** @type {import('./observe.js').ObserverOptions<'object',ElementStylerOptions, CustomElement>} */
 export const ELEMENT_ANIMATION_TYPE: import("./observe.js").ObserverOptions<"object", ElementStylerOptions, CustomElement>;
 /** @type {import('./observe.js').ObserverOptions<'string',string, CustomElement>} */

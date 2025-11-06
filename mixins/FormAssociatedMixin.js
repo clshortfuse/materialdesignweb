@@ -317,9 +317,11 @@ export default function FormAssociatedMixin(Base) {
           }
           case 'select-multiple': {
             const formData = new FormData();
-            if (this.name) {
-              for (const option of this.selectedOptions) {
-                formData.append(this.name, option.value);
+            // eslint-disable-next-line unicorn/no-this-assignment, @typescript-eslint/no-this-alias
+            const selectElement = /** @type {HTMLSelectElement} */ (/** @type {unknown} */ (this));
+            if (selectElement.name) {
+              for (const option of selectElement.selectedOptions) {
+                formData.append(selectElement.name, option.value);
               }
             }
             this.elementInternals.setFormValue(formData);

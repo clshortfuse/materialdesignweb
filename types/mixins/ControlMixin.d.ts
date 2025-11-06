@@ -99,7 +99,6 @@ export default function ControlMixin(Base: ReturnType<typeof import("./StateMixi
      */
     _onControlValue(value: string): void;
     onValueChangingContentAttribute(): void;
-    /** @type {HTMLElement['focus']} */
     focus(options?: FocusOptions): void;
     /** Redirect click requests to control itself */
     click(): void;

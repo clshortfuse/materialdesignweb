@@ -196,6 +196,12 @@
         "avoidQuotes": false
       }
     ],
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all"
+      }
+    ],
     "prefer-destructuring": [
       "warn",
       {

@@ -30,6 +30,15 @@ import { generateUID } from './uid.js';
  * @prop {any} [injections]
  */
 
+/**
+ * @template T
+ * @typedef {{
+ *  target: Element|DocumentFragment,
+ *  byProp: (prop: keyof T & string, value:any, data?:Partial<T>) => void,
+ *  state: InitializationState,
+ * } &  ((changes:Partial<T>, data:T) => void)} RenderDraw
+ */
+
 /** @typedef {HTMLElementEventMap & { input: InputEvent; } } HTMLElementEventMapFixed */
 
 /**
@@ -74,7 +83,7 @@ import { generateUID } from './uid.js';
  * @typedef {(
  *   HTMLElementEventMapFixed
  *   & {[P in keyof HTMLElementCancellableEventMap as `~${P}`]: HTMLElementCancellableEventMap[P]}
- *   & Record<string, Event|CustomEvent>
+ *   & Record<string, Event|CustomEvent<any>>
  * )} CompositionEventMap
  */
 
@@ -83,7 +92,7 @@ import { generateUID } from './uid.js';
  * @template {keyof CompositionEventMap} [K = keyof CompositionEventMap]
  * @typedef {{
  * type?: K
- * tag?: string,
+ * tag?: string|symbol,
  * capture?: boolean;
  * once?: boolean;
  * passive?: boolean;
@@ -132,6 +141,8 @@ import { generateUID } from './uid.js';
  *  @prop {number}  cacheIndex
  *  @prop {number}  searchIndex
  *  @prop {string | Function | string[]}  query
+ *  @prop {boolean} [negate]
+ *  @prop {boolean} [doubleNegate]
  *  @prop {Function}  [expression]
  *  @prop {string}  prop
  *  @prop {string[]}  deepProp
@@ -150,6 +161,7 @@ import { generateUID } from './uid.js';
  * @prop {string} [attrName]
  * @prop {any} [defaultValue]
  * @prop {RenderGraphSearch} search
+ * @prop {InterpolateOptions['injections']} [injections]
  */
 
 /**
@@ -158,8 +170,7 @@ import { generateUID } from './uid.js';
  */
 function writeDOMAttribute({ nodes }, value) {
   const { nodeIndex, attrName } = this;
-  /** @type {Element} */
-  const element = nodes[nodeIndex];
+  const element = /** @type {Element} */ (nodes[nodeIndex]);
   switch (value) {
     case undefined:
     case null:
@@ -215,7 +226,7 @@ function writeDynamicNode({ nodeStates, comments, nodes }, value) {
     // eslint-disable-next-line no-bitwise
     nodeStates[nodeIndex] &= ~0b0010;
   } else {
-    node.data = value;
+    /** @type {Text} */ (node).data = value;
   }
 
   // Updated, now set hidden state
@@ -361,7 +372,7 @@ function searchWithDeepProp(state, changes, data) {
 /**
  * @typedef InterpolateOptions
  * @prop {Record<string,any>} [defaults] Default values to use for interpolation
- * @prop {{iterable:string} & Record<string,any>} [injections] Context-specific injected properties. (Experimental)
+ * @prop {{iterable:string} & Record<string,any> & {index:number}} [injections] Context-specific injected properties. (Experimental)
  */
 
 /**
@@ -373,7 +384,7 @@ function searchWithDeepProp(state, changes, data) {
  * @prop {Comment[]} comments
  * @prop {Uint8Array} nodeStates
  * @prop {Uint8Array} searchStates
- * @prop {Element[]} refs
+ * @prop {HTMLElement[]} refs
  * @prop {number} lastChildNodeIndex
  * @prop {RenderOptions<?>} options
  */
@@ -518,7 +529,7 @@ export default class Composition {
    * Only store metadata, not actual data. Currently only needs length.
    * TBD if more is needed later
    * Referenced by property key (string)
-   * @type {CompositionAdapter}
+   * @type {CompositionAdapter<T>}
    */
   adapter;
 
@@ -661,7 +672,7 @@ export default class Composition {
    * @param {Partial<T>} changes what specifically
    * @param {T} [data]
    * @param {RenderOptions<T>} [options]
-   * @return {Function & {target:Element}} anchor
+   * @return {RenderDraw<T>} anchor
    */
   render(changes, data, options = {}) {
     // console.log('render', changes, options);
@@ -703,20 +714,20 @@ export default class Composition {
         console.warn('found empty tag??');
         refs.push(null);
         nodes.push(null);
-        textNode = instanceFragment.firstChild;
+        textNode = /** @type {Text} */ (instanceFragment.firstChild);
       } else {
         const element = instanceFragment.getElementById(tag);
         refs.push(element);
         nodes.push(element);
         this.#bindCompositionEventListeners(tag, element, options.context);
         if (!textNodes.length) continue;
-        textNode = element.firstChild;
+        textNode = /** @type {Text} */ (element.firstChild);
       }
 
       let currentIndex = 0;
       for (const index of textNodes) {
         while (index !== currentIndex) {
-          textNode = textNode.nextSibling;
+          textNode = /** @type {Text} */ (textNode.nextSibling);
           currentIndex++;
         }
         nodes.push(textNode);
@@ -801,12 +812,14 @@ export default class Composition {
         searchStates[search.searchIndex] = 0b0011;
       }
 
+      /** @type {Partial<T>} */
       let changes;
       const actions = this.actionsByPropsUsed.get(prop);
       for (const action of actions) {
         if (action.search.query === prop) {
           action.invocation(initState, value);
         } else {
+          // @ts-expect-error Skip cast
           changes ??= { [prop]: value };
           data ??= changes;
           ranSearch = true;
@@ -1165,7 +1178,7 @@ export default class Composition {
     } else if (subnode) {
       action = {
         nodeIndex: this._interpolationState.nodeIndex,
-        attrName: subnode,
+        attrName: /** @type {string} */ (subnode),
         defaultValue,
         invocation: writeDOMAttribute,
         search,
@@ -1266,6 +1279,7 @@ export default class Composition {
     const newComposition = new Composition();
     newComposition.template.append(element);
     // Move uninterpolated element to new composition template.
+    /** @type {InterpolateOptions['injections']} */
     const injections = {
       ...options.injections,
       [valueName]: null,
@@ -1277,6 +1291,9 @@ export default class Composition {
     const search = {
       cacheIndex: this._interpolationState.cacheIndex++,
       searchIndex: this._interpolationState.searchIndex++,
+      query: null,
+      prop: null,
+      deepProp: null,
       propsUsed,
       deepPropsUsed: [[iterableName]],
       defaultValue: {},
@@ -1427,6 +1444,7 @@ export default class Composition {
             this.#interpolateIterable(element, options);
             continue;
           } else {
+            // @ts-expect-error Bad typings
             const idAttr = element.attributes.id;
             if (idAttr) {
               this.#interpolateNode(idAttr, element, options);
@@ -1443,7 +1461,7 @@ export default class Composition {
           element = node.parentElement;
           if (this.#interpolateNode(/** @type {Text} */ (node), element, options)) {
             const nextNode = treeWalker.nextNode();
-            node.remove();
+            /** @type {Text} */ (node).remove();
             node = nextNode;
             continue;
           }

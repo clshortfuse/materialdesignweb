@@ -50,7 +50,9 @@ export default CustomElement
   .on({
     _formResetChanged(oldValue, newValue) {
       if (!newValue) return;
-      this._select.value = this.querySelector('option[selected]')?.value ?? '';
+      /** @type {HTMLSelectElement} */
+      const selectedOption = this.querySelector('option[selected]');
+      this._select.value = selectedOption?.value ?? '';
     },
   })
   .css`

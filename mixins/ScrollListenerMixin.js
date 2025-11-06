@@ -13,7 +13,7 @@ export default function ScrollListenerMixin(Base) {
       _scrollListenerLastResize: { type: 'float', empty: 0 },
     })
     .set({
-      /** @type {WeakRef<EventTarget>} */
+      /** @type {WeakRef<HTMLElement|Window>} */
       _scroller: null,
       /** @type {EventListener} */
       _scrollerScrollListener: null,
@@ -59,6 +59,7 @@ export default function ScrollListenerMixin(Base) {
           scroller = window;
         }
 
+        // @ts-expect-error Only HTMLElement or Window can scroll
         this._scroller = new WeakRef(scroller);
         this._scrollerScrollListener = this._scrollListenerOnScrollerScroll.bind(this);
         this._scrollerResizeListener = this._scrollListenerOnScrollerResize.bind(this);
@@ -82,6 +83,7 @@ export default function ScrollListenerMixin(Base) {
         if (scroller === window) {
           return document.documentElement.scrollHeight;
         }
+        // @ts-ignore Already checked for window
         return scroller.scrollHeight;
       },
       _scrollListenerScrollerClientHeight() {

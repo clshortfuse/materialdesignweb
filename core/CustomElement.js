@@ -166,22 +166,22 @@ export default class CustomElement extends HTMLElement {
   /** @type {Map<string, import('./observe.js').ObserverConfiguration<?,?,?>>} */
   static _attrs = new Map();
 
-  /** @type {Map<string, Function[]>} */
+  /** @type {Map<string, Array<(this: any, ...args: any[]) => any>>} */
   static _propChangedCallbacks = new Map();
 
-  /** @type {Map<string, Function[]>} */
+  /** @type {Map<string, Array<(this: any, ...args: any[]) => any>>} */
   static _attributeChangedCallbacks = new Map();
 
-  /** @type {((callback: CallbackArguments) => any)[]} */
+  /** @type {Array<(callback: CallbackArguments) => any>} */
   static _onComposeCallbacks = [];
 
-  /** @type {((callback: CallbackArguments) => any)[]} */
+  /** @type {Array<(callback: CallbackArguments) => any>} */
   static _onConnectedCallbacks = [];
 
-  /** @type {((callback: CallbackArguments) => any)[]} */
+  /** @type {Array<(callback: CallbackArguments) => any>} */
   static _onDisconnectedCallbacks = [];
 
-  /** @type {((callback: CallbackArguments) => any)[]} */
+  /** @type {Array<(callback: CallbackArguments) => any>} */
   static _onConstructedCallbacks = [];
 
   static interpolatesTemplate = true;
@@ -314,7 +314,7 @@ export default class CustomElement extends HTMLElement {
    * @template {typeof CustomElement} T
    * @template {keyof T} K
    * @param {K} collection
-   * @param {T[K] extends (infer R)[] ? R : never} callback
+   * @param {Function} callback
    */
   static _addCallback(collection, callback) {
     if (!this.hasOwnProperty(collection)) {
@@ -336,10 +336,14 @@ export default class CustomElement extends HTMLElement {
    * }}
    */
   static append(...parts) {
-    this._addCallback('_onComposeCallbacks', ({ composition }) => {
+    this._onComposeCallbacks.push(({ composition }) => {
       composition.append(...parts);
     });
-    // @ts-expect-error Can't cast T
+
+    this._addCallback('_onComposeCallbacks', /** @type {(opts: CallbackArguments) => unknown} */ ((opts) => {
+      const { composition } = opts;
+      composition.append(...parts);
+    }));
     return this;
   }
 
@@ -348,7 +352,7 @@ export default class CustomElement extends HTMLElement {
    * May be called multiple times.
    * @type {{
    * <
-   *  T1 extends typeof CustomElement,
+   *  T1 extends (typeof CustomElement),
    *  T2 extends InstanceType<T1>,
    *  T3 extends CompositionCallback<T2, T2>['composed'],
    *  >
@@ -357,7 +361,6 @@ export default class CustomElement extends HTMLElement {
    */
   static recompose(callback) {
     this._addCallback('_onComposeCallbacks', callback);
-    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -365,7 +368,7 @@ export default class CustomElement extends HTMLElement {
    * Appends styles to composition
    * @type {{
    * <
-   *   T1 extends typeof CustomElement,
+   *   T1 extends (typeof CustomElement),
    *   T2 extends TemplateStringsArray|HTMLStyleElement|CSSStyleSheet|string>(
    *   this: T1,
    *   array: T2,
@@ -374,7 +377,8 @@ export default class CustomElement extends HTMLElement {
    * }}
    */
   static css(array, ...substitutions) {
-    this._addCallback('_onComposeCallbacks', ({ composition }) => {
+    this._addCallback('_onComposeCallbacks', /** @type {(opts: CallbackArguments) => unknown} */ ((opts) => {
+      const { composition } = opts;
       if (typeof array === 'string' || Array.isArray(array)) {
         // @ts-expect-error Complex cast
         composition.append(css(array, ...substitutions));
@@ -382,9 +386,8 @@ export default class CustomElement extends HTMLElement {
         // @ts-expect-error Complex cast
         composition.append(array, ...substitutions);
       }
-    });
+    }));
 
-    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -399,11 +402,9 @@ export default class CustomElement extends HTMLElement {
   static autoRegister(elementName) {
     if (this.hasOwnProperty('defined') && this.defined) {
       console.warn(this.elementName, 'already registered.');
-      // @ts-expect-error Can't cast T
       return this;
     }
     this.register(elementName);
-    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -418,11 +419,11 @@ export default class CustomElement extends HTMLElement {
    * }}
    */
   static html(strings, ...substitutions) {
-    this._addCallback('_onComposeCallbacks', ({ composition }) => {
+    this._addCallback('_onComposeCallbacks', /** @type {(opts: CallbackArguments) => unknown} */ ((opts) => {
+      const { composition } = opts;
       // console.log('onComposed:html', strings);
       composition.append(html(strings, ...substitutions));
-    });
-    // @ts-expect-error Can't cast T
+    }));
     return this;
   }
 
@@ -471,7 +472,6 @@ export default class CustomElement extends HTMLElement {
    * }}
    */
   static readonly(source, options) {
-    // @ts-expect-error Can't cast T
     return this.set(source, { ...options, writable: false });
   }
 
@@ -511,6 +511,7 @@ export default class CustomElement extends HTMLElement {
           {
             enumerable: false,
             configurable: true,
+            // @ts-expect-error Can't index by symbol
             value: source[symbol],
             writable: true,
             ...options,
@@ -530,7 +531,7 @@ export default class CustomElement extends HTMLElement {
    *  FN extends (...args:any[]) => any,
    *  RETURN extends ReturnType<FN>,
    *  SUBCLASS extends ClassOf<RETURN>,
-   *  (this: BASE, mixin: FN): SUBCLASS & BASE
+   *  >(this: BASE, mixin: FN): SUBCLASS & BASE
    * }}
    */
   static mixin(mixin) {
@@ -551,7 +552,6 @@ export default class CustomElement extends HTMLElement {
     customElements.define(this.elementName, this);
     CustomElement.registrations.set(this.elementName, this);
     this.defined = true;
-    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -699,25 +699,40 @@ export default class CustomElement extends HTMLElement {
     return this;
   }
 
+  /**
+   * Assigns values directly to all instances (via prototype)
+   * @type {{
+   * <
+   *  CLASS extends typeof CustomElement,
+   *  ARGS extends ConstructorParameters<CLASS>,
+   *  INSTANCE extends InstanceType<CLASS>,
+   *  PROP extends string,
+   *  PROPS extends INSTANCE & Record<PROP, never>
+   *  >(this: CLASS, name: PROP):
+   *  CLASS & Class<PROPS,ARGS>
+   * }}
+   */
   static undefine(name) {
     Reflect.deleteProperty(this.prototype, name);
-    if (!this.propList.has(name)) return this;
-    const { watchers, attr, reflect } = this.propList.get(name);
-    if (watchers.length && this.propChangedCallbacks.has(name)) {
-      const propWatchers = this.propChangedCallbacks.get(name);
-      for (const watcher of watchers) {
-        const index = propWatchers.indexOf(watcher);
-        if (index !== -1) {
-          console.warn('Unwatching', name);
-          propWatchers.splice(index, 1);
+    if (this.propList.has(name)) {
+      const { watchers, attr, reflect } = this.propList.get(name);
+      if (watchers.length && this.propChangedCallbacks.has(name)) {
+        const propWatchers = this.propChangedCallbacks.get(name);
+        for (const [prop, watcher] of watchers) {
+          const index = propWatchers.indexOf(watcher);
+          if (index !== -1) {
+            console.warn('Unwatching', name);
+            propWatchers.splice(index, 1);
+          }
         }
       }
+      if (attr && (reflect === true || reflect === 'read')) {
+        this.attrList.delete(attr);
+      }
+      this.propList.delete(name);
     }
-    if (attr && (reflect === true || reflect === 'read')) {
-      this.attrList.delete(attr);
-    }
-    this.propList.delete(name);
 
+    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -770,6 +785,7 @@ export default class CustomElement extends HTMLElement {
         : (typeof typeOrOptions === 'string'
           ? { type: typeOrOptions }
           : typeOrOptions);
+      // @ts-expect-error Adding property to this
       defineObservableProperty(this, name, {
         reflect: false,
         ...options,
@@ -829,7 +845,6 @@ export default class CustomElement extends HTMLElement {
       },
     });
 
-    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -847,20 +862,17 @@ export default class CustomElement extends HTMLElement {
    */
   static childEvents(listenerMap, options) {
     for (const [tag, listeners] of Object.entries(listenerMap)) {
-      // @ts-expect-error Can't cast T
       this.events(listeners, {
         tag: attrNameFromPropName(tag),
         ...options,
       });
     }
 
-    // @ts-expect-error Can't cast T
     return this;
   }
 
   /** @type {typeof CustomElement['events']} */
   static rootEvents(listeners, options) {
-    // @ts-expect-error Can't cast T
     return this.events(listeners, {
       tag: Composition.shadowRootTag,
       ...options,
@@ -899,6 +911,7 @@ export default class CustomElement extends HTMLElement {
         default:
           if (name.endsWith('Changed')) {
             const prop = name.slice(0, name.length - 'Changed'.length);
+            // @ts-expect-error Computed key
             this.onPropChanged({ [prop]: fn });
             continue;
           }
@@ -907,7 +920,6 @@ export default class CustomElement extends HTMLElement {
       this._addCallback(arrayPropName, fn);
     }
 
-    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -942,7 +954,6 @@ export default class CustomElement extends HTMLElement {
       }
     }
 
-    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -976,7 +987,6 @@ export default class CustomElement extends HTMLElement {
       }
     }
 
-    // @ts-expect-error Can't cast T
     return this;
   }
 
@@ -1159,6 +1169,7 @@ export default class CustomElement extends HTMLElement {
     this.propChangedCallback(name, oldValue, newValue, changes);
   }
 
+  /** @param {any} patch */
   patch(patch) {
     this.patching = true;
     applyMergePatch(this, patch);
@@ -1224,6 +1235,10 @@ export default class CustomElement extends HTMLElement {
 
   get unique() { return false; }
 
+  /**
+   * @template {CustomElement} T
+   * @this {T}
+   */
   get callbackArguments() {
     // eslint-disable-next-line no-return-assign
     return this._callbackArguments ??= {

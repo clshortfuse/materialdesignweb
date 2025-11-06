@@ -7,7 +7,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     _scrollListenerLastScroll: number;
     _scrollListenerLastResize: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    _scroller: WeakRef<EventTarget>;
+    _scroller: WeakRef<HTMLElement | Window>;
     _scrollerScrollListener: EventListener;
     _scrollerResizeListener: EventListener;
     _scrollDebounce: any;

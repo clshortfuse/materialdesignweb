@@ -86,103 +86,12 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     badge: string;
     ariaLabel: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    /** @type {HTMLElement['focus']} */
     focus(options?: FocusOptions): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _anchorAriaCurrent: never;
     _anchorAriaLabelledby: never;
     _anchorHref: never;
-    iconVariation: () => ReturnType<({ active }: CustomElement & {
-        delegatesFocus: boolean;
-    } & {
-        href: string;
-        target: string;
-        download: string;
-        ping: string;
-        rel: string;
-        hreflang: string;
-        referrerPolicy: string;
-    } & {
-        origin: string;
-        protocol: string;
-        username: string;
-        password: string;
-        host: string;
-        hostname: string;
-        port: string;
-        pathname: string;
-        search: string;
-        hash: string;
-    } & object & {
-        disabled: boolean;
-        focused: boolean;
-        hovered: boolean;
-        pressed: boolean;
-        _lastInteraction: "key" | "mouse" | "touch" | "pen";
-        _hovered: boolean;
-        _focused: boolean;
-        _focusedSynthetic: boolean;
-        _keyPressed: boolean;
-        _keyReleased: boolean;
-        _pointerPressed: boolean;
-        stateLayer: boolean;
-    } & {
-        disabledState: boolean;
-        hoveredState: boolean;
-        focusedState: boolean;
-        pressedState: boolean;
-        touchedState: boolean;
-        pointedState: boolean;
-    } & {
-        stateTargetElement: HTMLElement;
-    } & {
-        _lastRippleWeakRef: WeakRef<InstanceType<import("../mixins/RippleMixin.js").Ripple>>;
-        _rippleAdded: boolean;
-    } & {
-        _lastRipple: CustomElement & {
-            hadRippleHeld: boolean;
-            hadRippleReleased: boolean;
-            rippleStarted: boolean;
-        } & {
-            rippleState: string;
-            keepAlive: boolean;
-            _positionX: number;
-            _positionY: number;
-            _radius: number;
-            holdRipple: boolean;
-        } & {
-            _positionStyle: import("../core/customTypes.js").ElementStylerOptions | {
-                styles: {
-                    minHeight: string;
-                    minWidth: string;
-                    boxShadow: string;
-                    top: string;
-                    left: string;
-                };
-            };
-        } & {
-            updatePosition(x?: number, y?: number, size?: number): void;
-            handleRippleComplete(): void;
-        };
-    } & {
-        addRipple(x?: number, y?: number, hold?: boolean): InstanceType<Ripple>;
-    } & {
-        color: string;
-        ink: string;
-        typeStyle: string;
-    } & {
-        stateLayer: boolean;
-    } & {
-        showLabel: string;
-        active: boolean;
-        icon: string;
-        src: string;
-        badge: string;
-        ariaLabel: string;
-    } & {
-        /** @type {HTMLElement['focus']} */
-        focus(options?: FocusOptions): void;
-    }) => string>;
+    iconVariation: () => string;
 }, any[]>;
 export default _default;
 export type DeprecatedHTMLAnchorElementProperties = "charset" | "coords" | "name" | "shape";

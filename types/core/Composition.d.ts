@@ -56,9 +56,9 @@ export default class Composition<T> {
      * Only store metadata, not actual data. Currently only needs length.
      * TBD if more is needed later
      * Referenced by property key (string)
-     * @type {CompositionAdapter}
+     * @type {CompositionAdapter<T>}
      */
-    adapter: CompositionAdapter;
+    adapter: CompositionAdapter<T>;
     /**
      * Collection of events to bind.
      * Indexed by ID
@@ -111,11 +111,9 @@ export default class Composition<T> {
      * @param {Partial<T>} changes what specifically
      * @param {T} [data]
      * @param {RenderOptions<T>} [options]
-     * @return {Function & {target:Element}} anchor
+     * @return {RenderDraw<T>} anchor
      */
-    render<T_1 extends Object>(changes: Partial<T_1>, data?: T_1, options?: RenderOptions<T_1>): Function & {
-        target: Element;
-    };
+    render<T_1 extends Object>(changes: Partial<T_1>, data?: T_1, options?: RenderOptions<T_1>): RenderDraw<T_1>;
     /**
      * @param {InterpolateOptions} [options]
      */
@@ -131,7 +129,7 @@ export default class Composition<T> {
      * @return {RenderGraphAction}
      */
     addAction(action: RenderGraphAction): RenderGraphAction;
-    [Symbol.iterator](): Generator<CSSStyleSheet | DocumentFragment | HTMLStyleElement, void, unknown>;
+    [Symbol.iterator](): Generator<DocumentFragment | CSSStyleSheet | HTMLStyleElement, void, unknown>;
     #private;
 }
 export type CompositionPart<T> = Composition<unknown> | HTMLStyleElement | CSSStyleSheet | DocumentFragment | string;
@@ -159,14 +157,19 @@ export type RenderOptions<T> = {
     context?: any;
     injections?: any;
 };
+export type RenderDraw<T> = {
+    target: Element | DocumentFragment;
+    byProp: (prop: keyof T & string, value: any, data?: Partial<T>) => void;
+    state: InitializationState;
+} & ((changes: Partial<T>, data: T) => void);
 export type HTMLElementEventMapFixed = HTMLElementEventMap & {
     input: InputEvent;
 };
 export type HTMLElementCancellableEventMap = (Pick<HTMLElementEventMapFixed, "auxclick" | "beforeinput" | "click" | "compositionstart" | "contextmenu" | "drag" | "dragenter" | "dragover" | "dragstart" | "drop" | "invalid" | "keydown" | "keypress" | "keyup" | "mousedown" | "mousemove" | "mouseout" | "mouseover" | "mouseup" | "pointerdown" | "pointermove" | "pointerout" | "pointerover" | "pointerup" | "reset" | "selectstart" | "submit" | "touchend" | "touchmove" | "touchstart" | "wheel">);
-export type CompositionEventMap = (HTMLElementEventMapFixed & { [P in keyof HTMLElementCancellableEventMap as `~${P}`]: HTMLElementCancellableEventMap[P]; } & Record<string, Event | CustomEvent>);
+export type CompositionEventMap = (HTMLElementEventMapFixed & { [P in keyof HTMLElementCancellableEventMap as `~${P}`]: HTMLElementCancellableEventMap[P]; } & Record<string, Event | CustomEvent<any>>);
 export type CompositionEventListener<T extends unknown, K extends keyof CompositionEventMap = string> = {
     type?: K;
-    tag?: string;
+    tag?: string | symbol;
     capture?: boolean;
     once?: boolean;
     passive?: boolean;
@@ -207,6 +210,8 @@ export type RenderGraphSearch = {
     cacheIndex: number;
     searchIndex: number;
     query: string | Function | string[];
+    negate?: boolean;
+    doubleNegate?: boolean;
     expression?: Function;
     prop: string;
     deepProp: string[];
@@ -223,6 +228,7 @@ export type RenderGraphAction = {
     attrName?: string;
     defaultValue?: any;
     search: RenderGraphSearch;
+    injections?: InterpolateOptions["injections"];
 };
 export type InterpolateOptions = {
     /**
@@ -234,7 +240,9 @@ export type InterpolateOptions = {
      */
     injections?: {
         iterable: string;
-    } & Record<string, any>;
+    } & Record<string, any> & {
+        index: number;
+    };
 };
 export type InitializationState = {
     lastElement: Element;
@@ -244,7 +252,7 @@ export type InitializationState = {
     comments: Comment[];
     nodeStates: Uint8Array;
     searchStates: Uint8Array;
-    refs: Element[];
+    refs: HTMLElement[];
     lastChildNodeIndex: number;
     options: RenderOptions<unknown>;
 };

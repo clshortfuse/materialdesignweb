@@ -1,7 +1,18 @@
 /**
+ * @template T
+ * @typedef {import('./Composition.js').default<T>} Composition
+ */
+/**
+ * @template T
+ * @typedef {import('./Composition.js').RenderOptions<T>} RenderOptions
+ */
+/**
+ * @template T
  * @typedef {Object} DomAdapterCreateOptions
  * @prop {Comment} anchorNode
  * @prop {(...args:any[]) => HTMLElement} [create]
+ * @prop {Composition<T>} composition
+ * @prop {RenderOptions<T>} renderOptions
  */
 /**
  * @typedef {Object} ItemMetadata
@@ -12,9 +23,10 @@
  * @prop {boolean} [hidden]
  * @prop {Comment} [comment]
  */
-export default class CompositionAdapter {
-    /** @param {DomAdapterCreateOptions} options */
-    constructor(options: DomAdapterCreateOptions);
+/** @template T */
+export default class CompositionAdapter<T> {
+    /** @param {DomAdapterCreateOptions<T>} options */
+    constructor(options: DomAdapterCreateOptions<T>);
     anchorNode: Comment;
     /** @type {ItemMetadata[]} */
     metadata: ItemMetadata[];
@@ -30,9 +42,10 @@ export default class CompositionAdapter {
      * Chrome needs a hint to know we will need a fast path for array by keys.
      */
     needsArrayKeyFastPath: boolean;
-    composition: any;
-    renderOptions: any;
-    pendingRemoves: any[];
+    /** @type {Composition<T>} */
+    composition: Composition<T>;
+    /** @type {RenderOptions<T>} */
+    renderOptions: RenderOptions<T>;
     /** @type {Map<any, ItemMetadata>} */
     metadataCache: Map<any, ItemMetadata>;
     /** @type {Element[]} */
@@ -41,7 +54,12 @@ export default class CompositionAdapter {
     batchStartIndex: number | null;
     /** @type {number|null} */
     batchEndIndex: number | null;
-    render(changes: any, data: any): any;
+    /**
+     * @param {Partial<T>} changes
+     * @param {T} data
+     * @return {import('./Composition.js').RenderDraw<T>}
+     */
+    render(changes: Partial<T>, data: T): import("./Composition.js").RenderDraw<T>;
     startBatch(): void;
     writeBatch(): void;
     stopBatch(): void;
@@ -77,9 +95,13 @@ export default class CompositionAdapter {
      */
     show(index?: number, metadata?: ItemMetadata, key?: any): boolean;
 }
-export type DomAdapterCreateOptions = {
+export type Composition<T> = import("./Composition.js").default<T>;
+export type RenderOptions<T> = import("./Composition.js").RenderOptions<T>;
+export type DomAdapterCreateOptions<T> = {
     anchorNode: Comment;
     create?: (...args: any[]) => HTMLElement;
+    composition: Composition<T>;
+    renderOptions: RenderOptions<T>;
 };
 export type ItemMetadata = {
     element: Element;

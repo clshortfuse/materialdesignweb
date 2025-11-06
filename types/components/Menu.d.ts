@@ -1,11 +1,11 @@
 declare const _default: typeof CustomElement & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    onConnectAriaValues: Map<string, string>;
+    onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
     hasFiredConnected: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot;
-    updateAriaProperty(name: keyof HTMLElement & keyof ElementInternals, value: string): void;
+    readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot | Element | readonly Element[];
+    updateAriaProperty<K extends StringKeyOfARIAMixin<keyof ARIAMixin>>(name: K, value: ARIAMixin[K]): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     kbdNav: string;
     _kbdFocusable: boolean;
@@ -46,10 +46,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     returnValue: string;
     _closing: boolean;
     _useScrim: boolean;
+    _source: MouseEvent | PointerEvent | HTMLElement | Event;
+    _anchor: MouseEvent | PointerEvent | HTMLElement | Event;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _dialog: HTMLDialogElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    updatePopupPosition(anchor?: DOMRect | Element): void;
+    _ariaHidden: never;
+}, any[]> & import("../core/CustomElement.js").Class<{
+    updatePopupPosition(anchor?: DOMRectLike | Element): void;
     onSlotChange({ currentTarget }: Event & {
         currentTarget: HTMLSlotElement;
     }): void;
@@ -59,8 +63,6 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     close(returnValue?: any, returnFocus?: boolean): boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
-}, any[]> & import("../core/CustomElement.js").Class<{
-    _ariaHidden: never;
 }, any[]> & import("../core/CustomElement.js").Class<{
     disabled: boolean;
     focused: boolean;
@@ -107,7 +109,8 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     cascader: HTMLElement;
     submenu: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    showModal(...args: any[]): boolean;
+    /** @param {Parameters<InstanceType<ReturnType<PopupMixin>>['showPopup']>} args */
+    showModal(source?: HTMLElement | PointerEvent | MouseEvent | Event, focus?: boolean, flow?: string): boolean;
     focus(): void;
     /**
      * @param {HTMLElement} cascader Element that calls for submenu cascade

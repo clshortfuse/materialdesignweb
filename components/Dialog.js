@@ -59,6 +59,7 @@ function focusOnTree(root, autofocus, forward = true) {
           if (attemptFocus(el)) return true;
           continue;
         }
+        // @ts-ignore Valid as long tabIndex isn't negative
         if (el.tabIndex >= 0) {
           // Can focus, add to later in case we find an autofocusable
           if (autofocus || !forward) {
@@ -69,6 +70,7 @@ function focusOnTree(root, autofocus, forward = true) {
       }
       // Step through
     }
+    // @ts-ignore Valid as long tabIndex isn't negative
     if (node.tabIndex >= 0) {
       if (autofocus || !forward) {
         focusables.push(node);
@@ -349,7 +351,8 @@ export default CustomElement
       const form = event.target;
       if (form instanceof HTMLFormElement === false) return;
       if (form.method !== 'dialog') return;
-      const returnValue = event.submitter?.value;
+      const submitter = /** @type {HTMLInputElement|HTMLButtonElement} */ (event.submitter);
+      const returnValue = submitter?.value;
       this.close(returnValue);
     },
   })

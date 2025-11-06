@@ -71,7 +71,7 @@ export default CustomElement
       if (event.target instanceof NavItem === false) return;
       for (const el of this.querySelectorAll('*')) {
         if (el instanceof NavItem === false) continue;
-        el.active = (el === event.target);
+        /** @type {InstanceType<typeof NavItem>} */ (el).active = (el === event.target);
       }
     },
   })

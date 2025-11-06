@@ -47,55 +47,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     _showFontIcon: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    showSVG: () => ReturnType<({ svg, _computedSVGPath }: CustomElement & {
-        color: string;
-        ink: string;
-        typeStyle: string;
-    } & {
-        _img: HTMLImageElement;
-    } & {
-        naturalWidth: number;
-        naturalHeight: number;
-        complete: boolean;
-        currentSrc: string;
-        x: number;
-        y: number;
-        decode: () => Promise<void>;
-    } & {
-        icon: string;
-        disabled: boolean;
-        alt: string;
-        src: string;
-        svg: string;
-        svgPath: string;
-        srcset: string;
-        sizes: string;
-        variation: string;
-        crossOrigin: string;
-        useMap: string;
-        isMap: boolean;
-        referrerPolicy: string;
-        decoding: "auto" | "async" | "sync";
-        loading: "eager" | "lazy";
-        width: number;
-        height: number;
-        forceFont: boolean;
-        _linkLoaded: boolean;
-        viewBox: string;
-        fontClass: string;
-        fontLibrary: string;
-        _isConnected: boolean;
-    } & {
-        _svgAlias: {
-            path: string;
-            viewBox: string;
-        };
-    } & {
-        _computedSVGPath: string;
-        _computedViewBox: string;
-    } & {
-        _showFontIcon: boolean;
-    }) => boolean>;
+    showSVG: () => boolean;
 }, any[]>;
 export default _default;
 export type DeprecatedHTMLImageElementProperties = "align" | "border" | "hspace" | "longDesc" | "lowsrc" | "name" | "vspace";

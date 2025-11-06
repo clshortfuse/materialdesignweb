@@ -225,7 +225,9 @@ export default function InputMixin(Base) {
                 // Inner Native Button
                 return;
               }
+              // @ts-expect-error Verified in runtime
               if ((target instanceof HTMLElement && target.form instanceof HTMLFormElement
+                  // @ts-expect-error Verified in runtime
                   && (target.type === 'submit' || target.type === 'reset'))) {
                 // Inner FACE Button
                 return;

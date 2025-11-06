@@ -150,8 +150,6 @@ export default CustomElement
         this._translateX = '0';
         this._animationEasing = 'ease-in';
       }
-      this._dragDeltaY = null;
-      this._dragStartY = null;
     },
     onWindowResize() {
       const { autoOpen, fixedBreakpoint, autoClose } = this;

@@ -54,8 +54,10 @@ export default CustomElement
         }
         if (value) {
           this._tabContentRef = new WeakRef(value);
+          // @ts-expect-error this lacks forward declaration
           this._tabContentScrollListener = this.observeTabContent.bind(this);
           value.addEventListener('scroll', this._tabContentScrollListener);
+          // @ts-expect-error this lacks forward declaration
           this.observeTabContent();
         } else {
           this._tabContentRef = null;
@@ -179,7 +181,8 @@ export default CustomElement
       const { tabContentId, isConnected } = this;
       if (!tabContentId) return;
       if (!isConnected) return;
-      this.tabContent = this.getRootNode().getElementById(tabContentId);
+      const root = /** @type {ShadowRoot|Document} */ (this.getRootNode());
+      this.tabContent = root.getElementById(tabContentId);
     },
     /** @param {InstanceType<Tab>} [tab] */
     updateIndicatorByTab(tab) {

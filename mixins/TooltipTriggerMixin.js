@@ -41,7 +41,8 @@ export default function TooltipTriggerMixin(Base) {
       /** @param {'mouse'|'touch'|'keyboard'} type */
       scheduleHideTooltip(type) {
         this.cancelShowTooltip();
-        if (!this.refs.tooltip.open) {
+        const tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip);
+        if (!tooltip.open) {
         // console.log('abort schedule (shown)');
           return;
         }
@@ -64,7 +65,8 @@ export default function TooltipTriggerMixin(Base) {
 
       /** @param {'mouse'|'touch'|'keyboard'} type */
       scheduleShowTooltip(type) {
-        if (this.refs.tooltip.open) return;
+        const tooltip = /** @type {InstanceType<Tooltip>} */ (this.refs.tooltip);
+        if (tooltip.open) return;
         let timeout = 0;
         switch (type) {
           case 'mouse':
@@ -95,8 +97,9 @@ export default function TooltipTriggerMixin(Base) {
         this._intersectObserver.observe(this);
         this._intersectObserver.observe(tooltip);
         /** @type {HTMLElement} */
+        // eslint-disable-next-line unicorn/no-this-assignment, @typescript-eslint/no-this-alias
         let offsetParent = this;
-        while ((offsetParent = offsetParent.offsetParent)) {
+        while ((offsetParent = /** @type {?HTMLElement} */ (offsetParent.offsetParent))) {
           this._resizeObserver.observe(offsetParent, { box: 'border-box' });
           // console.log('observing', offsetParent);
           this._watchedParents.push(offsetParent);

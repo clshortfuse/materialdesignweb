@@ -23,14 +23,20 @@ export default function PopupMixin(Base: typeof import("../core/CustomElement.js
     returnValue: string;
     _closing: boolean;
     _useScrim: boolean;
+    /** @type {MouseEvent|PointerEvent|HTMLElement|Event} */
+    _source: MouseEvent | PointerEvent | HTMLElement | Event;
+    /** @type {MouseEvent|PointerEvent|HTMLElement|Event} */
+    _anchor: MouseEvent | PointerEvent | HTMLElement | Event;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _dialog: HTMLDialogElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    _ariaHidden: never;
+}, any[]> & import("../core/CustomElement.js").Class<{
     /**
-     * @param {DOMRect|Element} [anchor]
+     * @param {DOMRectLike|Element} [anchor]
      * @return {void}
      */
-    updatePopupPosition(anchor?: DOMRect | Element): void;
+    updatePopupPosition(anchor?: DOMRectLike | Element): void;
     /**
      * @param {Event & {currentTarget: HTMLSlotElement}} event
      * @return {void}
@@ -67,12 +73,11 @@ export default function PopupMixin(Base: typeof import("../core/CustomElement.js
     close(returnValue?: any, returnFocus?: boolean): boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;
-}, any[]> & import("../core/CustomElement.js").Class<{
-    _ariaHidden: never;
 }, any[]>;
+export type DOMRectLike = import("../utils/popup.js").DOMRectLike;
 export type PopupStack = {
-    element: Element;
-    previousFocus: Element;
+    element: InstanceType<ReturnType<typeof PopupMixin>>;
+    previousFocus: HTMLElement;
     centered?: boolean;
     state?: Record<string, any>;
     previousState?: Record<string, any>;

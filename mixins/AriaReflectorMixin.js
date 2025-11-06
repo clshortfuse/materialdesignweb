@@ -1,3 +1,8 @@
+/**
+ * @template K
+ * @typedef {K extends keyof ARIAMixin ? ARIAMixin[K] extends string ? K : never : never} StringKeyOfARIAMixin
+ */
+
 /** @param {typeof import('../core/CustomElement.js').default} Base */
 export default function AriaReflectorMixin(Base) {
   return Base
@@ -6,9 +11,9 @@ export default function AriaReflectorMixin(Base) {
     })
     .set({
       /**
-       * Browsers that do no support AriaMixin in ElementInternals need to have
-       * their attributes after construction.
-       * @type {Map<string, string>}
+       * Browsers that do not support ARIAMixin in ElementInternals need to have
+       * their attributes set after construction.
+       * @type {Map<StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[StringKeyOfARIAMixin<keyof ARIAMixin>]>}
        */
       onConnectAriaValues: null,
       hasFiredConnected: false,
@@ -32,8 +37,9 @@ export default function AriaReflectorMixin(Base) {
         return this.getAttribute(name);
       },
       /**
-       * @param {keyof HTMLElement & keyof ElementInternals} name
-       * @param {string} value
+       * @template {StringKeyOfARIAMixin<keyof ARIAMixin>} K
+       * @param {K} name
+       * @param {ARIAMixin[K]} value
        */
       updateAriaProperty(name, value) {
         if (this.elementInternals && name in this.elementInternals) {

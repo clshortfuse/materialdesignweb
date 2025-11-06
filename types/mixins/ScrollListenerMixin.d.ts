@@ -8,8 +8,8 @@ export default function ScrollListenerMixin(Base: typeof import("../core/CustomE
     _scrollListenerLastScroll: number;
     _scrollListenerLastResize: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    /** @type {WeakRef<EventTarget>} */
-    _scroller: WeakRef<EventTarget>;
+    /** @type {WeakRef<HTMLElement|Window>} */
+    _scroller: WeakRef<HTMLElement | Window>;
     /** @type {EventListener} */
     _scrollerScrollListener: EventListener;
     /** @type {EventListener} */

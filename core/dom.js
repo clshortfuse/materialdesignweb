@@ -49,6 +49,7 @@ export const SAFARI_VERSION = CHROME_VERSION || !navigator.userAgent.includes('A
  */
 export function isFocused(element) {
   if (!element) return false;
+  // @ts-ignore runtime check
   if (FIREFOX_VERSION < 113 && element.constructor.formAssociated && element.hasAttribute('disabled')) {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1818287
     console.warn('Firefox bug 1818287: Disabled form associated custom element cannot receive focus.');
