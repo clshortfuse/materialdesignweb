@@ -29,6 +29,11 @@ export default CustomElement
       },
     },
   })
+  .expressions({
+    isDeterminate({ value }) {
+      return value != null;
+    },
+  })
   .define({
     position() {
       return /** @type {HTMLProgressElement} */ (this.refs.progress).position;
@@ -45,7 +50,7 @@ export default CustomElement
         <div id=semi2 class=semi></div>
       </div>
     </div>
-    <div mdw-if={!value} id=indeterminate>
+    <div mdw-if={!isDeterminate} id=indeterminate>
       <div mdw-if={!circle} id=indeterminate-line>
         <div id=line1 class=line value={value}></div>
         <div id=line2 class=line value={value}></div>
