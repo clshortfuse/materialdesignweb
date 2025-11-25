@@ -11,306 +11,469 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline size=medium text-padding=0.5em>Filled</mdw-headline>
-      <mdw-box x=stretch gap=16 padding=24>
-        <mdw-input filled label="Label"></mdw-input>
-        <mdw-input filled placeholder="Placeholder only" aria-label="Blank"></mdw-input>
-        <mdw-input filled ink="tertiary" label="Ink only"></mdw-input>
-        <mdw-input filled color="secondary-container" ink="secondary" value="default value" label="Label">
-        </mdw-input>
-        <mdw-input filled color="tertiary-container" ink="tertiary"
-          label="Very long label that label will clip selectively" placeholder="Label"></mdw-input>
-        <mdw-input filled placeholder="Placeholder" color="green-container" ink="green"
-          type-style="headline" icon=edit label="Custom typography and icon"></mdw-input>
-        <mdw-input filled shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search">
-        </mdw-input>
-        <mdw-input filled shape-style="large" placeholder="Placeholder" icon=edit label="Large shape with icon">
-        </mdw-input>
-        <mdw-input filled shape-style="full" placeholder="Placeholder" icon=edit label="Full shape with icon">
-        </mdw-input>
-        <mdw-input filled icon=edit color="alias-container" ink="alias" input-prefix="$"
-          placeholder="10" type="number" label="Price"></mdw-input>
-        <mdw-input filled icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
-          maxlength="8" supporting required label="Email"></mdw-input>
-        <mdw-input filled icon=edit color="alias-container" ink="alias"
-          supporting="I'm being helpful!" label=Name* required></mdw-input>
-        <mdw-input filled icon=edit supporting label="Customized supporting" value="deleteme">
-          <div slot="supporting">
-            You are <mdw-inline ink="primary">awesome</mdw-inline>!
-          </div>
-        </mdw-input>
-        <mdw-input filled color=secondary-container error="I am error" label="Errored"></mdw-input>
-        <mdw-input filled color=secondary-container disabled label="Disabled"></mdw-input>
-        <mdw-input filled color=secondary-container disabled error="Unavailable" value="filled">Disabled
-        </mdw-input>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline size=medium text-padding=0.5em>Outlined</mdw-headline>
-      <mdw-box x=stretch gap=16 padding=24>
-        <mdw-input outlined label="Label"></mdw-input>
-        <mdw-input outlined placeholder="Placeholder only" aria-label="Blank"></mdw-input>
-        <mdw-input outlined ink="tertiary" label="Ink only"></mdw-input>
-        <mdw-input outlined color="secondary-container" ink="secondary" value="default value" label="Label">
-        </mdw-input>
-        <mdw-input outlined color="tertiary-container" ink="tertiary"
-          label="Very long label that label will clip selectively" placeholder="Label"></mdw-input>
-        <mdw-input outlined placeholder="Placeholder" color="green-container" ink="green"
-          type-style="headline" icon=edit label="Custom typography and icon"></mdw-input>
-        <mdw-input outlined shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search">
-        </mdw-input>
-        <mdw-input outlined shape-style="large" placeholder="Placeholder" icon=edit label="Large shape with icon">
-        </mdw-input>
-        <mdw-input outlined shape-style="full" placeholder="Placeholder" icon=edit label="Full shape with icon">
-        </mdw-input>
-        <mdw-input outlined icon=edit color="alias-container" ink="alias" input-prefix="$"
-          placeholder="10" type="number" label="Price"></mdw-input>
-        <mdw-input outlined icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
-          maxlength="8" supporting required label="Email"></mdw-input>
-        <mdw-input outlined icon=edit color="alias-container" ink="alias"
-          supporting="I'm being helpful!" label=Name* required></mdw-input>
-        <mdw-input outlined icon=edit supporting label="Customized supporting" value="deleteme">
-          <div slot="supporting">
-            You are <mdw-inline ink="primary">awesome</mdw-inline>!
-          </div>
-        </mdw-input>
-        <mdw-input outlined color=secondary-container error="I am error" label="Errored"></mdw-input>
-        <mdw-input outlined color=secondary-container disabled label="Disabled"></mdw-input>
-        <mdw-input outlined color=secondary-container disabled error="Unavailable" value="filled">Disabled
-        </mdw-input>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline size=medium text-padding=0.5em>Outlined Dense</mdw-headline>
-      <mdw-box x=stretch gap=16 padding=24>
-        <mdw-input outlined density=-2 label="Label"></mdw-input>
-        <mdw-input outlined density=-2 placeholder="Placeholder only" aria-label="Blank"></mdw-input>
-        <mdw-input outlined density=-2 ink="tertiary" label="Ink only"></mdw-input>
-        <mdw-input outlined density=-2 color="secondary-container" ink="secondary" value="default value" label="Label">
-        </mdw-input>
-        <mdw-input outlined density=-2 color="tertiary-container" ink="tertiary"
-          label="Very long label that label will clip selectively" placeholder="Label"></mdw-input>
-        <mdw-input outlined density=-2 placeholder="Placeholder" color="green-container" ink="green"
-          type-style="headline" icon=edit label="Custom typography and icon"></mdw-input>
-        <mdw-input outlined density=-2 shape-style="full" type=search icon=search
-          placeholder="Full shape, icon, type=search">
-        </mdw-input>
-        <mdw-input outlined density=-2 shape-style="large" placeholder="Placeholder" icon=edit
-          label="Large shape with icon">
-        </mdw-input>
-        <mdw-input outlined density=-2 shape-style="full" placeholder="Placeholder" icon=edit
-          label="Full shape with icon">
-        </mdw-input>
-        <mdw-input outlined density=-2 icon=edit color="alias-container" ink="alias" input-prefix="$"
-          placeholder="10" type="number" label="Price"></mdw-input>
-        <mdw-input outlined density=-2 icon=email input-suffix="@gmail.com" type="text" placeholder="frank"
-          minlength="4" maxlength="8" supporting required label="Email"></mdw-input>
-        <mdw-input outlined density=-2 icon=edit color="alias-container" ink="alias"
-          supporting="I'm being helpful!" label=Name* required></mdw-input>
-        <mdw-input outlined density=-2 icon=edit supporting label="Customized supporting" value="deleteme">
-          <div slot="supporting">
-            You are <mdw-inline ink="primary">awesome</mdw-inline>!
-          </div>
-        </mdw-input>
-        <mdw-input outlined density=-2 color=secondary-container error="I am error" label="Errored"></mdw-input>
-        <mdw-input outlined density=-2 color=secondary-container disabled label="Disabled"></mdw-input>
-        <mdw-input outlined density=-2 color=secondary-container disabled error="Unavailable" value="filled">Disabled
-        </mdw-input>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em size=medium>Editable Combobox</mdw-headline>
-      <mdw-box x=stretch gap=16 padding=24>
-        <mdw-input filled label="Basic" supporting="No list-autocomplete (filtering), inline-autocomplete (appending text), or automatic selection.">
-          <mdw-listbox>
-            <mdw-list-option>Apple</mdw-list-option>
-            <mdw-list-option>Banana</mdw-list-option>
-            <mdw-list-option>Cherry</mdw-list-option>
-            <mdw-list-option>Dragon Fruit</mdw-list-option>
-            <mdw-list-option>Emblica</mdw-list-option>
-            <mdw-list-option>Fig</mdw-list-option>
-            <mdw-list-option>Grapes</mdw-list-option>
-            <mdw-list-option>Grapefruit</mdw-list-option>
-            <mdw-list-option>Honeydew Melon</mdw-list-option>
-          </mdw-listbox>
-        </mdw-input>
-        <mdw-input filled label="Inline" autocomplete-inline
-        supporting="Using [autocomplete-inline]. (Use keyboard up/down)">
-          <mdw-listbox>
-            <mdw-list-option>Apple</mdw-list-option>
-            <mdw-list-option>Banana</mdw-list-option>
-            <mdw-list-option>Cherry</mdw-list-option>
-            <mdw-list-option>Dragon Fruit</mdw-list-option>
-            <mdw-list-option>Emblica</mdw-list-option>
-            <mdw-list-option>Fig</mdw-list-option>
-            <mdw-list-option>Grapes</mdw-list-option>
-            <mdw-list-option>Grapefruit</mdw-list-option>
-            <mdw-list-option>Honeydew Melon</mdw-list-option>
-          </mdw-listbox>
-        </mdw-input>
-        <mdw-input filled label="Inline Autocomplete + Suggestion" autocomplete-inline autosuggest-inline supporting="Using [autocomplete-inline][autosuggest-inline]">
-          <mdw-listbox>
-            <mdw-list-option>Apple</mdw-list-option>
-            <mdw-list-option>Banana</mdw-list-option>
-            <mdw-list-option>Cherry</mdw-list-option>
-            <mdw-list-option>Dragon Fruit</mdw-list-option>
-            <mdw-list-option>Emblica</mdw-list-option>
-            <mdw-list-option>Fig</mdw-list-option>
-            <mdw-list-option>Grapes</mdw-list-option>
-            <mdw-list-option>Grapefruit</mdw-list-option>
-            <mdw-list-option>Honeydew Melon</mdw-list-option>
-          </mdw-listbox>
-        </mdw-input>
-        <mdw-input outlined ink=secondary label="Inline Autocomplete + Suggestion + Filter" autocomplete-inline autocomplete-list autosuggest-inline supporting="Using [autocomplete-inline][autocomplete-list][autosuggest-inline]">
-          <mdw-listbox>
-            <mdw-list-option>Apple</mdw-list-option>
-            <mdw-list-option>Banana</mdw-list-option>
-            <mdw-list-option>Cherry</mdw-list-option>
-            <mdw-list-option>Dragon Fruit</mdw-list-option>
-            <mdw-list-option>Emblica</mdw-list-option>
-            <mdw-list-option>Fig</mdw-list-option>
-            <mdw-list-option>Grapes</mdw-list-option>
-            <mdw-list-option>Grapefruit</mdw-list-option>
-            <mdw-list-option>Honeydew Melon</mdw-list-option>
-          </mdw-listbox>
-        </mdw-input>
-        <mdw-input filled ink=tertiary label="Inline Autocomplete + Suggestion + Custom Filter" autocomplete-inline autocomplete-list=custom autosuggest-inline supporting="Using [autocomplete-inline][autocomplete-list=custom][autosuggest-inline] with input event listener"
-        oninput="{
-          // Inject any custom DOM mutation here (ie: with framework).
-          // this.listbox is a QOL reference to the slotted listbox.
-          const inputRegex = new RegExp(this.value, 'gi');
-          for(const option of this.listbox) {
-            let optionText = option.textContent;
-            let fragment;
-            let lastIndex = 0;
-            for(const match of optionText.matchAll(inputRegex)) {
-              fragment ??= new DocumentFragment();
-              let {index} = match;
-              let matchStr = match.toString();
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=start>
 
-              // Generate `<mdw-box inline color={ink} role=mark>{match}</mdw-box>`
-              const box = document.createElement('mdw-box')
-              box.setAttribute('role', 'mark');
-              box.color = this.ink || 'primary';
-              box.block = true;
-              box.inline = true;
-              box.textContent = matchStr;
-              
-              fragment.append(
-                optionText.slice(lastIndex, index),
-                box,
-              );
+        <demo-preview-card label="Filled" col-span=12 code="
+        &lt;mdw-box x=stretch gap=16 padding=24&gt;
+          &lt;mdw-input filled label=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled placeholder=&quot;Placeholder only&quot; aria-label=&quot;Blank&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled ink=tertiary label=&quot;Ink only&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled color=secondary-container ink=secondary value=&quot;default value&quot; label=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled color=tertiary-container ink=tertiary label=&quot;Very long label that label will clip selectively&quot; placeholder=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled placeholder=&quot;Placeholder&quot; color=green-container ink=green type-style=headline icon=edit label=&quot;Custom typography and icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled shape-style=full type=search icon=search placeholder=&quot;Full shape, icon, type=search&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled shape-style=large placeholder=&quot;Placeholder&quot; icon=edit label=&quot;Large shape with icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled shape-style=full placeholder=&quot;Placeholder&quot; icon=edit label=&quot;Full shape with icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled icon=edit color=alias-container ink=alias input-prefix=&quot;$&quot; placeholder=&quot;10&quot; type=number label=&quot;Price&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled icon=email input-suffix=&quot;@gmail.com&quot; type=text placeholder=&quot;frank&quot; minlength=4 maxlength=8 supporting required label=&quot;Email&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled icon=edit color=alias-container ink=alias supporting=&quot;I'm being helpful!&quot; label=&quot;Name*&quot; required&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled icon=edit supporting label=&quot;Customized supporting&quot; value=&quot;deleteme&quot;&gt;
+            &lt;div slot=&quot;supporting&quot;&gt;You are &lt;mdw-inline ink=primary&gt;awesome&lt;/mdw-inline&gt;!&lt;/div&gt;
+          &lt;/mdw-input&gt;
+          &lt;mdw-input filled color=secondary-container error=&quot;I am error&quot; label=&quot;Errored&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled color=secondary-container disabled label=&quot;Disabled&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input filled color=secondary-container disabled error=&quot;Unavailable&quot; value=&quot;filled&quot;&gt;Disabled&lt;/mdw-input&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box x=stretch gap=16 padding=24>
+            <mdw-input filled label="Label"></mdw-input>
+            <mdw-input filled placeholder="Placeholder only" aria-label="Blank"></mdw-input>
+            <mdw-input filled ink=tertiary label="Ink only"></mdw-input>
+            <mdw-input filled color=secondary-container ink=secondary value="default value" label="Label">
+            </mdw-input>
+            <mdw-input filled color=tertiary-container ink=tertiary
+              label="Very long label that label will clip selectively" placeholder="Label"></mdw-input>
+            <mdw-input filled placeholder="Placeholder" color=green-container ink=green type-style=headline icon=edit
+              label="Custom typography and icon"></mdw-input>
+            <mdw-input filled shape-style=full type=search icon=search placeholder="Full shape, icon, type=search">
+            </mdw-input>
+            <mdw-input filled shape-style=large placeholder="Placeholder" icon=edit label="Large shape with icon">
+            </mdw-input>
+            <mdw-input filled shape-style=full placeholder="Placeholder" icon=edit label="Full shape with icon">
+            </mdw-input>
+            <mdw-input filled icon=edit color=alias-container ink=alias input-prefix="$" placeholder="10" type=number
+              label="Price"></mdw-input>
+            <mdw-input filled icon=email input-suffix="@gmail.com" type=text placeholder="frank" minlength=4 maxlength=8
+              supporting required label="Email"></mdw-input>
+            <mdw-input filled icon=edit color=alias-container ink=alias supporting="I'm being helpful!" label="Name*"
+              required></mdw-input>
+            <mdw-input filled icon=edit supporting label="Customized supporting" value="deleteme">
+              <div slot="supporting">
+                You are <mdw-inline ink=primary>awesome</mdw-inline>!
+              </div>
+            </mdw-input>
+            <mdw-input filled color=secondary-container error="I am error" label="Errored"></mdw-input>
+            <mdw-input filled color=secondary-container disabled label="Disabled"></mdw-input>
+            <mdw-input filled color=secondary-container disabled error="Unavailable" value="filled">Disabled
+            </mdw-input>
+          </mdw-box>
+        </demo-preview-card>
 
-              lastIndex = index + matchStr.length;
-            }
-            
-            option.hidden = this.value && Boolean(!fragment);
-            if (fragment) {
-              fragment.append(optionText.slice(lastIndex));
-              option.replaceChildren(fragment);
-            } else {
-              // Element may have old mark
-              option.replaceChildren(optionText);
-            }
+        <demo-preview-card label="Outlined" col-span=12 code="
+        &lt;mdw-box x=stretch gap=16 padding=24&gt;
+          &lt;mdw-input outlined label=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined placeholder=&quot;Placeholder only&quot; aria-label=&quot;Blank&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined ink=tertiary label=&quot;Ink only&quot;&gt;&lt;/mdw-input&gt;
+           &lt;mdw-input filled color=secondary-container ink=secondary value=&quot;default value&quot; label=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined color=tertiary-container ink=tertiary label=&quot;Very long label that label will clip selectively&quot; placeholder=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined placeholder=&quot;Placeholder&quot; color=green-container ink=green type-style=headline icon=edit label=&quot;Custom typography and icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined shape-style=full type=search icon=search placeholder=&quot;Full shape, icon, type=search&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined shape-style=large placeholder=&quot;Placeholder&quot; icon=edit label=&quot;Large shape with icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined shape-style=full placeholder=&quot;Placeholder&quot; icon=edit label=&quot;Full shape with icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined icon=edit color=alias-container ink=alias input-prefix=&quot;$&quot; placeholder=&quot;10&quot; type=number label=&quot;Price&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined icon=email input-suffix=&quot;@gmail.com&quot; type=text placeholder=&quot;frank&quot; minlength=4 maxlength=8 supporting required label=&quot;Email&quot;&gt;&lt;/mdw-input&gt;
+           &lt;mdw-input filled icon=edit color=alias-container ink=alias supporting=&quot;I'm being helpful!&quot; label=&quot;Name*&quot; required&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined icon=edit supporting label=&quot;Customized supporting&quot; value=&quot;deleteme&quot;&gt;&lt;div slot=&quot;supporting&quot;&gt;You are &lt;mdw-inline ink=primary&gt;awesome&lt;/mdw-inline&gt;!&lt;/div&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined color=secondary-container error=&quot;I am error&quot; label=&quot;Errored&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined color=secondary-container disabled label=&quot;Disabled&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined color=secondary-container disabled error=&quot;Unavailable&quot; value=&quot;filled&quot;&gt;Disabled&lt;/mdw-input&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box x=stretch gap=16 padding=24>
+            <mdw-input outlined label="Label"></mdw-input>
+            <mdw-input outlined placeholder="Placeholder only" aria-label="Blank"></mdw-input>
+            <mdw-input outlined ink=tertiary label="Ink only"></mdw-input>
+            <mdw-input outlined color=secondary-container ink=secondary value="default value" label="Label">
+            </mdw-input>
+            <mdw-input outlined color=tertiary-container ink=tertiary
+              label="Very long label that label will clip selectively" placeholder="Label"></mdw-input>
+            <mdw-input outlined placeholder="Placeholder" color=green-container ink=green type-style=headline icon=edit
+              label="Custom typography and icon"></mdw-input>
+            <mdw-input outlined shape-style=full type=search icon=search placeholder="Full shape, icon, type=search">
+            </mdw-input>
+            <mdw-input outlined shape-style=large placeholder="Placeholder" icon=edit label="Large shape with icon">
+            </mdw-input>
+            <mdw-input outlined shape-style=full placeholder="Placeholder" icon=edit label="Full shape with icon">
+            </mdw-input>
+            <mdw-input outlined icon=edit color=alias-container ink=alias input-prefix="$" placeholder="10" type=number
+              label="Price"></mdw-input>
+            <mdw-input outlined icon=email input-suffix="@gmail.com" type=text placeholder="frank" minlength=4
+              maxlength=8 supporting required label="Email"></mdw-input>
+            <mdw-input outlined icon=edit color=alias-container ink=alias supporting="I'm being helpful!" label="Name*"
+              required></mdw-input>
+            <mdw-input outlined icon=edit supporting label="Customized supporting" value="deleteme">
+              <div slot="supporting">
+                You are <mdw-inline ink=primary>awesome</mdw-inline>!
+              </div>
+            </mdw-input>
+            <mdw-input outlined color=secondary-container error="I am error" label="Errored"></mdw-input>
+            <mdw-input outlined color=secondary-container disabled label="Disabled"></mdw-input>
+            <mdw-input outlined color=secondary-container disabled error="Unavailable" value="filled">Disabled
+            </mdw-input>
+          </mdw-box>
+        </demo-preview-card>
 
-          }
-        }">
-          <mdw-listbox>
-            <mdw-list-option>Apple</mdw-list-option>
-            <mdw-list-option>Banana</mdw-list-option>
-            <mdw-list-option>Cherry</mdw-list-option>
-            <mdw-list-option>Dragon Fruit</mdw-list-option>
-            <mdw-list-option>Emblica</mdw-list-option>
-            <mdw-list-option>Fig</mdw-list-option>
-            <mdw-list-option>Grapes</mdw-list-option>
-            <mdw-list-option>Grapefruit</mdw-list-option>
-            <mdw-list-option>Honeydew Melon</mdw-list-option>
-          </mdw-listbox>
-        </mdw-input>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em size=medium>Non-editable Combobox</mdw-headline>
-      <mdw-box x=stretch gap=16 padding=24>
-        <mdw-input filled label="Basic" type=select-one supporting="Uses [type=select-one]">
-          <mdw-listbox>
-            <mdw-list-option>Apple</mdw-list-option>
-            <mdw-list-option>Banana</mdw-list-option>
-            <mdw-list-option>Cherry</mdw-list-option>
-            <mdw-list-option>Dragon Fruit</mdw-list-option>
-            <mdw-list-option>Emblica</mdw-list-option>
-            <mdw-list-option>Fig</mdw-list-option>
-            <mdw-list-option>Grapes</mdw-list-option>
-            <mdw-list-option>Grapefruit</mdw-list-option>
-            <mdw-list-option>Honeydew Melon</mdw-list-option>
-          </mdw-listbox>
-        </mdw-input>
-        <mdw-input filled label="Custom Blank Text" type=select-one supporting="Uses [select-one]">
-          <mdw-listbox>
-            <mdw-list-option value="">None</mdw-list-option>
-            <mdw-list-option>Apple</mdw-list-option>
-            <mdw-list-option>Banana</mdw-list-option>
-            <mdw-list-option>Cherry</mdw-list-option>
-            <mdw-list-option>Dragon Fruit</mdw-list-option>
-            <mdw-list-option>Emblica</mdw-list-option>
-            <mdw-list-option>Fig</mdw-list-option>
-            <mdw-list-option>Grapes</mdw-list-option>
-            <mdw-list-option>Grapefruit</mdw-list-option>
-            <mdw-list-option>Honeydew Melon</mdw-list-option>
-          </mdw-listbox>
-        </mdw-input>
-        <mdw-input filled label="Preselected" type=select-one value=Banana supporting="Uses [select-one]">
-          <mdw-listbox>
-            <mdw-list-option>Apple</mdw-list-option>
-            <mdw-list-option>Banana</mdw-list-option>
-            <mdw-list-option>Cherry</mdw-list-option>
-            <mdw-list-option>Dragon Fruit</mdw-list-option>
-            <mdw-list-option>Emblica</mdw-list-option>
-            <mdw-list-option>Fig</mdw-list-option>
-            <mdw-list-option>Grapes</mdw-list-option>
-            <mdw-list-option>Grapefruit</mdw-list-option>
-            <mdw-list-option>Honeydew Melon</mdw-list-option>
-          </mdw-listbox>
-        </mdw-input>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline size=medium text-padding=0.5em>Bare</mdw-headline>
-      <mdw-box x=stretch gap=16 padding=24>
-        <mdw-input label="[label] only"></mdw-input>
-        <mdw-input placeholder="[placeholder] + [label]" label="Blank"></mdw-input>
-        <mdw-input ink="tertiary" aria-label="Ink only"></mdw-input>
-        <mdw-input color="secondary-container" ink="secondary" value="default value" aria-label="Label">
-        </mdw-input>
-        <mdw-input color="tertiary-container" ink="tertiary"
-          label="Very long label that label will clip selectively"></mdw-input>
-        <mdw-input placeholder="Placeholder" color="green-container" ink="green"
-          type-style="headline" icon=edit aria-label="Custom typography and icon"></mdw-input>
-        <mdw-input shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search"
-          aria-label="Full shape">
-        </mdw-input>
-        <mdw-input shape-style="large" placeholder="Placeholder" icon=edit aria-label="Large shape with icon">
-        </mdw-input>
-        <mdw-input shape-style="full" placeholder="Placeholder" icon=edit aria-label="Full shape with icon">
-        </mdw-input>
-        <mdw-input icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10"
-          type="number" aria-label="Price"></mdw-input>
-        <mdw-input icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8"
-          supporting required aria-label="Email"></mdw-input>
-        <mdw-input icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!"
-          aria-label=Name* required></mdw-input>
-        <mdw-input icon=edit supporting aria-label="Customized supporting" value="deleteme">
-          <div slot="supporting">
-            You are <mdw-inline ink="primary">awesome</mdw-inline>!
-          </div>
-        </mdw-input>
-        <mdw-input color=secondary-container error="I am error" aria-label="Errored"></mdw-input>
-        <mdw-input color=secondary-container disabled aria-label="Disabled"></mdw-input>
-        <mdw-input color=secondary-container disabled error="Unavailable" value="filled">Disabled
-        </mdw-input>
-      </mdw-box>
-    </section>
+        <demo-preview-card label="Outlined Dense" col-span=12 code="
+        &lt;mdw-box x=stretch gap=16 padding=24&gt;
+          &lt;mdw-input outlined density=-2 label=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 placeholder=&quot;Placeholder only&quot; aria-label=&quot;Blank&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 ink=tertiary label=&quot;Ink only&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 color=secondary-container ink=secondary value=&quot;default value&quot; label=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 color=tertiary-container ink=tertiary label=&quot;Very long label that label will clip selectively&quot; placeholder=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 placeholder=&quot;Placeholder&quot; color=green-container ink=green type-style=headline icon=edit label=&quot;Custom typography and icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 shape-style=full type=search icon=search placeholder=&quot;Full shape, icon, type=search&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 shape-style=large placeholder=&quot;Placeholder&quot; icon=edit label=&quot;Large shape with icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 shape-style=full placeholder=&quot;Placeholder&quot; icon=edit label=&quot;Full shape with icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 icon=edit color=alias-container ink=alias input-prefix=&quot;$&quot; placeholder=&quot;10&quot; type=number label=&quot;Price&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 icon=email input-suffix=&quot;@gmail.com&quot; type=text placeholder=&quot;frank&quot; minlength=4 maxlength=8 supporting required label=&quot;Email&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 icon=edit color=alias-container ink=alias supporting=&quot;I'm being helpful!&quot; label=&quot;Name*&quot; required&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 icon=edit supporting label=&quot;Customized supporting&quot; value=&quot;deleteme&quot;&gt;&lt;div slot=&quot;supporting&quot;&gt;You are &lt;mdw-inline ink=primary&gt;awesome&lt;/mdw-inline&gt;!&lt;/div&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 color=secondary-container error=&quot;I am error&quot; label=&quot;Errored&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 color=secondary-container disabled label=&quot;Disabled&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input outlined density=-2 color=secondary-container disabled error=&quot;Unavailable&quot; value=&quot;filled&quot;&gt;Disabled&lt;/mdw-input&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box x=stretch gap=16 padding=24>
+            <mdw-input outlined density=-2 label="Label"></mdw-input>
+            <mdw-input outlined density=-2 placeholder="Placeholder only" aria-label="Blank"></mdw-input>
+            <mdw-input outlined density=-2 ink=tertiary label="Ink only"></mdw-input>
+            <mdw-input outlined density=-2 color="secondary-container" ink="secondary" value="default value"
+              label="Label">
+            </mdw-input>
+            <mdw-input outlined density=-2 color=tertiary-container ink=tertiary
+              label="Very long label that label will clip selectively" placeholder="Label"></mdw-input>
+            <mdw-input outlined density=-2 placeholder="Placeholder" color=green-container ink=green type-style=headline
+              icon=edit label="Custom typography and icon"></mdw-input>
+            <mdw-input outlined density=-2 shape-style="full" type=search icon=search
+              placeholder="Full shape, icon, type=search">
+            </mdw-input>
+            <mdw-input outlined density=-2 shape-style="large" placeholder="Placeholder" icon=edit
+              label="Large shape with icon">
+            </mdw-input>
+            <mdw-input outlined density=-2 shape-style="full" placeholder="Placeholder" icon=edit
+              label="Full shape with icon">
+            </mdw-input>
+            <mdw-input outlined density=-2 icon=edit color="alias-container" ink="alias" input-prefix="$"
+              placeholder="10" type="number" label="Price"></mdw-input>
+            <mdw-input outlined density=-2 icon=email input-suffix="@gmail.com" type="text" placeholder="frank"
+              minlength="4" maxlength="8" supporting required label="Email"></mdw-input>
+            <mdw-input outlined density=-2 icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!"
+              label="Name*" required></mdw-input>
+            <mdw-input outlined density=-2 icon=edit supporting label="Customized supporting" value="deleteme">
+              <div slot="supporting">
+                You are <mdw-inline ink="primary">awesome</mdw-inline>!
+              </div>
+            </mdw-input>
+            <mdw-input outlined density=-2 color=secondary-container error="I am error" label="Errored"></mdw-input>
+            <mdw-input outlined density=-2 color=secondary-container disabled label="Disabled"></mdw-input>
+            <mdw-input outlined density=-2 color=secondary-container disabled error="Unavailable"
+              value="filled">Disabled
+            </mdw-input>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Editable Combobox" col-span=12 code="
+        &lt;mdw-box x=stretch gap=16 padding=24&gt;
+          &lt;mdw-input filled label=&quot;Basic&quot; supporting=&quot;No list-autocomplete (filtering), inline-autocomplete (appending text), or automatic selection.&quot;&gt;
+            &lt;mdw-listbox&gt;
+              &lt;mdw-list-option&gt;Apple&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Banana&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Cherry&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Dragon Fruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Emblica&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Fig&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapes&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapefruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Honeydew Melon&lt;/mdw-list-option&gt;
+            &lt;/mdw-listbox&gt;
+          &lt;/mdw-input&gt;
+          &lt;mdw-input filled label=&quot;Inline&quot; autocomplete-inline supporting=&quot;Using [autocomplete-inline]. (Use keyboard up/down)&quot;&gt;
+            &lt;mdw-listbox&gt;
+              &lt;mdw-list-option&gt;Apple&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Banana&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Cherry&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Dragon Fruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Emblica&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Fig&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapes&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapefruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Honeydew Melon&lt;/mdw-list-option&gt;
+            &lt;/mdw-listbox&gt;
+          &lt;/mdw-input&gt;
+          &lt;mdw-input filled label=&quot;Inline Autocomplete + Suggestion&quot; autocomplete-inline autosuggest-inline supporting=&quot;Using [autocomplete-inline][autosuggest-inline]&quot;&gt;
+            &lt;mdw-listbox&gt;
+              &lt;mdw-list-option&gt;Apple&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Banana&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Cherry&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Dragon Fruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Emblica&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Fig&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapes&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapefruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Honeydew Melon&lt;/mdw-list-option&gt;
+            &lt;/mdw-listbox&gt;
+          &lt;/mdw-input&gt;
+          &lt;mdw-input outlined ink=secondary label=&quot;Inline Autocomplete + Suggestion + Filter&quot; autocomplete-inline autocomplete-list autosuggest-inline supporting=&quot;Using [autocomplete-inline][autocomplete-list][autosuggest-inline]&quot;&gt;
+            &lt;mdw-listbox&gt;
+              &lt;mdw-list-option&gt;Apple&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Banana&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Cherry&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Dragon Fruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Emblica&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Fig&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapes&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapefruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Honeydew Melon&lt;/mdw-list-option&gt;
+            &lt;/mdw-listbox&gt;
+          &lt;/mdw-input&gt;
+          &lt;mdw-input filled ink=tertiary label=&quot;Inline Autocomplete + Suggestion + Custom Filter&quot; autocomplete-inline autocomplete-list=custom autosuggest-inline supporting=&quot;Using [autocomplete-inline][autocomplete-list=custom][autosuggest-inline] with input event listener&quot;&gt;
+            &lt;mdw-listbox&gt;
+              &lt;mdw-list-option&gt;Apple&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Banana&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Cherry&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Dragon Fruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Emblica&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Fig&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapes&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapefruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Honeydew Melon&lt;/mdw-list-option&gt;
+            &lt;/mdw-listbox&gt;
+          &lt;/mdw-input&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box x=stretch gap=16 padding=24>
+            <mdw-input filled label="Basic"
+              supporting="No list-autocomplete (filtering), inline-autocomplete (appending text), or automatic selection.">
+              <mdw-listbox>
+                <mdw-list-option>Apple</mdw-list-option>
+                <mdw-list-option>Banana</mdw-list-option>
+                <mdw-list-option>Cherry</mdw-list-option>
+                <mdw-list-option>Dragon Fruit</mdw-list-option>
+                <mdw-list-option>Emblica</mdw-list-option>
+                <mdw-list-option>Fig</mdw-list-option>
+                <mdw-list-option>Grapes</mdw-list-option>
+                <mdw-list-option>Grapefruit</mdw-list-option>
+                <mdw-list-option>Honeydew Melon</mdw-list-option>
+              </mdw-listbox>
+            </mdw-input>
+            <mdw-input filled label="Inline" autocomplete-inline
+              supporting="Using [autocomplete-inline]. (Use keyboard up/down)">
+              <mdw-listbox>
+                <mdw-list-option>Apple</mdw-list-option>
+                <mdw-list-option>Banana</mdw-list-option>
+                <mdw-list-option>Cherry</mdw-list-option>
+                <mdw-list-option>Dragon Fruit</mdw-list-option>
+                <mdw-list-option>Emblica</mdw-list-option>
+                <mdw-list-option>Fig</mdw-list-option>
+                <mdw-list-option>Grapes</mdw-list-option>
+                <mdw-list-option>Grapefruit</mdw-list-option>
+                <mdw-list-option>Honeydew Melon</mdw-list-option>
+              </mdw-listbox>
+            </mdw-input>
+            <mdw-input filled label="Inline Autocomplete + Suggestion" autocomplete-inline autosuggest-inline
+              supporting="Using [autocomplete-inline][autosuggest-inline]">
+              <mdw-listbox>
+                <mdw-list-option>Apple</mdw-list-option>
+                <mdw-list-option>Banana</mdw-list-option>
+                <mdw-list-option>Cherry</mdw-list-option>
+                <mdw-list-option>Dragon Fruit</mdw-list-option>
+                <mdw-list-option>Emblica</mdw-list-option>
+                <mdw-list-option>Fig</mdw-list-option>
+                <mdw-list-option>Grapes</mdw-list-option>
+                <mdw-list-option>Grapefruit</mdw-list-option>
+                <mdw-list-option>Honeydew Melon</mdw-list-option>
+              </mdw-listbox>
+            </mdw-input>
+            <mdw-input outlined ink=secondary label="Inline Autocomplete + Suggestion + Filter" autocomplete-inline
+              autocomplete-list autosuggest-inline
+              supporting="Using [autocomplete-inline][autocomplete-list][autosuggest-inline]">
+              <mdw-listbox>
+                <mdw-list-option>Apple</mdw-list-option>
+                <mdw-list-option>Banana</mdw-list-option>
+                <mdw-list-option>Cherry</mdw-list-option>
+                <mdw-list-option>Dragon Fruit</mdw-list-option>
+                <mdw-list-option>Emblica</mdw-list-option>
+                <mdw-list-option>Fig</mdw-list-option>
+                <mdw-list-option>Grapes</mdw-list-option>
+                <mdw-list-option>Grapefruit</mdw-list-option>
+                <mdw-list-option>Honeydew Melon</mdw-list-option>
+              </mdw-listbox>
+            </mdw-input>
+            <mdw-input filled ink=tertiary label="Inline Autocomplete + Suggestion + Custom Filter" autocomplete-inline
+              autocomplete-list=custom autosuggest-inline
+              supporting="Using [autocomplete-inline][autocomplete-list=custom][autosuggest-inline] with input event listener"
+              oninput="{ /* custom filter omitted in demo code for brevity */ }">
+              <mdw-listbox>
+                <mdw-list-option>Apple</mdw-list-option>
+                <mdw-list-option>Banana</mdw-list-option>
+                <mdw-list-option>Cherry</mdw-list-option>
+                <mdw-list-option>Dragon Fruit</mdw-list-option>
+                <mdw-list-option>Emblica</mdw-list-option>
+                <mdw-list-option>Fig</mdw-list-option>
+                <mdw-list-option>Grapes</mdw-list-option>
+                <mdw-list-option>Grapefruit</mdw-list-option>
+                <mdw-list-option>Honeydew Melon</mdw-list-option>
+              </mdw-listbox>
+            </mdw-input>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Non-editable Combobox" col-span=12 code="
+        &lt;mdw-box x=stretch gap=16 padding=24&gt;
+          &lt;mdw-input filled label=&quot;Basic&quot; type=select-one supporting=&quot;Uses [type=select-one]&quot;&gt;
+            &lt;mdw-listbox&gt;
+              &lt;mdw-list-option&gt;Apple&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Banana&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Cherry&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Dragon Fruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Emblica&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Fig&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapes&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapefruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Honeydew Melon&lt;/mdw-list-option&gt;
+            &lt;/mdw-listbox&gt;
+          &lt;/mdw-input&gt;
+          &lt;mdw-input filled label=&quot;Custom Blank Text&quot; type=select-one supporting=&quot;Uses [select-one]&quot;&gt;
+            &lt;mdw-listbox&gt;
+              &lt;mdw-list-option value=&quot;&quot;&gt;None&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Apple&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Banana&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Cherry&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Dragon Fruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Emblica&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Fig&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapes&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapefruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Honeydew Melon&lt;/mdw-list-option&gt;
+            &lt;/mdw-listbox&gt;
+          &lt;/mdw-input&gt;
+          &lt;mdw-input filled label=&quot;Preselected&quot; type=select-one value=Banana supporting=&quot;Uses [select-one]&quot;&gt;
+            &lt;mdw-listbox&gt;
+              &lt;mdw-list-option&gt;Apple&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Banana&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Cherry&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Dragon Fruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Emblica&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Fig&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapes&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Grapefruit&lt;/mdw-list-option&gt;
+              &lt;mdw-list-option&gt;Honeydew Melon&lt;/mdw-list-option&gt;
+            &lt;/mdw-listbox&gt;
+          &lt;/mdw-input&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box x=stretch gap=16 padding=24>
+            <mdw-input filled label="Basic" type=select-one supporting="Uses [type=select-one]">
+              <mdw-listbox>
+                <mdw-list-option>Apple</mdw-list-option>
+                <mdw-list-option>Banana</mdw-list-option>
+                <mdw-list-option>Cherry</mdw-list-option>
+                <mdw-list-option>Dragon Fruit</mdw-list-option>
+                <mdw-list-option>Emblica</mdw-list-option>
+                <mdw-list-option>Fig</mdw-list-option>
+                <mdw-list-option>Grapes</mdw-list-option>
+                <mdw-list-option>Grapefruit</mdw-list-option>
+                <mdw-list-option>Honeydew Melon</mdw-list-option>
+              </mdw-listbox>
+            </mdw-input>
+            <mdw-input filled label="Custom Blank Text" type=select-one supporting="Uses [select-one]">
+              <mdw-listbox>
+                <mdw-list-option value="">None</mdw-list-option>
+                <mdw-list-option>Apple</mdw-list-option>
+                <mdw-list-option>Banana</mdw-list-option>
+                <mdw-list-option>Cherry</mdw-list-option>
+                <mdw-list-option>Dragon Fruit</mdw-list-option>
+                <mdw-list-option>Emblica</mdw-list-option>
+                <mdw-list-option>Fig</mdw-list-option>
+                <mdw-list-option>Grapes</mdw-list-option>
+                <mdw-list-option>Grapefruit</mdw-list-option>
+                <mdw-list-option>Honeydew Melon</mdw-list-option>
+              </mdw-listbox>
+            </mdw-input>
+            <mdw-input filled label="Preselected" type=select-one value=Banana supporting="Uses [select-one]">
+              <mdw-listbox>
+                <mdw-list-option>Apple</mdw-list-option>
+                <mdw-list-option>Banana</mdw-list-option>
+                <mdw-list-option>Cherry</mdw-list-option>
+                <mdw-list-option>Dragon Fruit</mdw-list-option>
+                <mdw-list-option>Emblica</mdw-list-option>
+                <mdw-list-option>Fig</mdw-list-option>
+                <mdw-list-option>Grapes</mdw-list-option>
+                <mdw-list-option>Grapefruit</mdw-list-option>
+                <mdw-list-option>Honeydew Melon</mdw-list-option>
+              </mdw-listbox>
+            </mdw-input>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Bare" col-span=12 code="
+        &lt;mdw-box x=stretch gap=16 padding=24&gt;
+          &lt;mdw-input label=&quot;[label] only&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input placeholder=&quot;[placeholder] + [label]&quot; label=&quot;Blank&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input ink=&quot;tertiary&quot; aria-label=&quot;Ink only&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input color=&quot;secondary-container&quot; ink=&quot;secondary&quot; value=&quot;default value&quot; aria-label=&quot;Label&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input color=&quot;tertiary-container&quot; ink=&quot;tertiary&quot; label=&quot;Very long label that label will clip selectively&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input placeholder=&quot;Placeholder&quot; color=&quot;green-container&quot; ink=&quot;green&quot; type-style=&quot;headline&quot; icon=edit aria-label=&quot;Custom typography and icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input shape-style=&quot;full&quot; type=search icon=search placeholder=&quot;Full shape, icon, type=search&quot; aria-label=&quot;Full shape&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input shape-style=&quot;large&quot; placeholder=&quot;Placeholder&quot; icon=edit aria-label=&quot;Large shape with icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input shape-style=&quot;full&quot; placeholder=&quot;Placeholder&quot; icon=edit aria-label=&quot;Full shape with icon&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input icon=edit color=&quot;alias-container&quot; ink=&quot;alias&quot; input-prefix=&quot;$&quot; placeholder=&quot;10&quot; type=&quot;number&quot; aria-label=&quot;Price&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input icon=email input-suffix=&quot;@gmail.com&quot; type=&quot;text&quot; placeholder=&quot;frank&quot; minlength=&quot;4&quot; maxlength=&quot;8&quot; supporting required aria-label=&quot;Email&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input icon=edit color=&quot;alias-container&quot; ink=&quot;alias&quot; supporting=&quot;I'm being helpful!&quot; aria-label=Name* required&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input icon=edit supporting aria-label=&quot;Customized supporting&quot; value=&quot;deleteme&quot;&gt;&lt;div slot=&quot;supporting&quot;&gt;You are &lt;mdw-inline ink=&quot;primary&quot;&gt;awesome&lt;/mdw-inline&gt;!&lt;/div&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input color=secondary-container error=&quot;I am error&quot; aria-label=&quot;Errored&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input color=secondary-container disabled aria-label=&quot;Disabled&quot;&gt;&lt;/mdw-input&gt;
+          &lt;mdw-input color=secondary-container disabled error=&quot;Unavailable&quot; value=&quot;filled&quot;&gt;Disabled&lt;/mdw-input&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box x=stretch gap=16 padding=24>
+            <mdw-input label="[label] only"></mdw-input>
+            <mdw-input placeholder="[placeholder] + [label]" label="Blank"></mdw-input>
+            <mdw-input ink=tertiary aria-label="Ink only"></mdw-input>
+            <mdw-input color=secondary-container ink=secondary value="default value" aria-label="Label">
+            </mdw-input>
+            <mdw-input color=tertiary-container ink=tertiary
+              label="Very long label that label will clip selectively"></mdw-input>
+            <mdw-input placeholder="Placeholder" color=green-container ink=green type-style=headline icon=edit
+              aria-label="Custom typography and icon"></mdw-input>
+            <mdw-input shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search"
+              aria-label="Full shape">
+            </mdw-input>
+            <mdw-input shape-style="large" placeholder="Placeholder" icon=edit aria-label="Large shape with icon">
+            </mdw-input>
+            <mdw-input shape-style="full" placeholder="Placeholder" icon=edit aria-label="Full shape with icon">
+            </mdw-input>
+            <mdw-input icon=edit color="alias-container" ink="alias" input-prefix="$" placeholder="10" type="number"
+              aria-label="Price"></mdw-input>
+            <mdw-input icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4" maxlength="8"
+              supporting required aria-label="Email"></mdw-input>
+            <mdw-input icon=edit color="alias-container" ink="alias" supporting="I'm being helpful!" aria-label="Name*"
+              required></mdw-input>
+            <mdw-input icon=edit supporting aria-label="Customized supporting" value="deleteme">
+              <div slot="supporting">
+                You are <mdw-inline ink="primary">awesome</mdw-inline>!
+              </div>
+            </mdw-input>
+            <mdw-input color=secondary-container error="I am error" aria-label="Errored"></mdw-input>
+            <mdw-input color=secondary-container disabled aria-label="Disabled"></mdw-input>
+            <mdw-input color=secondary-container disabled error="Unavailable" value="filled">Disabled
+            </mdw-input>
+          </mdw-box>
+        </demo-preview-card>
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
+
 </html>

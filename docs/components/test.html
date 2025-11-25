@@ -7,12 +7,44 @@
   <link rel="stylesheet" href="../theme.css" />
   <link rel="stylesheet" href="../demo.css" />
   <script src="../demo.min.js"></script>
+  <style>
+    .inline-block {
+      display: inline-block
+    }
+
+  </style>
 </head>
 
-<body>
-  <mdw-box padding="24">
-    <mdw-fab fab-size="large" color="yellow-container" icon="edit">Custom (Yellow)</mdw-fab>
-  </mdw-box>
+<body style="padding:32px">
+
+
+  <form>
+    <mdw-input outlined label="Custom Blank Text" value="3,4" multiple autocomplete-inline autocomplete-list
+      autosuggest-inline supporting="Uses [select-multiple]">
+      <mdw-listbox multiple>
+        <mdw-list-option value=1>Apple</mdw-list-option>
+        <mdw-list-option value=2>Banana</mdw-list-option>
+        <mdw-list-option value=3>Cherry</mdw-list-option>
+        <mdw-list-option value=4>Dragon Fruit</mdw-list-option>
+        <mdw-list-option value=5>Emblica</mdw-list-option>
+        <mdw-list-option value=6>Fig</mdw-list-option>
+        <mdw-list-option value=7>Grapes</mdw-list-option>
+        <mdw-list-option value=8>Grapefruit</mdw-list-option>
+        <mdw-list-option value=9>Honeydew Melon</mdw-list-option>
+      </mdw-listbox>
+    </mdw-input>
+    <button type=reset>reset</button>
+  </form>
+
+  <div></div>
+
+  <mdw-button onclick="{document.getElementById('dialog-edit-template').show()}">Dialog</mdw-button>
+  <mdw-button onclick="{document.getElementById('dialog-edit-template2').show()}">Dialog2</mdw-button>
+
+
+
+
+
 </body>
 
 </html>

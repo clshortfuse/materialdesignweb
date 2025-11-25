@@ -11,26 +11,47 @@
 
 <body>
   <demo-page>
-    <mdw-grid gap=16 padding=pane>
-      <demo-preview-card label="Standard" col-span=8 col-span-12=6>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+        <mdw-headline text-padding=0>Badges</mdw-headline>
+
+        <demo-preview-card label="Standard" col-span=8 col-span-12=6 code="
         <mdw-badge></mdw-badge>
         <mdw-badge>1</mdw-badge>
         <mdw-badge>12</mdw-badge>
         <mdw-badge>123</mdw-badge>
         <mdw-badge>999+</mdw-badge>
-        <mdw-badge><mdw-icon icon="sunny"></mdw-icon>Sunny</mdw-badge>
-      </demo-preview-card>
-      <demo-preview-card label="Customized" col-span=8 col-span-12=6>
-        <mdw-badge color="surface">Surface</mdw-badge>
-        <mdw-badge color="primary">Primary</mdw-badge>
-        <mdw-badge color="primary-container">Primary Container</mdw-badge>
-        <mdw-badge color="inverse-surface">Inverse Surface</mdw-badge>
-        <mdw-badge color="inverse-primary">Inverse Primary</mdw-badge>
-        <mdw-badge type-style="headline-small">Headline Small</mdw-badge>
+        <mdw-badge><mdw-icon icon=sunny></mdw-icon>Sunny</mdw-badge>
+        ">
+          <mdw-badge></mdw-badge>
+          <mdw-badge>1</mdw-badge>
+          <mdw-badge>12</mdw-badge>
+          <mdw-badge>123</mdw-badge>
+          <mdw-badge>999+</mdw-badge>
+          <mdw-badge><mdw-icon icon="sunny"></mdw-icon>Sunny</mdw-badge>
+        </demo-preview-card>
+
+        <demo-preview-card label="Customized" col-span=8 col-span-12=6 code="
+        <mdw-badge color=surface>Surface</mdw-badge>
+        <mdw-badge color=primary>Primary</mdw-badge>
+        <mdw-badge color=primary-container>Primary Container</mdw-badge>
+        <mdw-badge color=inverse-surface>Inverse Surface</mdw-badge>
+        <mdw-badge color=inverse-primary>Inverse Primary</mdw-badge>
+        <mdw-badge type-style=headline-small>Headline Small</mdw-badge>
         <mdw-badge shape-style=extra-small>Extra Small Shape</mdw-badge>
         <mdw-badge shape-end>End Shape</mdw-badge>
-      </demo-preview-card>
-    </mdw-grid>
+        ">
+          <mdw-badge color="surface">Surface</mdw-badge>
+          <mdw-badge color="primary">Primary</mdw-badge>
+          <mdw-badge color="primary-container">Primary Container</mdw-badge>
+          <mdw-badge color="inverse-surface">Inverse Surface</mdw-badge>
+          <mdw-badge color="inverse-primary">Inverse Primary</mdw-badge>
+          <mdw-badge type-style="headline-small">Headline Small</mdw-badge>
+          <mdw-badge shape-style=extra-small>Extra Small Shape</mdw-badge>
+          <mdw-badge shape-end>End Shape</mdw-badge>
+        </demo-preview-card>
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 
 </body>

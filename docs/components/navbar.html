@@ -12,56 +12,71 @@
 <body>
 
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Standard</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <demo-screen color="background">
-          <mdw-nav-bar hide-on-scroll>
-            <mdw-nav-bar-item icon="edit" href="#navbar">Default</mdw-nav-bar-item>
-            <mdw-nav-bar-item icon="change_history" href="#navbar" color=primary-container>Primary Container
-            </mdw-nav-bar-item>
-            <mdw-nav-bar-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary Container
-            </mdw-nav-bar-item>
-          </mdw-nav-bar>
-          <demo-dummy-text></demo-dummy-text>
-        </demo-screen>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Badges</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <demo-screen color="background">
-          <mdw-nav-bar color="primary-container">
-            <mdw-nav-bar-item show-label=active icon="change_history" href="#navbar" color=primary-container badge>Primary
-              Container
-            </mdw-nav-bar-item>
-            <mdw-nav-bar-item show-label=active icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary
-            </mdw-nav-bar-item>
-            <mdw-nav-bar-item show-label=active icon="change_history" href="#navbar" badge="999+"
-              color=green-container>
-              Green Container
-            </mdw-nav-bar-item>
-          </mdw-nav-bar>
-          <demo-dummy-text></demo-dummy-text>
-        </demo-screen>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>No label</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <demo-screen color="background">
-          <mdw-nav-bar hide-on-scroll>
-            <mdw-nav-bar-item show-label=never icon="change_history" href="#navbar" badge aria-label="Default">
-            </mdw-nav-bar-item>
-            <mdw-nav-bar-item show-label=never icon="change_history" href="#navbar" badge=1 color=primary-container
-              aria-label="Primary">Primary</mdw-nav-bar-item>
-            <mdw-nav-bar-item show-label=never icon="change_history" href="#navbar" badge="999+" color=tertiary-container
-              aria-label="Tertiary">Tertiary Container</mdw-nav-bar-item>
-          </mdw-nav-bar>
-          <demo-dummy-text></demo-dummy-text>
-        </demo-screen>
-      </mdw-box>
-    </section>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+
+        <demo-preview-card label="Standard" col-span=12 code="
+&lt;mdw-nav-bar&gt;
+  &lt;mdw-nav-bar-item icon=&quot;edit&quot; href=&quot;#navbar&quot;&gt;Default&lt;/mdw-nav-bar-item&gt;
+  &lt;mdw-nav-bar-item icon=&quot;change_history&quot; href=&quot;#navbar&quot; color=primary-container&gt;Primary Container&lt;/mdw-nav-bar-item&gt;
+  &lt;mdw-nav-bar-item icon=&quot;change_history&quot; href=&quot;#navbar&quot; color=tertiary-container&gt;Tertiary Container&lt;/mdw-nav-bar-item&gt;
+&lt;/mdw-nav-bar&gt;
+">
+          <div style="width:100%">
+            <mdw-nav-bar auto-close=-1>
+              <mdw-nav-bar-item icon="edit" href="#navbar">Default</mdw-nav-bar-item>
+              <mdw-nav-bar-item icon="change_history" href="#navbar" color=primary-container>Primary Container
+              </mdw-nav-bar-item>
+              <mdw-nav-bar-item icon="change_history" href="#navbar" color=tertiary-container>Tertiary Container
+              </mdw-nav-bar-item>
+            </mdw-nav-bar>
+          </div>
+        </demo-preview-card>
+
+        <demo-preview-card label="Badges" col-span=12 code="
+&lt;mdw-nav-bar color=&quot;primary-container&quot;&gt;
+  &lt;mdw-nav-bar-item show-label=active icon=&quot;change_history&quot; href=&quot;#navbar&quot; color=primary-container badge&gt;Primary Container&lt;/mdw-nav-bar-item&gt;
+  &lt;mdw-nav-bar-item show-label=active icon=&quot;change_history&quot; href=&quot;#navbar&quot; badge=1 color=tertiary&gt;Tertiary&lt;/mdw-nav-bar-item&gt;
+  &lt;mdw-nav-bar-item show-label=active icon=&quot;change_history&quot; href=&quot;#navbar&quot; badge=&quot;999+&quot; color=green-container&gt;Green Container&lt;/mdw-nav-bar-item&gt;
+&lt;/mdw-nav-bar&gt;
+">
+          <div style="width:100%">
+            <mdw-nav-bar auto-close=-1 color="primary-container">
+              <mdw-nav-bar-item show-label=active icon="change_history" href="#navbar" color=primary-container
+                badge>Primary
+                Container
+              </mdw-nav-bar-item>
+              <mdw-nav-bar-item show-label=active icon="change_history" href="#navbar" badge=1 color=tertiary>Tertiary
+              </mdw-nav-bar-item>
+              <mdw-nav-bar-item show-label=active icon="change_history" href="#navbar" badge="999+"
+                color=green-container>
+                Green Container
+              </mdw-nav-bar-item>
+            </mdw-nav-bar>
+          </div>
+        </demo-preview-card>
+
+        <demo-preview-card label="No label" col-span=12 code="
+&lt;mdw-nav-bar&gt;
+  &lt;mdw-nav-bar-item show-label=never icon=&quot;change_history&quot; href=&quot;#navbar&quot; badge aria-label=&quot;Default&quot;&gt;&lt;/mdw-nav-bar-item&gt;
+  &lt;mdw-nav-bar-item show-label=never icon=&quot;change_history&quot; href=&quot;#navbar&quot; badge=1 color=primary-container aria-label=&quot;Primary&quot;&gt;Primary&lt;/mdw-nav-bar-item&gt;
+  &lt;mdw-nav-bar-item show-label=never icon=&quot;change_history&quot; href=&quot;#navbar&quot; badge=&quot;999+&quot; color=tertiary-container aria-label=&quot;Tertiary&quot;&gt;Tertiary Container&lt;/mdw-nav-bar-item&gt;
+&lt;/mdw-nav-bar&gt;
+">
+          <div style="width:100%">
+            <mdw-nav-bar auto-close=-1>
+              <mdw-nav-bar-item show-label=never icon="change_history" href="#navbar" badge aria-label="Default">
+              </mdw-nav-bar-item>
+              <mdw-nav-bar-item show-label=never icon="change_history" href="#navbar" badge=1 color=primary-container
+                aria-label="Primary">Primary</mdw-nav-bar-item>
+              <mdw-nav-bar-item show-label=never icon="change_history" href="#navbar" badge="999+"
+                color=tertiary-container aria-label="Tertiary">Tertiary Container</mdw-nav-bar-item>
+            </mdw-nav-bar>
+          </div>
+        </demo-preview-card>
+
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
 

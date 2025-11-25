@@ -8,335 +8,159 @@
   <link rel="stylesheet" href="../demo.css" />
   <script src="../demo.min.js"></script>
 </head>
+
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Filled</mdw-headline>
-      <mdw-box flex=column x=stretch gap=16 padding=24>
-        <mdw-select filled label="Fruits">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled placeholder="Placeholder only" aria-label="Blank">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled ink="tertiary" label="Ink only">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled color="secondary-container" ink="secondary" value="default value" label="Label">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled color="tertiary-container" ink="tertiary"
-          label="Very long label that label will clip selectively" placeholder="Label">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled placeholder="Placeholder" color="green-container" ink="green"
-          type-style="headline" icon=edit label="Custom typography and icon">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled shape-style="large" placeholder="Placeholder" icon=edit label="Large shape with icon">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled shape-style="full" placeholder="Placeholder" icon=edit label="Full shape with icon">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled icon=edit color="alias-container" ink="alias" input-prefix="$"
-          placeholder="10" type="number" label="Price">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
-          maxlength="8" supporting required label="Email">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled icon=edit color="alias-container" ink="alias"
-          supporting="I'm being helpful!" label=Name* required>
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled icon=edit supporting label="Customized supporting" value="deleteme">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-          <div slot="supporting">
-            You are <mdw-inline ink="primary">awesome</mdw-inline>!
-          </div>
-        </mdw-select>
-        <mdw-select filled color=secondary-container error="I am error" label="Errored">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled color=secondary-container disabled label="Disabled">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select filled color=secondary-container disabled error="Unavailable" value="filled">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Outlined</mdw-headline>
-      <mdw-box flex=column x=stretch gap=16 padding=24>
-        <mdw-select outlined label="Fruits">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined placeholder="Placeholder only" aria-label="Blank">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined ink="tertiary" label="Ink only">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined color="secondary-container" ink="secondary" value="default value" label="Label">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined color="tertiary-container" ink="tertiary"
-          label="Very long label that label will clip selectively" placeholder="Label">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined placeholder="Placeholder" color="green-container" ink="green"
-          type-style="headline" icon=edit label="Custom typography and icon">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined shape-style="large" placeholder="Placeholder" icon=edit label="Large shape with icon">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined shape-style="full" placeholder="Placeholder" icon=edit label="Full shape with icon">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined icon=edit color="alias-container" ink="alias" input-prefix="$"
-          placeholder="10" type="number" label="Price">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
-          maxlength="8" supporting required label="Email">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined icon=edit color="alias-container" ink="alias"
-          supporting="I'm being helpful!" label=Name* required>
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined icon=edit supporting label="Customized supporting" value="deleteme">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-          <div slot="supporting">
-            You are <mdw-inline ink="primary">awesome</mdw-inline>!
-          </div>
-        </mdw-select>
-        <mdw-select outlined color=secondary-container error="I am error" label="Errored">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined color=secondary-container disabled label="Disabled">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select outlined color=secondary-container disabled error="Unavailable" value="filled">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Bare</mdw-headline>
-      <mdw-box flex=column x=stretch gap=16 padding=24>
-        <mdw-select label="Fruits">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select placeholder="Placeholder only" aria-label="Blank">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select ink="tertiary" label="Ink only">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select color="secondary-container" ink="secondary" value="default value" label="Label">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select color="tertiary-container" ink="tertiary"
-          label="Very long label that label will clip selectively" placeholder="Label">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select placeholder="Placeholder" color="green-container" ink="green"
-          type-style="headline" icon=edit label="Custom typography and icon">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select shape-style="full" type=search icon=search placeholder="Full shape, icon, type=search">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select shape-style="large" placeholder="Placeholder" icon=edit label="Large shape with icon">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select shape-style="full" placeholder="Placeholder" icon=edit label="Full shape with icon">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select icon=edit color="alias-container" ink="alias" input-prefix="$"
-          placeholder="10" type="number" label="Price">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select icon=email input-suffix="@gmail.com" type="text" placeholder="frank" minlength="4"
-          maxlength="8" supporting required label="Email">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select icon=edit color="alias-container" ink="alias"
-          supporting="I'm being helpful!" label=Name* required>
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select icon=edit supporting label="Customized supporting" value="deleteme">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-          <div slot="supporting">
-            You are <mdw-inline ink="primary">awesome</mdw-inline>!
-          </div>
-        </mdw-select>
-        <mdw-select color=secondary-container error="I am error" label="Errored">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select color=secondary-container disabled label="Disabled">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-        <mdw-select color=secondary-container disabled error="Unavailable" value="filled">
-          <option value="Apple">Apple</option>
-          <option value="Banana" selected>Banana</option>
-          <option value="Grape">Grape</option>
-          <option value="Pear">Pear</option>
-        </mdw-select>
-      </mdw-box>
-    </section>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+
+        <demo-preview-card label="Filled" col-span=12 code="
+        &lt;mdw-box flex=column x=stretch gap=16 padding=24&gt;
+          &lt;mdw-select filled label=&quot;Fruits&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+          &lt;mdw-select filled placeholder=&quot;Placeholder only&quot; aria-label=&quot;Blank&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+          &lt;mdw-select filled ink=tertiary label=&quot;Ink only&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+          &lt;mdw-select filled color=secondary-container ink=secondary value=&quot;default value&quot; label=&quot;Label&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box flex=column x=stretch gap=16 padding=24>
+            <mdw-select filled label="Fruits">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+            <mdw-select filled placeholder="Placeholder only" aria-label="Blank">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+            <mdw-select filled ink=tertiary label="Ink only">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+            <mdw-select filled color=secondary-container ink=secondary value="default value" label="Label">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Outlined" col-span=12 code="
+        &lt;mdw-box flex=column x=stretch gap=16 padding=24&gt;
+          &lt;mdw-select outlined label=&quot;Fruits&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+          &lt;mdw-select outlined placeholder=&quot;Placeholder only&quot; aria-label=&quot;Blank&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+          &lt;mdw-select outlined ink=tertiary label=&quot;Ink only&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box flex=column x=stretch gap=16 padding=24>
+            <mdw-select outlined label="Fruits">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+            <mdw-select outlined placeholder="Placeholder only" aria-label="Blank">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+            <mdw-select outlined ink=tertiary label="Ink only">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Bare" col-span=12 code="
+        &lt;mdw-box flex=column x=stretch gap=16 padding=24&gt;
+          &lt;mdw-select label=&quot;Fruits&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+          &lt;mdw-select placeholder=&quot;Placeholder only&quot; aria-label=&quot;Blank&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+          &lt;mdw-select ink=tertiary label=&quot;Ink only&quot;&gt;
+            &lt;option value=&quot;Apple&quot;&gt;Apple&lt;/option&gt;
+            &lt;option value=&quot;Banana&quot; selected&gt;Banana&lt;/option&gt;
+            &lt;option value=&quot;Grape&quot;&gt;Grape&lt;/option&gt;
+            &lt;option value=&quot;Pear&quot;&gt;Pear&lt;/option&gt;
+          &lt;/mdw-select&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box flex=column x=stretch gap=16 padding=24>
+            <mdw-select label="Fruits">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+            <mdw-select placeholder="Placeholder only" aria-label="Blank">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+            <mdw-select ink=tertiary label="Ink only">
+              <option value="Apple">Apple</option>
+              <option value="Banana" selected>Banana</option>
+              <option value="Grape">Grape</option>
+              <option value="Pear">Pear</option>
+            </mdw-select>
+          </mdw-box>
+        </demo-preview-card>
+
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
+
 </html>

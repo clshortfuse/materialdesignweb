@@ -11,25 +11,87 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Basic</mdw-headline>
-      <mdw-box x=center gap=12>
+    <mdw-grid gap=16 padding=pane>
+      <demo-preview-card label="Basic dialog" col-span=12 code="
+        <mdw-dialog id=dialog-simple headline=&quot;My title&quot;>Description</mdw-dialog>
+      ">
         <demo-button aria-haspopup=dialog aria-controls="dialog-simple">Basic dialog</demo-button>
-        <demo-button aria-haspopup=dialog aria-controls="dialog-no-headline" data-popup-method=showModal>
-          No headline (Native Modal)
-        </demo-button>
-        <mdw-dialog id=dialog-no-headline icon=refresh>This is a modal dialog. It can exist (almost) anywhere in the
-          DOM.</mdw-dialog>
+      </demo-preview-card>
 
-        <demo-button aria-haspopup=dialog aria-controls="dialog-slotted" data-popup-method=showModal>Custom slotted
-        </demo-button>
+      <demo-preview-card label="No headline (native)" col-span=12 code="
+        <mdw-dialog id=dialog-no-headline icon=refresh>This is a modal dialog. It can exist (almost) anywhere in the DOM.</mdw-dialog>
+      ">
+        <demo-button aria-haspopup=dialog aria-controls="dialog-no-headline" data-popup-method=showModal>No headline
+          (Native Modal)</demo-button>
+      </demo-preview-card>
+
+      <demo-preview-card label="Custom slotted" col-span=12 code="
+        <mdw-dialog id=dialog-slotted>
+          <mdw-box ink=&quot;tertiary&quot; slot=headline>Custom Headline</mdw-box>
+          Description text
+        </mdw-dialog>
+      ">
+        <demo-button aria-haspopup=dialog aria-controls="dialog-slotted" data-popup-method=showModal>Custom
+          slotted</demo-button>
+      </demo-preview-card>
+
+      <demo-preview-card label="Oversized" col-span=12 code="
+        <mdw-dialog id=dialog-oversized icon=refresh headline=&quot;Auto scrolls&quot; dividers>
+          <demo-dummy-text></demo-dummy-text>
+        </mdw-dialog>
+      ">
         <demo-button aria-haspopup=dialog aria-controls="dialog-oversized">Oversized (full dividers)</demo-button>
+      </demo-preview-card>
+
+      <demo-preview-card label="List sample (inset)" col-span=12 code="
+        <mdw-dialog id=dialog-reset icon=refresh headline=&quot;Reset settings?&quot; dividers=inset>
+          <div slot=fixed>This will reset your app preferences back to their default settings. The following accounts will also be signed out:</div>
+          <mdw-list>
+            <mdw-list-item avatar=&quot;LV&quot;>leevillanuevanotes@gmail.com</mdw-list-item>
+            <mdw-list-item avatar=&quot;AA&quot;>alloitsalejandro@gmail.com</mdw-list-item>
+            <mdw-list-item avatar=&quot;OO&quot;>oliortega3000@gmail.com</mdw-list-item>
+          </mdw-list>
+        </mdw-dialog>
+      ">
         <demo-button aria-haspopup=dialog aria-controls="dialog-reset">List sample (inset dividers)</demo-button>
+      </demo-preview-card>
+
+      <demo-preview-card label="Custom buttons" col-span=12 code="
+        <mdw-dialog id=dialog-custom-buttons icon=refresh headline=&quot;Title&quot; confirm=&quot;Launch&quot; cancel=&quot;Abort&quot; default=&quot;confirm&quot;>Button text changed via [confirm] and [cancel] values.</mdw-dialog>
+      ">
         <demo-button aria-haspopup=dialog aria-controls="dialog-custom-buttons">Custom buttons</demo-button>
+      </demo-preview-card>
+
+      <demo-preview-card label="Autofocus input" col-span=12 code="
+        <mdw-dialog id=dialog-input icon=edit headline=&quot;Custom form&quot; default=&quot;confirm&quot;>
+          <form id=dialog-input-form method=&quot;dialog&quot;>
+            <mdw-input name=&quot;sample&quot; autofocus filled label=&quot;Label&quot; required></mdw-input>
+          </form>
+          <div slot=actions>
+            <input type=&quot;submit&quot; hidden form=dialog-input-form value=confirm tabindex=-1 aria-hidden=&quot;true&quot; />
+            <mdw-button type=&quot;submit&quot; form=dialog-input-form name=cancel value=&quot;cancel&quot; formnovalidate>Cancel</mdw-button>
+            <mdw-button type=&quot;submit&quot; form=dialog-input-form name=confirm value=&quot;confirm&quot;>Confirm</mdw-button>
+          </div>
+        </mdw-dialog>
+      ">
         <demo-button aria-haspopup=dialog aria-controls="dialog-input">Autofocus input</demo-button>
+      </demo-preview-card>
+
+      <demo-preview-card label="Slider example" col-span=12 code="
+        <mdw-dialog id=dialog-slider icon=volume_up headline=&quot;Volume Control&quot; default=&quot;confirm&quot;>
+          <form id=dialog-slider-form method=&quot;dialog&quot;>
+            <mdw-slider name=&quot;volume&quot; autofocus></mdw-slider>
+          </form>
+          <div slot=actions>
+            <input type=&quot;submit&quot; form=dialog-slider-form hidden value=confirm aria-hidden=&quot;true&quot; />
+            <mdw-button type=&quot;submit&quot; form=dialog-slider-form name=cancel value=&quot;cancel&quot; formnovalidate>Cancel</mdw-button>
+            <mdw-button type=&quot;submit&quot; form=dialog-slider-form name=confirm value=&quot;confirm&quot;>Confirm</mdw-button>
+          </div>
+        </mdw-dialog>
+      ">
         <demo-button aria-haspopup=dialog aria-controls="dialog-slider">Slider example</demo-button>
-      </mdw-box>
-    </section>
+      </demo-preview-card>
+    </mdw-grid>
     <div id=dialogs>
       <mdw-dialog id=dialog-simple headline="My title">Description</mdw-dialog>
       <mdw-dialog id=dialog-oversized icon=refresh headline="Auto scrolls" dividers>
@@ -43,8 +105,8 @@
       <mdw-dialog id=dialog-custom-buttons icon=refresh headline="Title" confirm="Launch" cancel="Abort"
         default="confirm">Button text changed via [confirm] and [cancel] values.</mdw-dialog>
       <mdw-dialog id=dialog-reset icon=refresh headline="Reset settings?" dividers=inset>
-        <div slot="fixed">This will reset your app preferences back to their default settings. The following accounts will
-          also be signed out:</div>
+        <div slot="fixed">This will reset your app preferences back to their default settings. The following accounts
+          will also be signed out:</div>
         <mdw-list>
           <mdw-list-item avatar="LV">leevillanuevanotes@gmail.com</mdw-list-item>
           <mdw-list-item avatar="AA">alloitsalejandro@gmail.com</mdw-list-item>
@@ -58,7 +120,8 @@
         <div slot=actions>
           <input type="submit" form=dialog-slider-form hidden value=confirm aria-hidden="true" />
           <!-- Forms submit nearest type=submit control on ENTER key -->
-          <mdw-button type="submit" form=dialog-slider-form name=cancel value="cancel" formnovalidate>Cancel</mdw-button>
+          <mdw-button type="submit" form=dialog-slider-form name=cancel value="cancel"
+            formnovalidate>Cancel</mdw-button>
           <mdw-button type="submit" form=dialog-slider-form name=confirm value="confirm">Confirm</mdw-button>
         </div>
       </mdw-dialog>
@@ -72,12 +135,12 @@
           <mdw-button type="submit" form=dialog-input-form name=cancel value="cancel" formnovalidate>Cancel</mdw-button>
           <mdw-button type="submit" form=dialog-input-form name=confirm value="confirm">Confirm</mdw-button>
         </div>
-        
+
       </mdw-dialog>
     </div>
   </demo-page>
 
-  
+
 </body>
 
 </html>

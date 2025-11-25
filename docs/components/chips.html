@@ -8,12 +8,23 @@
   <link rel="stylesheet" href="../demo.css" />
   <script src="../demo.min.js"></script>
 </head>
+
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Assist chips</mdw-headline>
-      <section>
-        <mdw-headline size=medium text-padding=0.5em>Default</mdw-headline>
+    <mdw-grid gap=16 padding=pane>
+
+      <mdw-headline text-padding=0>Assist chips</mdw-headline>
+
+      <demo-preview-card label="Default" col-span=12 code="
+        <mdw-box row gap=12 wrap padding=12>
+          <mdw-chip icon=edit>Default</mdw-chip>
+          <mdw-chip icon=edit ink=tertiary>Tertiary</mdw-chip>
+          <mdw-chip icon=edit color=surface-primary>Surface Primary</mdw-chip>
+          <mdw-chip icon=edit ink=green>Custom ink</mdw-chip>
+          <mdw-chip icon src=&quot;../google-logo.svg&quot;>Assist chip</mdw-chip>
+          <mdw-chip icon=edit disabled>Disabled chip</mdw-chip>
+        </mdw-box>
+      ">
         <mdw-box row gap=12 wrap padding=12>
           <mdw-chip icon=edit>Default</mdw-chip>
           <mdw-chip icon=edit ink=tertiary>Tertiary</mdw-chip>
@@ -22,9 +33,19 @@
           <mdw-chip icon src="../google-logo.svg">Assist chip</mdw-chip>
           <mdw-chip icon=edit disabled>Disabled chip</mdw-chip>
         </mdw-box>
-      </section>
-      <section>
-        <mdw-headline size=medium text-padding=0.5em>Elevated</mdw-headline>
+      </demo-preview-card>
+
+      <demo-preview-card label="Elevated" col-span=12 code="
+        <mdw-box row gap=12 wrap padding=12>
+          <mdw-chip elevated icon=edit>Default</mdw-chip>
+          <mdw-chip elevated icon=edit ink=tertiary>Tertiary</mdw-chip>
+          <mdw-chip elevated icon=edit color=surface-primary>Surface Primary</mdw-chip>
+          <mdw-chip elevated ink=green icon=edit>Custom ink</mdw-chip>
+          <mdw-chip elevated icon src=&quot;../google-logo.svg&quot;>Assist chip</mdw-chip>
+          <mdw-chip elevated icon=edit disabled>Disabled chip</mdw-chip>
+          <mdw-chip elevated icon src=&quot;../google-logo.svg&quot; disabled>Assist chip</mdw-chip>
+        </mdw-box>
+      ">
         <mdw-box row gap=12 wrap padding=12>
           <mdw-chip elevated icon=edit>Default</mdw-chip>
           <mdw-chip elevated icon=edit ink=tertiary>Tertiary</mdw-chip>
@@ -32,15 +53,13 @@
           <mdw-chip elevated ink=green icon=edit>Custom ink</mdw-chip>
           <mdw-chip elevated icon src="../google-logo.svg">Assist chip</mdw-chip>
           <mdw-chip elevated icon=edit disabled>Disabled chip</mdw-chip>
-          <mdw-chip elevated icon src="../google-logo.svg" disabled>Assist chip
-          </mdw-chip>
+          <mdw-chip elevated icon src="../google-logo.svg" disabled>Assist chip</mdw-chip>
         </mdw-box>
-      </section>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Filter chips</mdw-headline>
-      <section>
-        <mdw-headline size=medium text-padding=0.5em>Text</mdw-headline>
+      </demo-preview-card>
+
+      <mdw-headline text-padding=0>Filter chips</mdw-headline>
+
+      <demo-preview-card label="Text" col-span=12 code="
         <mdw-box row gap=12 padding=8 wrap>
           <mdw-filter-chip>Default</mdw-filter-chip>
           <mdw-filter-chip elevated>Elevated</mdw-filter-chip>
@@ -54,9 +73,37 @@
           <mdw-filter-chip elevated disabled>Disabled elevated</mdw-filter-chip>
           <mdw-filter-chip checked elevated disabled>Disabled elevated checked</mdw-filter-chip>
         </mdw-box>
-      </section>
-      <section>
-        <mdw-headline size=medium text-padding=0.5em>Icons</mdw-headline>
+      ">
+        <mdw-box row gap=12 padding=8 wrap>
+          <mdw-filter-chip>Default</mdw-filter-chip>
+          <mdw-filter-chip elevated>Elevated</mdw-filter-chip>
+          <mdw-filter-chip color=tertiary-container>Tertiary</mdw-filter-chip>
+          <mdw-filter-chip elevated color=tertiary-container>Elevated Tertiary</mdw-filter-chip>
+          <mdw-filter-chip color=surface-primary>Surface Primary</mdw-filter-chip>
+          <mdw-filter-chip checked color=green-container>Custom color</mdw-filter-chip>
+          <mdw-filter-chip checked>Assist chip</mdw-filter-chip>
+          <mdw-filter-chip disabled>Disabled</mdw-filter-chip>
+          <mdw-filter-chip checked disabled>Disabled checked</mdw-filter-chip>
+          <mdw-filter-chip elevated disabled>Disabled elevated</mdw-filter-chip>
+          <mdw-filter-chip checked elevated disabled>Disabled elevated checked</mdw-filter-chip>
+        </mdw-box>
+      </demo-preview-card>
+
+      <demo-preview-card label="Icons" col-span=12 code="
+        <mdw-box row gap=12 padding=8 wrap>
+          <mdw-filter-chip checked icon=edit>Default</mdw-filter-chip>
+          <mdw-filter-chip checked icon=edit elevated>Elevated</mdw-filter-chip>
+          <mdw-filter-chip checked icon=edit color=tertiary-container>Tertiary</mdw-filter-chip>
+          <mdw-filter-chip checked elevated icon=edit color=tertiary-container>Elevated Tertiary</mdw-filter-chip>
+          <mdw-filter-chip checked icon=edit color=surface-primary>Surface Primary</mdw-filter-chip>
+          <mdw-filter-chip checked icon=edit color=green-container>Custom color</mdw-filter-chip>
+          <mdw-filter-chip checked icon=edit>Assist chip</mdw-filter-chip>
+          <mdw-filter-chip disabled icon=edit>Disabled</mdw-filter-chip>
+          <mdw-filter-chip checked disabled icon=edit>Disabled checked</mdw-filter-chip>
+          <mdw-filter-chip disabled elevated icon=edit>Disabled elevated</mdw-filter-chip>
+          <mdw-filter-chip disabled elevated checked icon=&quot;edit&quot;>Disabled elevated checked</mdw-filter-chip>
+        </mdw-box>
+      ">
         <mdw-box row gap=12 padding=8 wrap>
           <mdw-filter-chip checked icon=edit>Default</mdw-filter-chip>
           <mdw-filter-chip checked icon=edit elevated>Elevated</mdw-filter-chip>
@@ -70,9 +117,9 @@
           <mdw-filter-chip disabled elevated icon=edit>Disabled elevated</mdw-filter-chip>
           <mdw-filter-chip disabled elevated checked icon="edit">Disabled elevated checked</mdw-filter-chip>
         </mdw-box>
-      </section>
-      <section>
-        <mdw-headline size=medium text-padding=0.5em>Radio</mdw-headline>
+      </demo-preview-card>
+
+      <demo-preview-card label="Radio" col-span=12 code="
         <form>
           <mdw-box row gap=12 padding=8 wrap>
             <mdw-filter-chip type=radio required name=filter-radio value=small>Small</mdw-filter-chip>
@@ -81,16 +128,43 @@
             <mdw-filter-chip type=radio required name=filter-radio value=x-large>X-Large</mdw-filter-chip>
           </mdw-box>
         </form>
-      </section>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Input chips</mdw-headline>
-      <mdw-box row gap=12 wrap></mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Suggestion chips</mdw-headline>
-      <section>
-        <mdw-headline size=medium text-padding=0.5em>Default</mdw-headline>
+      ">
+        <form>
+          <mdw-box row gap=12 padding=8 wrap>
+            <mdw-filter-chip type=radio required name=filter-radio value=small>Small</mdw-filter-chip>
+            <mdw-filter-chip type=radio required name=filter-radio value=medium checked>Medium</mdw-filter-chip>
+            <mdw-filter-chip type=radio required name=filter-radio value=large>Large</mdw-filter-chip>
+            <mdw-filter-chip type=radio required name=filter-radio value=x-large>X-Large</mdw-filter-chip>
+          </mdw-box>
+        </form>
+      </demo-preview-card>
+
+      <mdw-headline text-padding=0>Input chips</mdw-headline>
+      <demo-preview-card label="Multiple (emails)" col-span=12 code="
+        <mdw-input filled icon=email multiple placeholder=&quot;Add recipients&quot;>
+          <mdw-listbox multiple>
+            <mdw-list-option value=&quot;alice&quot;>alice@example.com</mdw-list-option>
+            <mdw-list-option value=&quot;bob&quot;>bob@example.com</mdw-list-option>
+            <mdw-list-option value=&quot;carol&quot;>carol@example.com</mdw-list-option>
+            <mdw-list-option value=&quot;dave&quot;>dave@example.com</mdw-list-option>
+            <mdw-list-option value=&quot;eve&quot;>eve@example.com</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+      ">
+        <mdw-input filled icon=email multiple placeholder="Add recipients">
+          <mdw-listbox multiple>
+            <mdw-list-option value="alice">alice@example.com</mdw-list-option>
+            <mdw-list-option value="bob">bob@example.com</mdw-list-option>
+            <mdw-list-option value="carol">carol@example.com</mdw-list-option>
+            <mdw-list-option value="dave">dave@example.com</mdw-list-option>
+            <mdw-list-option value="eve">eve@example.com</mdw-list-option>
+          </mdw-listbox>
+        </mdw-input>
+      </demo-preview-card>
+
+      <mdw-headline text-padding=0>Suggestion chips</mdw-headline>
+
+      <demo-preview-card label="Default" col-span=12 code="
         <mdw-box row gap=12 wrap>
           <mdw-chip suggestion>Default</mdw-chip>
           <mdw-chip suggestion ink=primary>Primary</mdw-chip>
@@ -99,9 +173,18 @@
           <mdw-chip suggestion ink=green>Custom ink</mdw-chip>
           <mdw-chip suggestion disabled>Disabled chip</mdw-chip>
         </mdw-box>
-      </section>
-      <section>
-        <mdw-headline size=medium text-padding=0.5em>Elevated</mdw-headline>
+      ">
+        <mdw-box row gap=12 wrap>
+          <mdw-chip suggestion>Default</mdw-chip>
+          <mdw-chip suggestion ink=primary>Primary</mdw-chip>
+          <mdw-chip suggestion ink=tertiary>Tertiary</mdw-chip>
+          <mdw-chip suggestion color=surface-primary>Surface Primary</mdw-chip>
+          <mdw-chip suggestion ink=green>Custom ink</mdw-chip>
+          <mdw-chip suggestion disabled>Disabled chip</mdw-chip>
+        </mdw-box>
+      </demo-preview-card>
+
+      <demo-preview-card label="Elevated" col-span=12 code="
         <mdw-box row gap=12 wrap>
           <mdw-chip elevated suggestion>Default</mdw-chip>
           <mdw-chip elevated suggestion ink=primary>Primary</mdw-chip>
@@ -109,8 +192,16 @@
           <mdw-chip elevated suggestion ink=green>Custom ink</mdw-chip>
           <mdw-chip elevated suggestion disabled>Disabled chip</mdw-chip>
         </mdw-box>
-      </section>
-    </section>
+      ">
+        <mdw-box row gap=12 wrap>
+          <mdw-chip elevated suggestion>Default</mdw-chip>
+          <mdw-chip elevated suggestion ink=primary>Primary</mdw-chip>
+          <mdw-chip elevated suggestion ink=tertiary>Tertiary</mdw-chip>
+          <mdw-chip elevated suggestion ink=green>Custom ink</mdw-chip>
+          <mdw-chip elevated suggestion disabled>Disabled chip</mdw-chip>
+        </mdw-box>
+      </demo-preview-card>
+    </mdw-grid>
   </demo-page>
 
 </body>

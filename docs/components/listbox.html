@@ -11,57 +11,87 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Multi-selection (checkbox)</mdw-headline>
-      <mdw-listbox color="surface" style="width:100%" multiple>
-        <mdw-list-option value="1" checkbox supporting="Listbox supports keyboard navigation">Option 1
-        </mdw-list-option>
-        <mdw-list-option value="2" checkbox disabled supporting="Disabled items are not skipped">Disabled
-        </mdw-list-option>
-        <mdw-list-option value="3" checkbox>Option3</mdw-list-option>
-        <mdw-list-option value="4" checkbox supporting="Allows multiple selections">Option4</mdw-list-option>
-      </mdw-listbox>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Single-selection (radio)</mdw-headline>
-      <mdw-listbox color="surface" style="width:100%" required>
-        <mdw-list-option value="1" radio supporting="Listbox supports keyboard navigation">Option 1
-        </mdw-list-option>
-        <mdw-list-option value="2" radio disabled supporting="Disabled items are not skipped">Disabled
-        </mdw-list-option>
-        <mdw-list-option value="3" radio>Option3</mdw-list-option>
-        <mdw-list-option value="4" radio supporting="[required] means deselecting not allowed">Option4
-        </mdw-list-option>
-      </mdw-listbox>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
 
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Single-selection (checkbox)</mdw-headline>
-      <mdw-listbox color="surface" style="width:100%">
-        <mdw-list-option value="1" checkbox supporting="Listbox supports keyboard navigation">Option 1
-        </mdw-list-option>
-        <mdw-list-option value="2" checkbox disabled supporting="Disabled items are not skipped">Disabled
-        </mdw-list-option>
-        <mdw-list-option value="3" checkbox>Option3</mdw-list-option>
-        <mdw-list-option value="4" checkbox supporting="Only one check allowed, but can deselect">Option4
-        </mdw-list-option>
-      </mdw-listbox>
-    </section>
+        <demo-preview-card label="Multi-selection (checkbox)" col-span=12 code="
+&lt;mdw-listbox color=&quot;surface&quot; style=&quot;width:100%&quot; multiple&gt;
+  &lt;mdw-list-option value=&quot;1&quot; checkbox supporting=&quot;Listbox supports keyboard navigation&quot;&gt;Option 1&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;2&quot; checkbox disabled supporting=&quot;Disabled items are not skipped&quot;&gt;Disabled&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;3&quot; checkbox&gt;Option3&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;4&quot; checkbox supporting=&quot;Allows multiple selections&quot;&gt;Option4&lt;/mdw-list-option&gt;
+&lt;/mdw-listbox&gt;
+">
+          <mdw-listbox color="surface" style="width:100%" multiple>
+            <mdw-list-option value="1" checkbox supporting="Listbox supports keyboard navigation">Option 1
+            </mdw-list-option>
+            <mdw-list-option value="2" checkbox disabled supporting="Disabled items are not skipped">Disabled
+            </mdw-list-option>
+            <mdw-list-option value="3" checkbox>Option3</mdw-list-option>
+            <mdw-list-option value="4" checkbox supporting="Allows multiple selections">Option4</mdw-list-option>
+          </mdw-listbox>
+        </demo-preview-card>
 
-    <section>
-      <mdw-headline text-padding=0.5em>Single-selection (custom icon)</mdw-headline>
-      <mdw-listbox color="surface" style="width:100%">
-        <mdw-list-option value="1" checkbox icon=star supporting="Listbox supports keyboard navigation">Option 1
-        </mdw-list-option>
-        <mdw-list-option value="2" checkbox icon=star disabled supporting="Disabled items are not skipped">Disabled
-        </mdw-list-option>
-        <mdw-list-option value="3" checkbox icon=star>Option3</mdw-list-option>
-        <mdw-list-option value="4" checkbox icon=star supporting="Only one check allowed, but can deselect">Option4
-        </mdw-list-option>
-      </mdw-listbox>
-    </section>
+        <demo-preview-card label="Single-selection (radio)" col-span=12 code="
+&lt;mdw-listbox color=&quot;surface&quot; style=&quot;width:100%&quot; required&gt;
+  &lt;mdw-list-option value=&quot;1&quot; radio supporting=&quot;Listbox supports keyboard navigation&quot;&gt;Option 1&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;2&quot; radio disabled supporting=&quot;Disabled items are not skipped&quot;&gt;Disabled&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;3&quot; radio&gt;Option3&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;4&quot; radio supporting=&quot;[required] means deselecting not allowed&quot;&gt;Option4&lt;/mdw-list-option&gt;
+&lt;/mdw-listbox&gt;
+">
+          <mdw-listbox color="surface" style="width:100%" required>
+            <mdw-list-option value="1" radio supporting="Listbox supports keyboard navigation">Option 1
+            </mdw-list-option>
+            <mdw-list-option value="2" radio disabled supporting="Disabled items are not skipped">Disabled
+            </mdw-list-option>
+            <mdw-list-option value="3" radio>Option3</mdw-list-option>
+            <mdw-list-option value="4" radio supporting="[required] means deselecting not allowed">Option4
+            </mdw-list-option>
+          </mdw-listbox>
+        </demo-preview-card>
 
-    <demo-dummy-text></demo-dummy-text>
+        <demo-preview-card label="Single-selection (checkbox)" col-span=12 code="
+&lt;mdw-listbox color=&quot;surface&quot; style=&quot;width:100%&quot;&gt;
+  &lt;mdw-list-option value=&quot;1&quot; checkbox supporting=&quot;Listbox supports keyboard navigation&quot;&gt;Option 1&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;2&quot; checkbox disabled supporting=&quot;Disabled items are not skipped&quot;&gt;Disabled&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;3&quot; checkbox&gt;Option3&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;4&quot; checkbox supporting=&quot;Only one check allowed, but can deselect&quot;&gt;Option4&lt;/mdw-list-option&gt;
+&lt;/mdw-listbox&gt;
+">
+          <mdw-listbox color="surface" style="width:100%">
+            <mdw-list-option value="1" checkbox supporting="Listbox supports keyboard navigation">Option 1
+            </mdw-list-option>
+            <mdw-list-option value="2" checkbox disabled supporting="Disabled items are not skipped">Disabled
+            </mdw-list-option>
+            <mdw-list-option value="3" checkbox>Option3</mdw-list-option>
+            <mdw-list-option value="4" checkbox supporting="Only one check allowed, but can deselect">Option4
+            </mdw-list-option>
+          </mdw-listbox>
+        </demo-preview-card>
+
+        <demo-preview-card label="Single-selection (custom icon)" col-span=12 code="
+&lt;mdw-listbox color=&quot;surface&quot; style=&quot;width:100%&quot;&gt;
+  &lt;mdw-list-option value=&quot;1&quot; checkbox icon=star supporting=&quot;Listbox supports keyboard navigation&quot;&gt;Option 1&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;2&quot; checkbox icon=star disabled supporting=&quot;Disabled items are not skipped&quot;&gt;Disabled&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;3&quot; checkbox icon=star&gt;Option3&lt;/mdw-list-option&gt;
+  &lt;mdw-list-option value=&quot;4&quot; checkbox icon=star supporting=&quot;Only one check allowed, but can deselect&quot;&gt;Option4&lt;/mdw-list-option&gt;
+&lt;/mdw-listbox&gt;
+">
+          <mdw-listbox color="surface" style="width:100%">
+            <mdw-list-option value="1" checkbox icon=star supporting="Listbox supports keyboard navigation">Option 1
+            </mdw-list-option>
+            <mdw-list-option value="2" checkbox icon=star disabled supporting="Disabled items are not skipped">Disabled
+            </mdw-list-option>
+            <mdw-list-option value="3" checkbox icon=star>Option3</mdw-list-option>
+            <mdw-list-option value="4" checkbox icon=star supporting="Only one check allowed, but can deselect">Option4
+            </mdw-list-option>
+          </mdw-listbox>
+        </demo-preview-card>
+
+      </mdw-grid>
+    </mdw-box>
+
   </demo-page>
 </body>
 

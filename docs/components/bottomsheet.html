@@ -12,60 +12,184 @@
 <body>
   <demo-page>
     <mdw-box gap=16 padding=pane>
-      <demo-preview-card label="Modal">
-        <mdw-card style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;" filled
-          color=primary-container row x=center y=start padding=16 gap=8>
-          <mdw-button filled
-            onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle
-            Open</mdw-button>
-          <mdw-icon-button type=checkbox filled icon=drag_handle
-            onchange="{this.parentElement.querySelector('mdw-bottom-sheet').dragHandle = this.checked}">Toggle
-            Handle</mdw-icon-button>
-          <mdw-bottom-sheet modal x=center>
-            <mdw-box row padding=24 gap=8>
-              <mdw-button icon=content_copy outlined>Copy</mdw-button>
-              <mdw-button icon=share outlined>Share</mdw-button>
-            </mdw-box>
-            <mdw-box row x=center gap=24>
-              <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
-              <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
-              <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
-              <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
-            </mdw-box>
-            <mdw-box row x=center padding=24 gap=24>
-              <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
-              <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
-              <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
-              <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
-            </mdw-box>
-          </mdw-bottom-sheet>
-        </mdw-card>
-      </demo-preview-card>
-      <demo-preview-card label="Modal (Oversized)">
-        <mdw-card style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;" filled
-          color=primary-container row x=center y=start padding=16 gap=8>
-          <mdw-button filled
-            onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle
-            Open</mdw-button>
-          <mdw-icon-button type=checkbox filled icon=drag_handle checked
-            onchange="{this.parentElement.querySelector('mdw-bottom-sheet').dragHandle = this.checked}">Toggle
-            Handle</mdw-icon-button>
-          <mdw-bottom-sheet modal drag-handle flex=column x=stretch>
-            <mdw-list>
-              <mdw-list-item href="#">I am a list item 1</mdw-list-item>
-              <mdw-list-item href="#">I am a list item 2</mdw-list-item>
-              <mdw-list-item href="#">I am a list item 3</mdw-list-item>
-              <mdw-list-item href="#">I am a list item 4</mdw-list-item>
-              <mdw-list-item href="#">I am a list item 5</mdw-list-item>
-              <mdw-list-item href="#">I am a list item 6</mdw-list-item>
-              <mdw-list-item href="#">I am a list item 7</mdw-list-item>
-              <mdw-list-item href="#">I am a list item 8</mdw-list-item>
-              <mdw-list-item href="#">I am a list item 9</mdw-list-item>
-              <mdw-list-item href="#">I am a list item 10</mdw-list-item>
-            </mdw-list>
-          </mdw-bottom-sheet>
-        </mdw-card>
-      </demo-preview-card>
+      <mdw-grid gap=16 role=region y=stretch>
+        <demo-preview-card label="Modal" col-span=12 code="
+&lt;mdw-bottom-sheet modal x=center&gt;
+  &lt;mdw-box row padding=24 gap=8&gt;
+    &lt;mdw-button icon=content_copy outlined&gt;Copy&lt;/mdw-button&gt;
+    &lt;mdw-button icon=share outlined&gt;Share&lt;/mdw-button&gt;
+  &lt;/mdw-box&gt;
+  &lt;mdw-box row x=center gap=24&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+  &lt;/mdw-box&gt;
+  &lt;mdw-box row x=center padding=24 gap=24&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+  &lt;/mdw-box&gt;
+&lt;/mdw-bottom-sheet&gt;
+        ">
+          <mdw-card style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;" filled
+            color=primary-container row x=center y=start padding=16 gap=8>
+            <mdw-button filled
+              onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle
+              Open</mdw-button>
+            <mdw-icon-button type=checkbox filled icon=drag_handle
+              onchange="{this.parentElement.querySelector('mdw-bottom-sheet').dragHandle = this.checked}">Toggle
+              Handle</mdw-icon-button>
+            <mdw-bottom-sheet modal x=center>
+              <mdw-box row padding=24 gap=8>
+                <mdw-button icon=content_copy outlined>Copy</mdw-button>
+                <mdw-button icon=share outlined>Share</mdw-button>
+              </mdw-box>
+              <mdw-box row x=center gap=24>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+              </mdw-box>
+              <mdw-box row x=center padding=24 gap=24>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+              </mdw-box>
+            </mdw-bottom-sheet>
+          </mdw-card>
+        </demo-preview-card>
+        <demo-preview-card label="Modal (Oversized)" col-span=12 code="
+&lt;mdw-bottom-sheet modal drag-handle flex=column x=stretch&gt;
+  &lt;mdw-list&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 1&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 2&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 3&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 4&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 5&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 6&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 7&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 8&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 9&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 10&lt;/mdw-list-item&gt;
+  &lt;/mdw-list&gt;
+&lt;/mdw-bottom-sheet&gt;
+        ">
+          <mdw-card style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;" filled
+            color=primary-container row x=center y=start padding=16 gap=8>
+            <mdw-button filled
+              onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle
+              Open</mdw-button>
+            <mdw-icon-button type=checkbox filled icon=drag_handle checked
+              onchange="{this.parentElement.querySelector('mdw-bottom-sheet').dragHandle = this.checked}">Toggle
+              Handle</mdw-icon-button>
+            <mdw-bottom-sheet modal drag-handle flex=column x=stretch>
+              <mdw-list>
+                <mdw-list-item href="#">I am a list item 1</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 2</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 3</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 4</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 5</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 6</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 7</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 8</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 9</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 10</mdw-list-item>
+              </mdw-list>
+            </mdw-bottom-sheet>
+          </mdw-card>
+        </demo-preview-card>
+        <demo-preview-card label="Standard" col-span=12 code="
+&lt;mdw-bottom-sheet standard x=center&gt;
+  &lt;mdw-box row padding=24 gap=8&gt;
+    &lt;mdw-button icon=content_copy outlined&gt;Copy&lt;/mdw-button&gt;
+    &lt;mdw-button icon=share outlined&gt;Share&lt;/mdw-button&gt;
+  &lt;/mdw-box&gt;
+  &lt;mdw-box row x=center gap=24&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+  &lt;/mdw-box&gt;
+  &lt;mdw-box row x=center padding=24 gap=24&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+    &lt;mdw-icon-button filled=tonal icon=person&gt;&lt;/mdw-icon-button&gt;
+  &lt;/mdw-box&gt;
+&lt;/mdw-bottom-sheet&gt;
+        ">
+          <mdw-card style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;" filled
+            color=primary-container row x=center y=start padding=16 gap=8>
+            <mdw-button filled
+              onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle
+              Open</mdw-button>
+            <mdw-icon-button type=checkbox filled icon=drag_handle
+              onchange="{this.parentElement.querySelector('mdw-bottom-sheet').dragHandle = this.checked}">Toggle
+              Handle</mdw-icon-button>
+            <mdw-bottom-sheet standard x=center>
+              <mdw-box row padding=24 gap=8>
+                <mdw-button icon=content_copy outlined>Copy</mdw-button>
+                <mdw-button icon=share outlined>Share</mdw-button>
+              </mdw-box>
+              <mdw-box row x=center gap=24>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+              </mdw-box>
+              <mdw-box row x=center padding=24 gap=24>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+                <mdw-icon-button filled=tonal icon=person></mdw-icon-button>
+              </mdw-box>
+            </mdw-bottom-sheet>
+          </mdw-card>
+        </demo-preview-card>
+        <demo-preview-card label="Standard (Oversized)" col-span=12 code="
+&lt;mdw-bottom-sheet standard drag-handle flex=column x=stretch&gt;
+  &lt;mdw-list&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 1&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 2&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 3&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 4&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 5&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 6&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 7&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 8&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 9&lt;/mdw-list-item&gt;
+    &lt;mdw-list-item href=&quot;#&quot;&gt;I am a list item 10&lt;/mdw-list-item&gt;
+  &lt;/mdw-list&gt;
+&lt;/mdw-bottom-sheet&gt;
+        ">
+          <mdw-card style="width:100%;height:400px;position:relative;transform:translateZ(0);overflow:clip;" filled
+            color=primary-container row x=center y=start padding=16 gap=8>
+            <mdw-button filled
+              onclick="{this.parentElement.querySelector('mdw-bottom-sheet').toggleAttribute('open')}">Toggle
+              Open</mdw-button>
+            <mdw-icon-button type=checkbox filled icon=drag_handle checked
+              onchange="{this.parentElement.querySelector('mdw-bottom-sheet').dragHandle = this.checked}">Toggle
+              Handle</mdw-icon-button>
+            <mdw-bottom-sheet standard drag-handle flex=column x=stretch>
+              <mdw-list>
+                <mdw-list-item href="#">I am a list item 1</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 2</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 3</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 4</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 5</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 6</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 7</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 8</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 9</mdw-list-item>
+                <mdw-list-item href="#">I am a list item 10</mdw-list-item>
+              </mdw-list>
+            </mdw-bottom-sheet>
+          </mdw-card>
+        </demo-preview-card>
+      </mdw-grid>
     </mdw-box>
   </demo-page>
 

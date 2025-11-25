@@ -12,54 +12,116 @@
 <body>
 
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Basic menus</mdw-headline>
-      <mdw-box row wrap gap=12 padding=16>
-        <mdw-button filled onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
-          aria-controls="menu-cascade">Cascading menu</mdw-button>
-        <mdw-button filled onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
-          aria-controls="menu-oversized">Oversized menu</mdw-button>
-        <mdw-icon-button filled icon="more_vert" onclick="document.getElementById(this.ariaControls).show(this)"
-          aria-haspopup=menu aria-controls="menu-simple">More</mdw-icon-button>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Modal menus</mdw-headline>
-      <mdw-box row wrap gap=12 padding=16>
-        <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
-          aria-controls="menu-cascade">Cascading menu modal</mdw-button>
-        <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
-          aria-controls="menu-oversized">Oversized menu modal</mdw-button>
-        <mdw-icon-button filled icon="more_vert" onclick="document.getElementById(this.ariaControls).showModal(this)"
-          aria-haspopup=menu aria-controls="menu-simple">More</mdw-icon-button>
-      </mdw-box>
-    </section>
-    <demo-dummy-text></demo-dummy-text>
-    <section>
-      <mdw-headline text-padding=0.5em>Checkboxes menu</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
-          aria-controls="menu-checkboxes">Checkboxes menu</mdw-button>
-        <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
-          aria-controls="menu-checkboxes">Checkboxes menu modal</mdw-button>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Radio menu</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
-          aria-controls="menu-radio">Radio menu</mdw-button>
-        <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
-          aria-controls="menu-radio">Radio menu modal</mdw-button>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Clickthrough test</mdw-headline>
-      <mdw-box row gap=12 wrap padding=8 x=center>
-        <mdw-checkbox checked aria-label="Default" value="1">Click me while menu is open</mdw-checkbox>
-      </mdw-box>
-    </section>
-    <demo-dummy-text></demo-dummy-text>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+
+        <demo-preview-card label="Basic menus" col-span=12 code="
+&lt;mdw-menu id=&quot;menu-simple&quot;&gt;
+  &lt;mdw-menu-item&gt;Item 1&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=visibility&gt;Item 2&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_copy trailing=&quot;Ctrl+C&quot;&gt;Item 3&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_paste trailing=&quot;⌘V&quot;&gt;Item 4&lt;/mdw-menu-item&gt;
+&lt;/mdw-menu&gt;
+
+&lt;mdw-menu id=&quot;menu-cascade&quot;&gt;
+  &lt;mdw-menu-item&gt;Item 1&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item disabled icon=visibility&gt;Item 2&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_copy trailing=&quot;Ctrl+C&quot;&gt;Item 3&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_paste trailing=&quot;⌘V&quot;&gt;Item 4&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=&quot;cloud&quot; cascades=&quot;menu-submenu&quot;&gt;Item 5&lt;/mdw-menu-item&gt;
+&lt;/mdw-menu&gt;
+
+&lt;mdw-menu id=&quot;menu-submenu&quot; submenu slot=submenu&gt;
+  &lt;mdw-menu-item&gt;Item 6&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=visibility&gt;Item 7&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_copy trailing=&quot;Ctrl+C&quot;&gt;Item 8&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_paste trailing=&quot;⌘V&quot;&gt;Item 9&lt;/mdw-menu-item&gt;
+&lt;/mdw-menu&gt;
+">
+          <mdw-box row wrap gap=12 padding=16>
+            <mdw-button filled onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
+              aria-controls="menu-cascade">Cascading menu</mdw-button>
+            <mdw-button filled onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
+              aria-controls="menu-oversized">Oversized menu</mdw-button>
+            <mdw-icon-button filled icon="more_vert" onclick="document.getElementById(this.ariaControls).show(this)"
+              aria-haspopup=menu aria-controls="menu-simple">More</mdw-icon-button>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Modal menus" col-span=12 code="
+&lt;mdw-menu id=&quot;menu-cascade&quot;&gt;
+  &lt;mdw-menu-item&gt;Item 1&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item disabled icon=visibility&gt;Item 2&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_copy trailing=&quot;Ctrl+C&quot;&gt;Item 3&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_paste trailing=&quot;⌘V&quot;&gt;Item 4&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=&quot;cloud&quot; cascades=&quot;menu-submenu&quot;&gt;Item 5&lt;/mdw-menu-item&gt;
+&lt;/mdw-menu&gt;
+
+&lt;mdw-menu id=&quot;menu-oversized&quot;&gt;
+  &lt;mdw-menu-item&gt;Short&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=visibility&gt;Icon&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_copy trailing=&quot;Ctrl+C&quot;&gt;Icon and trailing&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=content_paste trailing=&quot;⌘V&quot;&gt;Medium sized with icon and trailing&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=cloud&gt;Long menu item including both icon and trailing&lt;/mdw-menu-item&gt;
+&lt;/mdw-menu&gt;
+">
+          <mdw-box row wrap gap=12 padding=16>
+            <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
+              aria-controls="menu-cascade">Cascading menu modal</mdw-button>
+            <mdw-button filled onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
+              aria-controls="menu-oversized">Oversized menu modal</mdw-button>
+            <mdw-icon-button filled icon="more_vert"
+              onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
+              aria-controls="menu-simple">More</mdw-icon-button>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-dummy-text></demo-dummy-text>
+
+        <demo-preview-card label="Checkboxes menu" col-span=12 code="
+&lt;mdw-menu id=&quot;menu-checkboxes&quot;&gt;
+  &lt;mdw-menu-item&gt;Short&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=visibility&gt;Icon&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item checkbox name=&quot;bold&quot; trailing=&quot;Ctrl+B&quot;&gt;Bold&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item checkbox name=&quot;italic&quot; trailing=&quot;Ctrl+I&quot;&gt;Italic&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item checkbox name=&quot;underline&quot; trailing=&quot;Ctrl+U&quot;&gt;Underline&lt;/mdw-menu-item&gt;
+&lt;/mdw-menu&gt;
+">
+          <mdw-box row wrap gap=12>
+            <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
+              aria-controls="menu-checkboxes">Checkboxes menu</mdw-button>
+            <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
+              aria-controls="menu-checkboxes">Checkboxes menu modal</mdw-button>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Radio menu" col-span=12 code="
+&lt;mdw-menu id=&quot;menu-radio&quot;&gt;
+  &lt;mdw-menu-item&gt;Short&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item icon=visibility&gt;Icon&lt;/mdw-menu-item&gt;
+  &lt;mdw-divider style=&quot;margin:8px 0&quot;&gt;&lt;/mdw-divider&gt;
+  &lt;mdw-menu-item radio name=&quot;spacing&quot; value=&quot;1&quot; trailing=&quot;Ctrl+1&quot;&gt;Single-line&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item radio name=&quot;spacing&quot; value=&quot;1.5&quot;&gt;1.5 Lines&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item radio name=&quot;spacing&quot; value=&quot;2&quot; trailing=&quot;Ctrl+2&quot;&gt;Double-line&lt;/mdw-menu-item&gt;
+&lt;/mdw-menu&gt;
+">
+          <mdw-box row wrap gap=12>
+            <mdw-button onclick="document.getElementById(this.ariaControls).show(this)" aria-haspopup=menu
+              aria-controls="menu-radio">Radio menu</mdw-button>
+            <mdw-button onclick="document.getElementById(this.ariaControls).showModal(this)" aria-haspopup=menu
+              aria-controls="menu-radio">Radio menu modal</mdw-button>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Clickthrough test" col-span=12>
+          <mdw-box row gap=12 wrap padding=8 x=center>
+            <mdw-checkbox checked aria-label="Default" value="1">Click me while menu is open</mdw-checkbox>
+          </mdw-box>
+        </demo-preview-card>
+        <demo-dummy-text></demo-dummy-text>
+
+      </mdw-grid>
+    </mdw-box>
     <div id=menus>
       <mdw-menu id=menu-simple>
         <mdw-menu-item>Item 1</mdw-menu-item>
@@ -104,7 +166,7 @@
       </mdw-menu>
     </div>
   </demo-page>
- 
+
 </body>
 
 </html>

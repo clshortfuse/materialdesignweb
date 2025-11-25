@@ -11,137 +11,253 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Horizontal</mdw-headline>
-      <section>
-        <mdw-headline text-padding=0.5em size=medium>Inside Block Layout</mdw-headline>
-        <mdw-box block padding=24>
-          Default
-          <mdw-divider></mdw-divider>
-          Custom padding
-          <mdw-divider style="padding-inline:25%"></mdw-divider>
-          On Surface
-          <mdw-divider ink="on-surface"></mdw-divider>
-          Primary
-          <mdw-divider ink="primary"></mdw-divider>
-          Primary Container
-          <mdw-divider ink="primary-container"></mdw-divider>
-          Inverse Surface
-          <mdw-divider ink="inverse-surface"></mdw-divider>
-          Inverse Primary
-          <mdw-divider ink="inverse-primary"></mdw-divider>
-        </mdw-box>
-      </section>
-      <section>
-        <mdw-headline text-padding=0.5em size=medium>Inside Flex Layout</mdw-headline>
-        <mdw-box row wrap padding=24>
-          Default
-          <mdw-divider></mdw-divider>
-          Custom padding
-          <mdw-divider style="padding-inline:25%"></mdw-divider>
-          On Surface
-          <mdw-divider ink="on-surface"></mdw-divider>
-          Primary
-          <mdw-divider ink="primary"></mdw-divider>
-          Primary Container
-          <mdw-divider ink="primary-container"></mdw-divider>
-          Inverse Surface
-          <mdw-divider ink="inverse-surface"></mdw-divider>
-          Inverse Primary
-          <mdw-divider ink="inverse-primary"></mdw-divider>
-        </mdw-box>
-      </section>
-      <section>
-        <mdw-headline text-padding=0.5em size=medium>Inside Block Inside Flex Layout</mdw-headline>
-        <mdw-box row wrap gap=16 padding=24>
-          <div>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+        <mdw-headline text-padding=0>Horizontal</mdw-headline>
+
+        <demo-preview-card label="Inside Block Layout" col-span=12 code="
+          <mdw-box block padding=24>
             Default
             <mdw-divider></mdw-divider>
-          </div>
-          <div>
+            Custom padding
+            <mdw-divider style=&quot;padding-inline:25%&quot;></mdw-divider>
+            On Surface
+            <mdw-divider ink=&quot;on-surface&quot;></mdw-divider>
+            Primary
+            <mdw-divider ink=&quot;primary&quot;></mdw-divider>
+            Primary Container
+            <mdw-divider ink=&quot;primary-container&quot;></mdw-divider>
+            Inverse Surface
+            <mdw-divider ink=&quot;inverse-surface&quot;></mdw-divider>
+            Inverse Primary
+            <mdw-divider ink=&quot;inverse-primary&quot;></mdw-divider>
+          </mdw-box>
+        ">
+          <mdw-box block padding=24>
+            Default
+            <mdw-divider></mdw-divider>
             Custom padding
             <mdw-divider style="padding-inline:25%"></mdw-divider>
-          </div>
-          <div>
             On Surface
             <mdw-divider ink="on-surface"></mdw-divider>
-          </div>
-          <div>
             Primary
             <mdw-divider ink="primary"></mdw-divider>
-          </div>
-          <div>
             Primary Container
             <mdw-divider ink="primary-container"></mdw-divider>
-          </div>
-          <div>
             Inverse Surface
             <mdw-divider ink="inverse-surface"></mdw-divider>
-          </div>
-          <div>
             Inverse Primary
             <mdw-divider ink="inverse-primary"></mdw-divider>
-          </div>
-        </mdw-box>
-      </section>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Vertical</mdw-headline>
-      <section>
-        <mdw-headline text-padding=0.5em size=medium>Inside Flex Layout</mdw-headline>
-        <mdw-box row wrap gap=4 padding=24>
-          Default
-          <mdw-divider vertical></mdw-divider>
-          Custom padding
-          <mdw-divider vertical ink=primary style="padding-block:4px"></mdw-divider>
-          On Surface
-          <mdw-divider vertical ink="on-surface"></mdw-divider>
-          Primary
-          <mdw-divider vertical ink="primary"></mdw-divider>
-          Primary Container
-          <mdw-divider vertical ink="primary-container"></mdw-divider>
-          Inverse Surface
-          <mdw-divider vertical ink="inverse-surface"></mdw-divider>
-          Inverse Primary
-          <mdw-divider vertical ink="inverse-primary"></mdw-divider>
-        </mdw-box>
-      </section>
-      <section>
-        <mdw-headline text-padding=0.5em size=medium>Inside Block Inside Flex Layout</mdw-headline>
-        <mdw-box row wrap gap=4 padding=24>
-          <div>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Inside Flex Layout" col-span=12 code="
+          <mdw-box row wrap padding=24>
+            Default
+            <mdw-divider></mdw-divider>
+            Custom padding
+            <mdw-divider style=&quot;padding-inline:25%&quot;></mdw-divider>
+            On Surface
+            <mdw-divider ink=&quot;on-surface&quot;></mdw-divider>
+            Primary
+            <mdw-divider ink=&quot;primary&quot;></mdw-divider>
+            Primary Container
+            <mdw-divider ink=&quot;primary-container&quot;></mdw-divider>
+            Inverse Surface
+            <mdw-divider ink=&quot;inverse-surface&quot;></mdw-divider>
+            Inverse Primary
+            <mdw-divider ink=&quot;inverse-primary&quot;></mdw-divider>
+          </mdw-box>
+        ">
+          <mdw-box row wrap padding=24>
+            Default
+            <mdw-divider></mdw-divider>
+            Custom padding
+            <mdw-divider style="padding-inline:25%"></mdw-divider>
+            On Surface
+            <mdw-divider ink="on-surface"></mdw-divider>
+            Primary
+            <mdw-divider ink="primary"></mdw-divider>
+            Primary Container
+            <mdw-divider ink="primary-container"></mdw-divider>
+            Inverse Surface
+            <mdw-divider ink="inverse-surface"></mdw-divider>
+            Inverse Primary
+            <mdw-divider ink="inverse-primary"></mdw-divider>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Inside Block Inside Flex Layout" col-span=12 code="
+          <mdw-box row wrap gap=16 padding=24>
+            <div>
+              Default
+              <mdw-divider></mdw-divider>
+            </div>
+            <div>
+              Custom padding
+              <mdw-divider style=&quot;padding-inline:25%&quot;></mdw-divider>
+            </div>
+            <div>
+              On Surface
+              <mdw-divider ink=&quot;on-surface&quot;></mdw-divider>
+            </div>
+            <div>
+              Primary
+              <mdw-divider ink=&quot;primary&quot;></mdw-divider>
+            </div>
+            <div>
+              Primary Container
+              <mdw-divider ink=&quot;primary-container&quot;></mdw-divider>
+            </div>
+            <div>
+              Inverse Surface
+              <mdw-divider ink=&quot;inverse-surface&quot;></mdw-divider>
+            </div>
+            <div>
+              Inverse Primary
+              <mdw-divider ink=&quot;inverse-primary&quot;></mdw-divider>
+            </div>
+          </mdw-box>
+        ">
+          <mdw-box row wrap gap=16 padding=24>
+            <div>
+              Default
+              <mdw-divider></mdw-divider>
+            </div>
+            <div>
+              Custom padding
+              <mdw-divider style="padding-inline:25%"></mdw-divider>
+            </div>
+            <div>
+              On Surface
+              <mdw-divider ink="on-surface"></mdw-divider>
+            </div>
+            <div>
+              Primary
+              <mdw-divider ink="primary"></mdw-divider>
+            </div>
+            <div>
+              Primary Container
+              <mdw-divider ink="primary-container"></mdw-divider>
+            </div>
+            <div>
+              Inverse Surface
+              <mdw-divider ink="inverse-surface"></mdw-divider>
+            </div>
+            <div>
+              Inverse Primary
+              <mdw-divider ink="inverse-primary"></mdw-divider>
+            </div>
+          </mdw-box>
+        </demo-preview-card>
+      </mdw-grid>
+
+      <mdw-grid gap=16 role=region y=stretch>
+        <mdw-headline text-padding=0>Vertical</mdw-headline>
+
+        <demo-preview-card label="Inside Flex Layout (vertical)" col-span=12 code="
+          <mdw-box row wrap gap=4 padding=24>
             Default
             <mdw-divider vertical></mdw-divider>
-          </div>
-          <div>
             Custom padding
-            <mdw-divider vertical style="padding-block:4px"></mdw-divider>
-          </div>
-          <div>
-            <span style="min-width:120px;min-height:120px;background-color:purple"></span>
-            Surface
-            <mdw-divider vertical ink="surface"></mdw-divider>
-          </div>
-          <div>
+            <mdw-divider vertical ink=&quot;primary&quot; style=&quot;padding-block:4px&quot;></mdw-divider>
+            On Surface
+            <mdw-divider vertical ink=&quot;on-surface&quot;></mdw-divider>
+            Primary
+            <mdw-divider vertical ink=&quot;primary&quot;></mdw-divider>
+            Primary Container
+            <mdw-divider vertical ink=&quot;primary-container&quot;></mdw-divider>
+            Inverse Surface
+            <mdw-divider vertical ink=&quot;inverse-surface&quot;></mdw-divider>
+            Inverse Primary
+            <mdw-divider vertical ink=&quot;inverse-primary&quot;></mdw-divider>
+          </mdw-box>
+        ">
+          <mdw-box row wrap gap=4 padding=24>
+            Default
+            <mdw-divider vertical></mdw-divider>
+            Custom padding
+            <mdw-divider vertical ink=primary style="padding-block:4px"></mdw-divider>
+            On Surface
+            <mdw-divider vertical ink="on-surface"></mdw-divider>
             Primary
             <mdw-divider vertical ink="primary"></mdw-divider>
-          </div>
-          <div>
             Primary Container
             <mdw-divider vertical ink="primary-container"></mdw-divider>
-          </div>
-          <div>
             Inverse Surface
             <mdw-divider vertical ink="inverse-surface"></mdw-divider>
-          </div>
-          <div>
             Inverse Primary
             <mdw-divider vertical ink="inverse-primary"></mdw-divider>
-          </div>
-        </mdw-box>
-      </section>
-    </section>
+          </mdw-box>
+        </demo-preview-card>
 
+        <demo-preview-card label="Inside Block Inside Flex Layout (vertical)" col-span=12 code="
+          <mdw-box row wrap gap=4 padding=24>
+            <div>
+              Default
+              <mdw-divider vertical></mdw-divider>
+            </div>
+            <div>
+              Custom padding
+              <mdw-divider vertical style=&quot;padding-block:4px&quot;></mdw-divider>
+            </div>
+            <div>
+              <span style=&quot;min-width:120px;min-height:120px;background-color:purple&quot;></span>
+              Surface
+              <mdw-divider vertical ink=&quot;surface&quot;></mdw-divider>
+            </div>
+            <div>
+              Primary
+              <mdw-divider vertical ink=&quot;primary&quot;></mdw-divider>
+            </div>
+            <div>
+              Primary Container
+              <mdw-divider vertical ink=&quot;primary-container&quot;></mdw-divider>
+            </div>
+            <div>
+              Inverse Surface
+              <mdw-divider vertical ink=&quot;inverse-surface&quot;></mdw-divider>
+            </div>
+            <div>
+              Inverse Primary
+              <mdw-divider vertical ink=&quot;inverse-primary&quot;></mdw-divider>
+            </div>
+          </mdw-box>
+        ">
+          <mdw-box row wrap gap=4 padding=24>
+            <div>
+              Default
+              <mdw-divider vertical></mdw-divider>
+            </div>
+            <div>
+              Custom padding
+              <mdw-divider vertical style="padding-block:4px"></mdw-divider>
+            </div>
+            <div>
+              <span style="min-width:120px;min-height:120px;background-color:purple"></span>
+              Surface
+              <mdw-divider vertical ink="surface"></mdw-divider>
+            </div>
+            <div>
+              Primary
+              <mdw-divider vertical ink="primary"></mdw-divider>
+            </div>
+            <div>
+              Primary Container
+              <mdw-divider vertical ink="primary-container"></mdw-divider>
+            </div>
+            <div>
+              Inverse Surface
+              <mdw-divider vertical ink="inverse-surface"></mdw-divider>
+            </div>
+            <div>
+              Inverse Primary
+              <mdw-divider vertical ink="inverse-primary"></mdw-divider>
+            </div>
+          </mdw-box>
+        </demo-preview-card>
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
 

@@ -11,31 +11,56 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Tooltips</mdw-headline>
-      <mdw-box x=center gap=16 padding=24 style="z-index:0;position:relative">
-        <mdw-tooltip open>Default</mdw-tooltip>
-        <mdw-tooltip open>
-          <mdw-icon icon="sunny">Sunny</mdw-icon> Sunny
-        </mdw-tooltip>
-        <mdw-tooltip open color="surface">Surface</mdw-tooltip>
-        <mdw-tooltip open color="primary">Primary</mdw-tooltip>
-        <mdw-tooltip open color="primary-container">Primary Container</mdw-tooltip>
-        <mdw-tooltip open color="inverse-surface">Inverse Surface</mdw-tooltip>
-        <mdw-tooltip open color="inverse-primary">Inverse Primary</mdw-tooltip>
-        <mdw-tooltip open style="background-color:#121212; color:white">White on #121212</mdw-tooltip>
-        <mdw-tooltip open type-style="headline-small">Headline Small</mdw-tooltip>
-        <mdw-tooltip open shape-style=full>Full Shape</mdw-tooltip>
-        <mdw-tooltip open shape-style=small shape-end>Small End Shape</mdw-tooltip>
-      </mdw-box>
-    </section>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
 
-    <section>
-      <mdw-headline text-padding=0.5em>Icon Buttons</mdw-headline>
-      <mdw-box x=center gap=16 padding=24>
-        <mdw-icon-button icon="sunny">Sunny</mdw-icon-button>
-      </mdw-box>
-    </section>
+        <demo-preview-card label="Tooltips" col-span=12 code="
+        &lt;mdw-box x=center gap=16 padding=24 style=&quot;z-index:0;position:relative&quot;&gt;
+          &lt;mdw-tooltip open&gt;Default&lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open&gt;
+            &lt;mdw-icon icon=sunny&gt;Sunny&lt;/mdw-icon&gt; Sunny
+          &lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open color=surface&gt;Surface&lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open color=primary&gt;Primary&lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open color=primary-container&gt;Primary Container&lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open color=inverse-surface&gt;Inverse Surface&lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open color=inverse-primary&gt;Inverse Primary&lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open style=&quot;background-color:#121212; color:white&quot;&gt;White on #121212&lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open type-style=headline-small&gt;Headline Small&lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open shape-style=full&gt;Full Shape&lt;/mdw-tooltip&gt;
+          &lt;mdw-tooltip open shape-style=small shape-end&gt;Small End Shape&lt;/mdw-tooltip&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box x=center gap=16 padding=24 style="z-index:0;position:relative">
+            <mdw-tooltip open>Default</mdw-tooltip>
+            <mdw-tooltip open>
+              <mdw-icon icon="sunny">Sunny</mdw-icon> Sunny
+            </mdw-tooltip>
+            <mdw-tooltip open color=surface>Surface</mdw-tooltip>
+            <mdw-tooltip open color=primary>Primary</mdw-tooltip>
+            <mdw-tooltip open color=primary-container>Primary Container</mdw-tooltip>
+            <mdw-tooltip open color=inverse-surface>Inverse Surface</mdw-tooltip>
+            <mdw-tooltip open color=inverse-primary>Inverse Primary</mdw-tooltip>
+            <mdw-tooltip open style="background-color:#121212; color:white">White on #121212</mdw-tooltip>
+            <mdw-tooltip open type-style=headline-small>Headline Small</mdw-tooltip>
+            <mdw-tooltip open shape-style=full>Full Shape</mdw-tooltip>
+            <mdw-tooltip open shape-style=small shape-end>Small End Shape</mdw-tooltip>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Icon Buttons" col-span=12 code="
+        &lt;mdw-box x=center gap=16 padding=24&gt;
+          &lt;mdw-icon-button icon=sunny&gt;Sunny&lt;/mdw-icon-button&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box x=center gap=16 padding=24>
+            <mdw-icon-button icon="sunny">Sunny</mdw-icon-button>
+          </mdw-box>
+        </demo-preview-card>
+
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
+
 </html>

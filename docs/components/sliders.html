@@ -11,38 +11,65 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Continuous</mdw-headline>
-      <mdw-box x=stretch gap=8 padding=24>
-        <mdw-slider></mdw-slider>
-        <mdw-slider color="secondary" value="2" min="-10" max="10"></mdw-slider>
-        <mdw-slider color="tertiary" min="-10" value="3"></mdw-slider>
-        <mdw-slider color="green" min="1" max="5"></mdw-slider>
-        <mdw-slider color="custom" min=0 step=5 value=100></mdw-slider>
-        <mdw-slider color="yellow" min=0 max=3 step=1 value=2 thumb-label='Med' oninput="{
-          this.thumbLabel = ['Off', 'Low', 'Med', 'High'][this.valueAsNumber]
-          this.color = ['alias', 'green', 'yellow', 'error'][this.valueAsNumber]
-        }"></mdw-slider>
-        <mdw-slider color=secondary value="12" disabled></mdw-slider>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Discrete</mdw-headline>
-      <mdw-box x=stretch gap=8 padding=24>
-        <mdw-slider value="1" min=0 list="tickmarks" ticks="9" step="10"></mdw-slider>
-        <mdw-slider value="8" ticks="7" min="0" max="64"></mdw-slider>
-        <mdw-slider color="secondary" value="2" min="-10" max="10" ticks="3"></mdw-slider>
-        <mdw-slider color="tertiary" min="0" max="10" ticks="9" value="3"></mdw-slider>
-        <mdw-slider color="green" min="10" max="90" ticks="1"></mdw-slider>
-        <mdw-slider color="yellow" ticks=2 min=0 max=3 step=1 value=2 thumb-label='Med' oninput="{
-          this.thumbLabel = ['Off', 'Low', 'Med', 'High'][this.valueAsNumber]
-          this.color = ['alias', 'green', 'yellow', 'error'][this.valueAsNumber]
-        }"></mdw-slider>
-        <mdw-slider color="custom" min=0 step=5 value=100 ticks="4"></mdw-slider>
-        <mdw-slider color=secondary value="12" disabled ticks="9"></mdw-slider>
-        
-      </mdw-box>
-    </section>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+
+
+        <demo-preview-card label="Continuous" col-span=12 code="
+  &lt;mdw-slider&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=secondary value=2 min=-10 max=10&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=tertiary min=-10 value=3&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=green min=1 max=5&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=custom min=0 step=5 value=100&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=yellow min=0 max=3 step=1 value=2 thumb-label=Med oninput=&quot;{
+    this.thumbLabel = ['Off', 'Low', 'Med', 'High'][this.valueAsNumber];
+    this.color = ['alias', 'green', 'yellow', 'error'][this.valueAsNumber];
+  }&quot;&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=secondary value=12 disabled&gt;&lt;/mdw-slider&gt;
+">
+          <mdw-box x=stretch gap=8 padding=24 style="width:100%">
+            <mdw-slider></mdw-slider>
+            <mdw-slider color=secondary value=2 min=-10 max=10></mdw-slider>
+            <mdw-slider color=tertiary min=-10 value=3></mdw-slider>
+            <mdw-slider color=green min=1 max=5></mdw-slider>
+            <mdw-slider color=custom min=0 step=5 value=100></mdw-slider>
+            <mdw-slider color=yellow min=0 max=3 step=1 value=2 thumb-label=Med oninput="{
+              this.thumbLabel = ['Off', 'Low', 'Med', 'High'][this.valueAsNumber]
+              this.color = ['alias', 'green', 'yellow', 'error'][this.valueAsNumber]
+            }"></mdw-slider>
+            <mdw-slider color=secondary value=12 disabled></mdw-slider>
+          </mdw-box>
+        </demo-preview-card>
+        <demo-preview-card label="Discrete" col-span=12 code="
+  &lt;mdw-slider value=1 min=0 list=tickmarks ticks=9 step=10&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider value=8 ticks=7 min=0 max=64&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=secondary value=2 min=-10 max=10 ticks=3&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=tertiary min=0 max=10 ticks=9 value=3&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=green min=10 max=90 ticks=1&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=yellow ticks=2 min=0 max=3 step=1 value=2 thumb-label=Med oninput=&quot;{
+    this.thumbLabel = ['Off', 'Low', 'Med', 'High'][this.valueAsNumber];
+    this.color = ['alias', 'green', 'yellow', 'error'][this.valueAsNumber];
+  }&quot;&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=custom min=0 step=5 value=100 ticks=4&gt;&lt;/mdw-slider&gt;
+  &lt;mdw-slider color=secondary value=12 disabled ticks=9&gt;&lt;/mdw-slider&gt;
+">
+          <mdw-box x=stretch gap=8 padding=24 style="width:100%">
+            <mdw-slider value=1 min=0 list=tickmarks ticks=9 step=10></mdw-slider>
+            <mdw-slider value=8 ticks=7 min=0 max=64></mdw-slider>
+            <mdw-slider color=secondary value=2 min=-10 max=10 ticks=3></mdw-slider>
+            <mdw-slider color=tertiary min=0 max=10 ticks=9 value=3></mdw-slider>
+            <mdw-slider color=green min=10 max=90 ticks=1></mdw-slider>
+            <mdw-slider color=yellow ticks=2 min=0 max=3 step=1 value=2 thumb-label=Med oninput="{
+              this.thumbLabel = ['Off', 'Low', 'Med', 'High'][this.valueAsNumber]
+              this.color = ['alias', 'green', 'yellow', 'error'][this.valueAsNumber]
+            }"></mdw-slider>
+            <mdw-slider color=custom min=0 step=5 value=100 ticks=4></mdw-slider>
+            <mdw-slider color=secondary value=12 disabled ticks=9></mdw-slider>
+          </mdw-box>
+        </demo-preview-card>
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
+
 </html>

@@ -11,22 +11,35 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Linear</mdw-headline>
-      <mdw-box row gap=12>
-        <mdw-progress ink="primary"></mdw-progress>
-        <mdw-progress value="30" ink="secondary"></mdw-progress>
-        <mdw-progress value="60" auto-hide ink="tertiary"></mdw-progress>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Circular</mdw-headline>
-      <mdw-box row gap=12>
-        <mdw-progress circle ink="primary"></mdw-progress>
-        <mdw-progress circle value="30" ink="secondary"></mdw-progress>
-        <mdw-progress circle value="60" auto-hide ink="tertiary"></mdw-progress>
-      </mdw-box>
-    </section>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+
+        <demo-preview-card label="Linear" col-span=12 code="
+  &lt;mdw-progress ink=&quot;primary&quot;&gt;&lt;/mdw-progress&gt;
+  &lt;mdw-progress value=&quot;30&quot; ink=&quot;secondary&quot;&gt;&lt;/mdw-progress&gt;
+  &lt;mdw-progress value=&quot;60&quot; auto-hide ink=&quot;tertiary&quot;&gt;&lt;/mdw-progress&gt;
+">
+          <mdw-box padding=24 gap=24 style="width:100%">
+            <mdw-progress ink="primary"></mdw-progress>
+            <mdw-progress value="30" ink="secondary"></mdw-progress>
+            <mdw-progress value="60" auto-hide ink="tertiary"></mdw-progress>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Circular" col-span=12 code="
+  &lt;mdw-progress circle ink=&quot;primary&quot;&gt;&lt;/mdw-progress&gt;
+  &lt;mdw-progress circle value=&quot;30&quot; ink=&quot;secondary&quot;&gt;&lt;/mdw-progress&gt;
+  &lt;mdw-progress circle value=&quot;60&quot; auto-hide ink=&quot;tertiary&quot;&gt;&lt;/mdw-progress&gt;
+">
+          <mdw-box row padding=24 gap=24>
+            <mdw-progress circle ink="primary"></mdw-progress>
+            <mdw-progress circle value="30" ink="secondary"></mdw-progress>
+            <mdw-progress circle value="60" auto-hide ink="tertiary"></mdw-progress>
+          </mdw-box>
+        </demo-preview-card>
+
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
 

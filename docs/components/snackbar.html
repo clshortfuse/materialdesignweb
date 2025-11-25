@@ -14,48 +14,69 @@
       var $ = document.querySelector.bind(document);
       var $$ = document.querySelectorAll.bind(document);
     </script>
-    <section>
-      <mdw-headline text-padding=0.5em>Single-line</mdw-headline>
-      <section>
-        <mdw-headline text-padding=0.5em size=medium>Options</mdw-headline>
-        <mdw-box padding=24 gap=16>
-          <mdw-checkbox checked onchange="{
-                for (const el of $$('#single-line mdw-snackbar')) {
-                  el.open = this.checked;
-                }
-              }">Open?</mdw-checkbox>
-          <mdw-checkbox onchange="{
-                for (const el of $$('#single-line mdw-snackbar')) {
-                  el.action = this.checked ? 'Action' : null;
-                }
-              }">Action Button?</mdw-checkbox>
-          <mdw-checkbox onchange="{
-                for (const el of $$('#single-line mdw-snackbar')) {
-                  el.closeButton = this.checked;
-                }
-              }">Close Button?<div></div>
-          </mdw-checkbox>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+
+        <mdw-box col-span=4 col-span-12=12>
+          <mdw-headline text-padding=0.5em size=medium>Options</mdw-headline>
+          <mdw-box padding=24 gap=16>
+            <mdw-checkbox checked onchange="{
+                  for (const el of $$('#single-line mdw-snackbar')) {
+                    el.open = this.checked;
+                  }
+                }">Open?</mdw-checkbox>
+            <mdw-checkbox onchange="{
+                  for (const el of $$('#single-line mdw-snackbar')) {
+                    el.action = this.checked ? 'Action' : null;
+                  }
+                }">Action Button?</mdw-checkbox>
+            <mdw-checkbox onchange="{
+                  for (const el of $$('#single-line mdw-snackbar')) {
+                    el.closeButton = this.checked;
+                  }
+                }">Close Button?<div></div>
+            </mdw-checkbox>
+          </mdw-box>
         </mdw-box>
-      </section>
-      <mdw-box id="single-line" x=stretch gap=16 padding=24 >
-        <mdw-snackbar open onclose="console.log('Bye')" onaction="alert('You clicked the action!')">Snackbar with inline
-          events.</mdw-snackbar>
-        <mdw-snackbar open>
-          <mdw-icon icon="sunny"></mdw-icon> Sunny
-        </mdw-snackbar>
-        <mdw-snackbar open color="surface">Surface</mdw-snackbar>
-        <mdw-snackbar open color="primary">Primary</mdw-snackbar>
-        <mdw-snackbar open color="primary-container">Primary Container</mdw-snackbar>
-        <mdw-snackbar open color="inverse-surface">Inverse Surface</mdw-snackbar>
-        <mdw-snackbar open color="inverse-primary">Inverse Primary</mdw-snackbar>
-        <mdw-snackbar open style="background-color:#121212; color:white">White on #121212</mdw-snackbar>
-        <mdw-snackbar open type-style="headline-small">Headline Small</mdw-snackbar>
-        <mdw-snackbar open shape-style=full>Full Shape</mdw-snackbar>
-        <mdw-snackbar open shape-style=small shape-end>Small End Shape</mdw-snackbar>
-        <mdw-snackbar open>Very large piece of text that will wrap and clip due to a limit of two-lines at most.
-        </mdw-snackbar>
-      </mdw-box>
-    </section>
+
+        <demo-preview-card label="Single-line" col-span=8 col-span-12=12 code="
+&lt;mdw-box x=stretch gap=16 padding=24&gt;
+  &lt;mdw-snackbar open onclose=&quot;console.log('Bye')&quot; onaction=&quot;alert('You clicked the action!')&quot;&gt;Snackbar with inline events.&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open&gt;&lt;mdw-icon icon=&quot;sunny&quot;&gt;&lt;/mdw-icon&gt; Sunny&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open color=surface&gt;Surface&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open color=primary&gt;Primary&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open color=primary-container&gt;Primary Container&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open color=inverse-surface&gt;Inverse Surface&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open color=inverse-primary&gt;Inverse Primary&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open style=&quot;background-color:#121212; color:white&quot;&gt;White on #121212&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open type-style=headline-small&gt;Headline Small&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open shape-style=full&gt;Full Shape&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open shape-style=small shape-end&gt;Small End Shape&lt;/mdw-snackbar&gt;
+  &lt;mdw-snackbar open&gt;Very large piece of text that will wrap and clip due to a limit of two-lines at most.&lt;/mdw-snackbar&gt;
+&lt;/mdw-box&gt;
+">
+          <mdw-box id="single-line" x=stretch gap=16 padding=24 style="width:100%">
+            <mdw-snackbar open onclose="console.log('Bye')" onaction="alert('You clicked the action!')">Snackbar with inline
+              events.</mdw-snackbar>
+            <mdw-snackbar open>
+              <mdw-icon icon="sunny"></mdw-icon> Sunny
+            </mdw-snackbar>
+            <mdw-snackbar open color=surface>Surface</mdw-snackbar>
+            <mdw-snackbar open color=primary>Primary</mdw-snackbar>
+            <mdw-snackbar open color=primary-container>Primary Container</mdw-snackbar>
+            <mdw-snackbar open color=inverse-surface>Inverse Surface</mdw-snackbar>
+            <mdw-snackbar open color=inverse-primary>Inverse Primary</mdw-snackbar>
+            <mdw-snackbar open style="background-color:#121212; color:white">White on #121212</mdw-snackbar>
+            <mdw-snackbar open type-style=headline-small>Headline Small</mdw-snackbar>
+            <mdw-snackbar open shape-style=full>Full Shape</mdw-snackbar>
+            <mdw-snackbar open shape-style=small shape-end>Small End Shape</mdw-snackbar>
+            <mdw-snackbar open>Very large piece of text that will wrap and clip due to a limit of two-lines at most.
+            </mdw-snackbar>
+          </mdw-box>
+        </demo-preview-card>
+
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
 </html>

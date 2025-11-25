@@ -11,28 +11,52 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Normal</mdw-headline>
-      <form>
-        <mdw-box row gap=24 wrap padding=8>
-          <mdw-radio name=radio-demo value="1">Default</mdw-radio>
-          <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
-          <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
-          <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
-          <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
-        </mdw-box>
-      </form>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>No Label</mdw-headline>
-      <form>
-        <mdw-box row gap=24 wrap padding=8>
-          <mdw-radio name=radio-demo-blank aria-label="Default" value="1"></mdw-radio>
-          <mdw-radio name=radio-demo-blank aria-label="Secondary" ink="secondary" value="2"></mdw-radio>
-          <mdw-radio name=radio-demo-blank aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
-        </mdw-box>
-      </form>
-    </section>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+
+        <demo-preview-card label="Normal" col-span=12 code="
+&lt;form&gt;
+  &lt;mdw-box row gap=&quot;24&quot; wrap padding=&quot;8&quot;&gt;
+    &lt;mdw-radio name=&quot;radio-demo&quot; value=&quot;1&quot;&gt;Default&lt;/mdw-radio&gt;
+    &lt;mdw-radio name=&quot;radio-demo&quot; ink=&quot;secondary&quot; value=&quot;2&quot;&gt;Secondary&lt;/mdw-radio&gt;
+    &lt;mdw-radio name=&quot;radio-demo&quot; ink=&quot;tertiary&quot; value=&quot;3&quot;&gt;Tertiary&lt;/mdw-radio&gt;
+    &lt;mdw-radio name=&quot;radio-demo&quot; ink=&quot;primary&quot; disabled value=&quot;4&quot;&gt;Disabled&lt;/mdw-radio&gt;
+    &lt;mdw-radio name=&quot;radio-demo&quot; ink=&quot;primary&quot; disabled value=&quot;5&quot; checked&gt;Disabled Checked&lt;/mdw-radio&gt;
+  &lt;/mdw-box&gt;
+&lt;/form&gt;
+">
+          <form>
+            <mdw-box row gap=24 wrap padding=8>
+              <mdw-radio name=radio-demo value="1">Default</mdw-radio>
+              <mdw-radio name=radio-demo ink="secondary" value="2">Secondary</mdw-radio>
+              <mdw-radio name=radio-demo ink="tertiary" value="3">Tertiary</mdw-radio>
+              <mdw-radio name=radio-demo ink="primary" disabled value="4">Disabled</mdw-radio>
+              <mdw-radio name=radio-demo ink="primary" disabled value="5" checked>Disabled Checked</mdw-radio>
+            </mdw-box>
+          </form>
+        </demo-preview-card>
+
+        <demo-preview-card label="No Label" col-span=12 code="
+&lt;form&gt;
+  &lt;mdw-box row gap=&quot;24&quot; wrap padding=&quot;8&quot;&gt;
+    &lt;mdw-radio name=&quot;radio-demo-blank&quot; aria-label=&quot;Default&quot; value=&quot;1&quot;&gt;&lt;/mdw-radio&gt;
+    &lt;mdw-radio name=&quot;radio-demo-blank&quot; aria-label=&quot;Secondary&quot; ink=&quot;secondary&quot; value=&quot;2&quot;&gt;&lt;/mdw-radio&gt;
+    &lt;mdw-radio name=&quot;radio-demo-blank&quot; aria-label=&quot;Tertiary&quot; ink=&quot;tertiary&quot; value=&quot;3&quot;&gt;&lt;/mdw-radio&gt;
+  &lt;/mdw-box&gt;
+&lt;/form&gt;
+">
+          <form>
+            <mdw-box row gap=24 wrap padding=8>
+              <mdw-radio name=radio-demo-blank aria-label="Default" value="1"></mdw-radio>
+              <mdw-radio name=radio-demo-blank aria-label="Secondary" ink="secondary" value="2"></mdw-radio>
+              <mdw-radio name=radio-demo-blank aria-label="Tertiary" ink="tertiary" value="3"></mdw-radio>
+            </mdw-box>
+          </form>
+        </demo-preview-card>
+
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
+
 </html>

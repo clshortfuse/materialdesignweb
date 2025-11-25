@@ -12,85 +12,154 @@
 <body>
 
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Standard</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-nav-rail style="min-height:400px" modal-breakpoint=0 auto-open>
-          <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-rail-item>
-        </mdw-nav-rail>
-        <mdw-nav-rail align=start style="min-height:400px">
-          <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-rail-item>
-        </mdw-nav-rail>
-        <mdw-nav-rail align=end style="min-height:400px">
-          <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary</mdw-nav-rail-item>
-        </mdw-nav-rail>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Menu</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-nav-rail style="min-height:400px" modal-breakpoint=0 auto-open>
-          <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
-          <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary
-          </mdw-nav-rail-item>
-        </mdw-nav-rail>
-        <mdw-nav-rail align=start style="min-height:400px" modal-breakpoint=0 auto-open>
-          <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge>Default</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge=1 color=primary-container>Primary
-          </mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container>Tertiary
-          </mdw-nav-rail-item>
-        </mdw-nav-rail>
-        <mdw-nav-rail align=end style="min-height:400px" modal-breakpoint=0 auto-open>
-          <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge aria-label="Default"></mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge=1 color=primary-container aria-label="Primary">
-          </mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container
-            aria-label="Tertiary"></mdw-nav-rail-item>
-        </mdw-nav-rail>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Menu and Fab</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-nav-rail style="min-height:400px" modal-breakpoint=0 auto-open>
-          <mdw-icon-button nav-top icon="menu">Menu</mdw-icon-button>
-          <mdw-fab slot=start icon="add" elevation=0>Add</mdw-fab>
-          <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=primary-container>Primary</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" color=tertiary-container>Tertiary
-          </mdw-nav-rail-item>
-        </mdw-nav-rail>
-        <mdw-nav-rail align=start style="min-height:400px" modal-breakpoint=0 auto-open>
-          <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
-          <mdw-fab slot=start icon="add" elevation=0>Add</mdw-fab>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge>Default</mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge=1 color=primary-container>Primary
-          </mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container>Tertiary
-          </mdw-nav-rail-item>
-        </mdw-nav-rail>
-        <mdw-nav-rail align=end style="min-height:400px" modal-breakpoint=0 auto-open>
-          <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
-          <mdw-fab slot=start icon="add" elevation=0>Add</mdw-fab>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge aria-label="Default"></mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge=1 color=primary-container aria-label="Primary">
-          </mdw-nav-rail-item>
-          <mdw-nav-rail-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container
-            aria-label="Tertiary"></mdw-nav-rail-item>
-        </mdw-nav-rail>
-      </mdw-box>
-    </section>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+
+        <demo-preview-card label="Standard" col-span=12 code="
+&lt;mdw-nav-rail&gt;
+  &lt;mdw-nav-rail-item icon=&quot;edit&quot; href=&quot;#navrail&quot;&gt;Default&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;tertiary-container&quot;&gt;Tertiary&lt;/mdw-nav-rail-item&gt;
+&lt;/mdw-nav-rail&gt;
+">
+          <div>
+            <mdw-nav-rail style="min-height:400px;max-height:400px" fixed-breakpoint=0 auto-open=0 auto-close=-1>
+              <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=primary-container>Primary</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=tertiary-container>Tertiary</mdw-nav-rail-item>
+            </mdw-nav-rail>
+          </div>
+        </demo-preview-card>
+
+        <demo-preview-card label="Align start" col-span=12 code="
+&lt;mdw-nav-rail align=&quot;start&quot;&gt;
+  &lt;mdw-nav-rail-item icon=&quot;edit&quot; href=&quot;#navrail&quot;&gt;Default&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;tertiary-container&quot;&gt;Tertiary&lt;/mdw-nav-rail-item&gt;
+&lt;/mdw-nav-rail&gt;
+">
+          <div>
+            <mdw-nav-rail align=start style="min-height:400px;max-height:400px" fixed-breakpoint=0 auto-open=0
+              auto-close=-1>
+              <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=primary-container>Primary</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=tertiary-container>Tertiary</mdw-nav-rail-item>
+            </mdw-nav-rail>
+          </div>
+        </demo-preview-card>
+
+        <demo-preview-card label="Align end" col-span=12 code="
+&lt;mdw-nav-rail align=&quot;end&quot;&gt;
+  &lt;mdw-nav-rail-item icon=&quot;edit&quot; href=&quot;#navrail&quot;&gt;Default&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;tertiary-container&quot;&gt;Tertiary&lt;/mdw-nav-rail-item&gt;
+&lt;/mdw-nav-rail&gt;
+">
+          <div>
+            <mdw-nav-rail align=end style="min-height:400px;max-height:400px" fixed-breakpoint=0 auto-open=0
+              auto-close=-1>
+              <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=primary-container>Primary</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=tertiary-container>Tertiary</mdw-nav-rail-item>
+            </mdw-nav-rail>
+          </div>
+        </demo-preview-card>
+
+        <demo-preview-card label="Menu" col-span=12 code="
+&lt;mdw-nav-rail&gt;
+  &lt;mdw-icon-button slot=&quot;start&quot; icon=&quot;menu&quot;&gt;Menu&lt;/mdw-icon-button&gt;
+  &lt;mdw-nav-rail-item icon=&quot;edit&quot; href=&quot;#navrail&quot;&gt;Default&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;tertiary-container&quot;&gt;Tertiary&lt;/mdw-nav-rail-item&gt;
+&lt;/mdw-nav-rail&gt;
+">
+          <div>
+            <mdw-nav-rail style="min-height:400px;max-height:400px" fixed-breakpoint=0 auto-open=0 auto-close=-1>
+              <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
+              <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=primary-container>Primary</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=tertiary-container>Tertiary</mdw-nav-rail-item>
+            </mdw-nav-rail>
+          </div>
+        </demo-preview-card>
+
+        <demo-preview-card label="Menu badges" col-span=12 code="
+&lt;mdw-nav-rail&gt;
+  &lt;mdw-icon-button slot=&quot;start&quot; icon=&quot;menu&quot;&gt;Menu&lt;/mdw-icon-button&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; badge&gt;Default&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; badge=&quot;1&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; badge=&quot;999+&quot; color=&quot;tertiary-container&quot;&gt;Tertiary&lt;/mdw-nav-rail-item&gt;
+&lt;/mdw-nav-rail&gt;
+">
+          <div>
+            <mdw-nav-rail align=start style="min-height:400px;max-height:400px" fixed-breakpoint=0 auto-open=0
+              auto-close=-1>
+              <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
+              <mdw-nav-rail-item icon="change_history" href="#navrail" badge>Default</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail" badge=1
+                color=primary-container>Primary</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail" badge="999+"
+                color=tertiary-container>Tertiary</mdw-nav-rail-item>
+            </mdw-nav-rail>
+          </div>
+        </demo-preview-card>
+
+        <demo-preview-card label="Menu + Fab" col-span=12 code="
+&lt;mdw-nav-rail&gt;
+  &lt;mdw-icon-button nav-top icon=&quot;menu&quot;&gt;Menu&lt;/mdw-icon-button&gt;
+  &lt;mdw-fab slot=&quot;start&quot; icon=&quot;add&quot; elevation=&quot;0&quot;&gt;Add&lt;/mdw-fab&gt;
+  &lt;mdw-nav-rail-item icon=&quot;edit&quot; href=&quot;#navrail&quot;&gt;Default&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; color=&quot;tertiary-container&quot;&gt;Tertiary&lt;/mdw-nav-rail-item&gt;
+&lt;/mdw-nav-rail&gt;
+">
+          <div>
+            <mdw-nav-rail style="min-height:400px;max-height:400px" fixed-breakpoint=0 auto-open=0 auto-close=-1>
+              <mdw-icon-button nav-top icon="menu">Menu</mdw-icon-button>
+              <mdw-fab slot=start icon="add" elevation=0>Add</mdw-fab>
+              <mdw-nav-rail-item icon="edit" href="#navrail">Default</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=primary-container>Primary</mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail"
+                color=tertiary-container>Tertiary</mdw-nav-rail-item>
+            </mdw-nav-rail>
+          </div>
+        </demo-preview-card>
+
+        <demo-preview-card label="Menu + Fab (badges)" col-span=12 code="
+&lt;mdw-nav-rail&gt;
+  &lt;mdw-icon-button slot=&quot;start&quot; icon=&quot;menu&quot;&gt;Menu&lt;/mdw-icon-button&gt;
+  &lt;mdw-fab slot=&quot;start&quot; icon=&quot;add&quot; elevation=&quot;0&quot;&gt;Add&lt;/mdw-fab&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; badge aria-label=&quot;Default&quot;&gt;&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; badge=&quot;1&quot; color=&quot;primary-container&quot; aria-label=&quot;Primary&quot;&gt;&lt;/mdw-nav-rail-item&gt;
+  &lt;mdw-nav-rail-item icon=&quot;change_history&quot; href=&quot;#navrail&quot; badge=&quot;999+&quot; color=&quot;tertiary-container&quot; aria-label=&quot;Tertiary&quot;&gt;&lt;/mdw-nav-rail-item&gt;
+&lt;/mdw-nav-rail&gt;
+">
+          <div>
+            <mdw-nav-rail align=end style="min-height:400px;max-height:400px" fixed-breakpoint=0 auto-open=0
+              auto-close=-1>
+              <mdw-icon-button slot=start icon="menu">Menu</mdw-icon-button>
+              <mdw-fab slot=start icon="add" elevation=0>Add</mdw-fab>
+              <mdw-nav-rail-item icon="change_history" href="#navrail" badge aria-label="Default"></mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail" badge=1 color=primary-container
+                aria-label="Primary"></mdw-nav-rail-item>
+              <mdw-nav-rail-item icon="change_history" href="#navrail" badge="999+" color=tertiary-container
+                aria-label="Tertiary"></mdw-nav-rail-item>
+            </mdw-nav-rail>
+          </div>
+        </demo-preview-card>
+
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
+
 </html>

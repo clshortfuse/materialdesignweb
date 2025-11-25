@@ -11,27 +11,64 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Standard</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-nav-drawer auto-open=0 modal-breakpoint=0 style="min-height:400px">
-          <mdw-nav-drawer-item icon="edit" href="#navdrawer" badge="5">Default</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-drawer-item>
-        </mdw-nav-drawer>
-        <mdw-nav-drawer auto-open=0 modal-breakpoint=0 color="tertiary-container" style="min-height:400px">
-          <mdw-nav-drawer-item icon="edit" href="#navdrawer" badge="10">Default</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" badge="999+" color=green-container>
-            Green Container</mdw-nav-drawer-item>
-        </mdw-nav-drawer>
-        <mdw-nav-drawer auto-open=0 modal-breakpoint=0 style="min-height:400px">
-          <mdw-nav-drawer-item icon="edit" href="#navdrawer">Default</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=primary-container>Primary</mdw-nav-drawer-item>
-          <mdw-nav-drawer-item icon="change_history" href="#navdrawer" color=tertiary-container>Tertiary</mdw-nav-drawer-item>
-        </mdw-nav-drawer>
-      </mdw-box>
-    </section>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+
+        <demo-preview-card label="Standard" col-span=12 code="
+&lt;mdw-nav-drawer&gt;
+  &lt;mdw-nav-drawer-item icon=&quot;edit&quot; href=&quot;#navdrawer&quot; badge=&quot;5&quot;&gt;Default&lt;/mdw-nav-drawer-item&gt;
+  &lt;mdw-nav-drawer-item icon=&quot;change_history&quot; href=&quot;#navdrawer&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-drawer-item&gt;
+  &lt;mdw-nav-drawer-item icon=&quot;change_history&quot; href=&quot;#navdrawer&quot; color=&quot;tertiary-container&quot;&gt;Tertiary&lt;/mdw-nav-drawer-item&gt;
+&lt;/mdw-nav-drawer&gt;
+">
+
+          <mdw-nav-drawer auto-open=0 fixed-breakpoint=0 style="min-height:400px;max-height:400px">
+            <mdw-nav-drawer-item icon="edit" href="#navdrawer" badge="5">Default</mdw-nav-drawer-item>
+            <mdw-nav-drawer-item icon="change_history" href="#navdrawer"
+              color=primary-container>Primary</mdw-nav-drawer-item>
+            <mdw-nav-drawer-item icon="change_history" href="#navdrawer"
+              color=tertiary-container>Tertiary</mdw-nav-drawer-item>
+          </mdw-nav-drawer>
+
+        </demo-preview-card>
+
+        <demo-preview-card label="Toned" col-span=12 code="
+&lt;mdw-nav-drawer color=&quot;tertiary-container&quot;&gt;
+  &lt;mdw-nav-drawer-item icon=&quot;edit&quot; href=&quot;#navdrawer&quot; badge=&quot;10&quot;&gt;Default&lt;/mdw-nav-drawer-item&gt;
+  &lt;mdw-nav-drawer-item icon=&quot;change_history&quot; href=&quot;#navdrawer&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-drawer-item&gt;
+  &lt;mdw-nav-drawer-item icon=&quot;change_history&quot; href=&quot;#navdrawer&quot; badge=&quot;999+&quot; color=&quot;green-container&quot;&gt;Green Container&lt;/mdw-nav-drawer-item&gt;
+&lt;/mdw-nav-drawer&gt;
+">
+
+          <mdw-nav-drawer auto-open=0 fixed-breakpoint=0 color="tertiary-container"
+            style="min-height:400px;max-height:400px;">
+            <mdw-nav-drawer-item icon="edit" href="#navdrawer" badge="10">Default</mdw-nav-drawer-item>
+            <mdw-nav-drawer-item icon="change_history" href="#navdrawer"
+              color=primary-container>Primary</mdw-nav-drawer-item>
+            <mdw-nav-drawer-item icon="change_history" href="#navdrawer" badge="999+" color=green-container>Green
+              Container</mdw-nav-drawer-item>
+          </mdw-nav-drawer>
+
+        </demo-preview-card>
+
+        <demo-preview-card label="Minimal" col-span=12 code="
+&lt;mdw-nav-drawer&gt;
+  &lt;mdw-nav-drawer-item icon=&quot;edit&quot; href=&quot;#navdrawer&quot;&gt;Default&lt;/mdw-nav-drawer-item&gt;
+  &lt;mdw-nav-drawer-item icon=&quot;change_history&quot; href=&quot;#navdrawer&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-drawer-item&gt;
+  &lt;mdw-nav-drawer-item icon=&quot;change_history&quot; href=&quot;#navdrawer&quot; color=&quot;tertiary-container&quot;&gt;Tertiary&lt;/mdw-nav-drawer-item&gt;
+&lt;/mdw-nav-drawer&gt;
+">
+
+          <mdw-nav-drawer auto-open=0 fixed-breakpoint=0 style="min-height:400px;max-height:400px;">
+            <mdw-nav-drawer-item icon="edit" href="#navdrawer">Default</mdw-nav-drawer-item>
+            <mdw-nav-drawer-item icon="change_history" href="#navdrawer"
+              color=primary-container>Primary</mdw-nav-drawer-item>
+            <mdw-nav-drawer-item icon="change_history" href="#navdrawer"
+              color=tertiary-container>Tertiary</mdw-nav-drawer-item>
+          </mdw-nav-drawer>
+        </demo-preview-card>
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
 

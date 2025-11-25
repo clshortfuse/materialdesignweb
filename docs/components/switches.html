@@ -11,54 +11,96 @@
 
 <body>
   <demo-page>
-    <section>
-      <mdw-headline text-padding=0.5em>Without Icons</mdw-headline>
-      <mdw-box row wrap gap=24>
-        <mdw-switch>Default</mdw-switch>
-        <mdw-switch color=secondary checked>Secondary</mdw-switch>
-        <mdw-switch color=tertiary>Tertiary</mdw-switch>
-        <mdw-switch disabled>Disabled</mdw-switch>
-        <mdw-switch color=secondary disabled checked>Disabled</mdw-switch>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Icon on selected switch</mdw-headline>
-      <mdw-box row wrap gap=24>
-        <mdw-switch selected-icon=check>Default</mdw-switch>
-        <mdw-switch color=secondary checked selected-icon=check>Secondary</mdw-switch>
-        <mdw-switch color=tertiary selected-icon=edit>Tertiary</mdw-switch>
-        <mdw-switch disabled selected-icon=check>Disabled</mdw-switch>
-        <mdw-switch color=secondary disabled checked selected-icon=check>Disabled</mdw-switch>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Icon on selected and unselected switch</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-switch icon=favorite>Default</mdw-switch>
-        <mdw-switch color=secondary checked unselected-icon=close selected-icon=check>Secondary</mdw-switch>
-        <mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode>Tertiary</mdw-switch>
-        <mdw-switch disabled unselected-icon=close selected-icon=check>Disabled</mdw-switch>
-        <mdw-switch color=secondary disabled checked unselected-icon=close selected-icon=check>Disabled</mdw-switch>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>No label</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-switch icon=check aria-label="Default"></mdw-switch>
-        <mdw-switch color=secondary checked icon=favorite aria-label="Secondary"></mdw-switch>
-        <mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode aria-label="Tertiary">
-        </mdw-switch>
-        <mdw-switch disabled icon=check aria-label="Disabled"></mdw-switch>
-        <mdw-switch color=secondary disabled checked icon=check aria-label="Disabled"></mdw-switch>
-      </mdw-box>
-    </section>
-    <section>
-      <mdw-headline text-padding=0.5em>Custom Sized</mdw-headline>
-      <mdw-box row wrap gap=12>
-        <mdw-switch icon=check style="width:80px" aria-label="Default"></mdw-switch>
-        <mdw-switch color=secondary checked style="width:40px" icon=favorite aria-label="Secondary"></mdw-switch>
-      </mdw-box>
-    </section>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch>
+        
+        <demo-preview-card label="Without Icons" col-span=8 col-span-12=6 code="
+        &lt;mdw-box row wrap gap=24&gt;
+          &lt;mdw-switch&gt;Default&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=secondary checked&gt;Secondary&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=tertiary&gt;Tertiary&lt;/mdw-switch&gt;
+          &lt;mdw-switch disabled&gt;Disabled&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=secondary disabled checked&gt;Disabled&lt;/mdw-switch&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box row wrap gap=24>
+            <mdw-switch>Default</mdw-switch>
+            <mdw-switch color=secondary checked>Secondary</mdw-switch>
+            <mdw-switch color=tertiary>Tertiary</mdw-switch>
+            <mdw-switch disabled>Disabled</mdw-switch>
+            <mdw-switch color=secondary disabled checked>Disabled</mdw-switch>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Icon on selected switch" col-span=8 col-span-12=6 code="
+        &lt;mdw-box row wrap gap=24&gt;
+          &lt;mdw-switch selected-icon=check&gt;Default&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=secondary checked selected-icon=check&gt;Secondary&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=tertiary selected-icon=edit&gt;Tertiary&lt;/mdw-switch&gt;
+          &lt;mdw-switch disabled selected-icon=check&gt;Disabled&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=secondary disabled checked selected-icon=check&gt;Disabled&lt;/mdw-switch&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box row wrap gap=24>
+            <mdw-switch selected-icon=check>Default</mdw-switch>
+            <mdw-switch color=secondary checked selected-icon=check>Secondary</mdw-switch>
+            <mdw-switch color=tertiary selected-icon=edit>Tertiary</mdw-switch>
+            <mdw-switch disabled selected-icon=check>Disabled</mdw-switch>
+            <mdw-switch color=secondary disabled checked selected-icon=check>Disabled</mdw-switch>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Icon on selected and unselected switch" col-span=8 col-span-12=6 code="
+        &lt;mdw-box row wrap gap=12&gt;
+          &lt;mdw-switch icon=favorite&gt;Default&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=secondary checked unselected-icon=close selected-icon=check&gt;Secondary&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode&gt;Tertiary&lt;/mdw-switch&gt;
+          &lt;mdw-switch disabled unselected-icon=close selected-icon=check&gt;Disabled&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=secondary disabled checked unselected-icon=close selected-icon=check&gt;Disabled&lt;/mdw-switch&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box row wrap gap=12>
+            <mdw-switch icon=favorite>Default</mdw-switch>
+            <mdw-switch color=secondary checked unselected-icon=close selected-icon=check>Secondary</mdw-switch>
+            <mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode>Tertiary</mdw-switch>
+            <mdw-switch disabled unselected-icon=close selected-icon=check>Disabled</mdw-switch>
+            <mdw-switch color=secondary disabled checked unselected-icon=close selected-icon=check>Disabled</mdw-switch>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="No label" col-span=8 col-span-12=6 code="
+        &lt;mdw-box row wrap gap=12&gt;
+          &lt;mdw-switch icon=check aria-label=&quot;Default&quot;&gt;&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=secondary checked icon=favorite aria-label=&quot;Secondary&quot;&gt;&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode aria-label=&quot;Tertiary&quot;&gt;&lt;/mdw-switch&gt;
+          &lt;mdw-switch disabled icon=check aria-label=&quot;Disabled&quot;&gt;&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=secondary disabled checked icon=check aria-label=&quot;Disabled&quot;&gt;&lt;/mdw-switch&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box row wrap gap=12>
+            <mdw-switch icon=check aria-label="Default"></mdw-switch>
+            <mdw-switch color=secondary checked icon=favorite aria-label="Secondary"></mdw-switch>
+            <mdw-switch color=tertiary unselected-icon=dark_mode selected-icon=light_mode aria-label="Tertiary">
+            </mdw-switch>
+            <mdw-switch disabled icon=check aria-label="Disabled"></mdw-switch>
+            <mdw-switch color=secondary disabled checked icon=check aria-label="Disabled"></mdw-switch>
+          </mdw-box>
+        </demo-preview-card>
+
+        <demo-preview-card label="Custom Sized" col-span=8 col-span-12=6 code="
+        &lt;mdw-box row wrap gap=12&gt;
+          &lt;mdw-switch icon=check style=&quot;width:80px&quot; aria-label=&quot;Default&quot;&gt;&lt;/mdw-switch&gt;
+          &lt;mdw-switch color=secondary checked style=&quot;width:40px&quot; icon=favorite aria-label=&quot;Secondary&quot;&gt;&lt;/mdw-switch&gt;
+        &lt;/mdw-box&gt;
+        ">
+          <mdw-box row wrap gap=12>
+            <mdw-switch icon=check style="width:80px" aria-label="Default"></mdw-switch>
+            <mdw-switch color=secondary checked style="width:40px" icon=favorite aria-label="Secondary"></mdw-switch>
+          </mdw-box>
+        </demo-preview-card>
+      </mdw-grid>
+    </mdw-box>
   </demo-page>
 </body>
+
 </html>
