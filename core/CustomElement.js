@@ -633,7 +633,9 @@ export default class CustomElement extends HTMLElement {
 
     this.propList.set(name, config);
 
-    if (attr && (reflect === true || reflect === 'read')) {
+    if (attr
+        && (reflect === true || reflect === 'read')
+        && (config.enumerable || !this.attrList.has(attr) || !this.attrList.get(attr).enumerable)) {
       this.attrList.set(attr, config);
     }
 
