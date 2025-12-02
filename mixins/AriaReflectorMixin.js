@@ -15,8 +15,7 @@ export default function AriaReflectorMixin(Base) {
        * their attributes set after construction.
        * @type {Map<StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[StringKeyOfARIAMixin<keyof ARIAMixin>]>}
        */
-      onConnectAriaValues: null,
-      hasFiredConnected: false,
+      _onConnectAriaValues: null,
     })
     .methods({
       /**
@@ -61,8 +60,8 @@ export default function AriaReflectorMixin(Base) {
             }
           }
         } else {
-          this.onConnectAriaValues ??= new Map();
-          this.onConnectAriaValues.set(name, value);
+          this._onConnectAriaValues ??= new Map();
+          this._onConnectAriaValues.set(name, value);
           // Elements should not add attributes during construction
         }
       },
@@ -75,11 +74,11 @@ export default function AriaReflectorMixin(Base) {
         this.updateAriaProperty('role', this._ariaRole);
       },
       connected() {
-        if (!this.onConnectAriaValues) return;
-        for (const [key, value] of this.onConnectAriaValues) {
+        if (!this._onConnectAriaValues) return;
+        for (const [key, value] of this._onConnectAriaValues) {
           this.updateAriaProperty(key, value);
         }
-        this.onConnectAriaValues = null;
+        this._onConnectAriaValues = null;
       },
     });
 }
