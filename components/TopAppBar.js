@@ -39,6 +39,7 @@ export default CustomElement
          + `{background-color:rgb(var(--mdw-color__${raisedColor}))`
          + '}';
         }
+        return null;
       },
     },
     _headlineStyle: {
