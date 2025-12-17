@@ -54,7 +54,7 @@ export default CustomElement
   .html`
     <div id=content><slot id=slot></div>
     <mdw-button mdw-if={action} id=action class=button ink={actionInk} type-style={actionTypeStyle}>{action}</mdw-button>
-    <mdw-icon-button mdw-if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-button>
+    <mdw-icon-button mdw-if={closeButton} id=close class=button icon={closeIcon} ink={closeInk}>Close</mdw-icon-button>
   `
   .childEvents({
     action: {
