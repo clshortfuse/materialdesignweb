@@ -38,5 +38,9 @@ export default CustomElement
       }
     }
 
+    #slot {
+      pointer-events: auto;
+    }
+
   `
   .autoRegister('mdw-snackbar-container');
