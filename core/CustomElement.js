@@ -392,8 +392,7 @@ export default class CustomElement extends HTMLElement {
   }
 
   /**
-   * Registers class asynchronously at end of current event loop cycle
-   * via `queueMicrotask`. If class is registered before then,
+   * Registers class with customElements. If class is registered before then,
    * does nothing.
    * @type {{
    * <T extends typeof CustomElement>(this: T, elementName: string): T;
