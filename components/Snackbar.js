@@ -32,6 +32,7 @@ export default CustomElement
     closeIcon: { empty: 'close' },
     closeInk: { empty: 'inherit' },
     onaction: EVENT_HANDLER_TYPE,
+    ontoggle: EVENT_HANDLER_TYPE,
   })
   .methods({
     async close() {
@@ -67,6 +68,11 @@ export default CustomElement
       '~click'() {
         this.close();
       },
+    },
+  })
+  .on({
+    openChanged() {
+      this.dispatchEvent(new Event('toggle'));
     },
   })
   .css`
