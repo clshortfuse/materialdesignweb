@@ -7,6 +7,7 @@
   "bugs": {
     "url": "https://github.com/clshortfuse/materialdesignweb/issues"
   },
+  "customElements": "docs/custom-elements.json",
   "description": "Material Design for Web",
   "devDependencies": {
     "@babel/preset-env": "^7.26.9",
@@ -27,8 +28,10 @@
     "@web/test-runner-playwright": "^0.11.0",
     "acorn": "^8.14.0",
     "acorn-walk": "^8.3.4",
+    "ajv": "^8.17.1",
     "browserslist-to-esbuild": "^2.1.1",
     "clean-css": "^5.3.3",
+    "custom-elements-manifest": "^2.1.0",
     "element-internals-polyfill": "^1.3.13",
     "esbuild": "^0.25.12",
     "esbuild-postcss": "^0.0.4",
@@ -95,6 +98,7 @@
     "url": "git+https://github.com/clshortfuse/materialdesignweb.git"
   },
   "scripts": {
+    "cem": "node scripts/cem-generate.js",
     "docs": "node build/esbuild.js docs/demo.js --outdir=docs --minify --metafile",
     "docs:rollup": "rollup -c build/rollup.config.js docs/demo.js --dir=docs --compact",
     "predocs": "node bin/mdw-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/theme.css",
@@ -115,7 +119,8 @@
     "types": "rm -Rf types && tsc --emitDeclarationOnly",
     "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile",
     "sample": "node build/esbuild.js docs/sample/sample.js --outdir=docs/sample --watch --metafile --serve --live",
-    "benchmark": "node build/esbuild.js docs/benchmark/main.js --outdir=docs/benchmark --minify --production --metafile --serve --watch"
+    "benchmark": "node build/esbuild.js docs/benchmark/main.js --outdir=docs/benchmark --minify --production --metafile --serve --watch",
+    "examples:serve": "npx http-server examples -c-1"
   },
   "sideEffects": [
     "./components/*.js",
