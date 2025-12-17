@@ -18,15 +18,7 @@ export default Box
   })
   .childEvents({
     slot: {
-      slotchange() {
-        this.refreshTabIndexes();
-        const list = /** @type {NodeListOf<InstanceType<SegmentedButton>>} */ (this.kbdNavChildren);
-        for (const [index, child] of list.entries()) {
-          child.shapeStart = index === 0;
-          child.innerSegmentedButton = index > 0 && index < list.length - 1;
-          child.shapeEnd = index === list.length - 1;
-        }
-      },
+      slotchange: 'refreshTabIndexes',
     },
   })
   .css`
