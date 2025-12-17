@@ -105,6 +105,7 @@ export default CustomElement
       empty: true,
     },
     modal: 'boolean',
+    fixed: 'boolean',
     open: 'boolean',
     expanded: 'boolean',
     _lastComputedBlockSize: {
@@ -145,14 +146,14 @@ export default CustomElement
     hostStyles: {
       ...ELEMENT_ANIMATION_TYPE,
       get({
-        open, modal, _lastComputedBlockSize, _translateY,
+        open, fixed, _lastComputedBlockSize, _translateY,
         _animationDuration, _animationEasing,
       }) {
-        const computedMargin = (open || modal) ? 0 : `${-1 * _lastComputedBlockSize}px`;
+        const computedMargin = (fixed) ? `${-1 * _lastComputedBlockSize}px` : 0;
         return {
           styles: {
             marginBottom: computedMargin,
-            transform: modal ? `translateY(${_translateY})` : 'none',
+            transform: fixed ? 'none' : `translateY(${_translateY})`,
           },
           timing: {
             duration: _animationDuration,
@@ -192,8 +193,8 @@ export default CustomElement
       }
     },
     checkDragFinished() {
-      const { open, _dragStartY, _dragDeltaY, _lastComputedBlockSize, modal, _lastOffsetTop } = this;
-      if (!open || !modal || _dragStartY == null || _dragDeltaY == null) return;
+      const { open, _dragStartY, _dragDeltaY, _lastComputedBlockSize, modal, fixed, _lastOffsetTop } = this;
+      if (!open || fixed || _dragStartY == null || _dragDeltaY == null) return;
       const containerHeight = _lastOffsetTop + _lastComputedBlockSize - 72;
       const min = (_lastComputedBlockSize > containerHeight)
         ? _lastComputedBlockSize - containerHeight
@@ -201,7 +202,7 @@ export default CustomElement
       // visiblity = (max - position) / range
       const visibility = (_lastComputedBlockSize - _dragDeltaY) / (_lastComputedBlockSize - min);
       this._dragStartY = null;
-      if (visibility < 0.5) {
+      if (modal && visibility < 0.5) {
         // Should close
         this._animationDuration = 200 * visibility;
         this._animationEasing = 'ease-out';
@@ -310,7 +311,7 @@ export default CustomElement
     '~touchend': 'checkDragFinished',
     /** Scroll events do no bubble but can be captured, passively */
     '*~scroll'() {
-      if (!this.modal) return;
+      if (this.fixed) return;
       this.checkDragFinished();
       this._lastChildScrollTime = performance.now();
       // Wiping touch state
@@ -318,7 +319,7 @@ export default CustomElement
       this._dragDeltaY = null;
     },
     '*scrollend'() {
-      if (!this.modal) return;
+      if (this.fixed) return;
       this._lastChildScrollTime = null;
     },
   })
@@ -337,7 +338,7 @@ export default CustomElement
       this._animationDuration = open ? 250 : 200;
       if (open) {
         let y = 0;
-        if (this.modal) {
+        if (!this.fixed) {
           const { _lastComputedBlockSize } = this;
           const containerHeight = _lastOffsetTop + _lastComputedBlockSize;
           if (_lastComputedBlockSize > containerHeight / 2) {
@@ -353,7 +354,9 @@ export default CustomElement
       }
       this._animationEasing = open ? 'ease-in' : 'ease-out';
       this.checkForScrim(true);
-      if (open) this.focus();
+      if (open) {
+        this.focus();
+      }
     },
     modalChanged() {
       this._animationDuration = 0;
@@ -403,7 +406,7 @@ export default CustomElement
       transition: visibility 0s;
     }
 
-    :host(:where([modal])) {
+    :host(:where(:not([fixed]))) {
       position: fixed; 
 
       max-block-size: calc(100% - 72px);
