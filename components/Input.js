@@ -623,7 +623,7 @@ export default CustomElement
             listbox.required = true; // Don't allow unclick
           }
 
-          _listbox._handleFormReset = false;
+          listbox._handleFormReset = false;
           listbox.addEventListener('change', this._onListboxChangeListener);
           listbox.addEventListener('click', this._onListboxChangeListener);
           this.populateInputFromListbox();
