@@ -330,7 +330,6 @@ export default CustomElement
       --mdw-ink: var(--mdw-color__primary);
       --mdw-bg: var(--mdw-color__surface);
       position: relative;
-      position: sticky;
       inset-block-start: 0;
       inset-inline: 0;
 
