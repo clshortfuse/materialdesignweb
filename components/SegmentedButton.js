@@ -41,7 +41,7 @@ export default Button
   })
   .css`
     :host {
-      --mdw-shape__size: var(--mdw-shape__full);
+      --mdw-shape__size: 0;
       --mdw-ink: var(--mdw-color__on-surface);
       gap: 8px;
 
@@ -52,8 +52,16 @@ export default Button
       color: rgb(var(--mdw-ink));
     }
 
-    :host([inner-segmented-button]) {
-      --mdw-shape__size: 0px;
+    :host(:first-of-type) {
+      --mdw-shape__size: var(--mdw-shape__full);
+      --mdw-shape__size__top-end-size: 0px;
+      --mdw-shape__size__bottom-end-size: 0px;
+    }
+
+    :host(:last-of-type) {
+      --mdw-shape__size: var(--mdw-shape__full);
+      --mdw-shape__size__top-start-size: 0px;
+      --mdw-shape__size__bottom-start-size: 0px;
     }
 
     #outline {
@@ -62,7 +70,7 @@ export default Button
       z-index: -1;
     }
 
-    #outline[shape-end] {
+    :host(:last-of-type) #outline {
       inset-inline-end: 0;
     }
 
