@@ -63,11 +63,13 @@ export default List
     length() { return this.options.length; },
 
     selectedIndex: {
+      /** @return {number} */
       get() {
         const [selectedItem] = this.selectedOptions;
         if (!selectedItem) return -1;
         return Array.prototype.indexOf.call(this.options, selectedItem);
       },
+      /** @param {number} value */
       set(value) {
         const itemToSelect = this.options[value];
         this._handlingSelectedness = true;
