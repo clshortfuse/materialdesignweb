@@ -89,7 +89,8 @@ export default CustomElement
       position: sticky;
       inset-block:0;
 
-      display: block;
+      display: flex;
+      flex-direction: column;
 
       overflow-y:auto;
 
