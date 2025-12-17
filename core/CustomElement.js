@@ -1003,6 +1003,8 @@ export default class CustomElement extends HTMLElement {
   /** @type {Composition<?>} */
   #composition;
 
+  #patching = false;
+
   /** @type {Map<string,{stringValue:string, parsedValue:any}>} */
   _propAttributeCache;
 
@@ -1056,7 +1058,7 @@ export default class CustomElement extends HTMLElement {
    * }}
    */
   propChangedCallback(name, oldValue, newValue, changes = newValue) {
-    if (!this.patching) {
+    if (!this.#patching) {
       this.render.byProp(name, changes, this);
       // this.render({ [name]: changes });
     }
@@ -1172,10 +1174,10 @@ export default class CustomElement extends HTMLElement {
 
   /** @param {any} patch */
   patch(patch) {
-    this.patching = true;
+    this.#patching = true;
     applyMergePatch(this, patch);
     this.render(patch);
-    this.patching = false;
+    this.#patching = false;
   }
 
   /**
