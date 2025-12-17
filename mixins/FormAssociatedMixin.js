@@ -78,14 +78,14 @@ export default function FormAssociatedMixin(Base) {
     })
     .methods({
       /**
-       * Default behavior can should likely be overridden
+       * Default behavior should likely be overridden
        * @param {string} value
        */
       _onSetValue(value) {
         this._value = value;
       },
       /**
-       * Default behavior can should likely be overridden
+       * Default behavior should likely be overridden
        * @param {boolean} checked
        */
       _onSetChecked(checked) {
