@@ -11,8 +11,7 @@ export default function AriaReflectorMixin(Base: typeof import("../core/CustomEl
      * their attributes set after construction.
      * @type {Map<StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[StringKeyOfARIAMixin<keyof ARIAMixin>]>}
      */
-    onConnectAriaValues: Map<StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[StringKeyOfARIAMixin<keyof ARIAMixin>]>;
-    hasFiredConnected: boolean;
+    _onConnectAriaValues: Map<StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[StringKeyOfARIAMixin<keyof ARIAMixin>]>;
 }, any[]> & import("../core/CustomElement.js").Class<{
     /**
      * @param {keyof HTMLElement & keyof ElementInternals} name

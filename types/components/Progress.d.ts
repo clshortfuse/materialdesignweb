@@ -11,6 +11,8 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     _valueAsFraction: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    isDeterminate: () => boolean;
+}, any[]> & import("../core/CustomElement.js").Class<{
     position: number;
     labels: NodeListOf<HTMLLabelElement>;
 }, any[]>;

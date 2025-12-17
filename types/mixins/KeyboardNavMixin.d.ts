@@ -4,8 +4,7 @@
 export default function KeyboardNavMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    onConnectAriaValues: Map<import("./AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("./AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
-    hasFiredConnected: boolean;
+    _onConnectAriaValues: Map<import("./AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("./AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
 }, any[]> & import("../core/CustomElement.js").Class<{
     readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot | Element | readonly Element[];
     updateAriaProperty<K extends StringKeyOfARIAMixin<keyof ARIAMixin>>(name: K, value: ARIAMixin[K]): void;

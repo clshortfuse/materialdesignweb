@@ -240,7 +240,6 @@ export default class CustomElement extends HTMLElement {
     _onObserverPropertyChanged(name: string, oldValue: any, newValue: any, changes: any): void;
     /** @param {any} patch */
     patch(patch: any): void;
-    patching: boolean;
     /**
      * Proxy object that returns shadow DOM elements by tag.
      * If called before interpolation (eg: on composed), returns from template

@@ -32,7 +32,6 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     _semiStickyMeasured: boolean;
     stickyAlways: boolean;
     stickyParent: boolean;
-    useSticky: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _refreshSemiStickyMetrics(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
@@ -48,8 +47,7 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
 }, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
-    hasFiredConnected: boolean;
+    _onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
 }, any[]> & import("../core/CustomElement.js").Class<{
     readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot | Element | readonly Element[];
     updateAriaProperty<K extends StringKeyOfARIAMixin<keyof ARIAMixin>>(name: K, value: ARIAMixin[K]): void;
@@ -159,7 +157,6 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     _semiStickyMeasured: boolean;
     stickyAlways: boolean;
     stickyParent: boolean;
-    useSticky: boolean;
 } & {
     _refreshSemiStickyMetrics(): void;
 } & {
@@ -175,8 +172,7 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
 } & {
     _ariaRole: string;
 } & {
-    onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
-    hasFiredConnected: boolean;
+    _onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
 } & {
     readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot | Element | readonly Element[];
     updateAriaProperty<K extends StringKeyOfARIAMixin<keyof ARIAMixin>>(name: K, value: ARIAMixin[K]): void;
@@ -286,7 +282,6 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     _semiStickyMeasured: boolean;
     stickyAlways: boolean;
     stickyParent: boolean;
-    useSticky: boolean;
 } & {
     _refreshSemiStickyMetrics(): void;
 } & {
@@ -302,8 +297,7 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
 } & {
     _ariaRole: string;
 } & {
-    onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
-    hasFiredConnected: boolean;
+    _onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
 } & {
     readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot | Element | readonly Element[];
     updateAriaProperty<K extends StringKeyOfARIAMixin<keyof ARIAMixin>>(name: K, value: ARIAMixin[K]): void;
@@ -413,7 +407,6 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     _semiStickyMeasured: boolean;
     stickyAlways: boolean;
     stickyParent: boolean;
-    useSticky: boolean;
 } & {
     _refreshSemiStickyMetrics(): void;
 } & {
@@ -429,8 +422,7 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
 } & {
     _ariaRole: string;
 } & {
-    onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
-    hasFiredConnected: boolean;
+    _onConnectAriaValues: Map<import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>, ARIAMixin[import("../mixins/AriaReflectorMixin.js").StringKeyOfARIAMixin<keyof ARIAMixin>]>;
 } & {
     readAriaProperty(name: keyof HTMLElement & keyof ElementInternals): string | ShadowRoot | Element | readonly Element[];
     updateAriaProperty<K extends StringKeyOfARIAMixin<keyof ARIAMixin>>(name: K, value: ARIAMixin[K]): void;

@@ -34,7 +34,6 @@ export default function SemiStickyMixin(Base: typeof import("../core/CustomEleme
     _semiStickyMeasured: boolean;
     stickyAlways: boolean;
     stickyParent: boolean;
-    useSticky: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _refreshSemiStickyMetrics(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{

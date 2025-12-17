@@ -58,12 +58,12 @@ export default function FormAssociatedMixin(Base: ReturnType<typeof import("./St
     _valueBehavior: "default" | "value" | "default/on" | "filename";
 }, any[]> & import("../core/CustomElement.js").Class<{
     /**
-     * Default behavior can should likely be overridden
+     * Default behavior should likely be overridden
      * @param {string} value
      */
     _onSetValue(value: string): void;
     /**
-     * Default behavior can should likely be overridden
+     * Default behavior should likely be overridden
      * @param {boolean} checked
      */
     _onSetChecked(checked: boolean): void;
