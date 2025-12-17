@@ -44,11 +44,13 @@ export default CustomElement
         );
       },
     },
+    /** Bound to [elevated] specifying whether the element should be elevated */
     elevated: 'boolean',
     filled: 'string',
     outlined: 'boolean',
     icon: 'string',
     iconInk: 'string',
+    // Overrides to string instead of DOMString
     src: 'string',
     svg: 'string',
     viewBox: 'string',
