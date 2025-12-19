@@ -7,15 +7,15 @@
       "request": "launch",
       "url": "http://127.0.0.1:5500/sample",
       "preLaunchTask": "npm: sample",
-      "webRoot": "${workspaceRoot}/docs"
+      "webRoot": "${workspaceRoot}/demo"
     },
     {
       "type": "chrome",
-      "name": "Debug Docs",
+      "name": "Debug Demo",
       "request": "launch",
       "url": "http://127.0.0.1:5500/",
       "preLaunchTask": "npm: serve",
-      "webRoot": "${workspaceRoot}/docs"
+      "webRoot": "${workspaceRoot}/demo"
     },
     {
       "type": "node",
@@ -41,7 +41,7 @@
       ],
       "url": "http://127.0.0.1:5500/",
       "preLaunchTask": "npm: serve",
-      "webRoot": "${workspaceRoot}/docs"
+      "webRoot": "${workspaceRoot}/demo"
     },
     {
       "type": "pwa-msedge",
@@ -53,13 +53,13 @@
       ],
       "url": "http://127.0.0.1:5500/",
       "preLaunchTask": "npm: serve",
-      "webRoot": "${workspaceRoot}/docs"
+      "webRoot": "${workspaceRoot}/demo"
     },
     {
       "type": "vscode-edge-devtools.debug",
       "name": "Open Edge DevTools",
       "request": "attach",
-      "webRoot": "${workspaceRoot}/docs"
+      "webRoot": "${workspaceRoot}/demo"
     }
   ]
 }

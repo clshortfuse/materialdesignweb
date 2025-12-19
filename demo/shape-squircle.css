@@ -4,7 +4,7 @@
   --mdw-shape__medium: 12px;
   --mdw-shape__large: 16px;
   --mdw-shape__extra-large: 28px;
-  --mdw-shape__full: 32px;
+  --mdw-shape__full: 999px;
   --mdw-shape__rounded: 0;
   --mdw-shape__outline__background: currentColor;
   --mdw-shape__convex: 0;

@@ -1,5 +1,6 @@
-import '../polyfills/all.js';
+import './polyfills/all.js';
 
+// Run before importing components to ensure themes and icons are ready.
 import './custom.js';
 
 import '../components/Badge.js';

@@ -31,7 +31,6 @@ const SAMPLE_DATA = {
     'https://i.dummyjson.com/data/products/1/thumbnail.jpg'],
 };
 
-
 /**
  * @param {number} min
  * @param {number} max

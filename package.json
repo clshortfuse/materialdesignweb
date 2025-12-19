@@ -99,14 +99,14 @@
   },
   "scripts": {
     "cem": "node scripts/cem-generate.js",
-    "docs": "node build/esbuild.js docs/demo.js --outdir=docs --minify --metafile",
-    "docs:rollup": "rollup -c build/rollup.config.js docs/demo.js --dir=docs --compact",
-    "predocs": "node bin/mdw-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/theme.css",
-    "predocs-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > docs/alt-theme.css",
+    "demo": "node build/esbuild.js demo/demo.js --outdir=demo --minify --metafile",
+    "demo:rollup": "rollup -c build/rollup.config.js demo/demo.js --dir=demo --compact",
+    "predemo": "node bin/mdw-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > demo/theme.css",
+    "predemo-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > demo/alt-theme.css",
     "prepublishOnly": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production && tsc --emitDeclarationOnly",
     "pretest": "eslint --ignore-path .gitignore",
-    "serve": "node build/esbuild.js docs/demo.js --outdir=docs --metafile --serve --live --tree-shaking=true",
-    "serve:rollup": "rollup -c build/rollup.config.js docs/demo.js --dir=docs --watch --environment SERVE",
+    "serve": "node build/esbuild.js demo/demo.js --outdir=demo --metafile --serve --live --tree-shaking=true",
+    "serve:rollup": "rollup -c build/rollup.config.js demo/demo.js --dir=demo --watch --environment SERVE",
     "test": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
     "test:custom": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1",
     "test:chromium": "web-test-runner \"test/**/*.test.js\" --node-resolve --playwright --browsers chromium",
@@ -117,17 +117,17 @@
     "test:watch": "web-test-runner \"test/**/*.test.js\" --node-resolve --concurrency 1 --watch",
     "test:path": "web-test-runner --node-resolve --playwright --browsers chromium firefox webkit --concurrency 1",
     "types": "rm -Rf types && tsc --emitDeclarationOnly",
-    "watch": "node build/esbuild.js docs/demo.js --outdir=docs --watch --metafile",
-    "sample": "node build/esbuild.js docs/sample/sample.js --outdir=docs/sample --watch --metafile --serve --live",
-    "benchmark": "node build/esbuild.js docs/benchmark/main.js --outdir=docs/benchmark --minify --production --metafile --serve --watch",
+    "watch": "node build/esbuild.js demo/demo.js --outdir=demo --watch --metafile",
+    "sample": "node build/esbuild.js demo/sample/sample.js --outdir=demo/sample --watch --metafile --serve --live",
+    "benchmark": "node build/esbuild.js demo/benchmark/main.js --outdir=demo/benchmark --minify --production --metafile --serve --watch",
     "examples:serve": "npx http-server examples -c-1"
   },
   "sideEffects": [
     "./components/*.js",
     "./loaders/*.js",
     "./polyfills/*.js",
-    "./docs/custom.js",
-    "./docs/demo/*.js"
+    "./demo/custom.js",
+    "./demo/demo/*.js"
   ],
   "type": "module",
   "typesVersions": {

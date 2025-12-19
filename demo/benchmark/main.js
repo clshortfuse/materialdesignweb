@@ -19,7 +19,9 @@ CustomElement
       const colours = ['red', 'yellow', 'blue', 'green', 'pink', 'brown', 'purple', 'brown', 'white', 'black', 'orange'];
       const nouns = ['table', 'chair', 'house', 'bbq', 'desk', 'car', 'pony', 'cookie', 'sandwich', 'burger', 'pizza', 'mouse', 'keyboard'];
       const data = [];
-      for (let i = 0; i < count; i++) { data.push({ id: id++, label: `${adjectives[_random(adjectives.length)]} ${colours[_random(colours.length)]} ${nouns[_random(nouns.length)]}` }); }
+      for (let i = 0; i < count; i++) {
+        data.push({ id: id++, label: `${adjectives[_random(adjectives.length)]} ${colours[_random(colours.length)]} ${nouns[_random(nouns.length)]}` });
+      }
       return data;
     },
     updateData(mod = 10) {

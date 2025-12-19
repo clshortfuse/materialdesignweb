@@ -7,7 +7,12 @@ let domParser;
  * @param {string} url
  */
 async function fetchSVGInfo(url) {
-  const svg = await fetch(url);
+  let svg;
+  try {
+    svg = await fetch(url);
+  } catch {
+    return null;
+  }
   if (!svg.ok) return null;
   const text = await svg.text();
   domParser ??= new DOMParser();
@@ -197,6 +202,9 @@ let checkedUnaliased;
  * @return {Promise<any>}
  */
 export async function reportUnaliasedMaterialSymbols() {
+  unaliased.add('filter');
+  unaliased.add('date_range');
+  unaliased.add('refresh');
   if (!unaliased.size) return;
 
   checkedUnaliased ??= new Set();

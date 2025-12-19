@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>AcmeJS</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <style>
+    mdw-layout:not(:defined) {
+      display: none;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      font: var(--mdw-typescale__body-large__font);
+      letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
+    }
+    
+    #domain-fields>* {
+      flex: auto
+    }
+    
+    main {
+      padding-block: 16px;
+    }
+    
+    mdw-textarea::part(control) {
+      filter: blur(8px);
+      transition: filter 200ms;
+    }
+    
+    mdw-textarea::part(control):focus {
+      filter: none;
+    }
+  </style>
+  <link rel="stylesheet" href="/theme.css" />
+  <script type=module>
+    import '/demo.min.js';
+  </script>
+</head>
+
+<body>
+  <mdw-layout type-style="body">
+    <mdw-top-app-bar size="small" slot=top headline=AcmeJS>
+      <mdw-icon-button slot="trailing" href="https://github.com/clshortfuse/acmejs" svg-path="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" view-box="0 0 98 96">GitHub Page</mdw-icon-button>
+    </mdw-top-app-bar>
+    <mdw-pane>
+      <main>
+        <mdw-card id="card" filled elevated>
+          <form onsubmit="{
+            event.preventDefault();
+            console.log('hi?')
+          }">
+            <mdw-box padding=16 gap=16>
+              <mdw-headline size="small">Let's Encrypt Info:</mdw-headline>
+              <mdw-input outlined label="Email address" type="email" name="email" required supporting=""></mdw-input>
+              <mdw-textarea name=account-key outlined label="Let's Encrypt Account Key" minrows=5 fixed type=password placeholder="{ kty: 'EC', alg: 'ES256', ...}" autocomplete="off" required supporting="JSON or PEM format">
+              </mdw-textarea>
+              <mdw-box row x="end" gap="8">
+                <mdw-checkbox name="tosAgreed" required>I agree to the Let's Encrypt Terms of Service.</mdw-checkbox><a href="https://community.letsencrypt.org/tos" target="_blank">Link</a>
+              </mdw-box>
+            </mdw-box>
+            <mdw-divider></mdw-divider>
+            <mdw-box gap="16" padding="16" x="stretch">
+              <mdw-headline size="small">Domain Info:</mdw-headline>
+              <mdw-box id=domain-fields row wrap gap="8" x="stretch">
+                <mdw-input filled size=50 name="csr.countryName" placeholder="US" label="Country
+                  Name"></mdw-input>
+                <mdw-input filled size=50 name="csr.localityName" placeholder="New York" label="Locality Name"></mdw-input>
+                <mdw-input filled size=50 name="csr.organizationName" placeholder="Foo Products" label="Organization Name"></mdw-input>
+                <mdw-input filled size=50 name="csr.organizationalUnitName" placeholder="IT" label="Organizational Unit Name"></mdw-input>
+                <mdw-input filled size=50 name="csr.stateOrProvinceName" placeholder="State/Province" label="State/Province"></mdw-input>
+              </mdw-box>
+              <mdw-textarea outlined label="CSR Private Key" minrows=5 fixed autocomplete="off" required supporting="JSON or PEM format" placeholder="-----BEGIN PRIVATE KEY-----..."></mdw-textarea>
+            </mdw-box>
+            <mdw-divider></mdw-divider>
+            <mdw-box row x=end padding=16>
+              <!-- <mdw-button type=submit filled color="secondary">Go!</mdw-button> -->
+              <button type=submit>Native Go!</button>
+            </mdw-box>
+          </form>
+        </mdw-card>
+      </main>
+    </mdw-pane>
+  </mdw-layout>
+</body>
+
+</html>

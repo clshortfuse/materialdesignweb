@@ -55,14 +55,14 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-      - name: Build Docs
+      - name: Build Demo
         env:
           NODE_ENV: 'production'
-        run: ${{ steps.detect-package-manager.outputs.manager }} run docs
+        run: ${{ steps.detect-package-manager.outputs.manager }} run demo
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs'
+          path: './demo'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
