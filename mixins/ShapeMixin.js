@@ -99,6 +99,8 @@ export default function ShapeMixin(Base) {
         position: absolute;
         inset: 0;
 
+        overflow: hidden;
+
         border-style: solid;
         border-width: 1px;
       
