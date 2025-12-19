@@ -89,7 +89,7 @@ export default CustomElement
           <mdw-nav-drawer-item icon=web_asset href="/components/topappbar.html">Top App Bar</mdw-nav-drawer-item>
         </mdw-nav-drawer>
         <mdw-page>
-          <mdw-pane id=pane color=surface-container>
+          <mdw-pane block id=pane color=surface-container>
             <mdw-top-app-bar headline={_title} color=surface-container raised-color=surface>
               <mdw-icon-button color=surface-container-low id=menu-button slot=leading icon=menu>Menu</mdw-icon-button>
               <mdw-icon-button color=surface-container-low id=settings slot=trailing icon=settings>Settings</mdw-icon-button>
