@@ -7,7 +7,7 @@ This module exports a single class `CustomElement` that extends the native `HTML
 - **Scoped styles** (`css``) – add CSS that is scoped to the shadow DOM.
 - **Automatic registration** (`autoRegister`) – register the element name with `customElements.define`.
 
-The API is intentionally lightweight and composable, so you can extend a component multiple times or mix in additional behaviour.
+The API is intentionally lightweight and composable, so you can extend a component multiple times or mix in additional behavior.
 
 ## Syntax Overview
 
@@ -34,7 +34,7 @@ export default CustomElement
 Below is a deeper dive into each of the core methods exposed by `CustomElement`.  The goal is to give developers a clear mental model of how the fluent API works and what side‑effects each call has.
 
 #### `extend()`
-`extend()` returns a **new subclass** of the class it is called on. It does not mutate the original constructor; instead, you receive a fresh prototype chain that inherits all static methods and instance behaviour.  This pattern mirrors how many modern libraries (e.g., LitElement) allow you to create isolated component families.
+`extend()` returns a **new subclass** of the class it is called on. It does not mutate the original constructor; instead, you receive a fresh prototype chain that inherits all static methods and instance behavior.  This pattern mirrors how many modern libraries (e.g., LitElement) allow you to create isolated component families.
 
 * **Why do we need a starting element?**
   * If you are building a brand‑new component from scratch, call `CustomElement.extend()` on the core class itself.  This gives you a clean base with no pre‑existing properties or templates.
@@ -48,7 +48,7 @@ Below is a deeper dive into each of the core methods exposed by `CustomElement`.
       .autoRegister('my-icon-button');
     ```
 
-  In this case, the new subclass inherits all behaviour of `Button`, including its own reactive properties and template.
+  In this case, the new subclass inherits all behavior of `Button`, including its own reactive properties and template.
 
 * **Chaining multiple extensions** is supported.  Each call creates a fresh subclass that can be further extended or modified.
 
@@ -62,7 +62,7 @@ Below is a deeper dive into each of the core methods exposed by `CustomElement`.
 The method returns the class itself, enabling fluent chaining. Internally it registers each property with the `Composition` system so that any access during rendering marks a dependency.
 
 ##### Custom ObserverOptions
-You can supply a custom `ObserverOptions` object to fine‑tune behaviour.  The framework ships several common types in `core/customTypes.js`, such as:
+You can supply a custom `ObserverOptions` object to fine‑tune behavior.  The framework ships several common types in `core/customTypes.js`, such as:
 
 ```js
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
@@ -110,7 +110,7 @@ Adds CSS that is scoped to the component’s shadow root.  The styles are insert
 * **Custom properties** – You can define and use CSS variables within the component.
 
 #### `autoRegister(name)`
-Registers the class with the browser’s `customElements` registry.  If you omit this call, you must register manually using `customElements.define(name, YourClass)`.  The method internally uses `queueMicrotask` to defer registration until after the current event loop tick, preventing potential race conditions.
+Registers the class with the browser’s `customElements` registry. If you omit this call, you must register manually using `customElements.define(name, YourClass)`.
 
 #### Additional Utility Methods
 While not part of the fluent chain, several static helpers are available:
@@ -276,18 +276,18 @@ For more details, refer to the source code comments and the [Composition](../cor
 
 `CustomElement.js` uses **JSDoc generics** so that editors with TypeScript support can provide full IntelliSense.  Below is a plain‑English summary of the key typedefs you’ll encounter:
 
-| Typedef                      | Purpose                                                                                                                                                                                                                     | How it’s used                                                                                                                                    |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ObserverPropertyType`       | Primitive or complex property descriptors understood by the framework (e.g., `'string'`, `'boolean'`, custom objects).                                                                                                      | Passed to `.observe()` and `.prop()` to declare reactive properties.                                                                             |
-| `ParsedProps<T>`             | A mapped type that resolves each property in a component’s prototype to its *actual* runtime type.  It handles functions, observer options, and nested objects.                                                             | Returned by `.defineStatic()`; used by TypeScript to infer the shape of static properties.                                                       |
-| `ObserverOptions<T1,T2,C>`   | Configuration object for an observable property: type, default value (`empty`), parsing logic, change callbacks, etc.  `T1` is the declared type string, `T2` is the inferred runtime type, and `C` is the component class. | Supplied to `.observe()` when you need custom behaviour (e.g., event handlers).  The framework passes this object to `defineObservableProperty`. |
-| `ClassOf<T>`                 | Utility that extracts the constructor type from a class instance.                                                                                                                                                           | Used in mixin signatures to preserve static typing across extensions.                                                                            |
-| `Class<A extends any[]>`     | Generic for an abstract constructor with arbitrary arguments.                                                                                                                                                               | Allows `.extend()` and `.mixin()` to be typed correctly.                                                                                         |
-| `HTMLTemplater<T1,T2>`       | Function type for the tagged template literal used in `.html`.  It receives a `TemplateStringsArray` and substitutions that can be strings, elements, or functions bound to the component instance.                         | Ensures that interpolations like `{label}` are typed as the correct property.                                                                    |
-| `CallbackArguments<T1,T2>`   | Object passed to lifecycle callbacks (`onPropChanged`, `onAttributeChanged`, etc.).  Contains references to the composition, element refs, and helper functions for rendering.                                              | Provides a consistent API for custom logic inside callbacks.                                                                                     |
-| `CompositionCallback<T1,T2>` | Describes the shape of lifecycle hooks (`composed`, `connected`, `props`, `attrs`).  Each hook receives the component instance and relevant options.                                                                        | Used internally by the framework to register callbacks during `.observe()` or `.define()`.                                                       |
-| `IDLParameter<C>`            | Maps property names to either primitive types, observer options, or functions that return values.                                                                                                                           | Passed to `.observe()` when defining properties via an object literal.                                                                           |
-| `ObjectOrObjectEntries<T>`   | Utility type that accepts either a plain object or an array of `[key, value]` tuples.  Useful for passing props in a flexible way.                                                                                          | Used by `.defineStatic()` and other helper methods.                                                                                              |
+| Typedef                      | Purpose                                                                                                                                                                                                                     | How it’s used                                                                                                                                   |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ObserverPropertyType`       | Primitive or complex property descriptors understood by the framework (e.g., `'string'`, `'boolean'`, custom objects).                                                                                                      | Passed to `.observe()` and `.prop()` to declare reactive properties.                                                                            |
+| `ParsedProps<T>`             | A mapped type that resolves each property in a component’s prototype to its *actual* runtime type.  It handles functions, observer options, and nested objects.                                                             | Returned by `.defineStatic()`; used by TypeScript to infer the shape of static properties.                                                      |
+| `ObserverOptions<T1,T2,C>`   | Configuration object for an observable property: type, default value (`empty`), parsing logic, change callbacks, etc.  `T1` is the declared type string, `T2` is the inferred runtime type, and `C` is the component class. | Supplied to `.observe()` when you need custom behavior (e.g., event handlers).  The framework passes this object to `defineObservableProperty`. |
+| `ClassOf<T>`                 | Utility that extracts the constructor type from a class instance.                                                                                                                                                           | Used in mixin signatures to preserve static typing across extensions.                                                                           |
+| `Class<A extends any[]>`     | Generic for an abstract constructor with arbitrary arguments.                                                                                                                                                               | Allows `.extend()` and `.mixin()` to be typed correctly.                                                                                        |
+| `HTMLTemplater<T1,T2>`       | Function type for the tagged template literal used in `.html`.  It receives a `TemplateStringsArray` and substitutions that can be strings, elements, or functions bound to the component instance.                         | Ensures that interpolations like `{label}` are typed as the correct property.                                                                   |
+| `CallbackArguments<T1,T2>`   | Object passed to lifecycle callbacks (`onPropChanged`, `onAttributeChanged`, etc.).  Contains references to the composition, element refs, and helper functions for rendering.                                              | Provides a consistent API for custom logic inside callbacks.                                                                                    |
+| `CompositionCallback<T1,T2>` | Describes the shape of lifecycle hooks (`composed`, `connected`, `props`, `attrs`).  Each hook receives the component instance and relevant options.                                                                        | Used internally by the framework to register callbacks during `.observe()` or `.define()`.                                                      |
+| `IDLParameter<C>`            | Maps property names to either primitive types, observer options, or functions that return values.                                                                                                                           | Passed to `.observe()` when defining properties via an object literal.                                                                          |
+| `ObjectOrObjectEntries<T>`   | Utility type that accepts either a plain object or an array of `[key, value]` tuples.  Useful for passing props in a flexible way.                                                                                          | Used by `.defineStatic()` and other helper methods.                                                                                             |
 
 Because these types are expressed as JSDoc comments, you get **full IntelliSense** in editors that support TypeScript inference on JavaScript files.  When you write:
 
