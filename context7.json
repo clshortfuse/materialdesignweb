@@ -1,0 +1,12 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "materialdesignweb",
+  "description": "Material Design Web components — zero-dependency web components (MDW).",
+  "folders": ["docs", "demo"],
+  "excludeFolders": ["node_modules", "dist", "build", "coverage"],
+  "excludeFiles": ["CHANGELOG.md", "LICENSE", "CODE_OF_CONDUCT.md"],
+  "rules": [
+    "Prefer CDN for quick demos",
+    "Use docs/custom-elements.json for machine metadata"
+  ]
+}
