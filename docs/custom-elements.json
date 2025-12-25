@@ -13158,7 +13158,7 @@
               "kind": "field",
               "description": "The table caption element (`mdw-caption`) or `null` when not present.\nMirrors `HTMLTableElement.caption` semantics.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L78"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L81"
               },
               "type": {
                 "text": "Element"
@@ -13169,7 +13169,7 @@
               "kind": "field",
               "description": "The table header section (`mdw-thead`) element or `null` when not present.\nMirrors `HTMLTableElement.tHead` semantics.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L90"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L93"
               },
               "type": {
                 "text": "Element"
@@ -13180,7 +13180,7 @@
               "kind": "field",
               "description": "The table footer section (`mdw-tfoot`) element or `null` when not present.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L101"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L104"
               },
               "type": {
                 "text": "Element"
@@ -13191,7 +13191,7 @@
               "kind": "field",
               "description": "Live `HTMLCollection` of `mdw-tbody` elements contained by the table.\nMirrors `HTMLTableElement.tBodies`.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L114"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L117"
               },
               "type": {
                 "text": "HTMLCollectionOf<Element>"
@@ -13202,7 +13202,7 @@
               "kind": "field",
               "description": "Live `HTMLCollection` of row elements (`mdw-tr`) in the table.\nMirrors `HTMLTableElement.rows`.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L122"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L125"
               },
               "type": {
                 "text": "HTMLCollectionOf<Element>"
@@ -13213,7 +13213,7 @@
               "kind": "method",
               "description": "Create and return a `mdw-caption` element, appending when necessary.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L128"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L131"
               },
               "return": {
                 "type": {
@@ -13226,7 +13226,7 @@
               "kind": "method",
               "description": "Remove the table's caption element when present.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L130"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L133"
               },
               "return": {
                 "type": {
@@ -13239,7 +13239,7 @@
               "kind": "method",
               "description": "Create and return a `mdw-thead` element for the table.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L132"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L135"
               },
               "return": {
                 "type": {
@@ -13252,7 +13252,7 @@
               "kind": "method",
               "description": "Remove the table's `mdw-thead` element when present.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L134"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L137"
               },
               "return": {
                 "type": {
@@ -13265,7 +13265,7 @@
               "kind": "method",
               "description": "Create and return a `mdw-tfoot` element for the table.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L136"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L139"
               },
               "return": {
                 "type": {
@@ -13278,7 +13278,7 @@
               "kind": "method",
               "description": "Remove the table's `mdw-tfoot` element when present.",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L138"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L141"
               },
               "return": {
                 "type": {
@@ -13291,7 +13291,7 @@
               "kind": "method",
               "description": "Insert and return a new `mdw-tbody` element before the tFoot (if any).",
               "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L140"
+                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/components/Table.js#L143"
               },
               "return": {
                 "type": {
