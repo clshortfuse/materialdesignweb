@@ -4,7 +4,11 @@ import StateMixin from '../mixins/StateMixin.js';
 import TextFieldMixin from '../mixins/TextFieldMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-/* @implements {HTMLSelectElement} */
+/**
+ * Select provides a control for choosing an option from a list of options.
+ * implements {HTMLSelectElement}
+ * @see https://m3.material.io/components/text-fields/overview
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -12,6 +16,7 @@ export default CustomElement
   .mixin(ControlMixin)
   .mixin(TextFieldMixin)
   .observe({
+    /** Name of the trailing icon to render (defaults to the dropdown arrow). */
     trailingIcon: { empty: 'arrow_drop_down' },
   })
   .overrides({
@@ -20,11 +25,13 @@ export default CustomElement
     type: 'select-one',
   })
   .define({
+    /** Return the internal native <select> element used as the control. */
     _select() {
       return /** @type {HTMLSelectElement} */ (this.refs.control);
     },
-    /** Readonly values */
+    /** Readonly: whether the underlying control allows multiple selection. */
     multiple: { value: false },
+    /** Readonly: the rendered size of the native select control. */
     size: { value: 1 },
   })
   .html`<slot id=slot></slot>`
@@ -48,6 +55,7 @@ export default CustomElement
     suffix.remove();
   })
   .on({
+    /** When the form resets, restore the select value from any option[selected]. */
     _formResetChanged(oldValue, newValue) {
       if (!newValue) return;
       /** @type {HTMLSelectElement} */

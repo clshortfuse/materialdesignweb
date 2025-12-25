@@ -1,5 +1,6 @@
 /** @typedef {import('../components/Tooltip.js').default} Tooltip */
 /**
+ * Adds tooltip scheduling, positioning, and show/hide behavior for host elements.
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function TooltipTriggerMixin(Base: ReturnType<typeof import("./StateMixin.js").default>): typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{
@@ -25,17 +26,25 @@ export default function TooltipTriggerMixin(Base: ReturnType<typeof import("./St
 }, any[]> & import("../core/CustomElement.js").Class<{
     stateTargetElement: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Idle delay before showing tooltip for mouse (ms) */
     TOOLTIP_MOUSE_IDLE_MS: number;
+    /** Idle delay before showing tooltip for touch (ms) */
     TOOLTIP_TOUCH_IDLE_MS: number;
+    /** Timer id used for tooltip show/hide debouncing */
     /** @type {any} */
     _idleDebounce: any;
+    /** Parents being observed for layout changes */
     /** @type {HTMLElement[]} */
     _watchedParents: HTMLElement[];
+    /** ResizeObserver used to track tooltip/anchor size changes */
     /** @type {ResizeObserver} */
     _resizeObserver: ResizeObserver;
+    /** IntersectionObserver used to detect occlusion */
     /** @type {IntersectionObserver} */
     _intersectObserver: IntersectionObserver;
+    /** Bound scroll listener attached to parent elements */
     _parentScrollListener: any;
+    /** Slot id to use when cloning tooltip content */
     tooltipSlotId: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     tooltip: string;

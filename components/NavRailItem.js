@@ -2,6 +2,11 @@
 
 import NavItem from './NavItem.js';
 
+/**
+ * A navigation rail item represents a destination within a navigation rail,
+ * showing an icon and optional label for vertical navigation on larger screens.
+ * @see https://m3.material.io/components/navigation-rail/specs
+ */
 export default NavItem
   .extend()
   .css`

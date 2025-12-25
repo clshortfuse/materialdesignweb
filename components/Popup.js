@@ -4,6 +4,11 @@ import PopupMixin from '../mixins/PopupMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/**
+ * Popup displays transient content such as menus or popovers and provides
+ * elevation, shape, and theming control for floating surfaces.
+ * @see https://m3.material.io/styles/elevation/overview
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -11,6 +16,7 @@ export default CustomElement
   .mixin(ShapeMixin)
   .mixin(PopupMixin)
   .observe({
+    /** Elevation level (0–5) controlling the drop-shadow depth of the popup. */
     elevation: 'integer',
   })
   .css`

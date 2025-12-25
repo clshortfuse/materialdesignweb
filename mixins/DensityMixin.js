@@ -1,7 +1,11 @@
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * Adds a `density` property to control component spacing and compactness.
+ * @param {typeof import('../core/CustomElement.js').default} Base
+ */
 export default function DensityMixin(Base) {
   return Base
     .observe({
+      /** Density level affecting spacing and compactness. Integer from -4 (dense) to 4 (spacious). */
       density: 'integer',
     })
     .css`

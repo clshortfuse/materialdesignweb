@@ -11,6 +11,10 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 import './Button.js';
 import './IconButton.js';
 
+/**
+ * Snackbars provide brief messages about app processes and optional actions.
+ * @see https://m3.material.io/components/snackbar/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -23,18 +27,32 @@ export default CustomElement
     elevated: true,
   })
   .observe({
+    /** Whether the snackbar is visible. */
     open: 'boolean',
+    /** When true the snackbar does not auto-dismiss. */
     persistent: 'boolean',
+    /** Optional action label to display as a button. */
     action: 'string',
+    /** Ink token used for the action button (defaults to inverse-primary). */
     actionInk: { empty: 'inverse-primary' },
+    /** Typographic style used for the action (e.g. 'label-large'). */
     actionTypeStyle: { empty: 'label-large' },
+    /** Render a close icon button when true. */
     closeButton: 'boolean',
+    /** Icon name used for the close button. */
     closeIcon: { empty: 'close' },
+    /** Ink token used for the close icon. */
     closeInk: { empty: 'inherit' },
+    /** Event handler invoked when the action is triggered. */
     onaction: EVENT_HANDLER_TYPE,
+    /** Event handler invoked when the snackbar toggles open/closed. */
     ontoggle: EVENT_HANDLER_TYPE,
   })
   .methods({
+    /**
+     * Close the snackbar. Dispatches a cancelable `close` event; if not
+     * prevented the snackbar will hide and await the closing transition.
+     */
     async close() {
       if (!this.dispatchEvent(new Event('close', { cancelable: true }))) return;
       if (!this.open) return;
@@ -44,10 +62,14 @@ export default CustomElement
         this.addEventListener('transitionend', resolve, { once: true });
       });
     },
+    /** Show the snackbar (set `open` true). */
     show() {
       this.open = true;
     },
-    /** @param {string} text */
+    /**
+     * Update the snackbar text content.
+     * @param {string} text
+     */
     update(text) {
       this.textContent = text;
     },
@@ -76,8 +98,6 @@ export default CustomElement
     },
   })
   .css`
-    /* https://m3.material.io/components/snackbar/specs */
-
     :host {
       --mdw-shape__size: var(--mdw-shape__small);
       --mdw-bg: var(--mdw-color__inverse-surface);

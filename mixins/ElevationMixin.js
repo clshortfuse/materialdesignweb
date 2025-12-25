@@ -1,6 +1,5 @@
 /**
- * Displays elevation via shadows or underlighting.
- * Uses `filter:drop-shadow` to display elevation.
+ * Adds CSS properties for elevation via shadows or underlighting.
  * @param {ReturnType<import('./StateMixin.js').default> & ReturnType<import('./ThemableMixin.js').default>} Base
  */
 export default function ElevationMixin(Base) {

@@ -1,8 +1,13 @@
 import Button from './Button.js';
 
+/**
+ * Chips help people enter information, make selections, filter content, or trigger actions.
+ * @see https://m3.material.io/components/chips/specs
+ */
 export default Button
   .extend()
   .observe({
+    /** When true, renders the chip as a suggestion variant. */
     suggestion: 'boolean',
   })
   .expressions({
@@ -11,8 +16,6 @@ export default Button
     },
   })
   .css`
-    /* https://m3.material.io/components/chips/specs */
-
     :host {
       --mdw-shape__size: 8px;
       --mdw-ink: var(--mdw-color__on-surface);

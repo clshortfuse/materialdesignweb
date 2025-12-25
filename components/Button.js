@@ -11,6 +11,10 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 
 /* https://m3.material.io/components/buttons/specs */
 
+/**
+ * Buttons prompt most actions in a UI.
+ * @see https://m3.material.io/components/buttons/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -22,6 +26,11 @@ export default CustomElement
   .mixin(InputMixin)
   .mixin(HyperlinkMixin)
   .define({
+    /**
+     * Returns the element used as the state target for visual states
+     * (e.g., pressed/hover). Typically the internal control element.
+     * @return {HTMLElement}
+     */
     stateTargetElement() { return this.refs.control; },
   })
   .set({
@@ -29,6 +38,7 @@ export default CustomElement
     _allowedTypes: ['button', 'submit', 'reset', 'file'],
   })
   .observe({
+    /** The underlying control `type` (button, submit, reset, file). */
     type: {
       empty: 'button',
       /**
@@ -44,16 +54,24 @@ export default CustomElement
         );
       },
     },
-    /** Bound to [elevated] specifying whether the element should be elevated */
+    /** Bound to [elevated] specifying whether the element should be elevated. */
     elevated: 'boolean',
+    /** Visual filled variant; may be "tonal" or boolean-filled token. */
     filled: 'string',
+    /** Whether the button should render an outline. */
     outlined: 'boolean',
+    /** Icon name (uses internal `mdw-icon` when set). */
     icon: 'string',
+    /** Ink color override for the icon. */
     iconInk: 'string',
     // Overrides to string instead of DOMString
+    /** Image source URL for an icon. */
     src: 'string',
+    /** Inline SVG markup to render as icon. */
     svg: 'string',
+    /** SVG `viewBox` attribute for inline SVG icons. */
     viewBox: 'string',
+    /** Path data for an inline SVG icon. */
     svgPath: 'string',
   })
   .expressions({

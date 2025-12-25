@@ -2,6 +2,10 @@ import TypographyMixin from '../mixins/TypographyMixin.js';
 
 import Box from './Box.js';
 
+/**
+ * Material Design Type scale: Label.
+ * @see https://m3.material.io/styles/typography/type-scale-tokens
+ */
 export default Box
   .extend()
   .mixin(TypographyMixin)

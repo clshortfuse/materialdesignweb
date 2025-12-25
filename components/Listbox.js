@@ -7,7 +7,11 @@ import StateMixin from '../mixins/StateMixin.js';
 import List from './List.js';
 import ListOption from './ListOption.js';
 
-/** -implements {HTMLSelectElement} */
+/**
+ * Listbox: a selectable list of options, used for autocompletes and selects.
+ * implements {HTMLSelectElement}
+ * @see https://m3.material.io/components/lists/specs
+ */
 export default List
   .extend()
   .mixin(StateMixin)
@@ -15,16 +19,30 @@ export default List
   .mixin(KeyboardNavMixin)
   .mixin(DelegatesFocusMixin)
   .observe({
+    /** When true, multiple options may be selected (select-multiple semantics). */
     multiple: 'boolean',
+
+    /** Visible size (number of rows) for the listbox; 0 means auto. */
     size: { type: 'integer', empty: 0 },
   })
   .set({
+    /** ARIA role applied to the host element (default: 'listbox'). */
     _ariaRole: 'listbox',
-    /** @type {HTMLCollectionOf<InstanceType<typeof ListOption>> & HTMLOptionsCollection} */
+
+    /**
+     * Lazily-constructed options collection proxy exposing `add`, indexed
+     * access, and other `HTMLOptionsCollection` semantics.
+     * @type {HTMLCollectionOf<InstanceType<typeof ListOption>> & HTMLOptionsCollection}
+     */
     _optionsCollection: null,
-    /** @type {HTMLCollectionOf<InstanceType<typeof ListOption>>} */
+
+    /** Cached collection of selected options (HTMLCollection). */
     _selectedOptionsCollection: null,
+
+    /** Internal guard to avoid reentrant selectedness updates. */
     _handlingSelectedness: false,
+
+    /** When true, form resets are honored; toggled when form association changes. */
     _handleFormReset: true,
   })
   .define({
@@ -43,7 +61,10 @@ export default List
       return this._optionsCollection;
     },
 
-    /** @return {HTMLCollectionOf<InstanceType<typeof ListOption>>} */
+    /**
+     * Returns a live HTMLCollection of selected `mdw-list-option` elements.
+     * @return {HTMLCollectionOf<InstanceType<typeof ListOption>>}
+     */
     selectedOptions() {
       // eslint-disable-next-line no-return-assign
       return (this._selectedOptionsCollection
@@ -53,10 +74,13 @@ export default List
       );
     },
 
+    /** Returns the control type string compatible with `input`/`select` semantics. */
     type() { return this.multiple ? 'select-multiple' : 'select-one'; },
 
+    /** Query selector used by keyboard navigation mixin to find focusable options. */
     kbdNavQuery() { return ListOption.elementName; },
 
+    /** Allow keyboard navigation to focus disabled options in some patterns. */
     kbdNavFocusableWhenDisabled() { return true; },
   })
   .define({

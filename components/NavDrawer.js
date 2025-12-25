@@ -1,16 +1,33 @@
 import SideSheet from './SideSheet.js';
 
+/**
+ * Navigation drawers provide access to destinations and app-level navigation
+ * in a side panel. They can be modal, dismissible, or permanent depending on
+ * viewport and application needs.
+ * @see https://m3.material.io/components/navigation-drawer/specs
+ */
 export default SideSheet
   .extend()
   .observe({
+    /** When true, apply drawer shape at the end edge (RTL-aware). */
     shapeEnd: {
       type: 'boolean',
       empty: true,
     },
+
+    /**
+     * Viewport width in pixels at or above which the drawer auto-opens.
+     * Use `-1` to disable auto-open. Default: 1248.
+     */
     autoOpen: {
       type: 'float',
       empty: 1248,
     },
+
+    /**
+     * Fixed layout breakpoint in pixels for permanent/dismissible drawer modes.
+     * Default: 1248.
+     */
     fixedBreakpoint: {
       type: 'float',
       empty: 1248,

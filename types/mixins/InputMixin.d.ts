@@ -1,4 +1,5 @@
 /**
+ * Enhances a component with input-like attributes and behaviors (value, step, min/max, etc.).
  * @see https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */

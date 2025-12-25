@@ -1,5 +1,3 @@
-// import fontStyles from 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' assert { type: 'css'};
-
 import CustomElement from '../core/CustomElement.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 import { svgAliasMap, unaliased } from '../services/svgAlias.js';
@@ -10,7 +8,12 @@ const documentLoadedStyleSheets = new Set();
 
 // https://html.spec.whatwg.org/multipage/embedded-content.html#htmlimageelement
 
-/** -implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>} */
+/**
+ * Material system icons represent actions, objects, and concepts; prefer
+ * the Material icon system (SVG or Material Symbols) for consistent visual language.
+ * implements {Omit<HTMLImageElement,DeprecatedHTMLImageElementProperties>}
+ * @see https://m3.material.io/styles/icons
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -27,27 +30,48 @@ export default CustomElement
     decode() { return this._img.decode; },
   })
   .observe({
+    /** Icon name used with SVG aliases or font glyphs. */
     icon: 'string',
+    /** Whether the icon is disabled; affects image appearance. */
     disabled: 'boolean',
+    /** Alternative text for image-backed icons. */
     alt: 'string',
+    /** Image source URL for an icon. */
     src: 'string',
+    /** URL to an external SVG resource. */
     svg: 'string',
+    /** Inline SVG path data to render as the icon. */
     svgPath: 'string',
+    /** Image `srcset` attribute for responsive icon images. */
     srcset: 'string',
+    /** Image `sizes` attribute for responsive icon images. */
     sizes: 'string',
+    /** Variation suffix used when resolving icon aliases (e.g., 'filled'). */
     variation: 'string',
+    /** `crossorigin` attribute for image requests. */
     crossOrigin: { attr: 'crossorigin' },
+    /** `usemap` attribute for image maps. */
     useMap: { attr: 'usemap' },
+    /** `ismap` boolean attribute for image maps. */
     isMap: { type: 'boolean', attr: 'ismap' },
+    /** `referrerpolicy` attribute for image requests. */
     referrerPolicy: { attr: 'referrerpolicy' },
+    /** Preferred image decoding mode: 'async' | 'sync' | 'auto'. */
     decoding: { value: /** @type {'async'|'sync'|'auto'} */ (null) },
+    /** Image loading hint: 'eager' | 'lazy'. */
     loading: { value: /** @type {'eager'|'lazy'} */ (null) },
+    /** Rendered width in CSS pixels. */
     width: 'integer',
+    /** Rendered height in CSS pixels. */
     height: 'integer',
+    /** Force using font glyphs instead of SVG when true. */
     forceFont: 'boolean',
     _linkLoaded: 'boolean',
+    /** viewBox used for SVG rendering. */
     viewBox: 'string',
+    /** CSS class applied to font-based icons. */
     fontClass: { empty: 'material-symbols-outlined' },
+    /** URL to Material Symbols CSS when using font-based icons. */
     fontLibrary: { empty: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=block' },
     _isConnected: 'boolean',
   })

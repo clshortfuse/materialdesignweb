@@ -1,4 +1,5 @@
 /**
+ * Adds shape sizing and outline support for components (shape-style, shape-top, etc.).
  * @param {ReturnType<import('./StateMixin.js').default> & ReturnType<import('./ThemableMixin.js').default>} Base
  */
 export default function ShapeMixin(Base: ReturnType<typeof import("./StateMixin.js").default> & ReturnType<typeof import("./ThemableMixin.js").default>): typeof import("../index.js").CustomElement & import("../core/CustomElement.js").Class<{

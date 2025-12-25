@@ -2,12 +2,21 @@ import './Icon.js';
 
 import Chip from './Chip.js';
 
+/**
+ * Filter chips use tags or descriptive words to filter content.
+ * They can be a good alternative to toggle buttons or checkboxes.
+ * @see https://m3.material.io/components/chips/specs
+ */
 export default Chip
   .extend()
   .observe({
+    /** Type of the chip; defaults to 'checkbox' for filter behavior. */
     type: { empty: 'checkbox' },
+    /** When true, shows a dropdown caret as the trailing icon. */
     dropdown: 'boolean',
+    /** Source URL for a trailing image/icon. */
     trailingSrc: 'string',
+    /** Name of the trailing icon to show. */
     trailingIcon: 'string',
   })
   .expressions({

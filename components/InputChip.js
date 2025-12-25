@@ -8,25 +8,56 @@ import './Button.js';
 import './Icon.js';
 import './IconButton.js';
 
+/**
+ * Input chips allow users to enter or edit information as a chip (tag-like).
+ * @see https://m3.material.io/components/chips/specs
+ */
 export default Box
   .extend()
   .mixin(ShapeMixin)
   .mixin(DelegatesFocusMixin)
   .mixin(HyperlinkMixin)
   .observe({
+    /** Render the chip in avatar (larger) style. */
     avatar: 'boolean',
+
+    /** Show a close action button inside the chip. */
     closeButton: 'boolean',
+
+    /** Icon name to use for the close button (default: 'close'). */
     closeIcon: { empty: 'close' },
+
+    /** Ink color used for the close icon (default: inherit). */
     closeInk: { empty: 'inherit' },
+
+    /** Reflects the `readonly` attribute; prevents editing/closing when true. */
     readOnly: { attr: 'readonly', type: 'boolean' },
+
+    /** Whether the chip is disabled. */
     disabled: 'boolean',
+
+    /** Leading icon name for the chip. */
     icon: 'string',
+
+    /** Ink color for the leading icon. */
     iconInk: 'string',
+
+    /** Image `src` for an avatar or image-backed icon. */
     src: 'string',
+
+    /** External SVG URL to render as the icon. */
     svg: 'string',
+
+    /** SVG `viewBox` used for inline SVG rendering. */
     viewBox: 'string',
+
+    /** SVG path data to render as the icon. */
     svgPath: 'string',
+
+    /** Event handler/callback for the `close` event. */
     onclose: EVENT_HANDLER_TYPE,
+
+    /** Selection state used by chip-selection patterns. */
     selected: 'boolean',
   })
   .set({

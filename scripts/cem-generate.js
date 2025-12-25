@@ -1194,7 +1194,18 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
   const srcSf = getSourceFileForRef(ref);
   if (!srcSf) return decl;
 
-  const exportExprLocal = findExportInfo(srcSf).exportExpr;
+  const exportInfo = findExportInfo(srcSf);
+  const exportExprLocal = exportInfo.exportExpr;
+  const exportIdNode = exportInfo.idNode;
+  
+  // Prefer resolving the identifier node (if present), fallback to the export expression
+  const exportSym = (exportIdNode && resolveSymbolFromExpression(exportIdNode))
+    || (exportExprLocal && resolveSymbolFromExpression(exportExprLocal)) || null;
+  if (exportSym) {
+    const mixinDoc = docToString(exportSym);
+    if (mixinDoc) decl.description = mixinDoc;
+  }
+  
   const checker = getTypeChecker();
   const mixType = exportExprLocal ? checker.getTypeAtLocation(exportExprLocal) : null;
   let _retTypeForDetection = null;
@@ -1547,6 +1558,7 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
         if (existing) {
           existing.parameters ??= decl.parameters;
           existing.return ??= decl.return;
+          existing.description ??= decl.description;
           existing.attributes ??= decl.attributes;
           // merge members preferring existing members first, then add any new ones
           /** @type {CEMMember[]} */
@@ -2078,10 +2090,10 @@ async function findDemos(name) {
   const demos = [];
   const root = process.cwd();
   const candidates = [
-    path.join(root, 'docs', 'components', `${name.toLowerCase()}.html`),
-    path.join(root, 'docs', 'components', `${name.toLowerCase()}s.html`),
-    path.join(root, 'docs', 'components', `${kebab(name)}.html`),
-    path.join(root, 'docs', 'components', `${kebab(name)}s.html`),
+    path.join(root, 'demo', 'components', `${name.toLowerCase()}.html`),
+    path.join(root, 'demo', 'components', `${name.toLowerCase()}s.html`),
+    path.join(root, 'demo', 'components', `${kebab(name)}.html`),
+    path.join(root, 'demo', 'components', `${kebab(name)}s.html`),
   ];
   let foundDemo = null;
 
@@ -2864,6 +2876,34 @@ async function generateForFile(file) {
     superclass: superclassRef || undefined,
     mixins,
   };
+
+  let classDesc = null;
+  // Prefer TypeScript symbol docs when available
+  if (sym) {
+    const docs = docToString(sym);
+    if (docs && docs.trim()) {
+      classDesc = docs.trim();
+    }
+  }
+
+  if (!classDesc) {
+    const srcText = sf.getFullText();
+    if (exportExpr) {
+      const start = exportExpr.getFullStart();
+      const prefix = srcText.slice(0, start);
+      const m = /\/\*\*([\s\S]*?)\*\/[\s\t\r\n]*$/m.exec(prefix);
+      if (m && m[1]) {
+        // strip leading * prefixes
+        const cleaned = m[1].split(/\r?\n/).map((ln) => ln.replace(/^\s*\*\s?/, '')).join('\n').trim();
+        if (cleaned) classDesc = cleaned;
+      }
+    }
+  }
+
+  if (classDesc) {
+    cemDecl.description = classDesc;
+  }
+
 
   /** @type {CEMModule} */
   const mod = {

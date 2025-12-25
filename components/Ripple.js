@@ -1,6 +1,12 @@
 import CustomElement from '../core/CustomElement.js';
 import { ELEMENT_ANIMATION_TYPE } from '../core/customTypes.js';
 
+/**
+ * Ripple is a visual touch feedback effect used by controls to indicate
+ * pointer/touch interaction. It renders and animates a circular ink ripple
+ * and exposes properties to control its position, size, and lifecycle.
+ * @see https://m3.material.io/foundations/interaction/states/applying-states
+ */
 export default CustomElement
   .extend()
   .set({
@@ -9,11 +15,17 @@ export default CustomElement
     rippleStarted: false,
   })
   .observe({
+    /** Current lifecycle state for the ripple (e.g. 'filled', 'complete'). */
     rippleState: 'string',
+    /** When true, keep the ripple in the DOM after animation ends. */
     keepAlive: 'boolean',
+    /** X offset (px) from center used to position the ripple. */
     _positionX: 'float',
+    /** Y offset (px) from center used to position the ripple. */
     _positionY: 'float',
+    /** Computed ripple radius (px) used for sizing/animation. */
     _radius: 'float',
+    /** Hold the ripple (e.g. for long-press); triggers hold/release tracking. */
     holdRipple: {
       type: 'boolean',
       changedCallback(oldValue, newValue) {
@@ -26,6 +38,7 @@ export default CustomElement
     },
   })
   .observe({
+    /** Computed animation/style object used to position and size the ripple. */
     _positionStyle: {
       ...ELEMENT_ANIMATION_TYPE,
       get({ _positionX, _positionY, _radius }) {
@@ -82,6 +95,7 @@ export default CustomElement
       this._positionY = y - (parentHeight / 2);
       this._radius = hypotenuse;
     },
+    /** Complete the ripple lifecycle: either mark complete or remove. */
     handleRippleComplete() {
       if (this.keepAlive) {
         this.setAttribute('ripple-state', 'complete');

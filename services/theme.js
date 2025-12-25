@@ -236,7 +236,7 @@ export function generateShapeCSS(config = SHAPE_ROUNDED_DEFAULT) {
 
 /**
  * @param {string} content
- * @return {HTMLStyleElement } element
+ * @return {HTMLStyleElement} element
  */
 function addStyle(content) {
   const element = document.createElement('style');

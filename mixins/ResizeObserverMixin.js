@@ -6,11 +6,13 @@ const resizeObserver = new ResizeObserver((entries) => {
 });
 
 /**
+ * Attaches a shared ResizeObserver to the element and provides lifecycle helpers.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function ResizeObserverMixin(Base) {
   return Base
     .observe({
+      /** Enable or disable automatic ResizeObserver attachment (defaults true) */
       _resizeObserverEnabled: {
         type: 'boolean',
         value: true,

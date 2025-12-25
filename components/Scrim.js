@@ -1,8 +1,14 @@
 import CustomElement from '../core/CustomElement.js';
 
+/**
+ * A scrim can bring focus to specific elements by increasing the visual contrast of a large layered surface.
+ * Use the scrim beneath elements like modals and expanded navigation menus.
+ * @see https://m3.material.io/styles/elevation/applying-elevation
+ */
 export default CustomElement
   .extend()
   .observe({
+    /** When true the scrim is hidden and will be removed after its fade-out animation. */
     hidden: 'boolean',
   })
   .html`<div id=scroll-blocker></div>`
@@ -19,7 +25,7 @@ export default CustomElement
       scrollbar-color: transparent transparent;
       scrollbar-width: none;
 
-      cursor:pointer;
+      cursor: pointer;
 
       outline: none; /* Older Chromium Builds */
       
@@ -81,7 +87,9 @@ export default CustomElement
   `
   .events({
     animationend() {
-      if (this.hidden) this.remove();
+      if (this.hidden) {
+        this.remove();
+      }
     },
   })
   .autoRegister('mdw-scrim');

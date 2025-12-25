@@ -1,5 +1,9 @@
 import Display from './Display.js';
 
+/**
+ * Material Design Type scale: Title.
+ * @see https://m3.material.io/styles/typography/type-scale-tokens
+ */
 export default Display
   .extend()
   .set({

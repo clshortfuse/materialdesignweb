@@ -3,26 +3,32 @@ import CustomElement from '../core/CustomElement.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/**
+ * CheckboxIcon is a visual helper for checkboxes, rendering the box and checkmark.
+ * @see https://m3.material.io/components/checkbox/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(ShapeMixin)
   .observe({
+    /** Whether the icon is selected (checked). */
     selected: 'boolean',
+    /** Icon name to render inside the checkbox icon. */
     icon: 'string',
+    /** Whether the associated control is in an error state. */
     errored: 'boolean',
+    /** Whether the associated control is disabled. */
     disabled: 'boolean',
   })
   .define({
-    /** Alias for Selected (QoL) */
+    /** Alias for `selected` (quality-of-life property). */
     checked: {
       get() { return this.selected; },
       set(value) { this.selected = value; },
     },
   })
   .css`
-    /* https://m3.material.io/components/checkbox/specs */
-
     :host {
       --mdw-ink: var(--mdw-color__on-primary);
       --mdw-bg: var(--mdw-color__primary);

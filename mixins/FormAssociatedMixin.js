@@ -11,6 +11,7 @@ const FORM_IPC_EVENT = 'mdw-form-associated-changed';
 const DOMString = { nullParser: String, value: '' };
 
 /**
+ * Implements form-associated element behavior (internals, validity, files, value handling).
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function FormAssociatedMixin(Base) {
@@ -27,21 +28,32 @@ export default function FormAssociatedMixin(Base) {
       _files: null,
     })
     .observe({
+      /** ARIA 'controls' attribute (string). */
       ariaControls: 'string',
+      /** Autocomplete token for the associated control (string). */
       autocomplete: DOMString,
+      /** Name attribute for the control used in forms. */
       name: DOMString,
+      /** Read-only state reflected to control via 'readonly' attribute. */
       readOnly: { attr: 'readonly', type: 'boolean' },
+      /** When true, form validation is skipped for this control (formnovalidate). */
       formNoValidate: { attr: 'formnovalidate', type: 'boolean' },
+      /** Default checked state for checkable controls (checkbox/radio). */
       defaultChecked: { attr: 'checked', type: 'boolean' },
       _checkedDirty: 'boolean',
       /* "Checkedness" */
       _checked: 'boolean',
+      /** Whether the control is required for form submission. */
       required: 'boolean',
+      /** Control type token (e.g. 'text','checkbox','radio','file'). */
       type: DOMString,
       //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
+      /** Reflected default value backing field (attr: value). */
       _defaultValue: { reflect: true, attr: 'value' },
+      /** Internal value storage. */
       _value: { empty: '' },
       _valueDirty: 'boolean',
+      /** Whether the user has interacted with the control (used for validation UX). */
       _userInteracted: 'boolean',
       _invalid: 'boolean',
       _badInput: 'boolean',

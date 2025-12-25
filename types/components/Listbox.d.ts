@@ -124,12 +124,19 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     multiple: boolean;
     size: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** ARIA role applied to the host element (default: 'listbox'). */
     _ariaRole: string;
-    /** @type {HTMLCollectionOf<InstanceType<typeof ListOption>> & HTMLOptionsCollection} */
+    /**
+     * Lazily-constructed options collection proxy exposing `add`, indexed
+     * access, and other `HTMLOptionsCollection` semantics.
+     * @type {HTMLCollectionOf<InstanceType<typeof ListOption>> & HTMLOptionsCollection}
+     */
     _optionsCollection: HTMLCollectionOf<InstanceType<typeof ListOption>> & HTMLOptionsCollection;
-    /** @type {HTMLCollectionOf<InstanceType<typeof ListOption>>} */
-    _selectedOptionsCollection: HTMLCollectionOf<InstanceType<typeof ListOption>>;
+    /** Cached collection of selected options (HTMLCollection). */
+    _selectedOptionsCollection: any;
+    /** Internal guard to avoid reentrant selectedness updates. */
     _handlingSelectedness: boolean;
+    /** When true, form resets are honored; toggled when form association changes. */
     _handleFormReset: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     options: HTMLCollectionOf<import("../index.js").CustomElement & {

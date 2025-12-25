@@ -39,6 +39,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     shapeStyle: string;
     outlined: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** ARIA role applied by the AriaReflectorMixin (defaults to `tooltip`). */
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     open: boolean;

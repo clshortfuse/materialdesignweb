@@ -1,24 +1,34 @@
 const IDLE_TIMEOUT_MS = 500;
 
 /**
+ * Tracks scroll/resize positions and exposes scroll-related lifecycle helpers.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function ScrollListenerMixin(Base) {
   return Base
     .observe({
+      /** Current horizontal scroll position (px) */
       _scrollListenerPositionX: { type: 'float', empty: 0, reflect: false },
+      /** Current vertical scroll position (px) */
       _scrollListenerPositionY: { type: 'float', empty: 0, reflect: false },
+      /** Timestamp of the last idle period (ms) */
       _scrollListenerLastIdle: { type: 'float', empty: 0 },
+      /** Timestamp of the last scroll event (ms) */
       _scrollListenerLastScroll: { type: 'float', empty: 0 },
+      /** Timestamp of the last resize event (ms) */
       _scrollListenerLastResize: { type: 'float', empty: 0 },
     })
     .set({
+      /** WeakRef to the current scroller (HTMLElement or window) */
       /** @type {WeakRef<HTMLElement|Window>} */
       _scroller: null,
+      /** Listener bound to scroller 'scroll' events */
       /** @type {EventListener} */
       _scrollerScrollListener: null,
+      /** Listener bound to scroller 'resize' events */
       /** @type {EventListener} */
       _scrollerResizeListener: null,
+      /** Internal debounce timer id used for idle detection */
       _scrollDebounce: null,
     })
     .methods({

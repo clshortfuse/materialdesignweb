@@ -6,12 +6,22 @@ import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import './Icon.js';
 import ListOption from './ListOption.js';
 
+/**
+ * Menu items represent selectable options within a menu. They can trigger
+ * actions, toggle state, or open nested submenus.
+ * @see https://m3.material.io/components/menus/specs
+ */
 export default ListOption
   .extend()
   .mixin(FormAssociatedMixin)
   .set({
+    /** Timeout handle used to schedule submenu cascade. */
     _cascadeTimeout: null,
+
+    /** Milliseconds to delay before opening a cascaded submenu. */
     CASCADE_TIMEOUT: 500,
+
+    /** Internal flag indicating a cascade is in progress. */
     _cascading: false,
   })
   .define({
@@ -22,9 +32,13 @@ export default ListOption
     },
   })
   .observe({
-    /** ID of menu to cascade */
+    /** ID of the submenu to open when this item cascades. */
     cascades: 'string',
-    /** Can be null */
+
+    /**
+     * Backing field for the menu item's value attribute. Can be `null` to
+     * indicate no explicit value; reflected to the `value` attribute.
+     */
     _defaultValue: {
       attr: 'value',
       reflect: true,
@@ -33,7 +47,10 @@ export default ListOption
     },
   })
   .observe({
-    /** Never returns null */
+    /**
+     * Non-null string representation of the default value used for form
+     * association. Getter never returns null; setter writes to `_defaultValue`.
+     */
     defaultValue: {
       reflect: false,
       get() {
@@ -71,12 +88,7 @@ export default ListOption
       const [name, value] = event.detail;
       if (this.name !== name) return;
       if (value === this.value) return;
-      if (this.value === '1') {
-        console.log('unchecking', this.name, this.value);
-        this.selected = false;
-      } else {
-        this.selected = false;
-      }
+      this.selected = false;
     },
   })
   .expressions({
@@ -158,7 +170,9 @@ export default ListOption
           if (!this.cascades) break;
           if (getComputedStyle(this).direction === 'rtl') {
             if (event.key === 'ArrowRight') break;
-          } else if (event.key === 'ArrowLeft') break;
+          } else if (event.key === 'ArrowLeft') {
+            break;
+          }
           event.stopPropagation();
           event.preventDefault();
           this.cascade();

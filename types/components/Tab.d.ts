@@ -109,6 +109,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     stateTargetElement: HTMLElement;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Enable state-layer visual treatment for pressed/hover states. */
     stateLayer: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     active: boolean;
@@ -117,6 +118,10 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     ariaLabel: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     focus(options?: FocusOptions): void;
+    /**
+     * Compute the label metrics used for indicator alignment.
+     * Returns an object with `width` and `left` in pixels.
+     */
     computeLabelMetrics(): {
         width: number;
         left: number;

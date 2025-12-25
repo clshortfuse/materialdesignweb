@@ -2,6 +2,7 @@
 /** @typedef {'align'|'useMap'} DeprecatedHTMLInputElementProperties */
 /** @typedef {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} HTMLControlElement */
 /**
+ * Adds form-control behavior and wiring to an internal control element.
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function ControlMixin(Base: ReturnType<typeof import("./StateMixin.js").default>): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{

@@ -91,6 +91,10 @@ CustomElement
   })
   .autoRegister('mdw-bottom-sheet-handle');
 
+/**
+ * Bottom sheets show secondary content anchored to the bottom of the screen
+ * @see https://m3.material.io/components/bottom-sheets/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -100,36 +104,51 @@ export default CustomElement
   .mixin(DelegatesFocusMixin)
   .mixin(ResizeObserverMixin)
   .observe({
+    /** Overrides default of shape top to be true */
     shapeTop: {
       type: 'boolean',
       empty: true,
     },
+    /** Whether the bottom sheet displays as a modal and shows a scrim. */
     modal: 'boolean',
+    /** If true, the sheet is fixed (not translated) and anchors to layout. */
     fixed: 'boolean',
+    /** Whether the bottom sheet is currently open. */
     open: 'boolean',
+    /** Whether the bottom sheet is expanded to show full content. */
     expanded: 'boolean',
+    /** Last measured block size in pixels (used for layout calculations). */
     _lastComputedBlockSize: {
       type: 'float',
       nullable: false,
     },
+    /** Last measured offsetTop in pixels. */
     _lastOffsetTop: {
       type: 'float',
       nullable: false,
     },
+    /** Current animation duration (milliseconds). */
     _animationDuration: {
       type: 'integer',
       value: 0,
     },
+    /** Current animation easing string for transitions. */
     _animationEasing: {
       value: 'ease-out',
     },
+    /** Current CSS translateY value applied to the sheet. */
     _translateY: { value: '100%' },
+    /** Timestamp of last child scroll event (used to debounce drag). */
     _lastChildScrollTime: 'float',
+    /** ARIA `valuenow` value used by the drag handle for accessibility. */
     _ariaValueNow: {
       type: 'integer',
     },
+    /** When true, a drag handle is rendered to allow pointer dragging. */
     dragHandle: 'boolean',
+    /** Event handler: called when the sheet opens. */
     onopen: EVENT_HANDLER_TYPE,
+    /** Event handler: called when the sheet closes. */
     onclose: EVENT_HANDLER_TYPE,
   })
   .set({
@@ -169,6 +188,11 @@ export default CustomElement
     <slot id=slot></slot>
   `
   .methods({
+    /**
+     * Ensure a scrim is present when the sheet is modal and open.
+     * @param {boolean} [animate=false] - If true, animate scrim changes.
+     * @return {void}
+     */
     checkForScrim(animate = false) {
       let { open, modal, _scrim } = this;
       if (open && modal) {
@@ -192,6 +216,10 @@ export default CustomElement
         _scrim.hidden = true;
       }
     },
+    /**
+     * Evaluate drag state and settle the sheet (close or snap open).
+     * @return {void}
+     */
     checkDragFinished() {
       const { open, _dragStartY, _dragDeltaY, _lastComputedBlockSize, modal, fixed, _lastOffsetTop } = this;
       if (!open || fixed || _dragStartY == null || _dragDeltaY == null) return;
@@ -219,7 +247,11 @@ export default CustomElement
         this.expanded = true;
       }
     },
-    /** @param {PointerEvent} event */
+    /**
+     * Pointer active on the drag handle; registers the pointer for dragging.
+     * @param {PointerEvent} event
+     * @return {void}
+     */
     onDragHandleActive(event) {
       if (!event.isTrusted) return;
       if (!event.isPrimary) return;
@@ -227,7 +259,11 @@ export default CustomElement
       if (event.buttons !== 1) return;
       dragHandleEvent.add(event);
     },
-    /** @param {PointerEvent} event */
+    /**
+     * Pointer inactive on the drag handle; finalizes potential drag.
+     * @param {PointerEvent} event
+     * @return {void}
+     */
     onDragHandleInactive(event) {
       if (!event.isTrusted) return;
       if (!event.isPrimary) return;
@@ -235,7 +271,11 @@ export default CustomElement
       if (event.type !== 'pointerup' && event.buttons !== 1) return;
       this.checkDragFinished();
     },
-    /** @param {PointerEvent|TouchEvent} event */
+    /**
+     * Handle pointer or touch move events during dragging.
+     * @param {PointerEvent|TouchEvent} event
+     * @return {void}
+     */
     onPointerOrTouchMove(event) {
       /** @type {{clientY:number,pageY:number}} */
       let source;
@@ -278,6 +318,11 @@ export default CustomElement
     },
   })
   .overrides({
+    /**
+     * Called by ResizeObserverMixin when the element's size changes.
+     * @param {ResizeObserverEntry} entry
+     * @return {void}
+     */
     onResizeObserved(entry) {
       this._lastComputedBlockSize = entry.borderBoxSize[0]?.blockSize;
       this._lastOffsetTop = this.offsetTop;

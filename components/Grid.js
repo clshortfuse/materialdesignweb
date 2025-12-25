@@ -3,19 +3,28 @@ import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 
 import Box from './Box.js';
 
+/**
+ * Grid layout for arranging content into responsive columns.
+ * @see https://m3.material.io/foundations/layout/understanding-layout/parts-of-layout
+ */
 export default Box
   .extend()
   .mixin(ResizeObserverMixin)
   .observe({
+    /** Enable CSS grid layout for children. */
     grid: 'boolean',
+    /** Explicit number of columns; when set, disables auto column calculation. */
     columns: 'integer',
+    /** Auto-calculated column count when `columns` is not provided. */
     _autoColumns: {
       type: 'integer',
       empty: 4,
     },
+    /** Last measured inline size (px) from ResizeObserver. */
     _lastInlineSize: 'float',
   })
   .observe({
+    /** Whether resize observer should be active (disabled when explicit columns set). */
     _resizeObserverEnabled: {
       type: 'boolean',
       get({ columns }) {
@@ -24,6 +33,7 @@ export default Box
         return !columns;
       },
     },
+    /** Computed number of columns (either `columns` or `_autoColumns`). */
     _computedColumns({ columns, _autoColumns }) {
       if (columns) return columns;
       if (_autoColumns) return _autoColumns;
@@ -31,6 +41,7 @@ export default Box
     },
   })
   .overrides({
+    /** Update last observed inline size from ResizeObserver entry. */
     onResizeObserved(entry) {
       const { contentBoxSize } = entry;
       if (!contentBoxSize.length) return;

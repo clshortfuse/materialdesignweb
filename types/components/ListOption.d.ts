@@ -121,9 +121,13 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
 }, any[]> & {
     formAssociated: true;
 } & import("../core/CustomElement.js").Class<{
+    /** ARIA role applied to the option container (anchor receives role 'option'). */
     _ariaRole: string;
+    /** Index of this option within its list/listbox (managed externally). */
     _index: number;
+    /** Internal flag indicating selection was modified via API rather than default. */
     _selectedDirty: boolean;
+    /** Whether this option behaves as an interactive selectable item. */
     isInteractive: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _label: string;

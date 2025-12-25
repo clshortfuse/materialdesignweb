@@ -12,6 +12,14 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 
 /** @typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties */
 
+/**
+ * A navigation item represents a single destination used by navigation bars,
+ * navigation drawers, and navigation rails. It provides an icon, optional
+ * label, and optional badge to help users move between app sections.
+ * @see https://m3.material.io/components/navigation-bar/specs
+ * @see https://m3.material.io/components/navigation-drawer/specs
+ * @see https://m3.material.io/components/navigation-rail/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -23,14 +31,21 @@ export default CustomElement
     stateLayer: true,
   })
   .observe({
+    /** Whether the label slot is visible. When true the label is shown. */
     showLabel: 'string',
+    /** Whether the item is active/selected; affects styling and aria-current. */
     active: 'boolean',
+    /** Name of the icon to display (e.g. 'home'); ignored when `src` is provided. */
     icon: 'string',
+    /** URL of an icon image; takes precedence over `icon` when present. */
     src: 'string',
+    /** Badge content to display on the item (e.g. notification count). */
     badge: 'string',
+    /** Accessible label for the anchor; when present it is used instead of the slot text. */
     ariaLabel: 'string', // watch attribute and emit callback
   })
   .methods({
+    /** Focus the internal anchor element. */
     /** @type {HTMLElement['focus']} */
     focus(...args) {
       this.refs.anchor.focus(...args);
@@ -265,13 +280,18 @@ export default CustomElement
       },
       keydown({ key, repeat }) {
         if (key !== ' ') return true;
-        if (!repeat) this.click();
+        if (!repeat) {
+          this.click();
+        }
         return false;
       },
     },
   })
   .extend((Base) => class NavItem extends Base {
-    /** @type {InstanceType<ReturnType<RippleMixin>>['addRipple']} */
+    /**
+     * Add a ripple effect only when the item is active.
+     * @type {InstanceType<ReturnType<RippleMixin>>['addRipple']}
+     */
     addRipple(...args) {
       if (!this.active) return null;
       return super.addRipple(...args);

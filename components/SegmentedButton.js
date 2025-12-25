@@ -2,16 +2,24 @@ import './Icon.js';
 
 import Button from './Button.js';
 
-/* https://m3.material.io/components/segmented-buttons/specs */
-
+/**
+ * Segmented buttons group individual related actions or options where
+ * multiple choices are presented inline; each segment acts like a toggle
+ * or option within a set.
+ * @see https://m3.material.io/components/segmented-buttons/specs
+ */
 export default Button
   .extend()
   .observe({
+    /** Interaction model for the segment: 'radio' (single select) or 'checkbox' (multi-select). */
     type: { empty: 'radio' },
+    /** When true this segment is rendered as an inner segment inside a segmented group. */
     innerSegmentedButton: 'boolean',
   })
   .set({
+    /** Render the button with an outline style. */
     outlined: true,
+    /** Allow the control to receive focus even when disabled. */
     focusableOnDisabled: true,
   })
   .recompose(({ html, inline, refs: { icon, outline, control, slot, state } }) => {

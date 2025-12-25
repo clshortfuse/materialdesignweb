@@ -191,7 +191,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     ink: string;
     typeStyle: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Native control `type` used for the underlying input; always 'radio'. */
     type: string;
+    /** Forces Material state-layer overlay for pressed/hover states. */
     stateLayer: boolean;
 }, any[]>;
 export default _default;

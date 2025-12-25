@@ -8,8 +8,11 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 const DOMString = { nullParser: String, value: '' };
 
 /**
+ * TextArea is a multi-line text input that auto-resizes and integrates with
+ * text-field patterns for labels and validation.
+ * implements {HTMLTextAreaElement}
+ * @see https://m3.material.io/components/text-fields/specs
  * @see https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element
- * -implements {HTMLTextAreaElement}
  */
 export default CustomElement
   .extend()
@@ -19,33 +22,52 @@ export default CustomElement
   .mixin(TextFieldMixin)
   .mixin(ResizeObserverMixin)
   .set({
+    /** Whether the UA supports the `lh` CSS unit for line-height. */
     supportsCSSLineHeightUnit: CSS.supports('height', '1lh'),
+    /** The control type used by the component. */
     type: 'textarea',
+    /** Internal flag used while performing auto-resize logic. */
     _resizing: false,
   })
   .overrides({
+    /** Tag name used for the native control element. */
     controlTagName: 'textarea',
+    /** Textareas are not void elements. */
     controlVoidElement: false,
   })
   .observe({
+    /** When true the textarea is fixed-size and will not auto-resize. */
     fixed: { type: 'boolean' },
+    /** Minimum number of rows to display. Mirrors the `minrows` attribute. */
     minRows: { attr: 'minrows', type: 'integer', nullable: false },
+    /** Maximum number of rows to allow when auto-resizing. */
     maxRows: { attr: 'maxrows', type: 'integer', nullable: false },
+    /** Computed or measured line-height token used for resizing. */
     _lineHeight: 'string',
+    /** Number of columns (characters) for the control (integer). */
     cols: { type: 'integer', empty: 0 },
+    /** The `dirname` attribute value forwarded to the native control. */
     dirName: { attr: 'dirname', ...DOMString },
+    /** Maximum allowed characters for the control. */
     maxLength: { attr: 'maxlength', type: 'integer', empty: 0 },
+    /** Minimum required characters for the control. */
     minLength: { attr: 'minlength', type: 'integer', empty: 0 },
+    /** Placeholder text forwarded to the native control. */
     placeholder: DOMString,
+    /** Number of rows to render; updated when resizing. */
     rows: { type: 'integer', empty: 1 },
+    /** Wrapping behavior token forwarded to the native control. */
     wrap: DOMString,
     // Not in spec, but plays nice with HTML linters
+    /** Forwards a `value` attribute to the internal `defaultValue`. */
     defaultValueAttr: { attr: 'value', ...DOMString },
   })
   .define({
+    /** Return the underlying native `HTMLTextAreaElement` control. */
     _textarea() { return /** @type {HTMLTextAreaElement} */ (this.refs.control); },
   })
   .define({
+    /** The default value (initial value) of the internal textarea. */
     defaultValue: {
       get() { return this._textarea.defaultValue; },
       set(value) {
@@ -58,7 +80,9 @@ export default CustomElement
         this.textContent = this._textarea.defaultValue;
       },
     },
+    /** Number of characters currently in the textarea. */
     textLength() { return this._textarea.textLength; },
+    /** Focus + select helper forwarded to the native control. */
     select() { return this._textarea.select; },
 
     selectionDirection: {
@@ -76,12 +100,18 @@ export default CustomElement
       set(value) { this._textarea.selectionEnd = value; },
     },
 
+    /** Convenience passthrough to `HTMLTextAreaElement.setRangeText`. */
     setRangeText() { return this._textarea.setRangeText; },
 
+    /** Convenience passthrough to `HTMLTextAreaElement.setSelectionRange`. */
     setSelectionRange() { return this._textarea.setSelectionRange; },
 
   })
   .methods({
+    /**
+     * Resize the textarea to fit content up to `maxRows` and not below
+     * `minRows`. This updates the `rows` property and internal layout state.
+     */
     resize() {
       if (this._resizing) return;
       this._resizing = true;
@@ -135,6 +165,7 @@ export default CustomElement
       this._resizing = false;
       // if (this.placeholder) textarea.setAttribute('placeholder', this.placeholder);
     },
+    /** Called by the ResizeObserver mixin; triggers a resize unless active. */
     onResizeObserved() {
       if (this.matches(':active')) return;
       this.resize();

@@ -1,5 +1,3 @@
-/* https://m3.material.io/components/radio/specs */
-
 import './RadioIcon.js';
 
 import CustomElement from '../core/CustomElement.js';
@@ -9,6 +7,10 @@ import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
+/**
+ * Radio buttons allow selection of a single option within a set.
+ * @see https://m3.material.io/components/radio-button/overview
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -17,7 +19,9 @@ export default CustomElement
   .mixin(InputMixin)
   .mixin(TouchTargetMixin)
   .set({
+    /** Native control `type` used for the underlying input; always 'radio'. */
     type: 'radio',
+    /** Forces Material state-layer overlay for pressed/hover states. */
     stateLayer: true,
   })
   .html`

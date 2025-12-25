@@ -1,5 +1,6 @@
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 /**
+ * Composes a text field with label, supporting text, icons and control wiring.
  * @param {ReturnType<import('./ControlMixin.js').default>} Base
  */
 export default function TextFieldMixin(Base: ReturnType<typeof import("./ControlMixin.js").default>): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
@@ -119,6 +120,7 @@ export default function TextFieldMixin(Base: ReturnType<typeof import("./Control
 }, any[]> & import("../core/CustomElement.js").Class<{
     _computedAriaLabelledby: never;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Show an internal visual state layer element */
     stateLayer: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     type: string;

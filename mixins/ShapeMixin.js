@@ -1,14 +1,21 @@
 /**
+ * Adds shape sizing and outline support for components (shape-style, shape-top, etc.).
  * @param {ReturnType<import('./StateMixin.js').default> & ReturnType<import('./ThemableMixin.js').default>} Base
  */
 export default function ShapeMixin(Base) {
   return Base
     .observe({
+      /** Show top cut/shape on the element */
       shapeTop: 'boolean',
+      /** Show bottom cut/shape on the element */
       shapeBottom: 'boolean',
+      /** Show start-side cut/shape (logical start) */
       shapeStart: 'boolean',
+      /** Show end-side cut/shape (logical end) */
       shapeEnd: 'boolean',
+      /** Predefined shape size/style name (none|extra-small|small|medium|large|extra-large|full|inherit) */
       shapeStyle: 'string',
+      /** When true, an outline is rendered around the element */
       outlined: 'boolean',
     })
     .html`

@@ -10,6 +10,11 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import Tab from './Tab.js';
 
+/**
+ * Tab list is the container for `mdw-tab` elements and renders the active
+ * indicator and keyboard navigation behavior.
+ * @see https://m3.material.io/components/tabs/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -19,11 +24,13 @@ export default CustomElement
   .mixin(ShapeMixin)
   .mixin(SemiStickyMixin)
   .observe({
+    /** When true the tablist is scrollable (renders differently). */
     scrollable: 'boolean',
   })
   .set({
     /** @type {WeakRef<HTMLElement>} */
     _tabContentRef: null,
+    /** Listener function attached to the tab content's `scroll` event. */
     _tabContentScrollListener: null,
     /** @type {HTMLCollectionOf<InstanceType<Tab>>} */
     _tabCollection: null,
@@ -66,10 +73,15 @@ export default CustomElement
     },
   })
   .observe({
+    /** Id of an external `TabContent` element to bind and observe. */
     tabContentId: 'string',
+    /** Whether the tablist is visually active (has a selected tab). */
     active: 'boolean',
+    /** Render the secondary (label-width) indicator style when true. */
     secondary: 'boolean',
+    /** Inline style used to position and size the indicator. */
     _indicatorStyle: { value: 'opacity: 0' },
+    /** Color token used for the tab ink. */
     color: { empty: 'surface-primary' },
   })
   .define({
@@ -122,6 +134,10 @@ export default CustomElement
         };
       });
     },
+    /**
+     * Modifiable index of the currently selected tab. 0-based index.
+     * Setting this updates tab `active` states accordingly.
+     */
     selectedIndex: {
       get() {
         let index = 0;
@@ -146,6 +162,10 @@ export default CustomElement
     },
   })
   .define({
+    /**
+     * Modifiable currently selected tab.
+     * Setting this updates tab `active` states accordingly.
+     */
     selectedItem: {
       /**
        * @return {InstanceType<Tab>}
@@ -174,9 +194,11 @@ export default CustomElement
     },
   })
   .methods({
+    /** Clear cached tab metrics (widths/positions). */
     clearCache() {
       this._tabMetrics = null;
     },
+    /** Find and bind to the external `TabContent` element by id. */
     searchForTabContent() {
       const { tabContentId, isConnected } = this;
       if (!tabContentId) return;
@@ -184,6 +206,7 @@ export default CustomElement
       const root = /** @type {ShadowRoot|Document} */ (this.getRootNode());
       this.tabContent = root.getElementById(tabContentId);
     },
+    /** Update the indicator position based on a specific `Tab`. */
     /** @param {InstanceType<Tab>} [tab] */
     updateIndicatorByTab(tab) {
       tab ??= this.selectedItem ?? this.tabs.item(0);
@@ -193,13 +216,18 @@ export default CustomElement
       const position = this.secondary ? metrics.left : metrics.left + metrics.label.left;
       this._indicatorStyle = `--width: ${width}; --offset: ${position}px`;
     },
+    /** Recompute and apply indicator; optionally disable animation when `animate` is false. */
     updateIndicator(animate = false) {
       this.updateIndicatorByTab();
       if (!animate) {
         this.refs.indicator.style.setProperty('--transition-ratio', '0');
       }
     },
-    /** @param {number} percentage */
+    /**
+     * Update the indicator position by a floating `percentage` between 0..1
+     * representing the scroll progress across tab panels.
+     * @param {number} percentage
+     */
     updateIndicatorByPosition(percentage) {
       const metrics = this.tabMetrics;
 
@@ -245,10 +273,12 @@ export default CustomElement
       this._indicatorStyle = `--width: ${width}; --offset: ${center - (width / 2)}px`;
       this.refs.indicator.style.setProperty('--transition-ratio', '0');
     },
+    /** Update the indicator using a discrete tab index. */
     /** @param {number} index */
     updateIndicatorByIndex(index) {
       this.updateIndicatorByTab(this.tabs.item(index ?? this._selectedIndex));
     },
+    /** Observe the bound TabContent scroll and update indicator accordingly. */
     observeTabContent() {
       const tabContent = this.tabContent;
       if (!tabContent) return;
@@ -261,6 +291,7 @@ export default CustomElement
       const percentage = max === 0 ? 0 : start / max;
       this.updateIndicatorByPosition(percentage);
     },
+    /** Handler called when the element is resized; refresh cache and indicator. */
     onResizeObserved() {
       this.clearCache();
       this.updateIndicator();

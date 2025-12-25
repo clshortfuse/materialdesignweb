@@ -20,7 +20,12 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     ink: string;
     typeStyle: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** ARIA role applied to the host element (default: 'list'). */
     _ariaRole: string;
+    /**
+     * Visual color token for list surfaces. Default is `surface` to match
+     * Material surface theming.
+     */
     color: {
         empty: string;
     };

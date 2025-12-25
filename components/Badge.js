@@ -3,8 +3,11 @@ import DensityMixin from '../mixins/DensityMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-/* https://m3.material.io/components/badges/specs */
-
+/**
+ * Badges show notifications, counts, or status information on
+ * navigation items and icons.
+ * @see https://m3.material.io/components/badges/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)

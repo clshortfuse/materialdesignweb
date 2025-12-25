@@ -5,6 +5,11 @@ import SegmentedButton from './SegmentedButton.js';
 
 /** @typedef {'compact'} DeprecatedHTMLMenuElementProperties */
 
+/**
+ * A segmented button group arranges multiple `mdw-segmented-button` items
+ * so they behave as a related set of choices or toggles.
+ * @see https://m3.material.io/components/segmented-buttons/specs
+ */
 export default Box
   .extend()
   .mixin(KeyboardNav)
@@ -37,7 +42,7 @@ export default Box
 
       box-sizing: border-box;
       min-inline-size: 100%;
-      flex:none;
+      flex: none;
     }
 
     :host([color]) {

@@ -4,25 +4,33 @@ import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 
 import TabPanel from './TabPanel.js';
 
+/**
+ * Tab content hosts tab panels and manages which panel is visible based on
+ * scroll position or selected tab.
+ * @see https://m3.material.io/components/tabs/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ResizeObserverMixin)
   .set({
-    /** @type {InstanceType<TabPanel>[]} */
+    /**
+     * Internal list of `TabPanel` nodes currently assigned to the slot.
+     * @type {InstanceType<TabPanel>[]}
+     */
     _panelNodes: [],
     /**
-     * @type {{
-     *  left:number,
-     *  width:number,
-     *  right:number,
-     *  center: number,
-     *  index: number,
-     * }[]}
+     * Cached metrics for each panel used to determine visibility and
+     * which panel is active based on scroll position. Each entry contains
+     * `{ left, width, right, center, index }` in pixels.
+     * @type {{left:number,width:number,right:number,center:number,index:number}[]|null}
      */
     _panelMetrics: null,
   })
   .observe({
-    /** Internal observed property */
+    /**
+     * Internal index of the currently selected panel. `-1` when none.
+     * This is maintained alongside panel `active` states.
+     */
     _selectedIndex: {
       type: 'integer',
       empty: -1,
@@ -44,7 +52,12 @@ export default CustomElement
     },
   })
   .define({
+    /**
+     * Modifiable index of the currently-selected panel. 0-based index.
+     * Setting this updates panel `active` states accordingly.
+     */
     selectedIndex: {
+
       get() {
         let index = 0;
         for (const panel of this.panels) {
@@ -68,16 +81,18 @@ export default CustomElement
     },
   })
   .define({
-    selectedPanel: {
     /**
-     * @return {InstanceType<TabPanel>}
+     * Modifiable currently selected panel.
+     * Setting this updates panel `active` states accordingly.
      */
+    selectedPanel: {
+      /** @return {InstanceType<TabPanel>|undefined} */
       get() {
         return this.panels.find((panel) => panel.active);
       },
       /**
        * @param {InstanceType<TabPanel>} value
-       * @return {InstanceType<TabPanel>}
+       * @return {InstanceType<TabPanel>|null}
        */
       set(value) {
         const index = this.panels.indexOf(value);
@@ -89,11 +104,16 @@ export default CustomElement
   })
   .html`<slot id=slot></slot>`
   .methods({
+    /** Called when the component observes a resize; clears cached metrics. */
     onResizeObserved() {
       this._panelMetrics = null;
       this.updatePanels();
       // Resize should not change panel visibility (Chrome Bug?)
     },
+    /**
+     * Recompute which panels are visible based on scroll position and
+     * activate the panel whose visible percentage is >= 50%.
+     */
     updatePanels() {
       const start = this.scrollLeft;
       const width = this.clientWidth;

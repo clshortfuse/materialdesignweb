@@ -4,11 +4,13 @@ const registeredElements = new Set();
 let rtlObserver;
 
 /**
+ * Observes document `dir` changes and updates `pageIsRTL` on hosts.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function RTLObserverMixin(Base) {
   return Base
     .observe({
+      /** Whether the page/document direction is RTL; kept in sync */
       pageIsRTL: {
         type: 'boolean',
         value: document.documentElement.dir === 'rtl',

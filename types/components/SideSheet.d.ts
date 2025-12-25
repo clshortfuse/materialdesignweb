@@ -94,8 +94,14 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         };
     };
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /**
+     * Ensure a scrim is present when the sheet is modal (open && !fixed).
+     * When `animate` is true, keep the scrim around to run its fade-out.
+     */
     checkForScrim(animate?: boolean): void;
+    /** Evaluate drag state and decide whether to close or snap open. */
     checkDragFinished(): void;
+    /** Recompute `fixed`/`open` state based on the window width and breakpoints. */
     onWindowResize(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onResizeObserved(entry: ResizeObserverEntry): void;

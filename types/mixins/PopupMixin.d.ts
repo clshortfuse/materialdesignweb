@@ -1,4 +1,5 @@
 /**
+ * Provides positioning, modal behavior, and history-aware popup/dialog support.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function PopupMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
@@ -19,13 +20,23 @@ export default function PopupMixin(Base: typeof import("../core/CustomElement.js
     flow: string;
     popupMargin: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Whether to push/pop history entries when opening the popup */
     useHistory: boolean;
+    /** Optional return value for dialog-like popups */
     returnValue: string;
+    /** Internal: true while closing is in-progress */
     _closing: boolean;
+    /** Internal: whether to show a scrim (overlay) for modal popups */
     _useScrim: boolean;
-    /** @type {MouseEvent|PointerEvent|HTMLElement|Event} */
+    /**
+     * Source that triggered the popup
+     * @type {MouseEvent|PointerEvent|HTMLElement|Event}
+     */
     _source: MouseEvent | PointerEvent | HTMLElement | Event;
-    /** @type {MouseEvent|PointerEvent|HTMLElement|Event} */
+    /**
+     * Anchor used for positioning
+     * @type {MouseEvent|PointerEvent|HTMLElement|Event}
+     */
     _anchor: MouseEvent | PointerEvent | HTMLElement | Event;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _dialog: HTMLDialogElement;

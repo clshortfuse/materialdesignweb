@@ -335,7 +335,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     } & {
         _ariaRole: string;
         _optionsCollection: HTMLCollectionOf<InstanceType<typeof import("./ListOption.js").default>> & HTMLOptionsCollection;
-        _selectedOptionsCollection: HTMLCollectionOf<InstanceType<typeof import("./ListOption.js").default>>;
+        _selectedOptionsCollection: any;
         _handlingSelectedness: boolean;
         _handleFormReset: boolean;
     } & {
@@ -1088,7 +1088,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     } & {
         _ariaRole: string;
         _optionsCollection: HTMLCollectionOf<InstanceType<typeof import("./ListOption.js").default>> & HTMLOptionsCollection;
-        _selectedOptionsCollection: HTMLCollectionOf<InstanceType<typeof import("./ListOption.js").default>>;
+        _selectedOptionsCollection: any;
         _handlingSelectedness: boolean;
         _handleFormReset: boolean;
     } & {
@@ -1909,7 +1909,7 @@ export type Listbox = typeof CustomElement & import("../core/CustomElement.js").
 }, any[]> & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
     _optionsCollection: HTMLCollectionOf<InstanceType<typeof import("./ListOption.js").default>> & HTMLOptionsCollection;
-    _selectedOptionsCollection: HTMLCollectionOf<InstanceType<typeof import("./ListOption.js").default>>;
+    _selectedOptionsCollection: any;
     _handlingSelectedness: boolean;
     _handleFormReset: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{

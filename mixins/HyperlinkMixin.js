@@ -22,17 +22,27 @@ function buildHyperlinkDefinition(name) {
   };
 }
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * Adds hyperlink-related properties and URL helpers (href, target, rel, etc.).
+ * @param {typeof import('../core/CustomElement.js').default} Base
+ */
 export default function HyperlinkMixin(Base) {
   return Base
     .mixin(NavigationListenerMixin)
     .observe({
+      /** The URL that the hyperlink points to. */
       href: 'string',
+      /** The browsing context in which to open the linked resource (e.g. '_blank'). */
       target: 'string',
+      /** Suggested filename for download. */
       download: 'string',
+      /** URLs to be pinged when the link is followed. */
       ping: 'string',
+      /** Link relationship tokens (e.g. 'noopener', 'noreferrer'). */
       rel: 'string',
+      /** Language of the linked resource. */
       hreflang: 'string',
+      /** Referrer policy for the link (serialized to 'referrerpolicy' attribute). */
       referrerPolicy: { type: 'string', attr: 'referrerpolicy' },
     })
     .define({

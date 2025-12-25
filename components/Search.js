@@ -1,6 +1,10 @@
 import TopAppBar from './TopAppBar.js';
 
-/* @implements {HTMLSelectElement} */
+/**
+ * Search provides an app bar integrated search field for querying content.
+ * implements {HTMLSelectElement}
+ * @see https://m3.material.io/components/search/overview
+ */
 export default TopAppBar
   .extend()
   .undefine('headline')
@@ -8,15 +12,21 @@ export default TopAppBar
   .undefine('size')
   .undefine('_headlineStyle')
   .observe({
+    /** Placeholder text shown in the search input. */
     placeholder: { type: 'string', empty: 'Search' },
+    /** Visual color token to apply to the search surface. */
     color: { empty: 'surface-container-high' },
+    /** Shape style token to apply (e.g. 'full', 'none'). */
     shapeStyle: { empty: 'full' },
+    /** Enable keyboard navigation mode for search results when true. */
     kbdNav: { empty: 'false' },
   })
   .define({
+    /** Returns the current text value of the internal input. */
     input() {
       return /** @type {HTMLInputElement} */ (this.refs.input).value;
     },
+    /** The `value` accessor proxies the internal input's value. */
     value: {
       get() {
         return /** @type {HTMLInputElement} */ (this.refs.input).value;

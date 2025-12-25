@@ -11,6 +11,11 @@ import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 
+/**
+ * Tabs organize content into separate views where only one view is visible
+ * at a time; tabs provide navigation between those views.
+ * @see https://m3.material.io/components/tabs/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ShapeMixin)
@@ -23,19 +28,29 @@ export default CustomElement
     stateTargetElement() { return this.refs.anchor; },
   })
   .set({
+    /** Enable state-layer visual treatment for pressed/hover states. */
     stateLayer: true,
   })
   .observe({
+    /** Whether this tab is currently active/selected. */
     active: 'boolean',
+    /** Named icon to display above the label. */
     icon: 'string',
+    /** Image `src` for the icon when used instead of a named icon. */
     src: 'string',
+    /** Optional aria-label for the tab's anchor element. */
     ariaLabel: 'string',
   })
   .methods({
+    /** Move focus to the tab's anchor. */
     /** @type {HTMLElement['focus']} */
     focus(options) {
       this.refs.anchor.focus(options);
     },
+    /**
+     * Compute the label metrics used for indicator alignment.
+     * Returns an object with `width` and `left` in pixels.
+     */
     computeLabelMetrics() {
       const { slot, icon } = this.refs;
       const target = slot.clientWidth ? slot : icon;
@@ -46,21 +61,27 @@ export default CustomElement
     },
   })
   .expressions({
+    /** Derive the `aria-controls` value from `href` if it references an id. */
     anchorAriaControls({ href }) {
       return href?.startsWith('#') ? href.slice(1) : null;
     },
+    /** Stringified `aria-selected` for the anchor. */
     anchorAriaSelected({ active }) {
       return `${active}`;
     },
+    /** Stringified `aria-disabled` for the anchor. */
     anchorAriaDisabled({ disabledState }) {
       return `${disabledState}`;
     },
+    /** Ensure anchor `href` defaults to `#` when unset. */
     anchorHref({ href }) {
       return href ?? '#';
     },
+    /** True when an icon or src is provided and should render. */
     iconIf({ icon, src }) {
       return icon || src;
     },
+    /** Icon variation to use when active. */
     iconVariation({ active }) {
       return active ? 'filled' : null;
     },

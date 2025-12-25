@@ -1,4 +1,7 @@
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * Adds a `density` property to control component spacing and compactness.
+ * @param {typeof import('../core/CustomElement.js').default} Base
+ */
 export default function DensityMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     density: number;
 }, any[]>;

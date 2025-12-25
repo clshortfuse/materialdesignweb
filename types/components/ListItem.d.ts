@@ -82,7 +82,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     ink: string;
     typeStyle: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** ARIA role applied to the host element (default: 'listitem'). */
     _ariaRole: string;
+    /** When true, draw the Material state layer for interactive feedback. */
     stateLayer: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     leading: string;

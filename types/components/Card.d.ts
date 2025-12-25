@@ -137,6 +137,10 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     showBlocker: () => boolean;
     showButton: () => boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /**
+     * Focuses the internal action control if the card is actionable and not disabled.
+     * @return {void}
+     */
     focus(): void;
 }, any[]>;
 export default _default;

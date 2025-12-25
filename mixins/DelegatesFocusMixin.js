@@ -1,9 +1,17 @@
 import { CHROME_VERSION, isFocused } from '../core/dom.js';
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * Enables focus delegation to an internal focus target and manages tabindex behavior.
+ * @param {typeof import('../core/CustomElement.js').default} Base
+ */
+/**
+ * Adds delegated focus behavior to the element's internals for keyboard navigation.
+ * @param {typeof import('../core/CustomElement.js').default} Base
+ */
 export default function DelegatesFocusMixin(Base) {
   return Base
     .set({
+      /** When true, the element delegates focus to an internal focus target. */
       delegatesFocus: true,
     })
     .extend(CHROME_VERSION >= 111

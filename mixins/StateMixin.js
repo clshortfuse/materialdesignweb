@@ -3,11 +3,14 @@
 let lastInteractionWasTouch = window?.matchMedia?.('(any-pointer: coarse)').matches;
 
 /**
+ * Manages interactive state flags (disabled, focused, hovered, pressed, touch)
+ * and derived state expressions used by components.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function StateMixin(Base) {
   return Base
     .observe({
+      /** Whether the element is disabled (affects interactive states) */
       disabled: 'boolean',
       /** Force focus state (independent of document) */
       focused: 'boolean',
@@ -27,6 +30,7 @@ export default function StateMixin(Base) {
       /** True if key was released this event loop. (Used to ignore clicks) */
       _keyReleased: 'boolean',
       _pointerPressed: 'boolean',
+      /** Show the visual state layer element when true */
       stateLayer: 'boolean',
     })
     .observe({

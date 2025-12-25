@@ -191,7 +191,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     ink: string;
     typeStyle: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Whether the element renders a state layer for interaction feedback. */
     stateLayer: boolean;
+    /** The underlying control input `type` value. */
     type: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     icon: string;

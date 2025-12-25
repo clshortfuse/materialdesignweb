@@ -5,6 +5,11 @@ import { ELEMENT_ANIMATION_TYPE } from '../core/customTypes.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin.js';
 
+/**
+ * Root is the application's top-level container that manages layout regions and
+ * shared floating areas such as bottom bars.
+ * @see https://m3.material.io/foundations/layout/applying-layout/window-size-classes
+ */
 export default CustomElement
   .extend()
   .mixin(ScrollListenerMixin)
@@ -25,12 +30,21 @@ export default CustomElement
     <slot id=end name=end></slot>
   `
   .observe({
+    /** Measured height (px) of the bottom area used to compute reveal offsets. */
     _bottomHeight: { type: 'float', empty: 0 },
+    /** Current vertical offset (px) applied to the bottom area for reveal/hide. */
     _bottomOffsetY: { type: 'float', empty: 0 },
+    /** Animation duration (ms) used when adjusting bottom offset. */
     _bottomDuration: { type: 'float', empty: 0 },
+    /** Animation easing name used when animating bottom reveal/hide. */
     _bottomEasing: { empty: 'ease-in' },
   })
   .observe({
+    /**
+     * Computed shared animation/style object for bottom areas used to
+     * translate and time reveal/hide animations. Returns null when height
+     * is zero (no bottom content measured).
+     */
     _sharedBottomStyle({ _bottomOffsetY, _bottomDuration, _bottomEasing, _bottomHeight }) {
       if (!_bottomHeight) return null;
       return {
@@ -45,6 +59,7 @@ export default CustomElement
     },
   })
   .observe({
+    /** Animation/style object targeting the bottom slot element. */
     _bottomSlotStyle: {
       ...ELEMENT_ANIMATION_TYPE,
       get({ _sharedBottomStyle }) {
@@ -55,6 +70,7 @@ export default CustomElement
         };
       },
     },
+    /** Animation/style object targeting the bottom-fixed-slot element. */
     _bottomFixedSlotStyle: {
       ...ELEMENT_ANIMATION_TYPE,
       get({ _sharedBottomStyle }) {

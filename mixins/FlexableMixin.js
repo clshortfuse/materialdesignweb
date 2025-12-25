@@ -1,25 +1,40 @@
 /**
+ * Layout helper mixin providing flexible box utilities (gap, padding, axis).
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function FlexableMixin(Base) {
   return Base
     .observe({
+      /** Set `display: block` on the host (boolean) */
       block: 'boolean',
+      /** Use inline flex layout: `display: inline-flex` (boolean) */
       inline: 'boolean',
+      /** Switch main axis to horizontal: `flex-direction: row` (boolean) */
       row: 'boolean',
+      /**
+       * Main-axis alignment / justification.
+       * Allowed: 'start'|'center'|'end'|'between'|'around'|'stretch'|'baseline'.
+       * Default: 'start'.
+       */
       x: {
         type: 'string',
         empty: 'start',
         /** @type {'start'|'center'|'end'|'between'|'around'|'stretch'|'baseline'} */
         value: 'start',
       },
+      /**
+       * Cross-axis alignment / alignment of items.
+       * Same allowed values as `x`. Default: 'start'.
+       */
       y: {
         type: 'string',
         empty: 'start',
         /** @type {'start'|'center'|'end'|'between'|'around'|'stretch'|'baseline'} */
         value: 'start',
       },
+      /** Gap between children. Accepts preset numeric strings (e.g. '8') mapped to px, or floats. */
       gap: 'float',
+      /** Padding preset or numeric value (e.g. 'pane', '8', '16'). */
       padding: 'string',
     })
     .css`

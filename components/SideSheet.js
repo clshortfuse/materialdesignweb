@@ -28,6 +28,11 @@ const SUPPORTS_SCROLLEND = 'onscrollend' in window;
  * Modal side sheets must become "dialog-like", blocking access to all other elements on the screen.
  * Modal side sheets can display elevation
  */
+/**
+ * Side sheets present content in a surface that slides in from an edge; they
+ * support modal and static modes and can be themed and shaped.
+ * @see https://m3.material.io/components/side-sheets/overview
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -38,40 +43,58 @@ export default CustomElement
   .mixin(DelegatesFocusMixin)
   .mixin(ResizeObserverMixin)
   .observe({
+    /** When true the side sheet is fixed (non-modal/static), occupying layout space. */
     fixed: 'boolean',
+    /** Whether the sheet is currently open (visible). */
     open: 'boolean',
+    /** When true, position the sheet at the inline end edge. */
     inlineEnd: 'boolean',
+    /** Last measured inline size (px) used for layout/translate calculations. */
     _lastComputedInlineSize: {
       type: 'float',
       nullable: false,
     },
+    /** Animation duration (ms) for sheet open/close transitions. */
     _animationDuration: {
       type: 'integer',
       value: 0,
     },
+    /** Animation easing keyword used for sheet transitions. */
     _animationEasing: {
       value: 'ease-out',
     },
+    /** Current drag delta X (px) while user is swiping the sheet. */
     _dragDeltaX: 'float',
+    /** Starting X coordinate (px) for a drag gesture. */
     _dragStartX: 'float',
+    /** CSS translateX value used to animate the sheet position. */
     _translateX: { value: '-100%' },
+    /** Timestamp of the last child scroll event (used to avoid gesture conflicts). */
     _lastChildScrollTime: 'float',
+    /** Event handler invoked when the sheet toggles. */
     ontoggle: EVENT_HANDLER_TYPE,
+    /** Event handler invoked when the sheet closes. */
     onclose: EVENT_HANDLER_TYPE,
+    /** Optional auto-open minimum viewport inline-size (px); -1 disables. */
     autoOpen: {
       type: 'float',
       empty: -1,
     },
+    /** Optional auto-close maximum viewport inline-size (px); -1 disables. */
     autoClose: {
       type: 'float',
       empty: -1,
     },
+    /** Inline-size breakpoint (px) at which the sheet becomes `fixed`. */
     fixedBreakpoint: {
       type: 'float',
       empty: 0,
     },
+    /** Internal flag computed from directionality and `inlineEnd`. */
     _isSideSheetRtl: 'boolean',
+    /** The theme color token used for the sheet background. */
     color: 'string',
+    /** Optional fixed-mode color token applied when sheet is fixed. */
     fixedColor: 'string',
   })
   .set({
@@ -79,6 +102,7 @@ export default CustomElement
     _scrim: null,
   })
   .observe({
+    /** Computed host style when `fixed` and `fixedColor` are set. */
     _styles: {
       ...ELEMENT_STYLE_TYPE,
       get({ fixed, fixedColor }) {
@@ -87,6 +111,7 @@ export default CustomElement
         }
       },
     },
+    /** Computed animation/style object applied to the host for open/close. */
     hostStyles: {
       ...ELEMENT_ANIMATION_TYPE,
       get({
@@ -110,6 +135,10 @@ export default CustomElement
   })
   .html`<slot id=slot></slot>`
   .methods({
+    /**
+     * Ensure a scrim is present when the sheet is modal (open && !fixed).
+     * When `animate` is true, keep the scrim around to run its fade-out.
+     */
     checkForScrim(animate = false) {
       let { open, fixed, _scrim } = this;
       if (open && !fixed) {
@@ -133,6 +162,7 @@ export default CustomElement
         _scrim.hidden = true;
       }
     },
+    /** Evaluate drag state and decide whether to close or snap open. */
     checkDragFinished() {
       const { open, _dragDeltaX, _lastComputedInlineSize, fixed, _isSideSheetRtl } = this;
       if (!open || fixed || _dragDeltaX == null) return;
@@ -151,6 +181,7 @@ export default CustomElement
         this._animationEasing = 'ease-in';
       }
     },
+    /** Recompute `fixed`/`open` state based on the window width and breakpoints. */
     onWindowResize() {
       const { autoOpen, fixedBreakpoint, autoClose } = this;
       const containerWidth = window.innerWidth;

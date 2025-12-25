@@ -96,11 +96,20 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     shapeStyle: string;
     outlined: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Placement strategy for the popup ('corner'). */
     flow: string;
+    /** When true, show a scrim behind the menu (used by `showModal`). */
     _useScrim: boolean;
-    /** @type {WeakRef<HTMLElement>} */
+    /**
+     * Weak reference to the element that requested a submenu cascade. Stored
+     * as a WeakRef to avoid retaining DOM nodes.
+     * @type {WeakRef<HTMLElement>}
+     */
     _cascader: WeakRef<HTMLElement>;
-    /** @type {WeakRef<HTMLElement>} */
+    /**
+     * Weak reference to the currently opened submenu (if any).
+     * @type {WeakRef<HTMLElement>}
+     */
     _submenu: WeakRef<HTMLElement>;
 }, any[]> & import("../core/CustomElement.js").Class<{
     kbdNavChildren: Element[];

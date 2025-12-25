@@ -92,6 +92,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     onSlotChange({ currentTarget }: Event & {
         currentTarget: HTMLSlotElement;
     }): void;
+    /** Focus the first autofocusable or focusable element inside the dialog. */
     focus(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     cancelAutoFocus: () => boolean;

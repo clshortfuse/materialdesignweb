@@ -5,7 +5,10 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     observeResize(): void;
     unobserveResize(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    /** @type {InstanceType<TabPanel>[]} */
+    /**
+     * Internal list of `TabPanel` nodes currently assigned to the slot.
+     * @type {InstanceType<TabPanel>[]}
+     */
     _panelNodes: InstanceType<typeof CustomElement & import("../core/CustomElement.js").Class<{
         _ariaRole: string;
     }, any[]> & import("../core/CustomElement.js").Class<{
@@ -32,13 +35,10 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         peeking: boolean;
     }, any[]>>[];
     /**
-     * @type {{
-     *  left:number,
-     *  width:number,
-     *  right:number,
-     *  center: number,
-     *  index: number,
-     * }[]}
+     * Cached metrics for each panel used to determine visibility and
+     * which panel is active based on scroll position. Each entry contains
+     * `{ left, width, right, center, index }` in pixels.
+     * @type {{left:number,width:number,right:number,center:number,index:number}[]|null}
      */
     _panelMetrics: {
         left: number;
@@ -46,7 +46,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         right: number;
         center: number;
         index: number;
-    }[];
+    }[] | null;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _selectedIndex: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
@@ -111,7 +111,12 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         peeking: boolean;
     };
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Called when the component observes a resize; clears cached metrics. */
     onResizeObserved(): void;
+    /**
+     * Recompute which panels are visible based on scroll position and
+     * activate the panel whose visible percentage is >= 50%.
+     */
     updatePanels(): void;
 }, any[]>;
 export default _default;

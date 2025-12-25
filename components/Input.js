@@ -1,4 +1,3 @@
-/* https://www.w3.org/WAI/ARIA/apg/patterns/combobox/ */
 /* https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.combobox.iseditable?view=windowsdesktop-7.0#remarks */
 
 import CustomElement from '../core/CustomElement.js';
@@ -31,6 +30,12 @@ function getSharedPopup() {
   return sharedPopup;
 }
 
+/**
+ * Text fields let users enter and edit text. This component implements
+ * autocomplete, suggestions, and listbox behaviors where applicable.
+ * @see https://m3.material.io/components/text-fields/specs
+ * @see https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -39,31 +44,76 @@ export default CustomElement
   .mixin(TextFieldMixin)
   .mixin(ResizeObserverMixin)
   .observe({
+    /**
+     * When true, the component inserts the best suggestion into the input field
+     * as inline text. The appended portion of the suggestion is selected so the
+     * user can accept it (e.g. press Enter) or continue typing to replace it.
+     * Typically combined with `autosuggestInline` to display candidates while
+     * typing.
+     * @see https://w3c.github.io/aria/#aria-autocomplete
+     */
     autocompleteInline: 'boolean',
+
+    /**
+     * When set and not `'custom'`, `applyAutocompleteList()` filters the
+     * listbox options to items that start * with the typed text. This controls
+     * dropdown filtering but does not itself cause inline insertion.
+     * @see https://w3c.github.io/aria/#aria-autocomplete
+     */
     autocompleteList: 'string',
+
+    /**
+     * When true, the component advances/searches suggestion candidates as the
+     * user types (calls `changeSuggestion({ startsWith })`). If
+     * `autosuggestInline` is true and `autocompleteInline` is also true the
+     * current candidate will be shown inline; if `autocompleteInline` is false
+     * only the candidate selection changes (no inline text insertion).
+     */
     autosuggestInline: 'boolean',
+
     /** If true, when listbox is open, arrow navigation will automatically select options. */
     autoSelect: 'boolean',
+
+    /** True when the listbox popup is currently expanded. */
     _expanded: 'boolean',
-    /** If true, when listbox is open, <ESC> accepts current suggestion, same as <Enter>. */
+
+    /** If true, when listbox is open, <Esc> accepts current suggestion (same as Enter). */
     acceptOnEscape: 'boolean',
+
     _listbox: {
       type: 'object',
       /** @type {InstanceType<Listbox>} */
       value: null,
     },
+
+    /** Currently focused suggestion value in the listbox. */
     _focusedValue: 'string',
+
+    /** Focus position in set (1-based) for aria-posinset. */
     _focusedPosInSet: { value: -1 },
+
+    /** Computed size of the listbox (number of options). */
     _listboxSize: { value: -1 },
+
+    /** Draft input text while composing suggestions. */
     _draftInput: { type: 'string', nullable: false },
+
+    /** Whether a suggestion is currently available. */
     _hasSuggestion: 'boolean',
+
+    /** The current selected/committed listbox value. */
     _listboxValue: 'string',
+
+    /** Last computed listbox value (non-nullable string). */
     _lastComputedListboxValue: { type: 'string', nullable: false },
+
     _values: {
       type: 'array',
       /** @type {string[]} */
       value: [],
     },
+
+    /** Whether an input chip is currently selected in multi-select mode. */
     _chipSelected: 'boolean',
   })
   .observe({
@@ -688,7 +738,26 @@ export default CustomElement
       if (!_hasListbox) return null;
       return 'aria-listbox';
     },
-    ariaAutocompleteAttrValue({ _hasListbox, autocompleteList, _isSelect }) {
+    /**
+     * Compute `aria-autocomplete` to describe the widget's behavior to AT.
+     *
+     * ARIA values:
+     * - `none`  : no autocomplete behavior is provided
+     * - `inline`: the textbox shows an inline completion the user can accept
+     * - `list`  : a popup listbox provides choices (no inline insertion)
+     * - `both`  : both inline completion and a listbox are available
+     *
+     * Component mapping:
+     * - `autocompleteInline` -> inline completion behavior
+     * - `autocompleteList` (non-null) -> listbox filtering / dropdown present
+     * - `autosuggestInline` -> drives candidate selection as user types
+     *
+     * Note: the current implementation reports `'both'` when a named
+     * `autocompleteList` is present (even if `autocompleteInline` is false).
+     * A stricter mapping would return `list` when only a listbox is present
+     * and `both` only when both `autocompleteInline` and a listbox exist.
+     */
+    ariaAutocompleteAttrValue({ _hasListbox, autocompleteList, _isSelect, autocompleteInline }) {
       if (!_hasListbox) return null;
       if (_isSelect) return null;
       if (autocompleteList != null) {

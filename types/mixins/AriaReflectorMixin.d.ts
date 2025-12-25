@@ -2,7 +2,10 @@
  * @template K
  * @typedef {K extends keyof ARIAMixin ? ARIAMixin[K] extends string ? K : never : never} StringKeyOfARIAMixin
  */
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * Reflects ARIA-like properties to attributes/ElementInternals and vice versa.
+ * @param {typeof import('../core/CustomElement.js').default} Base
+ */
 export default function AriaReflectorMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{

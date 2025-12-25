@@ -5,6 +5,10 @@ import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
+/**
+ * Switch is a binary control that toggles between on and off states.
+ * @see https://m3.material.io/components/switch/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -13,15 +17,23 @@ export default CustomElement
   .mixin(TouchTargetMixin)
   // Switches have their own pressed animation (No ripple)
   .set({
+    /** The control `type` used for the underlying input element (always 'checkbox'). */
     type: 'checkbox',
+    /** Enables the state-layer visual treatment for pressed/hover states. */
     stateLayer: true,
   })
   .observe({
+    /** The icon name to show inside the thumb when provided. */
     icon: 'string',
+    /** The icon name to show when the switch is selected/on. */
     selectedIcon: 'string',
+    /** The icon name to show when the switch is unselected/off. */
     unselectedIcon: 'string',
+    /** The image `src` to show inside the thumb when provided. */
     src: 'string',
+    /** The image `src` to show when the switch is selected/on. */
     selectedSrc: 'string',
+    /** The image `src` to show when the switch is unselected/off. */
     unselectedSrc: 'string',
   })
   .html`
@@ -44,6 +56,8 @@ export default CustomElement
   })
   .methods({
     /**
+     * Handle pointer/touch input on the native control to compute dragging
+     * position and update the thumb drag state.
      * @param {(MouseEvent|TouchEvent) & {currentTarget:HTMLInputElement}} event
      * @return {void}
      */

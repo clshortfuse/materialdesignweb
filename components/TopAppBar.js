@@ -15,6 +15,11 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
  * removed when raised
  */
 
+/**
+ * Top app bar provides a consistent place for navigation and actions at the
+ * top of the screen. It supports small, medium, and large variants.
+ * @see https://m3.material.io/components/top-app-bar/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -23,14 +28,21 @@ export default CustomElement
   .mixin(SemiStickyMixin)
   .mixin(DelegatesFocusMixin)
   .observe({
+    /** Whether the bar is currently raised/elevated (scrolled). */
     _raised: 'boolean',
+    /** Headline opacity used when companion region is visible (0..1). */
     _headlineOpacity: { type: 'float', default: 0 },
+    /** Headline text displayed in the center area. */
     headline: 'string',
+    /** Size variant: 'small' | 'medium' | 'large' or `null` to auto-select. */
     size: { value: /** @type {'small'|'medium'|'large'|null} */ (null) },
+    /** Color token name used for ink/background. */
     color: 'string',
+    /** Color token to use when the bar is raised. */
     raisedColor: 'string',
   })
   .observe({
+    /** Computed style tokens injected for raised-background when `raisedColor` is set. */
     _styles: {
       ...ELEMENT_STYLE_TYPE,
       get({ raisedColor }) {
@@ -42,6 +54,7 @@ export default CustomElement
         return null;
       },
     },
+    /** Animation config for the headline element when companion is visible. */
     _headlineStyle: {
       ...ELEMENT_ANIMATION_TYPE,
       get({ size, _headlineOpacity }) {
@@ -59,6 +72,7 @@ export default CustomElement
     },
   })
   .expressions({
+    /** True when the companion region should be rendered (medium/large). */
     _companionIf({ size }) {
       return size === 'medium' || size === 'large';
     },

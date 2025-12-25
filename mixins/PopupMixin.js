@@ -72,6 +72,7 @@ function onBeforeUnload(event) {
 }
 
 /**
+ * Provides positioning, modal behavior, and history-aware popup/dialog support.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function PopupMixin(Base) {
@@ -79,27 +80,44 @@ export default function PopupMixin(Base) {
     .mixin(DelegatesFocusMixin)
     .mixin(ResizeObserverMixin)
     .observe({
+      /** Whether the popup is currently open */
       open: 'boolean',
+      /** When true the popup behaves as a blocking modal */
       modal: 'boolean',
+      /** Use the native HTMLDialogElement when available */
       native: 'boolean',
+      /** Allow internal content to scroll when true */
       scrollable: 'boolean',
+      /** When true, match the popup width to the source element */
       matchSourceWidth: 'boolean',
+      /** Internal: current resolved flow used for positioning */
       _currentFlow: 'string',
       flow: {
         type: 'string',
         /** @type {'corner'|'adjacent'|'overflow'|'vcenter'|'hcenter'|'center'} */
         value: null,
       },
+      /** Margin between popup and viewport/anchor (px) */
       popupMargin: 'float',
     })
     .set({
+      /** Whether to push/pop history entries when opening the popup */
       useHistory: true,
+      /** Optional return value for dialog-like popups */
       returnValue: '',
+      /** Internal: true while closing is in-progress */
       _closing: false,
+      /** Internal: whether to show a scrim (overlay) for modal popups */
       _useScrim: false,
-      /** @type {MouseEvent|PointerEvent|HTMLElement|Event} */
+      /**
+       * Source that triggered the popup
+       * @type {MouseEvent|PointerEvent|HTMLElement|Event}
+       */
       _source: null,
-      /** @type {MouseEvent|PointerEvent|HTMLElement|Event} */
+      /**
+       * Anchor used for positioning
+       * @type {MouseEvent|PointerEvent|HTMLElement|Event}
+       */
       _anchor: null,
     })
     .define({
@@ -108,7 +126,9 @@ export default function PopupMixin(Base) {
       },
     })
     .expressions({
-      _ariaHidden({ open }) { return (open ? 'false' : 'true'); },
+      _ariaHidden({ open }) {
+        return (open ? 'false' : 'true');
+      },
     })
     .methods({
       /**

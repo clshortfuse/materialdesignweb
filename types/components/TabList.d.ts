@@ -111,6 +111,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     /** @type {WeakRef<HTMLElement>} */
     _tabContentRef: WeakRef<HTMLElement>;
+    /** Listener function attached to the tab content's `scroll` event. */
     _tabContentScrollListener: any;
     /** @type {HTMLCollectionOf<InstanceType<Tab>>} */
     _tabCollection: HTMLCollectionOf<InstanceType<typeof CustomElement & import("../core/CustomElement.js").Class<{
@@ -950,8 +951,11 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         iconVariation: () => string;
     };
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Clear cached tab metrics (widths/positions). */
     clearCache(): void;
+    /** Find and bind to the external `TabContent` element by id. */
     searchForTabContent(): void;
+    /** Update the indicator position based on a specific `Tab`. */
     /** @param {InstanceType<Tab>} [tab] */
     updateIndicatorByTab(tab?: InstanceType<typeof CustomElement & import("../core/CustomElement.js").Class<{
         delegatesFocus: boolean;
@@ -1084,12 +1088,20 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         iconIf: () => string;
         iconVariation: () => string;
     }, any[]>>): void;
+    /** Recompute and apply indicator; optionally disable animation when `animate` is false. */
     updateIndicator(animate?: boolean): void;
-    /** @param {number} percentage */
+    /**
+     * Update the indicator position by a floating `percentage` between 0..1
+     * representing the scroll progress across tab panels.
+     * @param {number} percentage
+     */
     updateIndicatorByPosition(percentage: number): void;
+    /** Update the indicator using a discrete tab index. */
     /** @param {number} index */
     updateIndicatorByIndex(index: number): void;
+    /** Observe the bound TabContent scroll and update indicator accordingly. */
     observeTabContent(): void;
+    /** Handler called when the element is resized; refresh cache and indicator. */
     onResizeObserved(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaRole: string;

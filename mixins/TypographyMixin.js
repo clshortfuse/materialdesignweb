@@ -12,14 +12,21 @@ function parseSize(input) {
   return `calc(${input.replace('sp', '')} * 0.0625rem)`;
 }
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * Provides typographic padding and leading helpers for text content.
+ * @param {typeof import('../core/CustomElement.js').default} Base
+ */
 export default function TypographyMixin(Base) {
   return Base
     .mixin(DelegatesFocusMixin)
     .observe({
+      /** General vertical padding for text content (css length) */
       textPadding: 'string',
+      /** Padding-top override for text content (css length) */
       textPaddingTop: 'string',
+      /** Line-leading (extra top spacing) for text (css length or 'sp' units) */
       textLeading: 'string',
+      /** Padding-bottom override for text content (css length) */
       textPaddingBottom: 'string',
     })
     .observe({

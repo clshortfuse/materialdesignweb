@@ -163,7 +163,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     stateLayer: boolean;
     type: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
-    ticks: string;
+    ticks: number;
     _valueAsText: string;
     thumbLabel: string;
     _roundedValue: number;
@@ -171,15 +171,22 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     _lastDispatchedChangeValue: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     /**
+     * Handle pointer or touch interactions on the native control to compute
+     * position and update the intermediate rounded value while dragging.
      * @param {(MouseEvent|TouchEvent) & {currentTarget:HTMLInputElement}} event
      * @return {void}
      */
     onControlMouseOrTouch(event: (MouseEvent | TouchEvent) & {
         currentTarget: HTMLInputElement;
     }): void;
-    /** @param {Event} event */
+    /**
+     * Pointer leave/blur handler for the control; hides the thumb label when focus is lost.
+     * @param {Event} event
+     */
     onLeaveEvent({ currentTarget }: Event): void;
     /**
+     * Finalize interaction with the control: commit the rounded value to the
+     * native input and dispatch a `change` event if the value changed.
      * @param {(MouseEvent|TouchEvent) & {currentTarget:HTMLInputElement}} event
      * @return {void}
      */

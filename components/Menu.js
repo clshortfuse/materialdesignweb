@@ -1,5 +1,3 @@
-// https://www.w3.org/TR/wai-aria-practices/#menu
-
 import CustomElement from '../core/CustomElement.js';
 import { attemptFocus } from '../core/dom.js';
 import DensityMixin from '../mixins/DensityMixin.js';
@@ -9,6 +7,11 @@ import PopupMixin from '../mixins/PopupMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/**
+ * Menus provide a list of choices or actions in a temporary surface.
+ * @see https://m3.material.io/components/menus/specs
+ * @see https://www.w3.org/TR/wai-aria-practices/#menu
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -18,11 +21,23 @@ export default CustomElement
   .mixin(DensityMixin)
   .mixin(KeyboardNavMixin)
   .set({
+    /** Placement strategy for the popup ('corner'). */
     flow: 'corner',
+
+    /** When true, show a scrim behind the menu (used by `showModal`). */
     _useScrim: false,
-    /** @type {WeakRef<HTMLElement>} */
+
+    /**
+     * Weak reference to the element that requested a submenu cascade. Stored
+     * as a WeakRef to avoid retaining DOM nodes.
+     * @type {WeakRef<HTMLElement>}
+     */
     _cascader: null,
-    /** @type {WeakRef<HTMLElement>} */
+
+    /**
+     * Weak reference to the currently opened submenu (if any).
+     * @type {WeakRef<HTMLElement>}
+     */
     _submenu: null,
   })
   .define({
@@ -32,9 +47,11 @@ export default CustomElement
       const submenuItems = [...this.querySelectorAll(':scope mdw-menu mdw-menu-item')];
       return items.filter((el) => !submenuItems.includes(el));
     },
+    /** Return the internal dialog element used for popup rendering (if any). */
     _dialog() {
       return /** @type {HTMLDialogElement} */ (this.refs.dialog);
     },
+    /** Element that cascaded this submenu (if present). */
     cascader: {
       get() {
         return this._cascader?.deref();
@@ -46,6 +63,7 @@ export default CustomElement
         this._cascader = value ? new WeakRef(value) : null;
       },
     },
+    /** Currently opened submenu element (if any). */
     submenu: {
       get() {
         return this._submenu?.deref();
@@ -155,7 +173,9 @@ export default CustomElement
           // if (!this.submenu) break;
           if (getComputedStyle(this).direction === 'rtl') {
             if (event.key === 'ArrowLeft') break;
-          } else if (event.key === 'ArrowRight') break;
+          } else if (event.key === 'ArrowRight') {
+            break;
+          }
           // Fallthrough;
         case 'Escape':
         case 'Esc':

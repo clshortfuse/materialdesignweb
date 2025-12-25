@@ -1,4 +1,7 @@
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * Adds hyperlink-related properties and URL helpers (href, target, rel, etc.).
+ * @param {typeof import('../core/CustomElement.js').default} Base
+ */
 export default function HyperlinkMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
     href: string;
     target: string;

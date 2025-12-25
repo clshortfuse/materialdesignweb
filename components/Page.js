@@ -5,33 +5,45 @@ import { ELEMENT_STYLE_TYPE } from '../core/customTypes.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 
+/**
+ * Page is a top-level layout container that manages single or multi-pane
+ * application layouts, adapting to viewport size to show one or two panes.
+ * @see https://m3.material.io/foundations/layout/applying-layout/window-size-classes
+ */
 export default CustomElement
   .extend()
   .mixin(DelegatesFocusMixin)
   .mixin(ResizeObserverMixin)
   .observe({
+    /** Layout behavior for the first pane: 'fixed' keeps a fixed width, 'flexible' grows. */
     paneOne: {
       value: /** @type {'fixed'|'flexible'} */ ('flexible'),
     },
+    /** Layout behavior for the second pane; null disables the second pane. */
     paneTwo: {
       value: /** @type {'fixed'|'flexible'|null} */ (null),
     },
+    /** Whether the second pane is currently active/visible. */
     paneTwoActive: 'boolean',
+    /** Inline-size breakpoint (px) at which the second pane becomes visible. */
     paneTwoBreakpoint: {
       type: 'float',
       empty: 720,
     },
+    /** Internally tracked last measured inline size (pixels) used for layout decisions. */
     _lastComputedInlineSize: {
       type: 'float',
       nullable: false,
     },
   })
   .observe({
+    /** Computed: true when two-pane layout should be active based on measured size. */
     _isMultipane({ _lastComputedInlineSize, paneTwo, paneTwoBreakpoint }) {
       return Boolean(paneTwo && _lastComputedInlineSize >= paneTwoBreakpoint);
     },
   })
   .observe({
+    /** Computed inline CSS string that adjusts grid columns for single/multi-pane layouts. */
     _styles: {
       ...ELEMENT_STYLE_TYPE,
       get({ _isMultipane, paneOne, paneTwoActive }) {
@@ -99,6 +111,7 @@ export default CustomElement
     }
   `
   .overrides({
+    /** Handle resize observer entries; update measured inline size for layout logic. */
     onResizeObserved(entry) {
       this._lastComputedInlineSize = entry.borderBoxSize[0]?.inlineSize;
     },

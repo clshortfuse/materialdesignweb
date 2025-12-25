@@ -1,4 +1,5 @@
 /**
+ * Provides ARIA toolbar semantics and keyboard navigation defaults.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function AriaToolbarMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{
@@ -25,7 +26,9 @@ export default function AriaToolbarMixin(Base: typeof import("../core/CustomElem
     focus(options?: FocusOptions): void;
     refreshTabIndexes(): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Default orientation for toolbar: 'horizontal' or 'vertical'. */
     ariaOrientationDefault: string;
+    /** Default ARIA role applied to the host (e.g. 'toolbar'). */
     _ariaRole: string;
 }, any[]>;
 //# sourceMappingURL=AriaToolbarMixin.d.ts.map

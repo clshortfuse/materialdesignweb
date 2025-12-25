@@ -149,11 +149,16 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     _shapeShapeTop: never;
     computedIconVariation: () => string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Whether the UA supports the `lh` CSS unit for line-height. */
     supportsCSSLineHeightUnit: boolean;
+    /** The control type used by the component. */
     type: string;
+    /** Internal flag used while performing auto-resize logic. */
     _resizing: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Tag name used for the native control element. */
     controlTagName: string;
+    /** Textareas are not void elements. */
     controlVoidElement: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     fixed: boolean;
@@ -183,7 +188,12 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     };
     setSelectionRange: (start: number | null, end: number | null, direction?: "forward" | "backward" | "none") => void;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /**
+     * Resize the textarea to fit content up to `maxRows` and not below
+     * `minRows`. This updates the `rows` property and internal layout state.
+     */
     resize(): void;
+    /** Called by the ResizeObserver mixin; triggers a resize unless active. */
     onResizeObserved(): void;
 }, any[]>;
 export default _default;

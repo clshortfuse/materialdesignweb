@@ -64,7 +64,9 @@ function focusOnTree(root, autofocus, forward = true) {
           // Can focus, add to later in case we find an autofocusable
           if (autofocus || !forward) {
             focusables.push(node);
-          } else if (attemptFocus(node)) return true;
+          } else if (attemptFocus(node)) {
+            return true;
+          }
         }
         if (focusOnTree(el, autofocus, forward)) return true;
       }
@@ -74,7 +76,9 @@ function focusOnTree(root, autofocus, forward = true) {
     if (node.tabIndex >= 0) {
       if (autofocus || !forward) {
         focusables.push(node);
-      } else if (attemptFocus(node)) return true;
+      } else if (attemptFocus(node)) {
+        return true;
+      }
     }
   }
   for (const el of forward ? focusables : focusables.reverse()) {
@@ -83,25 +87,36 @@ function focusOnTree(root, autofocus, forward = true) {
   return false;
 }
 
+/**
+ * Dialogs provide important prompts in a user flow.
+ * @see https://m3.material.io/components/dialogs/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(ShapeMixin)
   .mixin(PopupMixin)
   .define({
+    /** Return the `returnValue` from the internal dialog element. */
     returnValue() {
       return /** @type {HTMLDialogElement} */ (this.refs.dialog).returnValue;
     },
   })
   .observe({
+    /** Divider style for the dialog: 'full', 'inset', or empty. */
     dividers: {
       /** @type {'full'|''|'inset'} */
       value: null,
     },
+    /** Headline text displayed in the dialog header. */
     headline: 'string',
+    /** Optional icon name shown in the dialog header. */
     icon: 'string',
+    /** Default action (value) for the dialog when submitting. */
     default: { value: 'confirm' },
+    /** Label for the cancel action button. */
     cancel: { value: 'Cancel' },
+    /** Label for the confirm action button. */
     confirm: { value: 'Confirm' },
   })
   .define({
@@ -126,6 +141,7 @@ export default CustomElement
       || (node.nodeType === node.TEXT_NODE && node.nodeValue.trim().length));
       currentTarget.toggleAttribute('slotted', hasContent);
     },
+    /** Focus the first autofocusable or focusable element inside the dialog. */
     focus() {
       focusOnTree(this.shadowRoot, true, true);
     },

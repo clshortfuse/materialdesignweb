@@ -3,14 +3,16 @@ import Ripple from '../components/Ripple.js';
 /** @typedef {import('../components/Ripple.js').default} Ripple */
 
 /**
+ * Provides visual ripple effects (pointer/press ripples) and helpers to add/remove them.
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function RippleMixin(Base) {
   return Base
     .set({
+      /** WeakRef to the last appended Ripple instance (used to release/hold) */
       /** @type {WeakRef<InstanceType<Ripple>>} */
       _lastRippleWeakRef: null,
-      /** Flag set if ripple was added this event loop. */
+      /** Flag set if ripple was added this event loop to avoid duplicate ripples */
       _rippleAdded: false,
     })
     .define({

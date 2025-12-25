@@ -5,26 +5,37 @@ import { canAnchorPopup } from '../utils/popup.js';
 /** @typedef {import('../components/Tooltip.js').default} Tooltip */
 
 /**
+ * Adds tooltip scheduling, positioning, and show/hide behavior for host elements.
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function TooltipTriggerMixin(Base) {
   return Base
     .set({
+      /** Idle delay before showing tooltip for mouse (ms) */
       TOOLTIP_MOUSE_IDLE_MS: 500,
+      /** Idle delay before showing tooltip for touch (ms) */
       TOOLTIP_TOUCH_IDLE_MS: 1500,
+      /** Timer id used for tooltip show/hide debouncing */
       /** @type {any} */
       _idleDebounce: null,
+      /** Parents being observed for layout changes */
       /** @type {HTMLElement[]} */
       _watchedParents: null,
+      /** ResizeObserver used to track tooltip/anchor size changes */
       /** @type {ResizeObserver} */
       _resizeObserver: null,
+      /** IntersectionObserver used to detect occlusion */
       /** @type {IntersectionObserver} */
       _intersectObserver: null,
+      /** Bound scroll listener attached to parent elements */
       _parentScrollListener: null,
+      /** Slot id to use when cloning tooltip content */
       tooltipSlotId: 'slot',
     })
     .observe({
+      /** Text or content id used as tooltip content */
       tooltip: 'string',
+      /** When true, show tooltip automatically on hover/focus */
       autoTooltip: 'boolean',
     })
     .html`<mdw-tooltip id=tooltip></mdw-tooltip>`

@@ -13,6 +13,11 @@ import RippleMixin from '../mixins/RippleMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/**
+ * List item representing a single row in a list; supports leading/trailing
+ * content, selection, and accessibility features.
+ * @see https://m3.material.io/components/lists/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -21,32 +26,80 @@ export default CustomElement
   .mixin(AriaReflectorMixin)
   .mixin(HyperlinkMixin)
   .set({
+    /** ARIA role applied to the host element (default: 'listitem'). */
     _ariaRole: 'listitem',
+
+    /** When true, draw the Material state layer for interactive feedback. */
     stateLayer: true,
   })
   .observe({
+    /** Leading slot content or shorthand string. */
     leading: 'string',
+
+    /** Avatar label or shorthand content for a leading avatar. */
     avatar: 'string',
+
+    /** Color token used for the avatar container (default: primary-container). */
     avatarColor: { value: 'primary-container' },
+
+    /** Image source for the avatar. */
     avatarSrc: 'string',
+
+    /** Image source URL for a leading image in the list item. */
     src: 'string',
+
+    /** Alt text for the leading image. */
     alt: 'string',
+
+    /** Icon name for a leading icon. */
     icon: 'string',
+
+    /** Ink/color token used for the leading icon. */
     iconInk: 'string',
+
+    /** External image/SVG source for the leading icon. */
     iconSrc: 'string',
+
+    /** Icon variation (e.g., 'filled'). */
     iconVariation: 'string',
+
+    /** Checkbox shorthand name or placement class for a selectable leading checkbox. */
     checkbox: 'string',
+
+    /** Radio shorthand name or placement class for a selectable leading radio. */
     radio: 'string',
+
+    /** Selection color token used when item is selected (default: primary). */
     selectionColor: { value: 'primary' },
+
+    /** Selection state for the item. */
     selected: 'boolean',
+
+    /** Supporting text (secondary line) for the list item. */
     supporting: 'string',
+
+    /** Trailing text slot or shorthand. */
     trailing: 'string',
+
+    /** Trailing icon name. */
     trailingIcon: 'string',
+
+    /** Ink/color token for the trailing icon. */
     trailingIconInk: 'string',
+
+    /** External image/SVG source for the trailing icon. */
     trailingIconSrc: 'string',
+
+    /** Divider style identifier (e.g., 'inset'). */
     divider: 'string',
+
+    /** If true, indicates the list item contains video content and adjusts layout. */
     video: 'boolean',
+
+    /** Number of text lines the item should reserve for content (integer). */
     lines: 'integer',
+
+    /** Internal flag set when supporting content is provided via slot. */
     _supportingSlotted: 'boolean',
   })
   .observe({

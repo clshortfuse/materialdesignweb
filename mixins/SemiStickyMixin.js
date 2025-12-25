@@ -10,12 +10,19 @@ export default function SemiStickyMixin(Base) {
   return Base
     .mixin(ScrollListenerMixin)
     .observe({
+      /** Measured full height of the element used for hiding calculations (px) */
       _semiStickyHeight: { type: 'float', empty: 0 },
+      /** Measured top offset used as reveal threshold (px) */
       _semiStickyOffsetY: { type: 'float', empty: 0 },
+      /** Current translateY applied to the element (px) */
       _semiStickyTranslateY: { type: 'float', empty: 0 },
+      /** Animation duration when transitioning translateY (ms) */
       _semiStickyDuration: { type: 'float', empty: 0 },
+      /** Animation easing function for transitions */
       _semiStickyEasing: { empty: 'ease-in' },
+      /** Whether measurements have been performed */
       _semiStickyMeasured: 'boolean',
+      /** When true, element remains always visible */
       stickyAlways: 'boolean',
       /** Stick to offsetParent instead of window */
       stickyParent: 'boolean',

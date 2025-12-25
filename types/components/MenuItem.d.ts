@@ -205,8 +205,11 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     anchorAriaDescribedBy: () => string;
     computedIconVariation: () => string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Timeout handle used to schedule submenu cascade. */
     _cascadeTimeout: any;
+    /** Milliseconds to delay before opening a cascaded submenu. */
     CASCADE_TIMEOUT: number;
+    /** Internal flag indicating a cascade is in progress. */
     _cascading: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     type: "radio" | "checkbox";

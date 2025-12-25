@@ -55,9 +55,17 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     onaction: EventListener;
     ontoggle: EventListener;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /**
+     * Close the snackbar. Dispatches a cancelable `close` event; if not
+     * prevented the snackbar will hide and await the closing transition.
+     */
     close(): Promise<void>;
+    /** Show the snackbar (set `open` true). */
     show(): void;
-    /** @param {string} text */
+    /**
+     * Update the snackbar text content.
+     * @param {string} text
+     */
     update(text: string): void;
 }, any[]>;
 export default _default;

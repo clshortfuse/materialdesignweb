@@ -93,15 +93,41 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
         };
     };
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /**
+     * Ensure a scrim is present when the sheet is modal and open.
+     * @param {boolean} [animate=false] - If true, animate scrim changes.
+     * @return {void}
+     */
     checkForScrim(animate?: boolean): void;
+    /**
+     * Evaluate drag state and settle the sheet (close or snap open).
+     * @return {void}
+     */
     checkDragFinished(): void;
-    /** @param {PointerEvent} event */
+    /**
+     * Pointer active on the drag handle; registers the pointer for dragging.
+     * @param {PointerEvent} event
+     * @return {void}
+     */
     onDragHandleActive(event: PointerEvent): void;
-    /** @param {PointerEvent} event */
+    /**
+     * Pointer inactive on the drag handle; finalizes potential drag.
+     * @param {PointerEvent} event
+     * @return {void}
+     */
     onDragHandleInactive(event: PointerEvent): void;
-    /** @param {PointerEvent|TouchEvent} event */
+    /**
+     * Handle pointer or touch move events during dragging.
+     * @param {PointerEvent|TouchEvent} event
+     * @return {void}
+     */
     onPointerOrTouchMove(event: PointerEvent | TouchEvent): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /**
+     * Called by ResizeObserverMixin when the element's size changes.
+     * @param {ResizeObserverEntry} entry
+     * @return {void}
+     */
     onResizeObserved(entry: ResizeObserverEntry): void;
 }, any[]>;
 export default _default;

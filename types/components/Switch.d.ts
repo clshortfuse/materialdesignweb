@@ -160,7 +160,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     ink: string;
     typeStyle: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** The control `type` used for the underlying input element (always 'checkbox'). */
     type: string;
+    /** Enables the state-layer visual treatment for pressed/hover states. */
     stateLayer: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
     icon: string;
@@ -171,6 +173,8 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     unselectedSrc: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     /**
+     * Handle pointer/touch input on the native control to compute dragging
+     * position and update the thumb drag state.
      * @param {(MouseEvent|TouchEvent) & {currentTarget:HTMLInputElement}} event
      * @return {void}
      */

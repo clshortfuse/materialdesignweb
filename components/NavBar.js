@@ -4,25 +4,36 @@ import ThemableMixin from '../mixins/ThemableMixin.js';
 
 import NavItem from './NavItem.js';
 
+/**
+ * Navigation bars let people switch between UI views on smaller devices
+ * @see https://m3.material.io/components/navigation-bar/specs
+ */
 export default CustomElement
   .extend()
   .mixin(DelegatesFocusMixin)
   .mixin(ThemableMixin)
   .observe({
+    /** When true, the navigation bar is expanded and visible on small viewports. */
     open: 'boolean',
+
+    /**
+     * Pixel threshold for auto-closing the nav bar based on viewport width.
+     * A value of `-1` disables auto-close. Default: 728.
+     */
     autoClose: {
       type: 'float',
       empty: 728,
     },
   })
   .set({
+    /** Color token used for the nav surface (defaults to `surface-container`). */
     color: 'surface-container',
+
+    /** ARIA role applied to the host element (default: 'navigation'). */
     _ariaRole: 'navigation',
   })
   .html`<slot id=slot></slot>`
   .css`
-    /* https://m3.material.io/components/navigation-bar/specs */
-
     :host {
       --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);

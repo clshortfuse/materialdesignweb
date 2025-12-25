@@ -32,6 +32,10 @@ function valueAsFraction(value, min, max) {
   return (nValue - nMin) / (nMax - nMin);
 }
 
+/**
+ * Slider allows users to select a value from a range by dragging a thumb.
+ * @see https://m3.material.io/components/sliders/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -42,18 +46,26 @@ export default CustomElement
     type: 'range',
   })
   .observe({
-    ticks: 'string',
+    /** Number of tick marks to show along the track (integer). */
+    ticks: 'integer',
+    /** Internal string representation of the current value used for formatting. */
     _valueAsText: { nullable: false },
+    /** Text to show in the thumb label; when null the numeric value is shown. */
     thumbLabel: {
       type: 'string',
       reflect: 'read',
     },
+    /** Rounded numeric value (used while dragging) tracked as a float. */
     _roundedValue: 'float',
+    /** True while the pointer is hovering the thumb (used to show the label). */
     _isHoveringThumb: 'boolean',
+    /** Last `value` string that produced a dispatched `change` event; used to avoid duplicates. */
     _lastDispatchedChangeValue: 'string',
   })
   .methods({
     /**
+     * Handle pointer or touch interactions on the native control to compute
+     * position and update the intermediate rounded value while dragging.
      * @param {(MouseEvent|TouchEvent) & {currentTarget:HTMLInputElement}} event
      * @return {void}
      */
@@ -155,13 +167,18 @@ export default CustomElement
       this._isHoveringThumb = offsetX >= thumbMin && offsetX <= thumbMax;
     },
 
-    /** @param {Event} event */
+    /**
+     * Pointer leave/blur handler for the control; hides the thumb label when focus is lost.
+     * @param {Event} event
+     */
     onLeaveEvent({ currentTarget }) {
       if (isFocused(/** @type {Element} */ (currentTarget))) return;
       this._isHoveringThumb = false;
     },
 
     /**
+     * Finalize interaction with the control: commit the rounded value to the
+     * native input and dispatch a `change` event if the value changed.
      * @param {(MouseEvent|TouchEvent) & {currentTarget:HTMLInputElement}} event
      * @return {void}
      */
@@ -206,15 +223,18 @@ export default CustomElement
     },
   })
   .expressions({
+    /** Compute inline style variables for the track, including ticks and value fraction. */
     computeTrackStyle({ ticks, _valueAsText, min, max }) {
       return [
         ticks ? `--ticks:${ticks}` : null,
         `--value:${valueAsFraction(_valueAsText, min, max)}`,
       ].filter(Boolean).join(';') || null;
     },
+    /** True when the thumb label should be hidden (not hovering and not focused). */
     _thumbLabelHidden({ _isHoveringThumb, focusedState }) {
       return (!_isHoveringThumb && !focusedState);
     },
+    /** Compute the label text to show in the thumb: explicit `thumbLabel` or numeric value. */
     _computedThumbLabel({ thumbLabel, _valueAsText }) {
       return thumbLabel ?? _valueAsText;
     },

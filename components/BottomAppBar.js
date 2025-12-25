@@ -8,6 +8,12 @@ import Surface from './Surface.js';
  * next on the DOM, so users can logically tab to it.
  */
 
+/**
+ * BottomAppBar component that extends Surface and mixes in AriaToolbarMixin.
+ * It observes color properties and applies specific CSS styles.
+ * (deprecated) - The original bottom app bar is no longer recommended. It should be replaced with the docked toolbar, which is very similar and more flexible.
+ * @see https://m3.material.io/components/bottom-app-bar/specs
+ */
 export default Surface
   .extend()
   .mixin(AriaToolbarMixin)
@@ -15,8 +21,6 @@ export default Surface
     color: { empty: 'surface-container' },
   })
   .css`
-    /* https://m3.material.io/components/bottom-app-bar/specs */
-
     :host {
       --mdw-bg: var(--mdw-color__surface-container);
       --mdw-ink: var(--mdw-color__on-surface);

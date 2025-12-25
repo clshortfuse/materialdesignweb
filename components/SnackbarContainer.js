@@ -1,6 +1,11 @@
 import CustomElement from '../core/CustomElement.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 
+/**
+ * Snackbar container positions snackbars within the app window and manages
+ * layout and pointer-events for stacked snackbars.
+ * @see https://m3.material.io/components/snackbar/specs
+ */
 export default CustomElement
   .extend()
   .mixin(DelegatesFocusMixin)

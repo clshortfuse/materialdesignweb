@@ -4,20 +4,33 @@ import CustomElement from '../core/CustomElement.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/**
+ * Visual helper for radio buttons, rendering the outer and inner rings.
+ * @see https://m3.material.io/components/radio-button/overview
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(ShapeMixin)
   .observe({
+    /** Whether the radio icon is selected (checked). */
     selected: 'boolean',
+    /** Optional icon name to render inside the control (not normally used). */
     icon: 'string',
+    /** When true the control is shown in an error state. */
     errored: 'boolean',
+    /** When true the control is disabled. */
     disabled: 'boolean',
+    /** Hover state used for styling. */
     hovered: 'boolean',
+    /** Focus state used for styling. */
     focused: 'boolean',
   })
   .define({
-    /** Alias for Selected (QoL) */
+    /**
+     * Alias for `selected` to match common form terminology (`checked`).
+     * Reading/writing `checked` proxies to the `selected` state.
+     */
     checked: {
       get() { return this.selected; },
       set(value) { this.selected = value; },

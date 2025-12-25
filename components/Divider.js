@@ -3,10 +3,15 @@
 import CustomElement from '../core/CustomElement.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/**
+ * Dividers are thin lines that group content in lists or other containers
+ * @see https://m3.material.io/components/divider/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .observe({
+    /** When true, render the divider vertically instead of horizontally. */
     vertical: 'boolean',
   })
   .css`

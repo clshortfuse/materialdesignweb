@@ -5,6 +5,7 @@ import ShapeMixin from './ShapeMixin.js';
 /** @typedef {import('../core/CustomElement.js').default} CustomElement */
 
 /**
+ * Composes a text field with label, supporting text, icons and control wiring.
  * @param {ReturnType<import('./ControlMixin.js').default>} Base
  */
 export default function TextFieldMixin(Base) {
@@ -12,23 +13,38 @@ export default function TextFieldMixin(Base) {
     .mixin(DensityMixin)
     .mixin(ShapeMixin)
     .set({
+      /** Show an internal visual state layer element */
       stateLayer: true,
     })
     .observe({
+      /** Input type (text, password, email, etc.) */
       type: { empty: 'text' },
+      /** Leading icon key/name to render inside the field */
       icon: 'string',
+      /** Variation of the icon display (e.g., filled) */
       iconVariation: 'string',
+      /** Floating label text for the field */
       label: 'string',
+      /** When true, use filled styling */
       filled: 'boolean',
+      /** When true, use outlined styling */
       outlined: 'boolean',
+      /** Prefix text shown before the input */
       inputPrefix: 'string',
+      /** Suffix text shown after the input */
       inputSuffix: 'string',
+      /** Trailing icon key/name */
       trailingIcon: 'string',
+      /** Ink/color token for the trailing icon */
       trailingIconInk: 'string',
+      /** Accessible label for the trailing icon */
       trailingIconLabel: 'string',
+      /** Supporting/helper text shown beneath the field */
       supporting: 'string',
+      /** Error message text */
       error: 'string',
-      placeholder: { nullParser: String }, // DOMString
+      /** Placeholder text (DOMString) */
+      placeholder: { nullParser: String },
     })
     .observe({
       erroredState({ error, _invalid, _userInteracted }) { return _userInteracted && Boolean(error || _invalid); },

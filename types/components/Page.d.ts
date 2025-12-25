@@ -17,6 +17,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
 }, any[]> & import("../core/CustomElement.js").Class<{
     _styles: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Handle resize observer entries; update measured inline size for layout logic. */
     onResizeObserved(entry: ResizeObserverEntry): void;
 }, any[]>;
 export default _default;

@@ -2,20 +2,31 @@ import TooltipTriggerMixin from '../mixins/TooltipTriggerMixin.js';
 
 import Button from './Button.js';
 
+/**
+ * Floating action buttons (FABs) help people take primary actions.
+ * @see https://m3.material.io/components/floating-action-button/specs
+ * @see https://m3.material.io/components/extended-fab/specs
+ */
 export default Button
   .extend()
   .mixin(TooltipTriggerMixin)
   .observe({
+    /** When true, render the lowered FAB variant (reduced elevation). */
     lowered: 'boolean',
+    /** When true, the FAB is extended and shows a text label. */
     extended: 'boolean',
+    /** FAB size: `null` (default), 'small' or 'large'. */
     fabSize: {
       /** @type {null|'small'|'large'} */
       value: null,
     },
+    /** Filled variant; default is 'tonal' when omitted. */
     filled: { empty: 'tonal' },
+    /** Whether the FAB uses elevated styling. */
     elevated: { type: 'boolean', empty: true },
   })
   .observe({
+    /** Whether to show the tooltip automatically (true when not extended). */
     autoTooltip({ extended }) {
       return !extended;
     },

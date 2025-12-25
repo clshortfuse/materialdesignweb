@@ -25,6 +25,7 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     _resizeObserverEnabled: boolean;
     _computedColumns: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Update last observed inline size from ResizeObserver entry. */
     onResizeObserved(entry: ResizeObserverEntry): void;
 }, any[]> & import("../core/CustomElement.js").Class<{
     _isFlex: never;

@@ -1,1 +1,1 @@
-{"version":3,"file":"ResizeObserverMixin.d.ts","sourceRoot":"","sources":["../../mixins/ResizeObserverMixin.js"],"names":[],"mappings":"AAOA;;GAEG;AACH,kDAFW,cAAc,0BAA0B,EAAE,OAAO;;;IAWtD,yCAAyC;4BAA7B,mBAAmB;;;UA6BpC"}
+{"version":3,"file":"ResizeObserverMixin.d.ts","sourceRoot":"","sources":["../../mixins/ResizeObserverMixin.js"],"names":[],"mappings":"AAOA;;;GAGG;AACH,kDAFW,cAAc,0BAA0B,EAAE,OAAO;;;IAYtD,yCAAyC;4BAA7B,mBAAmB;;;UA6BpC"}

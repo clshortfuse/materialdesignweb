@@ -27,6 +27,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
      * @return {void}
      */
     updatePosition(x?: number, y?: number, size?: number): void;
+    /** Complete the ripple lifecycle: either mark complete or remove. */
     handleRippleComplete(): void;
 }, any[]>;
 export default _default;

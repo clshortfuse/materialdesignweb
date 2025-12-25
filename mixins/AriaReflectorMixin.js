@@ -3,10 +3,14 @@
  * @typedef {K extends keyof ARIAMixin ? ARIAMixin[K] extends string ? K : never : never} StringKeyOfARIAMixin
  */
 
-/** @param {typeof import('../core/CustomElement.js').default} Base */
+/**
+ * Reflects ARIA-like properties to attributes/ElementInternals and vice versa.
+ * @param {typeof import('../core/CustomElement.js').default} Base
+ */
 export default function AriaReflectorMixin(Base) {
   return Base
     .observe({
+      /** Role string mirrored to ARIA `role` property/attribute. */
       _ariaRole: 'string',
     })
     .set({

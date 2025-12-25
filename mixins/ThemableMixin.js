@@ -39,13 +39,26 @@ const typeStyleAttributeCSS = TYPE_STYLES.map((typeStyle) => [
 ].join('')).join('');
 
 /**
+ * Adds theming attributes (`color`, `ink`, `typeStyle`) that map to CSS tokens.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function ThemableMixin(Base) {
   return Base
     .observe({
+      /**
+       * Palette or surface token used to select background/ink tokens.
+       * Examples: 'primary', 'background', 'surface-container-low'.
+       */
       color: 'string',
+      /**
+       * Explicit ink override token (e.g. 'outline', 'on-primary', 'inverse-on-surface', 'inherit').
+       * Maps to `--mdw-ink`.
+       */
       ink: 'string',
+      /**
+       * Typographic style shortcut that maps to type scale variables
+       * (e.g. 'headline-large', 'body-medium').
+       */
       typeStyle: 'string',
     })
     .css(colorAttributeCSS)

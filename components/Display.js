@@ -3,16 +3,24 @@ import TypographyMixin from '../mixins/TypographyMixin.js';
 
 import Box from './Box.js';
 
+/**
+ * Material Design Type scale: Display
+ * @see https://m3.material.io/styles/typography/type-scale-tokens
+ */
 export default Box
   .extend()
   .mixin(AriaReflectorMixin)
   .mixin(TypographyMixin)
   .set({
+    /** ARIA role applied to the host (default: 'heading'). */
     _ariaRole: 'heading',
+    /** Base aria level used when computing the heading level. */
     _baseAriaLevel: 1,
   })
   .observe({
+    /** Explicit aria-level; if set, overrides the computed level. */
     ariaLevel: 'string',
+    /** Display size controlling typographic scale: 'large'|'medium'|'small'. */
     size: {
       type: 'string',
       /** @type {'large'|'medium'|'small'} */
@@ -20,6 +28,7 @@ export default Box
     },
   })
   .observe({
+    /** Computed aria-level (string) derived from `ariaLevel` and `size`. */
     _computedAriaLevel({ ariaLevel, size, _baseAriaLevel }) {
       if (ariaLevel) return ariaLevel;
       if (size === 'medium') return `${_baseAriaLevel + 1}`;

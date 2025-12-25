@@ -1,5 +1,10 @@
 import NavItem from './NavItem.js';
 
+/**
+ * A navigation bar item represents a destination within a navigation bar,
+ * providing an icon and optional label to help users move between app sections.
+ * @see https://m3.material.io/components/navigation-bar/specs
+ */
 export default NavItem
   .extend()
   .css`

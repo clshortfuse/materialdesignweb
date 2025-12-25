@@ -3,17 +3,24 @@ import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-/* https://m3.material.io/components/tooltips/specs */
-
+/**
+ * Tooltip displays brief helper text when hovering or focusing an element.
+ * @see https://m3.material.io/components/tooltips/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(ShapeMixin)
   .mixin(AriaReflectorMixin)
   .set({
+    /** ARIA role applied by the AriaReflectorMixin (defaults to `tooltip`). */
     _ariaRole: 'tooltip',
   })
   .observe({
+    /**
+     * When true the tooltip is visible/open. This also updates ARIA
+     * `aria-hidden` for accessibility.
+     */
     open: {
       type: 'boolean',
       changedCallback(oldValue, newValue) {

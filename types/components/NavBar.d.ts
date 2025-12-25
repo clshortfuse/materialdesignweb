@@ -8,7 +8,9 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     open: boolean;
     autoClose: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Color token used for the nav surface (defaults to `surface-container`). */
     color: string;
+    /** ARIA role applied to the host element (default: 'navigation'). */
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     onWindowResize(): void;

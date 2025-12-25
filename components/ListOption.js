@@ -6,6 +6,10 @@ import ListItem from './ListItem.js';
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
 
+/**
+ * List options represent selectable choices within a `mdw-listbox` or list.
+ * @see https://m3.material.io/components/lists/specs
+ */
 export default ListItem
   .extend()
   .mixin(DelegatesFocusMixin)
@@ -13,18 +17,48 @@ export default ListItem
     formAssociated: true,
   })
   .set({
+    /** ARIA role applied to the option container (anchor receives role 'option'). */
     _ariaRole: 'none',
+
+    /** Index of this option within its list/listbox (managed externally). */
     _index: -1,
+
+    /** Internal flag indicating selection was modified via API rather than default. */
     _selectedDirty: false,
+
+    /** Whether this option behaves as an interactive selectable item. */
     isInteractive: true,
   })
   .observe({
     // ListOption.prototype._form = ListOption.prop('_form');
+
+    /**
+     * Explicit label for accessibility. Reflected to attribute `label`.
+     * Falls back to `textContent` when not provided.
+     */
     _label: { attr: 'label', reflect: true, nullParser: String },
+
+    /**
+     * Explicit text content for the option. Reflected to attribute `text`.
+     */
     _text: { attr: 'text', reflect: true, nullParser: String },
+
+    /**
+     * Initial/default selection state (reflected to `selected` attribute).
+     * Use `selected` property to control runtime selection.
+     */
     defaultSelected: { attr: 'selected', reflect: true, type: 'boolean' },
+
+    /** Internal boolean representing the current selected state. */
     _selected: 'boolean',
+
+    /**
+     * Underlying option value (reflected to `value` attribute). Defaults to
+     * the option's text content when not provided.
+     */
     _value: { attr: 'value', reflect: true },
+
+    /** Set when form association disables the option. */
     _formDisabled: 'boolean',
   })
   .observe({
@@ -47,8 +81,16 @@ export default ListItem
     },
   })
   .define({
+    /** Numeric index of the option inside the parent listbox. */
     index() { return this._index; },
+
+    /** Associated form owner (if any) for form-associated behavior. */
     form() { return /** @type {HTMLInputElement} */ (this.parentElement)?.form; },
+
+    /**
+     * Text content for the option; setting updates the internal `_text` field.
+     * If not provided, the getter falls back to element textContent.
+     */
     text: {
       // Incomplete
       get() { return this._text ?? this.textContent; },
@@ -57,6 +99,11 @@ export default ListItem
         this._text = value;
       },
     },
+
+    /**
+     * Accessible label for the option. Falls back to `text` or the element
+     * content when not explicitly set.
+     */
     label: {
       get() { return this._label ?? this._text ?? this.textContent; },
       /** @param {string} value */
@@ -64,6 +111,11 @@ export default ListItem
         this._label = value;
       },
     },
+
+    /**
+     * Option `value` used when the option is selected in a form. Defaults to
+     * the option's text when not explicitly defined.
+     */
     value: {
       get() { return this._value ?? this.textContent; },
       /** @param {string} value */

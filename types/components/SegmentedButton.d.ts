@@ -243,7 +243,9 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     type: string;
     innerSegmentedButton: boolean;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** Render the button with an outline style. */
     outlined: boolean;
+    /** Allow the control to receive focus even when disabled. */
     focusableOnDisabled: boolean;
 }, any[]>;
 export default _default;

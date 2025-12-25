@@ -4,6 +4,11 @@ import FlexableMixin from '../mixins/FlexableMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/**
+ * Surface represents a themed elevated surface used to display content with
+ * elevation, shape, and color tokens applied.
+ * @see https://m3.material.io/styles/elevation/overview
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)

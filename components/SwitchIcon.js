@@ -7,42 +7,63 @@ import { loadGlobalStyles } from '../services/rtl.js';
 
 loadGlobalStyles();
 
+/**
+ * Visual helper that renders the switch thumb and related visual states.
+ * @see https://m3.material.io/components/switch/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .mixin(ShapeMixin)
   .observe({
+    /** Whether the switch is selected/on. */
     selected: 'boolean',
+    /** Named icon to render inside the thumb. */
     icon: 'string',
+    /** Whether the control is visually in an errored state. */
     errored: 'boolean',
+    /** Whether the control is disabled. */
     disabled: 'boolean',
+    /** Icon name to show when selected/on. */
     selectedIcon: 'string',
+    /** Icon name to show when unselected/off. */
     unselectedIcon: 'string',
+    /** Image `src` to render inside the thumb. */
     src: 'string',
+    /** Image `src` to render when selected/on. */
     selectedSrc: 'string',
+    /** Image `src` to render when unselected/off. */
     unselectedSrc: 'string',
+    /** Hover state for the thumb. */
     hovered: 'boolean',
+    /** Pressed state for the thumb. */
     pressed: 'boolean',
+    /** Focused state for the thumb. */
     focused: 'boolean',
+    /** Temporary drag position value (0..1) while the thumb is being dragged. */
     dragValue: 'float',
+    /** Color token to use for the thumb (defaults to primary). */
     color: { empty: 'primary' },
   })
   .observe({
-    /** Alias for Selected (QoL) */
+    /** Alias for `selected` to match common control naming. */
     checked: {
       type: 'boolean',
       get({ selected }) { return selected; },
       /** @param {boolean} value */
       set(value) { this.selected = value; },
     },
+    /** Whether the thumb is in an active interactive state (not disabled). */
     _active({ disabled, pressed, focused, hovered }) {
       return !disabled && (pressed || focused || hovered);
     },
   })
   .observe({
+    /** Thumb fill token (e.g. "primary-container") when active. */
     _thumbColor({ color, _active }) {
       return _active ? `${color}-container` : '';
     },
+    /** Ink token used for icons inside the thumb based on state. */
     _iconInk({ disabled, selected, color }) {
       if (!selected) return 'surface-container-highest';
       if (disabled) return 'on-surface';

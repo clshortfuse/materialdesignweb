@@ -9,10 +9,12 @@ import StateMixin from '../mixins/StateMixin.js';
 
 import Box from './Box.js';
 
-/* https://m3.material.io/components/cards/specs */
-
 const SUPPORTS_INERT = 'inert' in HTMLElement.prototype;
 
+/**
+ * Cards display content and actions about a single subject.
+ * @see https://m3.material.io/components/cards/specs
+ */
 export default Box
   .extend()
   .mixin(StateMixin)
@@ -26,13 +28,23 @@ export default Box
     _ariaRole: 'figure',
   })
   .observe({
+    /** Whether the card displays an elevated surface. */
     elevated: 'boolean',
+    /** Whether the card uses a filled surface style. */
     filled: 'boolean',
+    /** When true, card renders an actionable control (clickable). */
     actionable: 'boolean',
+    /** Label for the action control used for accessibility. */
     actionLabel: 'string',
+    /** Event handler called when the card action is triggered. */
     onaction: EVENT_HANDLER_TYPE,
   })
   .define({
+    /**
+     * Element used as the target for state styling (pressed/focus).
+     * Returns the internal action control when actionable, otherwise the host.
+     * @return {HTMLElement}
+     */
     stateTargetElement() { return this.actionable ? this.refs.action : this; },
   })
   .expressions({
@@ -40,9 +52,14 @@ export default Box
     showButton: ({ actionable, href }) => Boolean(actionable || href),
   })
   .methods({
+    /**
+     * Focuses the internal action control if the card is actionable and not disabled.
+     * @return {void}
+     */
     focus() {
       if (this.disabledState) return;
-      if (this.actionable) this.refs.action.focus();
+      if (!this.actionable) return;
+      this.refs.action.focus();
     },
   })
   .html`

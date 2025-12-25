@@ -1,4 +1,5 @@
 /**
+ * Attaches a shared ResizeObserver to the element and provides lifecycle helpers.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function ResizeObserverMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{

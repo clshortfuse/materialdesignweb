@@ -1,4 +1,5 @@
 /**
+ * Adds keyboard roving navigation utilities for focus management within a list.
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
 export default function KeyboardNavMixin(Base: typeof import("../core/CustomElement.js").default): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{

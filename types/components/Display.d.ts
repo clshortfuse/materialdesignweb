@@ -32,7 +32,9 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     ink: string;
     typeStyle: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** ARIA role applied to the host (default: 'heading'). */
     _ariaRole: string;
+    /** Base aria level used when computing the heading level. */
     _baseAriaLevel: number;
 }, any[]> & import("../core/CustomElement.js").Class<{
     ariaLevel: string;

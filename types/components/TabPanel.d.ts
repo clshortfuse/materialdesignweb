@@ -18,6 +18,7 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     ink: string;
     typeStyle: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
+    /** ARIA role applied by the AriaReflectorMixin (defaults to `tabpanel`). */
     _ariaRole: string;
 }, any[]> & import("../core/CustomElement.js").Class<{
     active: boolean;

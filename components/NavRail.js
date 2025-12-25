@@ -1,17 +1,26 @@
 import SideSheet from './SideSheet.js';
 
+/**
+ * Navigation rails provide access to app destinations and destinations-level
+ * navigation in a vertical rail, suited for larger screens and desktop layouts.
+ * @see https://m3.material.io/components/navigation-rail/specs
+ */
 export default SideSheet
   .extend()
   .observe({
+    /** Horizontal alignment for rail content: 'start', 'center', or 'end'. */
     align: { value: /** @type {'start'|'center'|'end'} */ (null) },
+    /** Viewport width (pixels) threshold at or above which the rail will auto-open. */
     autoOpen: {
       type: 'float',
       empty: 728,
     },
+    /** Viewport width (pixels) threshold at or below which the rail will auto-close. */
     autoClose: {
       type: 'float',
       empty: 1248,
     },
+    /** Viewport width (pixels) at which the rail becomes fixed (non-collapsible). */
     fixedBreakpoint: {
       type: 'float',
       empty: 728,

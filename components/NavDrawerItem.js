@@ -1,5 +1,10 @@
 import NavItem from './NavItem.js';
 
+/**
+ * A navigation drawer item represents a destination inside a navigation drawer,
+ * showing an icon, label, and optional badge to help users navigate app sections.
+ * @see https://m3.material.io/components/navigation-drawer/specs
+ */
 export default NavItem
   .extend()
   .css`

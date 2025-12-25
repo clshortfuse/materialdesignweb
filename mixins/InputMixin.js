@@ -29,6 +29,7 @@ const redispatchedClickEvents = new WeakSet();
 const rootClickEvents = new WeakSet();
 
 /**
+ * Enhances a component with input-like attributes and behaviors (value, step, min/max, etc.).
  * @see https://html.spec.whatwg.org/multipage/input.html#htmlinputelement
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
@@ -36,26 +37,45 @@ export default function InputMixin(Base) {
   return Base
     .mixin(ControlMixin)
     .observe({
+      /** Accepted file types for file input (e.g. '.png,.jpg'). */
       accept: DOMString,
+      /** Alternate text for images (for `type='image'`). */
       alt: DOMString,
+      /** Directionality for form submission name (dirname attribute). */
       dirName: { attr: 'dirname', ...DOMString },
+      /** Form action URL when this input is used as a submit button. */
       _formAction: { attr: 'formaction' },
+      /** Form encoding type (formenctype). */
       formEnctype: { attr: 'formenctype', ...DOMString },
+      /** Form method when associated with a submit input (formmethod). */
       formMethod: { attr: 'formmethod', ...DOMString },
+      /** Target browsing context for form submission (formtarget). */
       formTarget: { attr: 'formtarget', ...DOMString },
+      /** Rendered height hint for certain input types (integer). */
       _height: { attr: 'height', type: 'integer' },
       _indeterminate: 'boolean',
+      /** Max value or token for the input. */
       max: DOMString,
+      /** Maximum length for text-like inputs. */
       maxLength: { attr: 'maxlength', type: 'integer', empty: -1 },
+      /** Min value or token for the input. */
       min: DOMString,
+      /** Minimum length for text-like inputs. */
       minLength: { attr: 'minlength', type: 'integer', empty: -1 },
+      /** When true, multiple values are allowed (e.g. file inputs). */
       multiple: 'boolean',
+      /** Pattern used for validation (RegExp as string). */
       pattern: DOMString,
+      /** Placeholder text shown when no value is present. */
       placeholder: DOMString,
+      /** Suggested control size (number of characters). */
       size: { type: 'integer', empty: 20 },
+      /** Source URL for image-type inputs. */
       src: DOMString,
+      /** Step interval for numeric inputs. */
       step: DOMString,
       //  [CEReactions] attribute [LegacyNullToEmptyString] DOMString value;
+      /** Rendered width hint for certain input types (integer). */
       _width: { attr: 'width', type: 'integer' },
     })
     .set({

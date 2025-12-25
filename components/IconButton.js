@@ -3,8 +3,10 @@ import TooltipTriggerMixin from '../mixins/TooltipTriggerMixin.js';
 
 import Button from './Button.js';
 
-/* https://m3.material.io/components/icon-buttons/specs */
-
+/**
+ * Icon buttons are compact buttons that use an icon to represent an action.
+ * @see https://m3.material.io/components/icon-buttons/specs
+ */
 export default Button
   .extend()
   .mixin(TooltipTriggerMixin)
@@ -12,15 +14,19 @@ export default Button
     _allowedTypes: ['button', 'submit', 'reset', 'checkbox', 'file'],
   })
   .observe({
+    /** ARIA pressed state for toggle buttons (checkbox type). */
     _ariaPressed: {
       get({ type, checked, indeterminate }) {
         if (type !== 'checkbox') return null;
         return indeterminate ? 'mixed' : (checked ? 'true' : 'false');
       },
     },
+    /** True when the underlying control behaves as a toggle (checkbox). */
     _isToggle({ type }) {
       return type === 'checkbox';
     },
+
+    /** When present, enables automatic tooltip behavior from the mixin. */
     autoTooltip: { empty: true },
   })
   .expressions({

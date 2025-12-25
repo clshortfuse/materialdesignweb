@@ -1,5 +1,9 @@
 import CustomElement from '../core/CustomElement.js';
 
+/**
+ * Dialog action regions contain primary and secondary actions for dialogs.
+ * @see https://m3.material.io/components/dialogs/specs
+ */
 export default CustomElement
   .extend()
   .css`

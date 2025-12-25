@@ -7,6 +7,10 @@ import StateMixin from '../mixins/StateMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 import TouchTargetMixin from '../mixins/TouchTargetMixin.js';
 
+/**
+ * Checkboxes let users select one or more items from a list, or turn an item on or off.
+ * @see https://m3.material.io/components/checkbox/specs
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
@@ -15,11 +19,15 @@ export default CustomElement
   .mixin(InputMixin)
   .mixin(TouchTargetMixin)
   .set({
+    /** Whether the element renders a state layer for interaction feedback. */
     stateLayer: true,
+    /** The underlying control input `type` value. */
     type: 'checkbox',
   })
   .observe({
+    /** Icon name to show for the checked state. */
     icon: { value: 'check' },
+    /** Icon name to show when the control is indeterminate. */
     indeterminateIcon: { value: 'check_indeterminate_small' },
   })
   .expressions({

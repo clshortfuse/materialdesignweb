@@ -1,4 +1,5 @@
 /**
+ * Implements form-associated element behavior (internals, validity, files, value handling).
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function FormAssociatedMixin(Base: ReturnType<typeof import("./StateMixin.js").default>): typeof import("../core/CustomElement.js").default & import("../core/CustomElement.js").Class<{

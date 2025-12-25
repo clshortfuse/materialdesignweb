@@ -1,26 +1,38 @@
-/* https://m3.material.io/components/progress-indicators/specs */
-
 import CustomElement from '../core/CustomElement.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
-// https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element
-
+/**
+ * Progress indicators display the progress of an operation as a determinate
+ * bar or an indeterminate animation.
+ * @see https://m3.material.io/components/progress-indicators/specs
+ * @see https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element
+ */
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
   .observe({
+    /** Render the circular variant when true; otherwise render a linear bar. */
     circle: 'boolean',
+    /** Current progress value. When present the indicator is determinate. */
     value: 'float',
+    /** Maximum progress value (defaults to 100 when not set). */
     max: 'float',
+    /** When true, the progress will auto-hide when complete. */
     autoHide: 'boolean',
+    /** Internal inline style string used to animate the determinate bar. */
     _determinateStyle: 'string',
   })
   .observe({
+    /**
+     * Computed fractional progress (0.0–1.0) derived from `value` and `max`.
+     * Used to drive the determinate animation and CSS variables.
+     */
     _valueAsFraction: {
       type: 'float',
       get({ value, max }) {
         return (value / (max || 100));
       },
+      /** Update `_determinateStyle` CSS variables when the fraction changes. */
       changedCallback(oldValue, newValue) {
         this._determinateStyle = `
         --previous:${oldValue ?? newValue ?? 0};
@@ -30,14 +42,17 @@ export default CustomElement
     },
   })
   .expressions({
+    /** True when `value` is provided, indicating a determinate progress state. */
     isDeterminate({ value }) {
       return value != null;
     },
   })
   .define({
+    /** Proxy to the internal `<progress>` element's `position` property. */
     position() {
       return /** @type {HTMLProgressElement} */ (this.refs.progress).position;
     },
+    /** Proxy to the internal `<progress>` element's `labels` collection. */
     labels() {
       return /** @type {HTMLProgressElement} */ (this.refs.progress).labels;
     },

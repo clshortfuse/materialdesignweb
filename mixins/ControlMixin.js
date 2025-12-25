@@ -13,6 +13,7 @@ import FormAssociatedMixin from './FormAssociatedMixin.js';
 /** @typedef {HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement} HTMLControlElement */
 
 /**
+ * Adds form-control behavior and wiring to an internal control element.
  * @param {ReturnType<import('./StateMixin.js').default>} Base
  */
 export default function ControlMixin(Base) {
@@ -20,7 +21,9 @@ export default function ControlMixin(Base) {
     .mixin(FormAssociatedMixin)
     .mixin(DelegatesFocusMixin)
     .observe({
+      /** Optional aria-label applied to the internal control (string). */
       ariaLabel: 'string',
+      /** Internal cached slot text used as fallback label when aria-label is absent. */
       _slotInnerText: 'string',
     })
     .set({
