@@ -675,7 +675,6 @@ export default class Composition {
    * @return {RenderDraw<T>} anchor
    */
   render(changes, data, options = {}) {
-    // console.log('render', changes, options);
     if (!this.interpolated) {
       this.interpolate({
         defaults: data ?? changes,

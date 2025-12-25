@@ -107,7 +107,6 @@ function buildProxy(proxyTarget, set, deepSet, prefix) {
           set.add(arg);
         }
         if (typeof value === 'object' && value != null) {
-          console.debug('tried to arg poke object get', p, value);
           return buildProxy(value, set, deepSet, arg);
         }
       }
