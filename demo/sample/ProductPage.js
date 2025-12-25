@@ -10,7 +10,6 @@ import '../../components/Checkbox.js';
 
 import Card from '../../components/Card.js';
 import '../../components/Label.js';
-import { buildMergePatch } from '../../core/jsonMergePatch.js';
 import { addSVGAlias } from '../../services/svgAlias.js';
 
 const SAMPLE_DATA = {
@@ -54,14 +53,33 @@ export default Card
       reflect: false,
       empty: true,
     },
+    data: {
+      type: 'object',
+      reflect: false,
+      /** @type {SAMPLE_DATA} */
+      value: null,
+    },
     lastObject: 'object',
+  })
+  .observe({
+    // Nested array need own observable
+    _images({ data }) {
+      return data?.images || [];
+    },
   })
   .set({
     /** @type {number} */
     lastFetchedId: null,
     /** @type {AbortController} */
     fetchAbortController: null,
+    // Override Card defaults
     outlined: true,
+  })
+  .expressions({
+    // Automatically tracks data change
+    hasStock({ data }) {
+      return data?.stock > 0;
+    },
   })
   .css`
     :host {
@@ -157,6 +175,7 @@ export default Card
     }
   `.html`
     <form id=form>
+      <!-- Binding to enumerable observable (busy) -->
       <div id=overlay busy={busy}>
         <mdw-progress circle></mdw-progress>
       </div>
@@ -164,27 +183,30 @@ export default Card
         <fieldset disabled={busy}>
           <mdw-box row y=center gap=16 padding=16>
             <mdw-surface id=thumbnail-shape outlined shape-style=full>
-              <img id=thumbnail src={thumbnail} />
+              <img id=thumbnail src={data.thumbnail} />
             </mdw-surface>
             <div>
-              <mdw-title>{title}</mdw-title>
-              <mdw-label ink=primary size=small>{brand}</mdw-label>
-              <mdw-title size=small>{description}</mdw-title>
+              <!-- Binding to nested variable (data.*) -->
+              <mdw-title>{data.title}</mdw-title>
+              <mdw-label ink=primary size=small>{data.brand}</mdw-label>
+              <mdw-title size=small>{data.description}</mdw-title>
             </div>
           </mdw-box>
           <mdw-divider></mdw-divider>
           <mdw-box gap=16 padding=16>
-            <mdw-input outlined type=number name=price value={price} label=Price input-prefix=$ step=0.01></mdw-input>
-            <mdw-input outlined type=number name=discountPercentage value={discountPercentage} input-suffix=% label=Discount step=0.01></mdw-input>
-            <mdw-slider name=rating value={rating} min=0 max=5 step=0.1 ticks=4></mdw-slider>
+            <mdw-input outlined type=number name=price value={data.price} label=Price input-prefix=$ step=0.01></mdw-input>
+            <mdw-input outlined type=number name=discountPercentage value={data.discountPercentage} input-suffix=% label=Discount step=0.01></mdw-input>
+            <mdw-slider name=rating value={data.rating} min=0 max=5 step=0.1 ticks=4></mdw-slider>
             <mdw-box row y=center gap=8>
-                <mdw-checkbox-icon icon=check selected=${({ stock }) => stock > 0}></mdw-checkbox-icon> Stock: {stock} </div>
+                <mdw-checkbox-icon icon=check selected={hasStock}></mdw-checkbox-icon> Stock: {data.stock} </div>
             <mdw-box>
           </mdw-box>
           <mdw-divider></mdw-divider>
           <div id=images>
-            <mdw-label mdw-if={!images.length}>(No images available)</mdw-label>
-            <img mdw-for="{image of images}" class="image" src={image} />
+            <!-- mdw-if may remove element from DOM -->
+            <mdw-label mdw-if={!_images.length}>(No images available)</mdw-label>
+            <!-- mdw-for creates a sub-observable -->
+            <img mdw-for="{image of _images}" class="image" src={image} />
           </div>
         </fieldset>
       </div>
@@ -193,11 +215,13 @@ export default Card
     <mdw-box row x=between y=center padding=8 gap=8>
       <mdw-title ink=secondary>Product ID: {productId}</mdw-title>
       <mdw-box row gap=8>
+        <!-- Inline attribute expression and event listener -->
         <mdw-icon-button
           disabled="${({ productId }) => productId === 1}"
           id="previous"
           icon="chevron_left"
           on-click="${function onClick() { this.productId--; }}">Previous</mdw-icon-button>
+        <!-- Inline event listener -->
         <mdw-icon-button
           on-click=${function onClick() { this.productId++; }}
           id=next
@@ -217,10 +241,8 @@ export default Card
         const response = await fetch(`https://dummyjson.com/products/${productId}`, { signal: this.fetchAbortController.signal });
         // await asyncStall();
         const json = await response.json();
-        const changes = buildMergePatch(this.lastData, json, 'object');
-        console.log(json, changes);
-        this.render(changes, json);
-        this.lastData = json;
+        // Automatically performs JSON Merge Patch comparison and updates DOM
+        this.data = json;
         this.refs.form.reset();
         this.busy = false;
       } catch (e) {
@@ -236,6 +258,7 @@ export default Card
     connected() {
       this.refresh();
     },
+    // Automatically listen for changes to productId and refresh data
     productIdChanged() {
       this.refresh();
     },
