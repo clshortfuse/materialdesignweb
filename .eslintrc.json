@@ -113,6 +113,7 @@
     "jsdoc/require-returns": 0,
     "jsdoc/require-returns-description": 0,
     "jsdoc/valid-types": 0,
+    "jsdoc/require-param": 0,
     "max-len": [
       "error",
       120,
@@ -155,7 +156,17 @@
     ],
     "no-promise-executor-return": 0,
     "no-prototype-builtins": 0,
-    "no-restricted-syntax": 0,
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "IfStatement[consequent.type!='BlockStatement'][consequent.type!='ReturnStatement'][consequent.type!='ThrowStatement'][consequent.type!='BreakStatement'][consequent.type!='ContinueStatement']",
+        "message": "Only return/throw/break/continue are allowed without braces in if statements."
+      },
+      {
+        "selector": "ForStatement[body.type!='BlockStatement'], ForInStatement[body.type!='BlockStatement'], ForOfStatement[body.type!='BlockStatement']",
+        "message": "For loops must always use braces for their body."
+      }
+    ],
     "no-return-await": 0,
     "no-undef": 0,
     "no-underscore-dangle": 0,
@@ -167,6 +178,11 @@
         "ignores": [],
         "version": ">=14.0.0"
       }
+    ],
+    "curly": [
+      "error",
+      "multi-line",
+      "consistent"
     ],
     "object-curly-newline": [
       "error",
