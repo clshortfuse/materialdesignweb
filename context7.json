@@ -8,5 +8,7 @@
   "rules": [
     "Prefer CDN for quick demos",
     "Use docs/custom-elements.json for machine metadata"
-  ]
+  ],
+  "url": "https://context7.com/clshortfuse/materialdesignweb",
+  "public_key": "pk_FWjC0VN7mdbcOCGU79nMs"
 }
