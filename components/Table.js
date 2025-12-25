@@ -67,6 +67,9 @@ function deleteByTagName(parent, tagName) {
  * Table provides an HTML-like table API using mdw elements for rows and sections.
  * Implements the {@link https://html.spec.whatwg.org/multipage/tables.html#htmltableelement | HTMLTableElement} API
  * using `mdw-` prefixed sections and rows.
+ *
+ * Legacy. Modern UI does not use tables and no longer part of Material Design Web.
+ * Tables are generally not responsive and do not adapt well to different screen sizes.
  */
 export default CustomElement
   .extend()
