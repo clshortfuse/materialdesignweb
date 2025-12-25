@@ -5,18 +5,6 @@ Material Design for Web
 
 ![Version](https://badgen.net/npm/v/@shortfuse/materialdesignweb) ![License](https://badgen.net/npm/license/@shortfuse/materialdesignweb) ![MinZip](https://badgen.net/bundlephobia/minzip/@shortfuse/materialdesignweb) ![Dependents](https://badgen.net/npm/dependents/@shortfuse/materialdesignweb)
 
-
-Live demo: https://clshortfuse.github.io/materialdesignweb/
-
----
-
-## Quick start
-
-# materialdesignweb
-Material Design for Web — a standards-focused, zero-dependency implementation of Material Design 3 (Material You).
-
-![Version](https://badgen.net/npm/v/@shortfuse/materialdesignweb) ![License](https://badgen.net/npm/license/@shortfuse/materialdesignweb)
-
 Live demo: https://clshortfuse.github.io/materialdesignweb/
 
 Quick links
