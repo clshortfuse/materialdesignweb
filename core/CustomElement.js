@@ -1005,6 +1005,9 @@ export default class CustomElement extends HTMLElement {
 
   #patching = false;
 
+  /** @type {Array<[string, any, CustomElement]>} */
+  #pendingPatchRenders = [];
+
   /** @type {Map<string,{stringValue:string, parsedValue:any}>} */
   _propAttributeCache;
 
@@ -1058,7 +1061,9 @@ export default class CustomElement extends HTMLElement {
    * }}
    */
   propChangedCallback(name, oldValue, newValue, changes = newValue) {
-    if (!this.#patching) {
+    if (this.#patching) {
+      this.#pendingPatchRenders.push([name, changes, this]);
+    } else {
       this.render.byProp(name, changes, this);
       // this.render({ [name]: changes });
     }
@@ -1176,6 +1181,11 @@ export default class CustomElement extends HTMLElement {
   patch(patch) {
     this.#patching = true;
     applyMergePatch(this, patch);
+    for (const [name, changes, state] of this.#pendingPatchRenders) {
+      if (name in patch) continue;
+      this.render.byProp(name, changes, state);
+    }
+    this.#pendingPatchRenders.slice(0, this.#pendingPatchRenders.length);
     this.render(patch);
     this.#patching = false;
   }
