@@ -22,6 +22,7 @@ const serve = cliArgs.has('serve');
 const watch = cliArgs.has('watch');
 const live = cliArgs.has('live');
 const outdir = cliArgs.get('outdir');
+const format = cliArgs.get('format') || 'iife';
 let treeShaking;
 switch (cliArgs.get('tree-shaking')) {
   case 'true': treeShaking = true; break;
@@ -48,7 +49,7 @@ if (!isProduction && live) {
 const buildOptions = {
   entryPoints,
   entryNames: '[dir]/[name].min',
-  format: 'iife',
+  format,
   sourcemap: true,
   ...minify,
   banner,
