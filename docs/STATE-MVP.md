@@ -267,3 +267,9 @@ export default new UserStore();
 4. **Event Lifecycle**: Always subscribe in `connected()` and unsubscribe in `disconnected()`
 5. **Patch-based Rendering**: `render(patch, data)` allows external diff computation for maximum efficiency
 
+## Next Steps
+
+For complex applications where multiple components need to stay synchronized:
+- **Service Pattern**: [STATE-SERVICE.md](STATE-SERVICE.md) - Centralized stores with subscriptions
+- **Event Pattern**: [STATE-EVENTS.md](STATE-EVENTS.md) - Decoupled communication via custom events
+
