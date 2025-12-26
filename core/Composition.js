@@ -744,6 +744,7 @@ export default class Composition {
      * @param {T} data
      */
     const draw = (changes, data) => {
+      if (!changes) return;
       let ranSearch = false;
       for (const prop of this.props) {
         if (!this.actionsByPropsUsed?.has(prop)) continue;
