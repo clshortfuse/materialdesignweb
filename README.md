@@ -9,10 +9,21 @@ Live demo: https://clshortfuse.github.io/materialdesignweb/
 
 Quick links
 
-- Getting started: [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md)
-- Theming: [docs/THEMING.md](docs/THEMING.md)
-- Component index: [docs/COMPONENTS.md](docs/COMPONENTS.md)
-- Component manifest (CEM): [docs/custom-elements.json](docs/custom-elements.json) — see ([custom-elements-manifest](https://github.com/webcomponents/custom-elements-manifest))
+**Getting Started**
+- [Getting started](docs/GETTING_STARTED.md)
+- [Theming](docs/THEMING.md)
+- [Component index](docs/COMPONENTS.md)
+
+**Building Components**
+- [Creating custom elements](docs/CREATING_CUSTOM_ELEMENTS.md)
+- [Observable properties reference](docs/OBSERVABLE_PROPERTIES.md)
+- [State management (element-local)](docs/STATE.md)
+- [State management (MVP pattern)](docs/STATE-MVP.md)
+
+**Advanced**
+- [Component manifest (CEM)](docs/custom-elements.json) — see [custom-elements-manifest](https://github.com/webcomponents/custom-elements-manifest)
+- [Custom elements manifest spec](docs/CUSTOM-ELEMENTS-MANIFEST.md)
+- [Contributing](docs/CONTRIBUTING.md)
 
 
 Install via npm:
