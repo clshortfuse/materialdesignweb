@@ -14,11 +14,7 @@ jobs:
       - name: Detect package manager
         id: detect-package-manager
         run: |
-          if [ -f "${{ github.workspace }}/yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            exit 0
-          elif [ -f "${{ github.workspace }}/package.json" ]; then
+          if [ -f "${{ github.workspace }}/package.json" ]; then
             echo "manager=npm" >> $GITHUB_OUTPUT
             echo "command=ci" >> $GITHUB_OUTPUT
             exit 0
@@ -51,14 +47,30 @@ jobs:
           exit ${PIPESTATUS[0]}
       - name: Check for screenshot failures
         id: check-screenshots
-        if: failure()
+        if: always()
         run: |
           has_diff=false
-          if [ -f test-output.txt ] && grep -q "Screenshot too different" test-output.txt; then
-            has_diff=true
-          fi
-          if [ -d screenshots/difference ] && find screenshots/difference -type f | grep -q .; then
-            has_diff=true
+          # Extract any screenshot diff paths reported in test-output.txt
+          if [ -f test-output.txt ]; then
+            diffs=$(sed -nE 's/Screenshot too different.*with ([^:]+).*/\1/p' test-output.txt | sort -u || true)
+            # Only mark has_diff=true if at least one reported file exists (or a reasonable fallback exists)
+            for p in $diffs; do
+              # exact path
+              if [ -f "$p" ]; then
+                has_diff=true
+                break
+              fi
+              # try common prefixes
+              if [ -f "screenshots/difference/$(basename \"$p\")" ]; then
+                has_diff=true
+                break
+              fi
+              # try to find any matching filename under screenshots/difference
+              if [ -n "$(find screenshots/difference -type f -name "$(basename \"$p\")" -print -quit 2>/dev/null || true)" ]; then
+                has_diff=true
+                break
+              fi
+            done
           fi
           echo "has_diff=$has_diff" >> $GITHUB_OUTPUT
       - name: Prepare filtered artifacts
@@ -68,17 +80,73 @@ jobs:
           run_id=${GITHUB_RUN_ID}
           out=artifacts/${run_id}
           mkdir -p "$out/difference" "$out/reference" "$out/current"
-          if [ -d screenshots/difference ]; then
-            for f in screenshots/difference/*; do
-              [ -f "$f" ] || continue
-              cp "$f" "$out/difference/"
-              name=$(basename "$f")
-              [ -f "screenshots/reference/${name}" ] && cp "screenshots/reference/${name}" "$out/reference/"
-              [ -f "screenshots/current/${name}" ] && cp "screenshots/current/${name}" "$out/current/"
+          # Collect only the diff files that were reported in test-output.txt
+          if [ -f test-output.txt ]; then
+            files=$(sed -nE 's/Screenshot too different.*with ([^:]+).*/\1/p' test-output.txt | sort -u || true)
+            for f in $files; do
+              src=""
+              subpath=""
+              # exact path
+              if [ -f "$f" ]; then
+                src="$f"
+                if [[ "$f" == *screenshots/difference/* ]]; then
+                  subpath=${f#*screenshots/difference/}
+                else
+                  subpath=$(basename "$f")
+                fi
+              else
+                name=$(basename "$f")
+                if [ -f "screenshots/difference/$name" ]; then
+                  src="screenshots/difference/$name"
+                  subpath=$name
+                else
+                  found=$(find screenshots/difference -type f -name "$name" -print -quit 2>/dev/null || true)
+                  if [ -n "$found" ]; then
+                    src="$found"
+                    subpath=${found#*screenshots/difference/}
+                  else
+                    echo "Warning: reported diff not found: $f" >&2
+                    continue
+                  fi
+                fi
+              fi
+
+              dest="$out/difference/$subpath"
+              mkdir -p "$(dirname \"$dest\")"
+              cp "$src" "$dest"
+
+              # copy matching reference
+              refsrc="screenshots/reference/$subpath"
+              if [ -f "$refsrc" ]; then
+                mkdir -p "$(dirname \"$out/reference/$subpath\")"
+                cp "$refsrc" "$out/reference/$subpath"
+              else
+                reffound=$(find screenshots/reference -type f -name "$(basename \"$subpath\")" -print -quit 2>/dev/null || true)
+                if [ -n "$reffound" ]; then
+                  mkdir -p "$(dirname \"$out/reference/$subpath\")"
+                  cp "$reffound" "$out/reference/$subpath"
+                fi
+              fi
+
+              # copy matching current
+              cursrc="screenshots/current/$subpath"
+              if [ -f "$cursrc" ]; then
+                mkdir -p "$(dirname \"$out/current/$subpath\")"
+                cp "$cursrc" "$out/current/$subpath"
+              else
+                curfound=$(find screenshots/current -type f -name "$(basename \"$subpath\")" -print -quit 2>/dev/null || true)
+                if [ -n "$curfound" ]; then
+                  mkdir -p "$(dirname \"$out/current/$subpath\")"
+                  cp "$curfound" "$out/current/$subpath"
+                fi
+              fi
             done
           fi
           # include test output and any other small logs
           cp test-output.txt "$out/" 2>/dev/null || true
+          # debug listing
+          echo "Prepared artifact contents:" >&2
+          ls -R "$out" >&2 || true
           echo "artifacts_path=$out" >> $GITHUB_OUTPUT
       - name: Upload filtered artifacts
         if: steps.check-screenshots.outputs.has_diff == 'true'
