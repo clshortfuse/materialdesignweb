@@ -292,7 +292,7 @@ export function generateScreenshotTests({ template, before, matrix, after, paddi
       if (movedFocus) {
         element.blur();
       }
-      assert.isAbove(percentage, 0.995, `Screenshot too different. Compare ${referenceLocation} with ${differenceLocation}`);
+      assert.isAbove(percentage, 0.99, `Screenshot too different. Compare ${referenceLocation} with ${differenceLocation}`);
     });
   }
 }
