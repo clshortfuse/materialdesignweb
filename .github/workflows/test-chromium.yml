@@ -46,112 +46,42 @@ jobs:
           npm run test:custom -- --playwright --browsers chromium 2>&1 | tee test-output.txt
           exit ${PIPESTATUS[0]}
       - name: Check for screenshot failures
-        id: check-screenshots
-        if: always()
+        id: prepare-screenshots-failures
+        if: failure()
         run: |
-          has_diff=false
-          # Extract any screenshot diff paths reported in test-output.txt
-          if [ -f test-output.txt ]; then
-            diffs=$(sed -nE 's/Screenshot too different.*with ([^:]+).*/\1/p' test-output.txt | sort -u || true)
-            # Only mark has_diff=true if at least one reported file exists (or a reasonable fallback exists)
-            for p in $diffs; do
-              # exact path
-              if [ -f "$p" ]; then
-                has_diff=true
-                break
+          echo "=== Starting screenshot failure extraction ==="
+          
+          # check for Screenshot too different.*with ([^:]+)
+          # output each grep result to failed_screenshots.txt
+          echo "Running grep to extract screenshot paths..."
+          grep -oP 'Screenshot too different.*with \K([^:]*)' test-output.txt > failed_screenshots.txt || true
+          
+          echo "=== Content of failed_screenshots.txt ==="
+          cat failed_screenshots.txt || echo "File is empty or missing"
+          echo "=== End of file content ==="
+          
+          # Check if we have any failed screenshots
+          if [ -s failed_screenshots.txt ]; then
+            echo "Found failed screenshots, creating artifacts directory..."
+            mkdir -p artifacts
+            while IFS= read -r screenshot; do
+              echo "Processing screenshot: $screenshot"
+              if [ -f "$screenshot" ]; then
+                echo "✓ File exists, copying to artifacts/"
+                cp "$screenshot" artifacts/
+              else
+                echo "✗ File not found: $screenshot"
               fi
-              # try common prefixes
-              if [ -f "screenshots/difference/$(basename \"$p\")" ]; then
-                has_diff=true
-                break
-              fi
-              # try to find any matching filename under screenshots/difference
-              if [ -n "$(find screenshots/difference -type f -name "$(basename \"$p\")" -print -quit 2>/dev/null || true)" ]; then
-                has_diff=true
-                break
-              fi
-            done
+            done < failed_screenshots.txt
+            echo "artifacts_path=artifacts" >> $GITHUB_OUTPUT
+            echo "Set artifacts_path=artifacts"
+          else
+            echo "No failed screenshots found"
           fi
-          echo "has_diff=$has_diff" >> $GITHUB_OUTPUT
-      - name: Prepare filtered artifacts
-        id: prepare-filtered-artifacts
-        if: steps.check-screenshots.outputs.has_diff == 'true'
-        run: |
-          run_id=${GITHUB_RUN_ID}
-          out=artifacts/${run_id}
-          mkdir -p "$out/difference" "$out/reference" "$out/current"
-          # Collect only the diff files that were reported in test-output.txt
-          if [ -f test-output.txt ]; then
-            files=$(sed -nE 's/Screenshot too different.*with ([^:]+).*/\1/p' test-output.txt | sort -u || true)
-            for f in $files; do
-              src=""
-              subpath=""
-              # exact path
-              if [ -f "$f" ]; then
-                src="$f"
-                if [[ "$f" == *screenshots/difference/* ]]; then
-                  subpath=${f#*screenshots/difference/}
-                else
-                  subpath=$(basename "$f")
-                fi
-              else
-                name=$(basename "$f")
-                if [ -f "screenshots/difference/$name" ]; then
-                  src="screenshots/difference/$name"
-                  subpath=$name
-                else
-                  found=$(find screenshots/difference -type f -name "$name" -print -quit 2>/dev/null || true)
-                  if [ -n "$found" ]; then
-                    src="$found"
-                    subpath=${found#*screenshots/difference/}
-                  else
-                    echo "Warning: reported diff not found: $f" >&2
-                    continue
-                  fi
-                fi
-              fi
-
-              dest="$out/difference/$subpath"
-              mkdir -p "$(dirname \"$dest\")"
-              cp "$src" "$dest"
-
-              # copy matching reference
-              refsrc="screenshots/reference/$subpath"
-              if [ -f "$refsrc" ]; then
-                mkdir -p "$(dirname \"$out/reference/$subpath\")"
-                cp "$refsrc" "$out/reference/$subpath"
-              else
-                reffound=$(find screenshots/reference -type f -name "$(basename \"$subpath\")" -print -quit 2>/dev/null || true)
-                if [ -n "$reffound" ]; then
-                  mkdir -p "$(dirname \"$out/reference/$subpath\")"
-                  cp "$reffound" "$out/reference/$subpath"
-                fi
-              fi
-
-              # copy matching current
-              cursrc="screenshots/current/$subpath"
-              if [ -f "$cursrc" ]; then
-                mkdir -p "$(dirname \"$out/current/$subpath\")"
-                cp "$cursrc" "$out/current/$subpath"
-              else
-                curfound=$(find screenshots/current -type f -name "$(basename \"$subpath\")" -print -quit 2>/dev/null || true)
-                if [ -n "$curfound" ]; then
-                  mkdir -p "$(dirname \"$out/current/$subpath\")"
-                  cp "$curfound" "$out/current/$subpath"
-                fi
-              fi
-            done
-          fi
-          # include test output and any other small logs
-          cp test-output.txt "$out/" 2>/dev/null || true
-          # debug listing
-          echo "Prepared artifact contents:" >&2
-          ls -R "$out" >&2 || true
-          echo "artifacts_path=$out" >> $GITHUB_OUTPUT
       - name: Upload filtered artifacts
-        if: steps.check-screenshots.outputs.has_diff == 'true'
+        if: steps.prepare-screenshots-failures.outputs.artifacts_path != ''
         uses: actions/upload-artifact@v4
         with:
           name: screenshots-failed-${{ github.run_id }}
-          path: ${{ steps.prepare-filtered-artifacts.outputs.artifacts_path }}
+          path: ${{ steps.prepare-screenshots-failures.outputs.artifacts_path }}
           retention-days: 7
