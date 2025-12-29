@@ -128,9 +128,9 @@
   "sideEffects": [
     "./components/*.js",
     "./loaders/*.js",
-    "./polyfills/*.js",
     "./demo/custom.js",
-    "./demo/demo/*.js"
+    "./demo/demo/*.js",
+    "./demo/polyfills/*.js"
   ],
   "type": "module",
   "typesVersions": {
