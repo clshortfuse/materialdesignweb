@@ -87,7 +87,7 @@ export default Box
       display: grid;
       column-gap: 16px; /* Gutters */
       grid-auto-flow: row;
-      grid-template-columns: repeat(1fr, 4);
+      grid-template-columns: repeat(4, 1fr);
     }
 
     :host([y="start"]) { align-items: flex-start; }
