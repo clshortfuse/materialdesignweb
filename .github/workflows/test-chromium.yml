@@ -44,4 +44,46 @@ jobs:
       - run: npx playwright install-deps
         if: steps.playwright-cache.outputs.cache-hit == 'true'
       - name: Run Playwright tests
-        run: npm run test:custom -- --playwright --browsers chromium
+        id: run-tests
+        run: |
+          set -o pipefail
+          npm run test:custom -- --playwright --browsers chromium 2>&1 | tee test-output.txt
+          exit ${PIPESTATUS[0]}
+      - name: Check for screenshot failures
+        id: check-screenshots
+        if: failure()
+        run: |
+          has_diff=false
+          if [ -f test-output.txt ] && grep -q "Screenshot too different" test-output.txt; then
+            has_diff=true
+          fi
+          if [ -d screenshots/difference ] && find screenshots/difference -type f | grep -q .; then
+            has_diff=true
+          fi
+          echo "has_diff=$has_diff" >> $GITHUB_OUTPUT
+      - name: Prepare filtered artifacts
+        id: prepare-filtered-artifacts
+        if: steps.check-screenshots.outputs.has_diff == 'true'
+        run: |
+          run_id=${GITHUB_RUN_ID}
+          out=artifacts/${run_id}
+          mkdir -p "$out/difference" "$out/reference" "$out/current"
+          if [ -d screenshots/difference ]; then
+            for f in screenshots/difference/*; do
+              [ -f "$f" ] || continue
+              cp "$f" "$out/difference/"
+              name=$(basename "$f")
+              [ -f "screenshots/reference/${name}" ] && cp "screenshots/reference/${name}" "$out/reference/"
+              [ -f "screenshots/current/${name}" ] && cp "screenshots/current/${name}" "$out/current/"
+            done
+          fi
+          # include test output and any other small logs
+          cp test-output.txt "$out/" 2>/dev/null || true
+          echo "artifacts_path=$out" >> $GITHUB_OUTPUT
+      - name: Upload filtered artifacts
+        if: steps.check-screenshots.outputs.has_diff == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-failed-${{ github.run_id }}
+          path: ${{ steps.prepare-filtered-artifacts.outputs.artifacts_path }}
+          retention-days: 7
