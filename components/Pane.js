@@ -19,6 +19,8 @@ export default Box
       --mdw-ink: var(--mdw-color__on-surface);
       background-color: rgb(var(--mdw-bg));
       color: rgb(var(--mdw-ink));
+
+      overflow: auto;
     }
   `
   .autoRegister('mdw-pane');
