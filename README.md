@@ -5,6 +5,8 @@ Material Design for Web
 
 ![Version](https://badgen.net/npm/v/@shortfuse/materialdesignweb) ![License](https://badgen.net/npm/license/@shortfuse/materialdesignweb) ![MinZip](https://badgen.net/bundlephobia/minzip/@shortfuse/materialdesignweb) ![Dependents](https://badgen.net/npm/dependents/@shortfuse/materialdesignweb)
 
+[![Chromium](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-chromium.yml/badge.svg)](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-chromium.yml) [![Firefox](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-firefox.yml/badge.svg)](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-firefox.yml) [![Webkit](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-webkit.yml/badge.svg)](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-webkit.yml)
+
 Live demo: https://clshortfuse.github.io/materialdesignweb/
 
 Quick links
