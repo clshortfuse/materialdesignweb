@@ -2,8 +2,24 @@ name: Chromium
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'demos/**'
+      - '**.md'
+      - '.github/workflows/static.yml'
+      # - '.github/workflows/test-chromium.yml'
+      - '.github/workflows/test-firefox.yml'
+      - '.github/workflows/test-webkit.yml'
   pull_request:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'demos/**'
+      - '**.md'
+      - '.github/workflows/static.yml'
+      # - '.github/workflows/test-chromium.yml'
+      - '.github/workflows/test-firefox.yml'
+      - '.github/workflows/test-webkit.yml'
 jobs:
   test:
     timeout-minutes: 60
@@ -79,7 +95,7 @@ jobs:
             echo "No failed screenshots found"
           fi
       - name: Upload filtered artifacts
-        if: steps.prepare-screenshots-failures.outputs.artifacts_path != ''
+        if: failure() && steps.prepare-screenshots-failures.outputs.artifacts_path != ''
         uses: actions/upload-artifact@v4
         with:
           name: screenshots-failed-${{ github.run_id }}
