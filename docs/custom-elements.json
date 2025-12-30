@@ -2160,7 +2160,7 @@
           "events": [],
           "demos": [],
           "superclass": {
-            "package": "global:",
+            "module": "global:",
             "name": "HTMLElement"
           },
           "mixins": [],
@@ -14861,18 +14861,6 @@
               }
             },
             {
-              "name": "formAssociatedCallback",
-              "kind": "method",
-              "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/mixins/FormAssociatedMixin.js#L225"
-              },
-              "return": {
-                "type": {
-                  "text": "(form: HTMLFormElement) => void"
-                }
-              }
-            },
-            {
               "name": "formIPCEvent",
               "kind": "method",
               "source": {
@@ -14882,53 +14870,6 @@
                 "type": {
                   "text": "(event: CustomEvent<[string, string]>) => void"
                 }
-              }
-            },
-            {
-              "name": "formDisabledCallback",
-              "kind": "method",
-              "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/mixins/FormAssociatedMixin.js#L254"
-              },
-              "return": {
-                "type": {
-                  "text": "(disabled: boolean) => void"
-                }
-              }
-            },
-            {
-              "name": "formResetCallback",
-              "kind": "method",
-              "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/mixins/FormAssociatedMixin.js#L258"
-              },
-              "return": {
-                "type": {
-                  "text": "() => void"
-                }
-              }
-            },
-            {
-              "name": "formStateRestoreCallback",
-              "kind": "method",
-              "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/mixins/FormAssociatedMixin.js#L270"
-              },
-              "return": {
-                "type": {
-                  "text": "(state: string | FormData, mode: \"autocomplete\" | \"restore\") => void"
-                }
-              }
-            },
-            {
-              "name": "formAssociated",
-              "kind": "field",
-              "static": true,
-              "source": {
-                "href": "https://github.com/clshortfuse/materialdesignweb/blob/main/mixins/FormAssociatedMixin.js#L20"
-              },
-              "type": {
-                "text": "true"
               }
             }
           ],

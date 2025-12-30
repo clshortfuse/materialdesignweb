@@ -723,7 +723,7 @@ function referenceFromSymbol(sym) {
     }
   }
   if (fn.includes('lib.dom')) {
-    return { package: 'global:', name: displayName };
+    return { module: 'global:', name: displayName };
   }
   const rel = path.relative(process.cwd(), fn).split(path.sep).join('/');
   return { module: rel, name: displayName };
@@ -1455,6 +1455,13 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
         // `CustomElement` base (these are superclass items, not mixin-contributed).
         if (ceInstanceProps?.has?.(mname)) continue;
         if (skippedPrototype.has(mname)) continue;
+        // Exclude form-associated lifecycle callbacks (implementation details)
+        if (mname === 'formAssociatedCallback'
+            || mname === 'formDisabledCallback'
+            || mname === 'formResetCallback'
+            || mname === 'formStateRestoreCallback') {
+          continue;
+        }
         const mdoc = tsExports.get(mname);
         // Include when TS export provides a source or when we derived a TS type above
         const hasDerived = Object.prototype.hasOwnProperty.call(derivedTypes, mname)
@@ -1482,6 +1489,10 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
         // Exclude static names copied from CustomElement
         if (ceStaticProps?.has?.(mname)) continue;
         if (skippedStatic.has(mname)) continue;
+        // Exclude formAssociated static field (implementation detail)
+        if (mname === 'formAssociated') {
+          continue;
+        }
         const mdoc = tsExports.get(mname);
         const hasDerived = Object.prototype.hasOwnProperty.call(derivedTypes, mname)
             && derivedTypes[mname] !== undefined;
