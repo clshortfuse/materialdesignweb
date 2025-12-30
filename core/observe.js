@@ -1,14 +1,14 @@
 import { attrNameFromPropName } from './dom.js';
 import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
 
-/** @typedef {'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'object' | 'function' | 'array'} ObserverPropertyType */
+/** @typedef {'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'number' | 'object' | 'function' | 'array'}   ObserverPropertyType */
 
 /**
  * @template {ObserverPropertyType} T
  * @typedef {(
  * T extends 'boolean' ? boolean
  * : T extends 'string' ? string
- * : T extends 'float' | 'integer' ? number
+ * : T extends 'float' | 'integer' | 'number' ? number
  * : T extends 'array' ? any[]
  * : T extends 'object' ? any
  * : T extends 'function' ? (...args:any) => any
@@ -69,6 +69,7 @@ function emptyFromType(type) {
       return false;
     case 'integer':
     case 'float':
+    case 'number':
       return 0;
     case 'map':
       return new Map();
@@ -144,6 +145,7 @@ function defaultParserFromType(type) {
       // Calls ToNumber(x)
       return Math.round;
     case 'float':
+    case 'number':
       /**
        * Doesn't support `BigInt` types
        * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#number_coercion
@@ -292,7 +294,7 @@ export function parseObserverOptions(name, typeOrOptions, object) {
       const parsed = typeof value;
       // @ts-ignore
       type = (parsed === 'number')
-        ? (Number.isInteger(value) ? 'integer' : 'number')
+        ? (Number.isInteger(value) ? 'integer' : 'float')
         : parsed;
     }
   }
