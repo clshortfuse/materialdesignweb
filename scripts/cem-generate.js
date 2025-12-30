@@ -281,6 +281,11 @@ function normalizeExportName(name) {
  * @param {ts.Node|null} declaration
  * @return {import('custom-elements-manifest').SourceReference|null}
  */
+/**
+ * Get the source location of a TypeScript declaration.
+ * @param {ts.Declaration} declaration
+ * @return {{path: string, line: number}|null}
+ */
 function getSourceLocation(declaration) {
   if (!declaration) return null;
   const sourceFile = declaration.getSourceFile();
@@ -289,7 +294,20 @@ function getSourceLocation(declaration) {
   const relativePath = path.relative(process.cwd(), sourceFile.fileName).split(path.sep).join('/');
   const line = sourceFile.getLineAndCharacterOfPosition(position).line + 1;
   return {
-    href: `https://github.com/clshortfuse/materialdesignweb/blob/main/${relativePath}#L${line}`,
+    path: relativePath,
+    line,
+  };
+}
+
+/**
+ * Convert an internal source location (with path) to a CEM SourceReference (with href).
+ * @param {{path?: string, line?: number}} sourceLocation
+ * @return {import('custom-elements-manifest').SourceReference|null}
+ */
+function sourceLocationToReference(sourceLocation) {
+  if (!sourceLocation || !sourceLocation.path) return null;
+  return {
+    href: `https://github.com/clshortfuse/materialdesignweb/blob/main/${sourceLocation.path}${sourceLocation.line ? `#L${sourceLocation.line}` : ''}`,
   };
 }
 
@@ -300,7 +318,7 @@ const moduleByFile = new Map();
  * @typedef {Object} TSExport
  * @prop {string} [type]
  * @prop {string} [docs]
- * @prop {import('custom-elements-manifest').SourceReference} [source]
+ * @prop {{path?: string, line?: number}} [source]
  */
 
 /**
@@ -336,7 +354,7 @@ function collectTsExports(sf) {
           tsExports.set(propName, {
             type: inferredType || undefined,
             docs: doc || undefined,
-            source: getSourceLocation(prop.name),
+            source: getSourceLocation(prop),
           });
         }
       }
@@ -1174,8 +1192,8 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
     return: { type: { text: '' } },
     members: [],
     mixins: [],
-    // CEM SourceReference in this project uses `href` for module paths.
-    source: { href: ref.module || '' },
+    // CEM SourceReference uses absolute GitHub URLs
+    source: { href: ref.module ? `https://github.com/clshortfuse/materialdesignweb/blob/main/${ref.module}` : '' },
   };
 
   if (ref.package === 'global:') {
@@ -1202,22 +1220,24 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
   const exportExprLocal = exportInfo.exportExpr;
   const exportIdNode = exportInfo.idNode;
   const exportName = exportInfo.exportName;
-  
+
   // Try to extract the actual function name from the export expression or export name
   if (exportName && exportName !== 'default') {
     decl.name = exportName;
   } else if (exportExprLocal && ts.isFunctionDeclaration(exportExprLocal) && exportExprLocal.name) {
     decl.name = exportExprLocal.name.getText(srcSf);
   }
-  
+
   // Prefer resolving the identifier node (if present), fallback to the export expression
   const exportSym = (exportIdNode && resolveSymbolFromExpression(exportIdNode))
     || (exportExprLocal && resolveSymbolFromExpression(exportExprLocal)) || null;
   if (exportSym) {
     const mixinDoc = docToString(exportSym);
-    if (mixinDoc) decl.description = mixinDoc;
+    if (mixinDoc) {
+      decl.description = mixinDoc;
+    }
   }
-  
+
   const checker = getTypeChecker();
   const mixType = exportExprLocal ? checker.getTypeAtLocation(exportExprLocal) : null;
   let _retTypeForDetection = null;
@@ -1333,7 +1353,7 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
       // members using the TypeScript checker and the mixin's return type.
       /** @type {Record<string,string>} */
       const derivedTypes = Object.create(null);
-      /** @type {Record<string,{href:string}>} */
+      /** @type {Record<string,{path:string,line:number}|null>} */
       const derivedSources = Object.create(null);
       const skippedPrototype = new Set();
       const skippedStatic = new Set();
@@ -1483,11 +1503,13 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
         const memberKey = `${mname}::i`;
         if (!mergedMembers.has(memberKey)) {
           const memberKind = normalizeMemberKind(kind);
+          const source = sourceLocationToReference(mdoc?.source)
+            || sourceLocationToReference(derivedSources[mname]) || undefined;
           const base = {
             name: mname,
             kind: memberKind,
             description: mdoc?.docs || undefined,
-            source: mdoc?.source || derivedSources[mname] || undefined,
+            source,
           };
           if (memberKind === 'method') {
             // Represent methods using `return` per CEM schema
@@ -1513,12 +1535,14 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
         const memberKey = `${mname}::s`;
         if (!mergedMembers.has(memberKey)) {
           const memberKind = normalizeMemberKind(kind);
+          const source = sourceLocationToReference(mdoc?.source)
+            || sourceLocationToReference(derivedSources[mname]) || undefined;
           const base = {
             name: mname,
             kind: memberKind,
             static: true,
             description: mdoc?.docs || undefined,
-            source: mdoc?.source || derivedSources[mname] || undefined,
+            source,
           };
           if (memberKind === 'method') {
             mergedMembers.set(memberKey, { ...base, return: { type: normalizeType(mdoc?.type || derived || 'any') } });
@@ -1721,7 +1745,7 @@ function mergePropertiesFromType(type, instanceFieldMap, instanceMethodMap, runt
     // Do NOT consult runtime.propList here; prefer TypeScript-declared
     // types and exports. runtime.propList was disabled due to instability.
     const docs = docToString(p) || tsExports.get(pname)?.docs || undefined;
-    const source = tsExports.get(pname)?.source || undefined;
+    const source = sourceLocationToReference(tsExports.get(pname)?.source) || undefined;
     const chosenType = typeStr || tsExports.get(pname)?.type;
     if (!chosenType) {
       throw new Error(`[manifest] missing type for property ${name}.${pname}; falling back to 'any'`);
@@ -1853,10 +1877,10 @@ async function mergeInstanceTypeProperties(
     // Prefer explicit TS export source from the component's `tsExports` map.
     // If not present, synthesize a source href referencing the declaration
     // in its originating file (useful when the declaration lives in a mixin).
-    let memberSource = tsExports.get(pname)?.source;
+    let memberSource = sourceLocationToReference(tsExports.get(pname)?.source) || undefined;
 
     if (!memberSource && lastDeclaration?.decl) {
-      memberSource = getSourceLocation(lastDeclaration.decl);
+      memberSource = sourceLocationToReference(getSourceLocation(lastDeclaration.decl));
     }
 
     {
@@ -1967,7 +1991,7 @@ async function mergeConstructorTypeProperties(
         kind: memberKind,
         static: true,
         description: docs || undefined,
-        source: tsExports.get(pname)?.source || undefined,
+        source: sourceLocationToReference(tsExports.get(pname)?.source) || undefined,
       };
       if (memberKind === 'method') {
         staticMembersMap.set(pname, { ...base, return: { type: normalizeType(chosenType) } });
@@ -1982,8 +2006,8 @@ async function mergeConstructorTypeProperties(
  * Build/merge attributes discovered at runtime into `attributeMap`.
  * Extracted from `generateForFile` so the sequencer can call it.
  * @param {RuntimeCaptureResult} runtime
- * @param {Map<string, {type?:string, docs?:string, source?:{href:string}}>} tsExports
- * @param {Map<string, CEMElement['attributes'][0]>} attributeMap
+ * @param {Map<string, TSExport>} tsExports
+ * @param {Map<string, CEMAttribute>} attributeMap
  * @param {string} name
  */
 function buildAttributeMapFromRuntime(runtime, tsExports, attributeMap, name) {
@@ -2011,6 +2035,7 @@ function buildAttributeMapFromRuntime(runtime, tsExports, attributeMap, name) {
     if (!cfg?.type) {
       throw new Error(`[manifest] missing type for attribute ${name}.${a}; falling back to 'string'`);
     }
+
     attributeMap.set(a, {
       name: a,
       description: docs || undefined,
@@ -2028,7 +2053,7 @@ function buildAttributeMapFromRuntime(runtime, tsExports, attributeMap, name) {
  * @param {Map<string, CEMMethod>} instanceMethodMap
  * @param {RuntimeCaptureResult} runtime
  * @param {Map<string, TSExport>} tsExports
- * @param {Map<string, CEMMember>} [staticMembersMap]
+ * @param {Map<string, CEMMember>} staticMembersMap
  */
 function enrichAttributesAndMembers(
   attributeMap,
@@ -2066,7 +2091,7 @@ function enrichAttributesAndMembers(
       mval.type = normalizeType(foundValue.type || 'any');
     }
     mval.description ||= foundValue.docs || undefined;
-    mval.source ||= foundValue.source || undefined;
+    mval.source ||= sourceLocationToReference(foundValue.source) || undefined;
   }
 
   // Enrich instance method members: ensure a `return` object exists and
@@ -2079,7 +2104,7 @@ function enrichAttributesAndMembers(
       mval.return.type = normalizeType(foundValue.type || 'any');
     }
     mval.description ||= foundValue.docs || undefined;
-    mval.source ||= foundValue.source || undefined;
+    mval.source ||= sourceLocationToReference(foundValue.source) || undefined;
   }
 
   for (const [, aval] of attributeMap.entries()) {
@@ -2111,7 +2136,7 @@ function enrichAttributesAndMembers(
         }
       }
       mval.description ||= foundValue.docs || undefined;
-      mval.source ||= foundValue.source || undefined;
+      mval.source ||= sourceLocationToReference(foundValue.source) || undefined;
     }
   }
 }
@@ -2762,6 +2787,8 @@ async function generateForFile(file) {
     );
   }
 
+  // Collect mixin declarations first so they can be used for inheritedFrom tracking
+  const mixins = await collectMixinDeclarationsFromExport(exportExpr);
   buildAttributeMapFromRuntime(runtime, tsExports, attributeMap, name);
 
   // Build a dedicated static members map from runtime and enrich it
@@ -2808,13 +2835,17 @@ async function generateForFile(file) {
     );
   }
 
-  enrichAttributesAndMembers(attributeMap, instanceFieldMap, instanceMethodMap, runtime, tsExports, staticMembersMap);
+  enrichAttributesAndMembers(
+    attributeMap,
+    instanceFieldMap,
+    instanceMethodMap,
+    runtime,
+    tsExports,
+    staticMembersMap,
+  );
 
   // eslint-disable-next-line no-await-in-loop
   const demos = await findDemos(name);
-  // Collect mixin declarations applied to this export (conservative synthesis)
-  /** @type {CEMReference[]} */
-  const mixins = await collectMixinDeclarationsFromExport(exportExpr);
 
   /** @type {CEMElement} */
   // Filter out mixin-sourced `field` members from component declarations.
@@ -2828,14 +2859,6 @@ async function generateForFile(file) {
     ...(staticMembersMap ? Array.from(staticMembersMap.values()) : []),
   ];
 
-  /** @param {import('custom-elements-manifest').SourceReference|undefined} s */
-  const isMixinSource = (s) => {
-    if (!s) {
-      return false;
-    }
-    const href = s?.href || '';
-    return String(href).includes('/mixins/') || String(href).includes(`${path.sep}mixins${path.sep}`);
-  };
   const filteredMembers = allMemberCandidates.filter((m) => {
     if (!m) {
       return false;
@@ -2871,10 +2894,6 @@ async function generateForFile(file) {
       }
     }
 
-    // only suppress `field` members that clearly originate from mixin modules
-    if ((m.kind === 'field' || (m.kind === undefined && m.static !== true)) && isMixinSource(m.source)) {
-      return false;
-    }
     return true;
   });
   // Synthesize events inferred from `on*` listener-style members.
@@ -2929,11 +2948,13 @@ async function generateForFile(file) {
     if (exportExpr) {
       const start = exportExpr.getFullStart();
       const prefix = srcText.slice(0, start);
-      const m = /\/\*\*([\s\S]*?)\*\/[\s\t\r\n]*$/m.exec(prefix);
+      const m = /\/\*{2}([\S\s]*?)\*\/\s*$/m.exec(prefix);
       if (m && m[1]) {
         // strip leading * prefixes
         const cleaned = m[1].split(/\r?\n/).map((ln) => ln.replace(/^\s*\*\s?/, '')).join('\n').trim();
-        if (cleaned) classDesc = cleaned;
+        if (cleaned) {
+          classDesc = cleaned;
+        }
       }
     }
   }
@@ -3111,40 +3132,278 @@ async function main() {
     }
   }
 
-  // Post-pass: remove mixin-owned attributes from composed component declarations.
+  // Post-pass: merge mixin attributes and members into components with inheritedFrom.
 
-  /** @type {Map<string, Set<string>>} */
-  const mixinAttrsByModule = new Map();
+  /** @type {Map<string, {attributes?: any[], members?: any[]}>} */
+  const mixinDataByModuleName = new Map();
+  /** @type {Map<string, {attributes?: any[], members?: any[]}>} */
+  const classDataByModuleName = new Map();
+  /** @type {Map<string, string>} */
+  const exportToDeclarationName = new Map();
+
   for (const mod of modules) {
     if (!mod || mod.kind !== 'javascript-module' || !mod.path) continue;
+
+    // Build export-to-declaration mapping for resolving references
+    for (const exp of (mod.exports || [])) {
+      if (!exp || !exp.declaration) continue;
+      const declName = exp.declaration.name;
+      if (declName) {
+        const exportName = exp.name || 'default';
+        const key = `${mod.path}::${exportName}`;
+        exportToDeclarationName.set(key, declName);
+      }
+    }
+
     for (const d of (mod.declarations || [])) {
-      if (!d || !('attributes' in d)) continue;
-      const attrs = ((d.attributes || [])).map((a) => a.name);
-      if (attrs.length) {
-        mixinAttrsByModule.set(mod.path, new Set(attrs));
+      if (!d || d.kind !== 'mixin') continue;
+      if ('customElement' in d === false) continue;
+      // Store mixin data using both declaration name and export names
+      const mixinData = {
+        attributes: d.attributes || [],
+        members: d.members || [],
+      };
+      const declKey = `${mod.path}::${d.name}`;
+      mixinDataByModuleName.set(declKey, mixinData);
+
+      // Also store by export names so references can find it
+      for (const exp of (mod.exports || [])) {
+        if (!exp || !exp.declaration || exp.declaration.name !== d.name) continue;
+        const exportKey = `${mod.path}::${exp.name || 'default'}`;
+        if (exportKey !== declKey) {
+          mixinDataByModuleName.set(exportKey, mixinData);
+        }
+      }
+    }
+
+    // Store class/component data indexed by ALL possible names (declaration + exports)
+    // This allows lookup by either export name or declaration name
+    for (const d of (mod.declarations || [])) {
+      if (!d || (d.kind !== 'class' && d.kind !== 'mixin')) continue;
+      if ('customElement' in d === false) continue;
+      const classData = {
+        attributes: d.attributes || [],
+        members: d.members || [],
+      };
+
+      // Store by declaration name
+      const declKey = `${mod.path}::${d.name}`;
+      classDataByModuleName.set(declKey, classData);
+
+      // Also store by export names so references can find it
+      for (const exp of (mod.exports || [])) {
+        if (!exp || !exp.declaration || exp.declaration.name !== d.name) continue;
+        const exportKey = `${mod.path}::${exp.name || 'default'}`;
+        if (exportKey !== declKey) {
+          classDataByModuleName.set(exportKey, classData);
+        }
       }
     }
   }
 
-  if (mixinAttrsByModule.size) {
+  if (mixinDataByModuleName.size) {
+    // Build a map to find mixins by both declaration name and export name
+    /** @type {Map<string, string>} */
+    const mixinDeclarationToExportName = new Map();
+    for (const mod of modules) {
+      if (!mod || mod.kind !== 'javascript-module' || !mod.path) continue;
+      for (const exp of (mod.exports || [])) {
+        if (!exp || !exp.declaration) continue;
+        const declName = exp.declaration.name;
+        if (declName && exp.declaration.module === mod.path // Map declaration name to its primary export name
+          && !mixinDeclarationToExportName.has(`${mod.path}::${declName}`)) {
+          const exportName = exp.name || 'default';
+          mixinDeclarationToExportName.set(`${mod.path}::${declName}`, exportName);
+        }
+      }
+    }
+
     for (const mod of modules) {
       if (!mod || mod.kind !== 'javascript-module' || !mod.path) continue;
       for (const d of (mod.declarations || [])) {
         if (!d || d.kind !== 'class' || !d.mixins || !('customElement' in d)) continue;
-        // For each applied mixin, remove any attributes claimed on the component
+
+        // Build sets of existing component-defined names
+        const existingAttrNames = new Set((d.attributes || []).map((a) => a.name));
+        const existingMemberNames = new Set((d.members || []).map((m) => m.name));
+
+        // For each applied mixin, merge its attributes and members with inheritedFrom
         for (const mref of d.mixins) {
           const mixModule = mref.module;
-          if (!mixModule) continue;
-          const attrsSet = mixinAttrsByModule.get(mixModule);
-          if (!attrsSet || attrsSet.size === 0) continue;
-          d.attributes = d.attributes.filter((a) => !attrsSet.has(a.name));
+          let mixName = mref.name;
+          if (!mixModule || !mixName) continue;
+
+          // Try to look up by the mixin reference name first (might be declaration name or export name)
+          let key = `${mixModule}::${mixName}`;
+          let mixinData = mixinDataByModuleName.get(key);
+
+          // If not found, try looking it up as a declaration name and resolve to export name
+          if (!mixinData) {
+            const exportName = mixinDeclarationToExportName.get(key);
+            if (exportName) {
+              key = `${mixModule}::${exportName}`;
+              mixinData = mixinDataByModuleName.get(key);
+              if (mixinData) {
+                mixName = exportName;
+              }
+            }
+          }
+
+          // If found, ensure we're using the export name for inheritedFrom reference
+          if (mixinData) {
+            for (const exp of (modules.flatMap((m) => m.exports || []))) {
+              if (exp && exp.declaration && exp.declaration.module === mixModule
+                  && exp.declaration.name === mref.name) {
+                mixName = exp.name || 'default';
+                break;
+              }
+            }
+          } else {
+            continue;
+          }
+
+          // Ensure mixName is the export name (not declaration name)
+          const exportNameForMixin = mixinDeclarationToExportName.get(`${mixModule}::${mref.name}`);
+          if (exportNameForMixin) {
+            mixName = exportNameForMixin;
+          }
+          // Mark attributes that come from mixin with inheritedFrom
+          if (mixinData.attributes) {
+            for (const attr of mixinData.attributes) {
+              // If already present on the class, just tag inheritedFrom
+              const existing = (d.attributes || []).find((a) => a.name === attr.name);
+              if (existing) {
+                if (!existing.inheritedFrom) {
+                  existing.inheritedFrom = { name: mixName, module: mixModule };
+                }
+                continue;
+              }
+              // Otherwise add it
+              d.attributes = d.attributes || [];
+              d.attributes.push({
+                ...attr,
+                inheritedFrom: {
+                  name: mixName,
+                  module: mixModule,
+                },
+              });
+              existingAttrNames.add(attr.name);
+            }
+          }
+
+          // Mark members that come from mixin with inheritedFrom
+          if (mixinData.members) {
+            for (const member of mixinData.members) {
+              if (!member.name) continue;
+              const existing = (d.members || []).find((m) => m.name === member.name);
+              if (existing) {
+                if (!existing.inheritedFrom) {
+                  existing.inheritedFrom = { name: mixName, module: mixModule };
+                }
+                continue;
+              }
+              d.members = d.members || [];
+              d.members.push({
+                ...member,
+                inheritedFrom: {
+                  name: mixName,
+                  module: mixModule,
+                },
+              });
+              existingMemberNames.add(member.name);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Post-pass: merge superclass attributes and members into subclasses with inheritedFrom.
+  if (classDataByModuleName.size) {
+    for (const mod of modules) {
+      if (!mod || mod.kind !== 'javascript-module' || !mod.path) continue;
+      for (const d of (mod.declarations || [])) {
+        if (!d || d.kind !== 'class' || !d.superclass || !('customElement' in d)) continue;
+
+        const superModule = d.superclass.module;
+        const superName = d.superclass.name;
+        if (!superModule || !superName) continue;
+
+        // Look up by export name (as used in the reference)
+        const key = `${superModule}::${superName}`;
+        const superData = classDataByModuleName.get(key);
+        if (!superData) {
+          console.log(`[superclass] unable to resolve ${d.name} superclass reference ${superModule}::${superName}`);
+          continue;
+        }
+
+        // Build map of superclass attributes and members by name
+        const superAttrByName = new Map(
+          (superData.attributes || []).map((a) => [a.name, a]),
+        );
+        const superMemberByName = new Map(
+          (superData.members || []).map((m) => [m.name, m]),
+        );
+
+        // Mark attributes that come from superclass with inheritedFrom
+        for (const attr of (d.attributes || [])) {
+          if (superAttrByName.has(attr.name) && !attr.inheritedFrom) {
+            attr.inheritedFrom = {
+              name: superName,
+              module: superModule,
+            };
+          }
+        }
+
+        // Mark members that come from superclass with inheritedFrom
+        for (const member of (d.members || [])) {
+          if (superMemberByName.has(member.name) && !member.inheritedFrom) {
+            member.inheritedFrom = {
+              name: superName,
+              module: superModule,
+            };
+          }
+        }
+
+        // Add any superclass attributes/members not already on the subclass
+        const existingAttrNames = new Set((d.attributes || []).map((a) => a.name));
+        const existingMemberNames = new Set((d.members || []).map((m) => m.name));
+
+        for (const attr of superData.attributes) {
+          if (!existingAttrNames.has(attr.name)) {
+            d.attributes = d.attributes || [];
+            d.attributes.push({
+              ...attr,
+              inheritedFrom: {
+                name: superName,
+                module: superModule,
+              },
+            });
+          }
+        }
+
+        for (const member of superData.members) {
+          if (member.name && !existingMemberNames.has(member.name)) {
+            d.members = d.members || [];
+            d.members.push({
+              ...member,
+              inheritedFrom: {
+                name: superName,
+                module: superModule,
+              },
+            });
+          }
         }
       }
     }
   }
 
   /** @type {CEMPackage} */
-  const output = { schemaVersion: '2.1.0', modules };
+  const output = {
+    $schema: 'https://cdn.jsdelivr.net/npm/custom-elements-manifest@2.1.0/schema.json',
+    schemaVersion: '2.1.0',
+    modules,
+  };
   const outPath = path.join(root, 'docs', 'custom-elements.json');
   await fs.writeFile(outPath, JSON.stringify(output, null, 2), 'utf8');
   console.log('Wrote', outPath);
