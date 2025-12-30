@@ -130,7 +130,7 @@ export default function FlexableMixin(Base) {
       :host(:is([gap="24"])) {gap: 24px;}
 
       :host(:is([padding])) {padding: 0;}
-      :host(:is([padding="pane"])) { padding-inline: var(--mdw-pane__padding-inline, 0) }
+      :host(:is([padding="pane"])) { padding-inline: var(--mdw-pane__padding-inline, 16px) }
       :host(:is([padding="4"])) {padding: 4px;}
       :host(:is([padding="8"])) {padding: 8px;}
       :host(:is([padding="12"])) {padding: 12px;}
