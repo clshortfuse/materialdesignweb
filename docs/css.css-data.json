@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vscode-css-languageservice/main/docs/customData.schema.json",
+  "version": 1.1,
+  "properties": [],
+  "pseudoElements": [
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(badge)" },
+    { "name": "::part(badge)" },
+    { "name": "::part(badge)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" },
+    { "name": "::part(control)" }
+  ]
+}

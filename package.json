@@ -32,6 +32,7 @@
     "ajv": "^8.17.1",
     "browserslist-to-esbuild": "^2.1.1",
     "clean-css": "^5.3.3",
+    "custom-element-vs-code-integration": "^1.5.0",
     "custom-elements-manifest": "^2.1.0",
     "element-internals-polyfill": "^1.3.13",
     "esbuild": "^0.27.2",
@@ -99,12 +100,14 @@
     "url": "git+https://github.com/clshortfuse/materialdesignweb.git"
   },
   "scripts": {
-    "cem": "node scripts/cem-generate.js",
-    "demo": "node build/esbuild.js demo/demo.js --outdir=demo --minify --metafile",
+    "cem": "node scripts/cem-generate.js && node scripts/cem-vscode.js",
     "demo:rollup": "rollup -c build/rollup.config.js demo/demo.js --dir=demo --compact",
     "build:index": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production --format=iife",
+    "build:demo": "node build/esbuild.js demo/demo.js --outdir=demo --minify --metafile",
     "build:custom-element": "node build/esbuild.js core/CustomElement.js --outdir=dist --minify --metafile --production --format=esm",
-    "dist": "npm run build:index && npm run build:custom-element",
+    "build": "npm run build:index && npm run build:custom-element",
+    "demo": "npm run build:demo",
+    "dist": "npm run build",
     "predemo": "node bin/mdw-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > demo/theme.css",
     "predemo-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > demo/alt-theme.css",
     "prepublishOnly": "npm run types && npm run cem && npm run dist",
@@ -135,6 +138,14 @@
     "./demo/demo/*.js",
     "./demo/polyfills/*.js"
   ],
+  "contributes": {
+    "html": {
+      "customData": ["./docs/html.html-data.json"]
+    },
+    "css": {
+      "customData": ["./docs/css.css-data.json"]
+    }
+  },
   "type": "module",
   "typesVersions": {
     "*": {

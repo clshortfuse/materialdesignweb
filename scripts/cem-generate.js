@@ -2013,10 +2013,11 @@ async function mergeConstructorTypeProperties(
 function buildAttributeMapFromRuntime(runtime, tsExports, attributeMap, name) {
   for (const [a, cfg] of runtime.attrList.entries()) {
     const key = cfg?.key || camel(a);
-    const typeStr = cfg?.type;
+    const tsType = tsExports.get(key)?.type;
+    const typeStr = tsType || cfg?.type;
     const docs = tsExports.get(key)?.docs || null;
 
-    let fieldName;
+    let fieldName = cfg?.key || cfg?.attr;
 
     // runtime.propList is disabled; do not attempt to infer a mapping
     // from prop -> attribute at runtime. Leave `fieldName` undefined
@@ -2032,7 +2033,7 @@ function buildAttributeMapFromRuntime(runtime, tsExports, attributeMap, name) {
       }
     }
 
-    if (!cfg?.type) {
+    if (!typeStr) {
       throw new Error(`[manifest] missing type for attribute ${name}.${a}; falling back to 'string'`);
     }
 
@@ -2079,6 +2080,22 @@ function enrichAttributesAndMembers(
         fieldName: cfg?.key || undefined,
         description: undefined,
       });
+    }
+  }
+
+  // If we can map an attribute back to an instance field, prefer the
+  // TypeScript-derived field type over runtime observer subtypes.
+  for (const [, aval] of attributeMap.entries()) {
+    if (!aval) continue;
+    const fieldName = aval.fieldName;
+    if (!fieldName) continue;
+    if (!instanceFieldMap.has(fieldName)) continue;
+    const field = instanceFieldMap.get(fieldName);
+    if (!field?.type) continue;
+    const currentText = aval.type?.text || aval.type?.text?.toLowerCase?.();
+    const isRuntimeNumericSubtype = currentText === 'integer' || currentText === 'float';
+    if (!aval.type || isRuntimeNumericSubtype) {
+      aval.type = field.type;
     }
   }
 

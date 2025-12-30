@@ -1,4 +1,7 @@
 {
   "editor.colorDecorators": false,
-  "livePreview.defaultPreviewPath": "/docs/"
+  "livePreview.defaultPreviewPath": "/docs/",
+  "html.customData": [
+    "./docs/html.html-data.json"
+  ]
 }

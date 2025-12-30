@@ -49,7 +49,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -430,7 +430,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -859,7 +859,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -1399,7 +1399,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -2206,7 +2206,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -2469,7 +2469,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -2779,7 +2779,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -2801,7 +2801,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -2845,7 +2845,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -4611,7 +4611,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -6420,7 +6420,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -6442,7 +6442,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -6486,7 +6486,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -8022,7 +8022,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -8330,7 +8330,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -8352,7 +8352,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -8396,7 +8396,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -10354,7 +10354,7 @@
               "name": "popup-margin",
               "fieldName": "popupMargin",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -11116,7 +11116,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -11703,7 +11703,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -11901,7 +11901,7 @@
               "name": "type",
               "fieldName": "type",
               "type": {
-                "text": "string"
+                "text": "boolean"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -12011,7 +12011,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -12033,7 +12033,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -12077,7 +12077,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -14148,7 +14148,7 @@
               "description": "Hide the FAB container at this min-width (pixels).",
               "fieldName": "hideBreakpoint",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             }
           ],
@@ -14264,7 +14264,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -14573,7 +14573,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -14595,7 +14595,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -14639,7 +14639,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -16603,7 +16603,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -16634,7 +16634,7 @@
               "description": "Explicit number of columns; when set, disables auto column calculation.",
               "fieldName": "columns",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             }
           ],
@@ -17003,7 +17003,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -17570,7 +17570,7 @@
               "description": "Rendered width in CSS pixels.",
               "fieldName": "width",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -17578,7 +17578,7 @@
               "description": "Rendered height in CSS pixels.",
               "fieldName": "height",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -18067,7 +18067,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -18375,7 +18375,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -18397,7 +18397,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -18441,7 +18441,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -20607,7 +20607,7 @@
               "name": "type",
               "fieldName": "type",
               "type": {
-                "text": "string"
+                "text": "array"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -20717,7 +20717,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -20739,7 +20739,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -20783,7 +20783,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -20827,7 +20827,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -22966,7 +22966,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -24057,7 +24057,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -24475,7 +24475,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -24497,7 +24497,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -25100,7 +25100,7 @@
               "description": "Number of text lines the item should reserve for content (integer).",
               "fieldName": "lines",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -27617,7 +27617,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -27639,7 +27639,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -27813,7 +27813,7 @@
               "description": "Visible size (number of rows) for the listbox; 0 means auto.",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -29028,7 +29028,7 @@
               "name": "popup-margin",
               "fieldName": "popupMargin",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -29039,7 +29039,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -30099,7 +30099,7 @@
               "name": "lines",
               "fieldName": "lines",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -31789,7 +31789,7 @@
               "description": "Pixel threshold for auto-closing the nav bar based on viewport width.\nA value of `-1` disables auto-close. Default: 728.",
               "fieldName": "autoClose",
               "type": {
-                "text": "float"
+                "text": "number"
               }
             },
             {
@@ -32933,7 +32933,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -33078,7 +33078,7 @@
               "description": "Viewport width in pixels at or above which the drawer auto-opens.\nUse `-1` to disable auto-open. Default: 1248.",
               "fieldName": "autoOpen",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -33101,7 +33101,7 @@
               "description": "Fixed layout breakpoint in pixels for permanent/dismissible drawer modes.\nDefault: 1248.",
               "fieldName": "fixedBreakpoint",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -35493,7 +35493,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -35637,7 +35637,7 @@
               "description": "Viewport width (pixels) threshold at or above which the rail will auto-open.",
               "fieldName": "autoOpen",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -35649,7 +35649,7 @@
               "description": "Viewport width (pixels) threshold at or below which the rail will auto-close.",
               "fieldName": "autoClose",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -35661,7 +35661,7 @@
               "description": "Viewport width (pixels) at which the rail becomes fixed (non-collapsible).",
               "fieldName": "fixedBreakpoint",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -37168,7 +37168,7 @@
               "description": "Inline-size breakpoint (px) at which the second pane becomes visible.",
               "fieldName": "paneTwoBreakpoint",
               "type": {
-                "text": "float"
+                "text": "number"
               }
             }
           ],
@@ -37428,7 +37428,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -37975,7 +37975,7 @@
               "name": "popup-margin",
               "fieldName": "popupMargin",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -37987,7 +37987,7 @@
               "description": "Elevation level (0–5) controlling the drop-shadow depth of the popup.",
               "fieldName": "elevation",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             }
           ],
@@ -38489,7 +38489,7 @@
               "description": "Current progress value. When present the indicator is determinate.",
               "fieldName": "value",
               "type": {
-                "text": "float"
+                "text": "number"
               }
             },
             {
@@ -38497,7 +38497,7 @@
               "description": "Maximum progress value (defaults to 100 when not set).",
               "fieldName": "max",
               "type": {
-                "text": "float"
+                "text": "number"
               }
             },
             {
@@ -38942,7 +38942,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -38964,7 +38964,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -39008,7 +39008,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -41442,7 +41442,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -41740,7 +41740,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -41762,7 +41762,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -41806,7 +41806,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -43707,7 +43707,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -44258,7 +44258,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -45671,7 +45671,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -45800,7 +45800,7 @@
               "description": "Optional auto-open minimum viewport inline-size (px); -1 disables.",
               "fieldName": "autoOpen",
               "type": {
-                "text": "float"
+                "text": "number"
               }
             },
             {
@@ -45808,7 +45808,7 @@
               "description": "Optional auto-close maximum viewport inline-size (px); -1 disables.",
               "fieldName": "autoClose",
               "type": {
-                "text": "float"
+                "text": "number"
               }
             },
             {
@@ -45816,7 +45816,7 @@
               "description": "Inline-size breakpoint (px) at which the sheet becomes `fixed`.",
               "fieldName": "fixedBreakpoint",
               "type": {
-                "text": "float"
+                "text": "number"
               }
             },
             {
@@ -46627,7 +46627,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -46649,7 +46649,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -46693,7 +46693,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -46738,7 +46738,7 @@
               "description": "Number of tick marks to show along the track (integer).",
               "fieldName": "ticks",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -47963,7 +47963,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -48616,7 +48616,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -49219,7 +49219,7 @@
               "name": "maxlength",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -49241,7 +49241,7 @@
               "name": "minlength",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -49285,7 +49285,7 @@
               "name": "size",
               "fieldName": "size",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -50709,7 +50709,7 @@
               "description": "Temporary drag position value (0..1) while the thumb is being dragged.",
               "fieldName": "dragValue",
               "type": {
-                "text": "float"
+                "text": "number"
               }
             },
             {
@@ -53144,7 +53144,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -53811,7 +53811,7 @@
               "name": "density",
               "fieldName": "density",
               "type": {
-                "text": "integer"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
@@ -54029,7 +54029,7 @@
               "description": "Minimum number of rows to display. Mirrors the `minrows` attribute.",
               "fieldName": "minRows",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -54037,14 +54037,14 @@
               "description": "Maximum number of rows to allow when auto-resizing.",
               "fieldName": "maxRows",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
               "name": "cols",
               "fieldName": "cols",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -54060,7 +54060,7 @@
               "description": "Maximum allowed characters for the control.",
               "fieldName": "maxLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -54068,7 +54068,7 @@
               "description": "Minimum required characters for the control.",
               "fieldName": "minLength",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -54076,7 +54076,7 @@
               "description": "Number of rows to render; updated when resizing.",
               "fieldName": "rows",
               "type": {
-                "text": "integer"
+                "text": "number"
               }
             },
             {
@@ -55342,7 +55342,7 @@
               "name": "gap",
               "fieldName": "gap",
               "type": {
-                "text": "float"
+                "text": "number"
               },
               "inheritedFrom": {
                 "name": "default",
