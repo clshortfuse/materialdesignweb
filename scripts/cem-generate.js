@@ -717,6 +717,10 @@ function referenceFromSymbol(sym) {
       displayName = d.name.getText();
       break;
     }
+    if (ts.isFunctionDeclaration(d) && d.name) {
+      displayName = d.name.getText();
+      break;
+    }
     if (ts.isVariableDeclaration(d) && d.name && ts.isIdentifier(d.name)) {
       displayName = d.name.getText();
       break;
@@ -1197,6 +1201,14 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
   const exportInfo = findExportInfo(srcSf);
   const exportExprLocal = exportInfo.exportExpr;
   const exportIdNode = exportInfo.idNode;
+  const exportName = exportInfo.exportName;
+  
+  // Try to extract the actual function name from the export expression or export name
+  if (exportName && exportName !== 'default') {
+    decl.name = exportName;
+  } else if (exportExprLocal && ts.isFunctionDeclaration(exportExprLocal) && exportExprLocal.name) {
+    decl.name = exportExprLocal.name.getText(srcSf);
+  }
   
   // Prefer resolving the identifier node (if present), fallback to the export expression
   const exportSym = (exportIdNode && resolveSymbolFromExpression(exportIdNode))
@@ -1587,6 +1599,19 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
           existing.mixins = existing.mixins?.length ? existing.mixins : (decl.mixins ?? []);
         } else {
           moduleForMixin.declarations.push(decl);
+        }
+
+        // Ensure the mixin module has a default export
+        moduleForMixin.exports = moduleForMixin.exports ?? [];
+        if (!moduleForMixin.exports.some((e) => e.kind === 'js' && e.name === 'default')) {
+          moduleForMixin.exports.push({
+            kind: 'js',
+            name: 'default',
+            declaration: {
+              name: decl.name,
+              module: moduleForMixin.path,
+            },
+          });
         }
       }
     }
@@ -2325,6 +2350,7 @@ async function generateForFile(file) {
       kind: 'javascript-module',
       path: path.relative(process.cwd(), src),
       declarations: [],
+      exports: [],
     };
     return mod;
   }
@@ -2692,6 +2718,7 @@ async function generateForFile(file) {
       kind: 'javascript-module',
       path: path.relative(process.cwd(), src),
       declarations: [],
+      exports: [],
     };
     return mod;
   }
@@ -2915,13 +2942,35 @@ async function generateForFile(file) {
     cemDecl.description = classDesc;
   }
 
-
+  const modulePath = path.relative(process.cwd(), src).split(path.sep).join('/');
   /** @type {CEMModule} */
   const mod = {
     kind: 'javascript-module',
-    path: path.relative(process.cwd(), src),
+    path: modulePath,
     declarations: [cemDecl],
+    exports: [
+      {
+        kind: 'js',
+        name: 'default',
+        declaration: {
+          name: cemDecl.name,
+          module: modulePath,
+        },
+      },
+    ],
   };
+
+  // Add custom-element-definition export if the element has a tagName
+  if (runtime.tag) {
+    mod.exports.push({
+      kind: 'custom-element-definition',
+      name: runtime.tag,
+      declaration: {
+        name: cemDecl.name,
+        module: modulePath,
+      },
+    });
+  }
 
   return mod;
 }

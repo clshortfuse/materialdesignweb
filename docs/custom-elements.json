@@ -32,18 +32,36 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/DensityMixin.js",
-              "name": "default"
+              "name": "DensityMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             }
           ],
           "description": "Badges show notifications, counts, or status information on\nnavigation items and icons.\n@see https://m3.material.io/components/badges/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Badge",
+            "module": "components/Badge.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-badge",
+          "declaration": {
+            "name": "Badge",
+            "module": "components/Badge.js"
+          }
         }
       ]
     },
@@ -145,10 +163,28 @@
           "mixins": [
             {
               "module": "mixins/TypographyMixin.js",
-              "name": "default"
+              "name": "TypographyMixin"
             }
           ],
           "description": "Material Design Type scale: Body.\n@see https://m3.material.io/styles/typography/type-scale-tokens"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Body",
+            "module": "components/Body.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-body",
+          "declaration": {
+            "name": "Body",
+            "module": "components/Body.js"
+          }
         }
       ]
     },
@@ -308,10 +344,28 @@
           "mixins": [
             {
               "module": "mixins/AriaToolbarMixin.js",
-              "name": "default"
+              "name": "AriaToolbarMixin"
             }
           ],
           "description": "Note: FAB does not exist inside because FABs can appear outside.\nSpace will be maintained for the FAB to slide into position. FAB should be\nnext on the DOM, so users can logically tab to it."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "BottomAppBar",
+            "module": "components/BottomAppBar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-bottom-app-bar",
+          "declaration": {
+            "name": "BottomAppBar",
+            "module": "components/BottomAppBar.js"
+          }
         }
       ]
     },
@@ -580,30 +634,48 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/FlexableMixin.js",
-              "name": "default"
+              "name": "FlexableMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/AriaReflectorMixin.js",
-              "name": "default"
+              "name": "AriaReflectorMixin"
             },
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             },
             {
               "module": "mixins/ResizeObserverMixin.js",
-              "name": "default"
+              "name": "ResizeObserverMixin"
             }
           ],
           "description": "Bottom sheets show secondary content anchored to the bottom of the screen\n@see https://m3.material.io/components/bottom-sheets/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "BottomSheet",
+            "module": "components/BottomSheet.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-bottom-sheet",
+          "declaration": {
+            "name": "BottomSheet",
+            "module": "components/BottomSheet.js"
+          }
         }
       ]
     },
@@ -634,14 +706,32 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/FlexableMixin.js",
-              "name": "default"
+              "name": "FlexableMixin"
             }
           ],
           "description": "Boxes are stateless elements that may have a color and ink.\nThey should have simple geometry for rendering and layout."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Box",
+            "module": "components/Box.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-box",
+          "declaration": {
+            "name": "Box",
+            "module": "components/Box.js"
+          }
         }
       ]
     },
@@ -894,38 +984,56 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/DensityMixin.js",
-              "name": "default"
+              "name": "DensityMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/ElevationMixin.js",
-              "name": "default"
+              "name": "ElevationMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/RippleMixin.js",
-              "name": "default"
+              "name": "RippleMixin"
             },
             {
               "module": "mixins/InputMixin.js",
-              "name": "default"
+              "name": "InputMixin"
             },
             {
               "module": "mixins/HyperlinkMixin.js",
-              "name": "default"
+              "name": "HyperlinkMixin"
             }
           ],
           "description": "Buttons prompt most actions in a UI.\n@see https://m3.material.io/components/buttons/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Button",
+            "module": "components/Button.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-button",
+          "declaration": {
+            "name": "Button",
+            "module": "components/Button.js"
+          }
         }
       ]
     },
@@ -1169,34 +1277,52 @@
           "mixins": [
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/ElevationMixin.js",
-              "name": "default"
+              "name": "ElevationMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/FormAssociatedMixin.js",
-              "name": "default"
+              "name": "FormAssociatedMixin"
             },
             {
               "module": "mixins/AriaReflectorMixin.js",
-              "name": "default"
+              "name": "AriaReflectorMixin"
             },
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             },
             {
               "module": "mixins/HyperlinkMixin.js",
-              "name": "default"
+              "name": "HyperlinkMixin"
             }
           ],
           "description": "Cards display content and actions about a single subject.\n@see https://m3.material.io/components/cards/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Card",
+            "module": "components/Card.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-card",
+          "declaration": {
+            "name": "Card",
+            "module": "components/Card.js"
+          }
         }
       ]
     },
@@ -1307,26 +1433,44 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/RippleMixin.js",
-              "name": "default"
+              "name": "RippleMixin"
             },
             {
               "module": "mixins/InputMixin.js",
-              "name": "default"
+              "name": "InputMixin"
             },
             {
               "module": "mixins/TouchTargetMixin.js",
-              "name": "default"
+              "name": "TouchTargetMixin"
             }
           ],
           "description": "Checkboxes let users select one or more items from a list, or turn an item on or off.\n@see https://m3.material.io/components/checkbox/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "components/Checkbox.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-checkbox",
+          "declaration": {
+            "name": "Checkbox",
+            "module": "components/Checkbox.js"
+          }
         }
       ]
     },
@@ -1441,14 +1585,32 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             }
           ],
           "description": "CheckboxIcon is a visual helper for checkboxes, rendering the box and checkmark.\n@see https://m3.material.io/components/checkbox/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "CheckboxIcon",
+            "module": "components/CheckboxIcon.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-checkbox-icon",
+          "declaration": {
+            "name": "CheckboxIcon",
+            "module": "components/CheckboxIcon.js"
+          }
         }
       ]
     },
@@ -1905,6 +2067,24 @@
           "mixins": [],
           "description": "Chips help people enter information, make selections, filter content, or trigger actions.\n@see https://m3.material.io/components/chips/specs"
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Chip",
+            "module": "components/Chip.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-chip",
+          "declaration": {
+            "name": "Chip",
+            "module": "components/Chip.js"
+          }
+        }
       ]
     },
     {
@@ -2115,18 +2295,36 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/PopupMixin.js",
-              "name": "default"
+              "name": "PopupMixin"
             }
           ],
           "description": "Returns array of elements that *may* be focusable over tab\n@param {Node} root\n@return {Element[]}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Dialog",
+            "module": "components/Dialog.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-dialog",
+          "declaration": {
+            "name": "Dialog",
+            "module": "components/Dialog.js"
+          }
         }
       ]
     },
@@ -2165,6 +2363,24 @@
           },
           "mixins": [],
           "description": "Dialog action regions contain primary and secondary actions for dialogs.\n@see https://m3.material.io/components/dialogs/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "DialogActions",
+            "module": "components/DialogActions.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-dialog-actions",
+          "declaration": {
+            "name": "DialogActions",
+            "module": "components/DialogActions.js"
+          }
         }
       ]
     },
@@ -2294,14 +2510,32 @@
           "mixins": [
             {
               "module": "mixins/AriaReflectorMixin.js",
-              "name": "default"
+              "name": "AriaReflectorMixin"
             },
             {
               "module": "mixins/TypographyMixin.js",
-              "name": "default"
+              "name": "TypographyMixin"
             }
           ],
           "description": "Material Design Type scale: Display\n@see https://m3.material.io/styles/typography/type-scale-tokens"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Display",
+            "module": "components/Display.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-display",
+          "declaration": {
+            "name": "Display",
+            "module": "components/Display.js"
+          }
         }
       ]
     },
@@ -2352,10 +2586,28 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             }
           ],
           "description": "Dividers are thin lines that group content in lists or other containers\n@see https://m3.material.io/components/divider/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Divider",
+            "module": "components/Divider.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-divider",
+          "declaration": {
+            "name": "Divider",
+            "module": "components/Divider.js"
+          }
         }
       ]
     },
@@ -2869,10 +3121,28 @@
           "mixins": [
             {
               "module": "mixins/TooltipTriggerMixin.js",
-              "name": "default"
+              "name": "TooltipTriggerMixin"
             }
           ],
           "description": "Floating action buttons (FABs) help people take primary actions.\n@see https://m3.material.io/components/floating-action-button/specs\n@see https://m3.material.io/components/extended-fab/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Fab",
+            "module": "components/Fab.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-fab",
+          "declaration": {
+            "name": "Fab",
+            "module": "components/Fab.js"
+          }
         }
       ]
     },
@@ -2924,10 +3194,28 @@
           "mixins": [
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             }
           ],
           "description": "Container for Floating Action Buttons (FAB) used to position FABs.\n@see https://m3.material.io/components/floating-action-button/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "FabContainer",
+            "module": "components/FabContainer.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-fab-container",
+          "declaration": {
+            "name": "FabContainer",
+            "module": "components/FabContainer.js"
+          }
         }
       ]
     },
@@ -3449,6 +3737,24 @@
           "mixins": [],
           "description": "Filter chips use tags or descriptive words to filter content.\nThey can be a good alternative to toggle buttons or checkboxes.\n@see https://m3.material.io/components/chips/specs"
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "FilterChip",
+            "module": "components/FilterChip.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-filter-chip",
+          "declaration": {
+            "name": "FilterChip",
+            "module": "components/FilterChip.js"
+          }
+        }
       ]
     },
     {
@@ -3588,10 +3894,28 @@
           "mixins": [
             {
               "module": "mixins/ResizeObserverMixin.js",
-              "name": "default"
+              "name": "ResizeObserverMixin"
             }
           ],
           "description": "Grid layout for arranging content into responsive columns.\n@see https://m3.material.io/foundations/layout/understanding-layout/parts-of-layout"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Grid",
+            "module": "components/Grid.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-grid",
+          "declaration": {
+            "name": "Grid",
+            "module": "components/Grid.js"
+          }
         }
       ]
     },
@@ -3743,6 +4067,24 @@
           },
           "mixins": [],
           "description": "Material Design Type scale: Headline.\n@see https://m3.material.io/styles/typography/type-scale-tokens"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Headline",
+            "module": "components/Headline.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-headline",
+          "declaration": {
+            "name": "Headline",
+            "module": "components/Headline.js"
+          }
         }
       ]
     },
@@ -4261,10 +4603,28 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             }
           ],
           "description": "@typedef {'align'|'border'|'hspace'|'longDesc'|'lowsrc'|'name'|'vspace'} DeprecatedHTMLImageElementProperties"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Icon",
+            "module": "components/Icon.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-icon",
+          "declaration": {
+            "name": "Icon",
+            "module": "components/Icon.js"
+          }
         }
       ]
     },
@@ -4709,10 +5069,28 @@
           "mixins": [
             {
               "module": "mixins/TooltipTriggerMixin.js",
-              "name": "default"
+              "name": "TooltipTriggerMixin"
             }
           ],
           "description": "Icon buttons are compact buttons that use an icon to represent an action.\n@see https://m3.material.io/components/icon-buttons/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "IconButton",
+            "module": "components/IconButton.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-icon-button",
+          "declaration": {
+            "name": "IconButton",
+            "module": "components/IconButton.js"
+          }
         }
       ]
     },
@@ -5212,26 +5590,44 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/InputMixin.js",
-              "name": "default"
+              "name": "InputMixin"
             },
             {
               "module": "mixins/TextFieldMixin.js",
-              "name": "default"
+              "name": "TextFieldMixin"
             },
             {
               "module": "mixins/ResizeObserverMixin.js",
-              "name": "default"
+              "name": "ResizeObserverMixin"
             }
           ],
           "description": "@typedef {import('./Listbox.js').default} Listbox"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Input",
+            "module": "components/Input.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-input",
+          "declaration": {
+            "name": "Input",
+            "module": "components/Input.js"
+          }
         }
       ]
     },
@@ -5624,18 +6020,36 @@
           "mixins": [
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             },
             {
               "module": "mixins/HyperlinkMixin.js",
-              "name": "default"
+              "name": "HyperlinkMixin"
             }
           ],
           "description": "Input chips allow users to enter or edit information as a chip (tag-like).\n@see https://m3.material.io/components/chips/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "InputChip",
+            "module": "components/InputChip.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-input-chip",
+          "declaration": {
+            "name": "InputChip",
+            "module": "components/InputChip.js"
+          }
         }
       ]
     },
@@ -5737,10 +6151,28 @@
           "mixins": [
             {
               "module": "mixins/TypographyMixin.js",
-              "name": "default"
+              "name": "TypographyMixin"
             }
           ],
           "description": "Material Design Type scale: Label.\n@see https://m3.material.io/styles/typography/type-scale-tokens"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Label",
+            "module": "components/Label.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-label",
+          "declaration": {
+            "name": "Label",
+            "module": "components/Label.js"
+          }
         }
       ]
     },
@@ -5851,14 +6283,32 @@
           "mixins": [
             {
               "module": "mixins/DensityMixin.js",
-              "name": "default"
+              "name": "DensityMixin"
             },
             {
               "module": "mixins/AriaReflectorMixin.js",
-              "name": "default"
+              "name": "AriaReflectorMixin"
             }
           ],
           "description": "@typedef {'compact'} DeprecatedHTMLMenuElementProperties"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "List",
+            "module": "components/List.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-list",
+          "declaration": {
+            "name": "List",
+            "module": "components/List.js"
+          }
         }
       ]
     },
@@ -6401,26 +6851,44 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/RippleMixin.js",
-              "name": "default"
+              "name": "RippleMixin"
             },
             {
               "module": "mixins/AriaReflectorMixin.js",
-              "name": "default"
+              "name": "AriaReflectorMixin"
             },
             {
               "module": "mixins/HyperlinkMixin.js",
-              "name": "default"
+              "name": "HyperlinkMixin"
             }
           ],
           "description": "List item representing a single row in a list; supports leading/trailing\ncontent, selection, and accessibility features.\n@see https://m3.material.io/components/lists/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ListItem",
+            "module": "components/ListItem.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-list-item",
+          "declaration": {
+            "name": "ListItem",
+            "module": "components/ListItem.js"
+          }
         }
       ]
     },
@@ -6888,10 +7356,28 @@
           "mixins": [
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             }
           ],
           "description": "List options represent selectable choices within a `mdw-listbox` or list.\n@see https://m3.material.io/components/lists/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ListOption",
+            "module": "components/ListOption.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-list-option",
+          "declaration": {
+            "name": "ListOption",
+            "module": "components/ListOption.js"
+          }
         }
       ]
     },
@@ -7173,22 +7659,40 @@
           "mixins": [
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/FormAssociatedMixin.js",
-              "name": "default"
+              "name": "FormAssociatedMixin"
             },
             {
               "module": "mixins/KeyboardNavMixin.js",
-              "name": "default"
+              "name": "KeyboardNavMixin"
             },
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             }
           ],
           "description": "Listbox: a selectable list of options, used for autocompletes and selects.\nimplements {HTMLSelectElement}\n@see https://m3.material.io/components/lists/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Listbox",
+            "module": "components/Listbox.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-listbox",
+          "declaration": {
+            "name": "Listbox",
+            "module": "components/Listbox.js"
+          }
         }
       ]
     },
@@ -7280,30 +7784,48 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/ElevationMixin.js",
-              "name": "default"
+              "name": "ElevationMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/PopupMixin.js",
-              "name": "default"
+              "name": "PopupMixin"
             },
             {
               "module": "mixins/DensityMixin.js",
-              "name": "default"
+              "name": "DensityMixin"
             },
             {
               "module": "mixins/KeyboardNavMixin.js",
-              "name": "default"
+              "name": "KeyboardNavMixin"
             }
           ],
           "description": "Menus provide a list of choices or actions in a temporary surface.\n@see https://m3.material.io/components/menus/specs\n@see https://www.w3.org/TR/wai-aria-practices/#menu"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Menu",
+            "module": "components/Menu.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-menu",
+          "declaration": {
+            "name": "Menu",
+            "module": "components/Menu.js"
+          }
         }
       ]
     },
@@ -7725,10 +8247,28 @@
           "mixins": [
             {
               "module": "mixins/FormAssociatedMixin.js",
-              "name": "default"
+              "name": "FormAssociatedMixin"
             }
           ],
           "description": "Menu items represent selectable options within a menu. They can trigger\nactions, toggle state, or open nested submenus.\n@see https://m3.material.io/components/menus/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "MenuItem",
+            "module": "components/MenuItem.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-menu-item",
+          "declaration": {
+            "name": "MenuItem",
+            "module": "components/MenuItem.js"
+          }
         }
       ]
     },
@@ -7833,14 +8373,32 @@
           "mixins": [
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             },
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             }
           ],
           "description": "Navigation bars let people switch between UI views on smaller devices\n@see https://m3.material.io/components/navigation-bar/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "NavBar",
+            "module": "components/NavBar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-nav-bar",
+          "declaration": {
+            "name": "NavBar",
+            "module": "components/NavBar.js"
+          }
         }
       ]
     },
@@ -8024,6 +8582,24 @@
           },
           "mixins": [],
           "description": "A navigation bar item represents a destination within a navigation bar,\nproviding an icon and optional label to help users move between app sections.\n@see https://m3.material.io/components/navigation-bar/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "NavBarItem",
+            "module": "components/NavBarItem.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-nav-bar-item",
+          "declaration": {
+            "name": "NavBarItem",
+            "module": "components/NavBarItem.js"
+          }
         }
       ]
     },
@@ -8271,6 +8847,24 @@
           "mixins": [],
           "description": "Navigation drawers provide access to destinations and app-level navigation\nin a side panel. They can be modal, dismissible, or permanent depending on\nviewport and application needs.\n@see https://m3.material.io/components/navigation-drawer/specs"
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "NavDrawer",
+            "module": "components/NavDrawer.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-nav-drawer",
+          "declaration": {
+            "name": "NavDrawer",
+            "module": "components/NavDrawer.js"
+          }
+        }
       ]
     },
     {
@@ -8450,6 +9044,24 @@
           "mixins": [],
           "description": "A navigation drawer item represents a destination inside a navigation drawer,\nshowing an icon, label, and optional badge to help users navigate app sections.\n@see https://m3.material.io/components/navigation-drawer/specs"
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "NavDrawerItem",
+            "module": "components/NavDrawerItem.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-nav-drawer-item",
+          "declaration": {
+            "name": "NavDrawerItem",
+            "module": "components/NavDrawerItem.js"
+          }
+        }
       ]
     },
     {
@@ -8617,26 +9229,44 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/RippleMixin.js",
-              "name": "default"
+              "name": "RippleMixin"
             },
             {
               "module": "mixins/HyperlinkMixin.js",
-              "name": "default"
+              "name": "HyperlinkMixin"
             },
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             }
           ],
           "description": "@typedef {'charset'|'coords'|'name'|'shape'} DeprecatedHTMLAnchorElementProperties"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "NavItem",
+            "module": "components/NavItem.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-nav-item",
+          "declaration": {
+            "name": "NavItem",
+            "module": "components/NavItem.js"
+          }
         }
       ]
     },
@@ -8907,6 +9537,24 @@
           "mixins": [],
           "description": "Navigation rails provide access to app destinations and destinations-level\nnavigation in a vertical rail, suited for larger screens and desktop layouts.\n@see https://m3.material.io/components/navigation-rail/specs"
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "NavRail",
+            "module": "components/NavRail.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-nav-rail",
+          "declaration": {
+            "name": "NavRail",
+            "module": "components/NavRail.js"
+          }
+        }
       ]
     },
     {
@@ -9090,6 +9738,24 @@
           "mixins": [],
           "description": "A navigation rail item represents a destination within a navigation rail,\nshowing an icon and optional label for vertical navigation on larger screens.\n@see https://m3.material.io/components/navigation-rail/specs"
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "NavRailItem",
+            "module": "components/NavRailItem.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-nav-rail-item",
+          "declaration": {
+            "name": "NavRailItem",
+            "module": "components/NavRailItem.js"
+          }
+        }
       ]
     },
     {
@@ -9201,14 +9867,32 @@
           "mixins": [
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             },
             {
               "module": "mixins/ResizeObserverMixin.js",
-              "name": "default"
+              "name": "ResizeObserverMixin"
             }
           ],
           "description": "Page is a top-level layout container that manages single or multi-pane\napplication layouts, adapting to viewport size to show one or two panes.\n@see https://m3.material.io/foundations/layout/applying-layout/window-size-classes"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Page",
+            "module": "components/Page.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-page",
+          "declaration": {
+            "name": "Page",
+            "module": "components/Page.js"
+          }
         }
       ]
     },
@@ -9310,10 +9994,28 @@
           "mixins": [
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             }
           ],
           "description": "Pane is a layout surface used within `mdw-page` to provide shaped,\npadded content columns for app content. It is intended to be placed\nas a child of `mdw-page` to create consistent, shaped panes with the\nsame padding and background surface used across the layout system.\n@see https://m3.material.io/foundations/layout/applying-layout/window-size-classes"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Pane",
+            "module": "components/Pane.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-pane",
+          "declaration": {
+            "name": "Pane",
+            "module": "components/Pane.js"
+          }
         }
       ]
     },
@@ -9365,22 +10067,40 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/ElevationMixin.js",
-              "name": "default"
+              "name": "ElevationMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/PopupMixin.js",
-              "name": "default"
+              "name": "PopupMixin"
             }
           ],
           "description": "Popup displays transient content such as menus or popovers and provides\nelevation, shape, and theming control for floating surfaces.\n@see https://m3.material.io/styles/elevation/overview"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Popup",
+            "module": "components/Popup.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-popup",
+          "declaration": {
+            "name": "Popup",
+            "module": "components/Popup.js"
+          }
         }
       ]
     },
@@ -9523,10 +10243,28 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             }
           ],
           "description": "Progress indicators display the progress of an operation as a determinate\nbar or an indeterminate animation.\n@see https://m3.material.io/components/progress-indicators/specs\n@see https://html.spec.whatwg.org/multipage/form-elements.html#the-progress-element"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Progress",
+            "module": "components/Progress.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-progress",
+          "declaration": {
+            "name": "Progress",
+            "module": "components/Progress.js"
+          }
         }
       ]
     },
@@ -9588,26 +10326,44 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/RippleMixin.js",
-              "name": "default"
+              "name": "RippleMixin"
             },
             {
               "module": "mixins/InputMixin.js",
-              "name": "default"
+              "name": "InputMixin"
             },
             {
               "module": "mixins/TouchTargetMixin.js",
-              "name": "default"
+              "name": "TouchTargetMixin"
             }
           ],
           "description": "Radio buttons allow selection of a single option within a set.\n@see https://m3.material.io/components/radio-button/overview"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Radio",
+            "module": "components/Radio.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-radio",
+          "declaration": {
+            "name": "Radio",
+            "module": "components/Radio.js"
+          }
         }
       ]
     },
@@ -9760,14 +10516,32 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             }
           ],
           "description": "Visual helper for radio buttons, rendering the outer and inner rings.\n@see https://m3.material.io/components/radio-button/overview"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "RadioIcon",
+            "module": "components/RadioIcon.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-radio-icon",
+          "declaration": {
+            "name": "RadioIcon",
+            "module": "components/RadioIcon.js"
+          }
         }
       ]
     },
@@ -9907,6 +10681,24 @@
           "mixins": [],
           "description": "Ripple is a visual touch feedback effect used by controls to indicate\npointer/touch interaction. It renders and animates a circular ink ripple\nand exposes properties to control its position, size, and lifecycle.\n@see https://m3.material.io/foundations/interaction/states/applying-states"
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Ripple",
+            "module": "components/Ripple.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-ripple",
+          "declaration": {
+            "name": "Ripple",
+            "module": "components/Ripple.js"
+          }
+        }
       ]
     },
     {
@@ -9956,14 +10748,32 @@
           "mixins": [
             {
               "module": "mixins/ScrollListenerMixin.js",
-              "name": "default"
+              "name": "ScrollListenerMixin"
             },
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             }
           ],
           "description": "Root is the application's top-level container that manages layout regions and\nshared floating areas such as bottom bars.\n@see https://m3.material.io/foundations/layout/applying-layout/window-size-classes"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Root",
+            "module": "components/Root.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-root",
+          "declaration": {
+            "name": "Root",
+            "module": "components/Root.js"
+          }
         }
       ]
     },
@@ -9997,6 +10807,24 @@
           },
           "mixins": [],
           "description": "A scrim can bring focus to specific elements by increasing the visual contrast of a large layered surface.\nUse the scrim beneath elements like modals and expanded navigation menus.\n@see https://m3.material.io/styles/elevation/applying-elevation"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Scrim",
+            "module": "components/Scrim.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-scrim",
+          "declaration": {
+            "name": "Scrim",
+            "module": "components/Scrim.js"
+          }
         }
       ]
     },
@@ -10223,6 +11051,24 @@
           },
           "mixins": [],
           "description": "Search provides an app bar integrated search field for querying content.\nimplements {HTMLSelectElement}\n@see https://m3.material.io/components/search/overview"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Search",
+            "module": "components/Search.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-search",
+          "declaration": {
+            "name": "Search",
+            "module": "components/Search.js"
+          }
         }
       ]
     },
@@ -10690,6 +11536,24 @@
           "mixins": [],
           "description": "Segmented buttons group individual related actions or options where\nmultiple choices are presented inline; each segment acts like a toggle\nor option within a set.\n@see https://m3.material.io/components/segmented-buttons/specs"
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "SegmentedButton",
+            "module": "components/SegmentedButton.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-segmented-button",
+          "declaration": {
+            "name": "SegmentedButton",
+            "module": "components/SegmentedButton.js"
+          }
+        }
       ]
     },
     {
@@ -10802,10 +11666,28 @@
           "mixins": [
             {
               "module": "mixins/KeyboardNavMixin.js",
-              "name": "default"
+              "name": "KeyboardNavMixin"
             }
           ],
           "description": "@typedef {'compact'} DeprecatedHTMLMenuElementProperties"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "SegmentedButtonGroup",
+            "module": "components/SegmentedButtonGroup.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-segmented-button-group",
+          "declaration": {
+            "name": "SegmentedButtonGroup",
+            "module": "components/SegmentedButtonGroup.js"
+          }
         }
       ]
     },
@@ -10923,22 +11805,40 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/ControlMixin.js",
-              "name": "default"
+              "name": "ControlMixin"
             },
             {
               "module": "mixins/TextFieldMixin.js",
-              "name": "default"
+              "name": "TextFieldMixin"
             }
           ],
           "description": "Select provides a control for choosing an option from a list of options.\nimplements {HTMLSelectElement}\n@see https://m3.material.io/components/text-fields/overview"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Select",
+            "module": "components/Select.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-select",
+          "declaration": {
+            "name": "Select",
+            "module": "components/Select.js"
+          }
         }
       ]
     },
@@ -10973,10 +11873,28 @@
           "mixins": [
             {
               "module": "mixins/ShapeMaskedMixin.js",
-              "name": "default"
+              "name": "ShapeMaskedMixin"
             }
           ],
           "description": "Shape applies shape tokens (corner radius) to elements and surfaces.\n@see https://m3.material.io/styles/shape/overview-principles"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Shape",
+            "module": "components/Shape.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-shape",
+          "declaration": {
+            "name": "Shape",
+            "module": "components/Shape.js"
+          }
         }
       ]
     },
@@ -11226,34 +12144,52 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/FlexableMixin.js",
-              "name": "default"
+              "name": "FlexableMixin"
             },
             {
               "module": "mixins/ElevationMixin.js",
-              "name": "default"
+              "name": "ElevationMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/AriaReflectorMixin.js",
-              "name": "default"
+              "name": "AriaReflectorMixin"
             },
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             },
             {
               "module": "mixins/ResizeObserverMixin.js",
-              "name": "default"
+              "name": "ResizeObserverMixin"
             }
           ],
           "description": "Side sheets may be static.\nSide sheets may be modal while retaining their own position.\nSide sheets can have different modal and static max-sizes.\nSide sheets can be themed with background color and ink.\nSide sheets can be shaped.\nSide sheets do not have states\nSide sheets can have roles\nSide sheets delegate focus\nStatic side sheets push in and out content.\nModal side sheets slide in and out over content.\nModal side sheets anchor position does not need to match static position.\nModal side sheets must become \"dialog-like\", blocking access to all other elements on the screen.\nModal side sheets can display elevation"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "SideSheet",
+            "module": "components/SideSheet.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-side-sheet",
+          "declaration": {
+            "name": "SideSheet",
+            "module": "components/SideSheet.js"
+          }
         }
       ]
     },
@@ -11420,18 +12356,36 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/InputMixin.js",
-              "name": "default"
+              "name": "InputMixin"
             }
           ],
           "description": "@param {string} value\n@param {number} onNaN\n@return {number}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Slider",
+            "module": "components/Slider.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-slider",
+          "declaration": {
+            "name": "Slider",
+            "module": "components/Slider.js"
+          }
         }
       ]
     },
@@ -11702,26 +12656,44 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/DensityMixin.js",
-              "name": "default"
+              "name": "DensityMixin"
             },
             {
               "module": "mixins/AriaReflectorMixin.js",
-              "name": "default"
+              "name": "AriaReflectorMixin"
             },
             {
               "module": "mixins/ElevationMixin.js",
-              "name": "default"
+              "name": "ElevationMixin"
             }
           ],
           "description": "Snackbars provide brief messages about app processes and optional actions.\n@see https://m3.material.io/components/snackbar/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Snackbar",
+            "module": "components/Snackbar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-snackbar",
+          "declaration": {
+            "name": "Snackbar",
+            "module": "components/Snackbar.js"
+          }
         }
       ]
     },
@@ -11752,10 +12724,28 @@
           "mixins": [
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             }
           ],
           "description": "Snackbar container positions snackbars within the app window and manages\nlayout and pointer-events for stacked snackbars.\n@see https://m3.material.io/components/snackbar/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "SnackbarContainer",
+            "module": "components/SnackbarContainer.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-snackbar-container",
+          "declaration": {
+            "name": "SnackbarContainer",
+            "module": "components/SnackbarContainer.js"
+          }
         }
       ]
     },
@@ -11786,22 +12776,40 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/FlexableMixin.js",
-              "name": "default"
+              "name": "FlexableMixin"
             },
             {
               "module": "mixins/ElevationMixin.js",
-              "name": "default"
+              "name": "ElevationMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             }
           ],
           "description": "Surface represents a themed elevated surface used to display content with\nelevation, shape, and color tokens applied.\n@see https://m3.material.io/styles/elevation/overview"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Surface",
+            "module": "components/Surface.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-surface",
+          "declaration": {
+            "name": "Surface",
+            "module": "components/Surface.js"
+          }
         }
       ]
     },
@@ -11986,22 +12994,40 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/InputMixin.js",
-              "name": "default"
+              "name": "InputMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/TouchTargetMixin.js",
-              "name": "default"
+              "name": "TouchTargetMixin"
             }
           ],
           "description": "Switch is a binary control that toggles between on and off states.\n@see https://m3.material.io/components/switch/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Switch",
+            "module": "components/Switch.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-switch",
+          "declaration": {
+            "name": "Switch",
+            "module": "components/Switch.js"
+          }
         }
       ]
     },
@@ -12335,14 +13361,32 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             }
           ],
           "description": "Visual helper that renders the switch thumb and related visual states.\n@see https://m3.material.io/components/switch/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "SwitchIcon",
+            "module": "components/SwitchIcon.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-switch-icon",
+          "declaration": {
+            "name": "SwitchIcon",
+            "module": "components/SwitchIcon.js"
+          }
         }
       ]
     },
@@ -12556,30 +13600,48 @@
           "mixins": [
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/RippleMixin.js",
-              "name": "default"
+              "name": "RippleMixin"
             },
             {
               "module": "mixins/ScrollListenerMixin.js",
-              "name": "default"
+              "name": "ScrollListenerMixin"
             },
             {
               "module": "mixins/HyperlinkMixin.js",
-              "name": "default"
+              "name": "HyperlinkMixin"
             },
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             }
           ],
           "description": "Tabs organize content into separate views where only one view is visible\nat a time; tabs provide navigation between those views.\n@see https://m3.material.io/components/tabs/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Tab",
+            "module": "components/Tab.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-tab",
+          "declaration": {
+            "name": "Tab",
+            "module": "components/Tab.js"
+          }
         }
       ]
     },
@@ -12666,10 +13728,28 @@
           "mixins": [
             {
               "module": "mixins/ResizeObserverMixin.js",
-              "name": "default"
+              "name": "ResizeObserverMixin"
             }
           ],
           "description": "Tab content hosts tab panels and manages which panel is visible based on\nscroll position or selected tab.\n@see https://m3.material.io/components/tabs/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "TabContent",
+            "module": "components/TabContent.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-tab-content",
+          "declaration": {
+            "name": "TabContent",
+            "module": "components/TabContent.js"
+          }
         }
       ]
     },
@@ -12971,30 +14051,48 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/KeyboardNavMixin.js",
-              "name": "default"
+              "name": "KeyboardNavMixin"
             },
             {
               "module": "mixins/ResizeObserverMixin.js",
-              "name": "default"
+              "name": "ResizeObserverMixin"
             },
             {
               "module": "mixins/RTLObserverMixin.js",
-              "name": "default"
+              "name": "RTLObserverMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/SemiStickyMixin.js",
-              "name": "default"
+              "name": "SemiStickyMixin"
             }
           ],
           "description": "Tab list is the container for `mdw-tab` elements and renders the active\nindicator and keyboard navigation behavior.\n@see https://m3.material.io/components/tabs/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "TabList",
+            "module": "components/TabList.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-tab-list",
+          "declaration": {
+            "name": "TabList",
+            "module": "components/TabList.js"
+          }
         }
       ]
     },
@@ -13135,10 +14233,28 @@
           "mixins": [
             {
               "module": "mixins/AriaReflectorMixin.js",
-              "name": "default"
+              "name": "AriaReflectorMixin"
             }
           ],
           "description": "TabPanel represents the content area for a single tab and updates ARIA\nwhen activated.\n@see https://m3.material.io/components/tabs/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "components/TabPanel.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-tab-panel",
+          "declaration": {
+            "name": "TabPanel",
+            "module": "components/TabPanel.js"
+          }
         }
       ]
     },
@@ -13315,6 +14431,24 @@
           },
           "mixins": [],
           "description": "@param {Element} parent\n@param {string} tagName\n@return {Element?}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Table",
+            "module": "components/Table.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-table",
+          "declaration": {
+            "name": "Table",
+            "module": "components/Table.js"
+          }
         }
       ]
     },
@@ -13699,26 +14833,44 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/StateMixin.js",
-              "name": "default"
+              "name": "StateMixin"
             },
             {
               "module": "mixins/ControlMixin.js",
-              "name": "default"
+              "name": "ControlMixin"
             },
             {
               "module": "mixins/TextFieldMixin.js",
-              "name": "default"
+              "name": "TextFieldMixin"
             },
             {
               "module": "mixins/ResizeObserverMixin.js",
-              "name": "default"
+              "name": "ResizeObserverMixin"
             }
           ],
           "description": "TextArea is a multi-line text input that auto-resizes and integrates with\ntext-field patterns for labels and validation.\nimplements {HTMLTextAreaElement}\n@see https://m3.material.io/components/text-fields/specs\n@see https://html.spec.whatwg.org/multipage/form-elements.html#the-textarea-element"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "TextArea",
+            "module": "components/TextArea.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-textarea",
+          "declaration": {
+            "name": "TextArea",
+            "module": "components/TextArea.js"
+          }
         }
       ]
     },
@@ -13871,6 +15023,24 @@
           "mixins": [],
           "description": "Material Design Type scale: Title.\n@see https://m3.material.io/styles/typography/type-scale-tokens"
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Title",
+            "module": "components/Title.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-title",
+          "declaration": {
+            "name": "Title",
+            "module": "components/Title.js"
+          }
+        }
       ]
     },
     {
@@ -13925,18 +15095,36 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/AriaReflectorMixin.js",
-              "name": "default"
+              "name": "AriaReflectorMixin"
             }
           ],
           "description": "Tooltip displays brief helper text when hovering or focusing an element.\n@see https://m3.material.io/components/tooltips/specs"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "components/Tooltip.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-tooltip",
+          "declaration": {
+            "name": "Tooltip",
+            "module": "components/Tooltip.js"
+          }
         }
       ]
     },
@@ -14053,26 +15241,44 @@
           "mixins": [
             {
               "module": "mixins/ThemableMixin.js",
-              "name": "default"
+              "name": "ThemableMixin"
             },
             {
               "module": "mixins/ShapeMixin.js",
-              "name": "default"
+              "name": "ShapeMixin"
             },
             {
               "module": "mixins/AriaToolbarMixin.js",
-              "name": "default"
+              "name": "AriaToolbarMixin"
             },
             {
               "module": "mixins/SemiStickyMixin.js",
-              "name": "default"
+              "name": "SemiStickyMixin"
             },
             {
               "module": "mixins/DelegatesFocusMixin.js",
-              "name": "default"
+              "name": "DelegatesFocusMixin"
             }
           ],
           "description": "Top App Bars should have a background-color that is identical to\n`transparent`, though an explicit value allows updating the environment's\nto match the app bar (eg: color system bar).\n\nTop corners are shaped when not scrolling to allow matching with pane, but\nremoved when raised"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "TopAppBar",
+            "module": "components/TopAppBar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "mdw-top-app-bar",
+          "declaration": {
+            "name": "TopAppBar",
+            "module": "components/TopAppBar.js"
+          }
         }
       ]
     },
@@ -14083,7 +15289,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "AriaReflectorMixin",
           "parameters": [
             {
               "name": "Base",
@@ -14123,11 +15329,26 @@
               }
             }
           ],
-          "mixins": [],
+          "mixins": [
+            {
+              "module": "mixins/AriaReflectorMixin.js",
+              "name": "default"
+            }
+          ],
           "source": {
             "href": "mixins/AriaReflectorMixin.js"
           },
           "description": "Reflects ARIA-like properties to attributes/ElementInternals and vice versa."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "AriaReflectorMixin",
+            "module": "mixins/AriaReflectorMixin.js"
+          }
         }
       ]
     },
@@ -14138,7 +15359,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "AriaToolbarMixin",
           "parameters": [
             {
               "name": "Base",
@@ -14154,6 +15375,10 @@
           },
           "members": [],
           "mixins": [
+            {
+              "module": "mixins/AriaToolbarMixin.js",
+              "name": "default"
+            },
             {
               "module": "mixins/KeyboardNavMixin.js",
               "name": "default"
@@ -14177,6 +15402,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "AriaToolbarMixin",
+            "module": "mixins/AriaToolbarMixin.js"
+          }
+        }
       ]
     },
     {
@@ -14186,7 +15421,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "ControlMixin",
           "parameters": [
             {
               "name": "Base",
@@ -14245,6 +15480,10 @@
             }
           ],
           "mixins": [
+            {
+              "module": "mixins/ControlMixin.js",
+              "name": "default"
+            },
             {
               "module": "mixins/FormAssociatedMixin.js",
               "name": "default"
@@ -14332,6 +15571,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ControlMixin",
+            "module": "mixins/ControlMixin.js"
+          }
+        }
       ]
     },
     {
@@ -14341,7 +15590,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "DelegatesFocusMixin",
           "parameters": [
             {
               "name": "Base",
@@ -14356,11 +15605,26 @@
             }
           },
           "members": [],
-          "mixins": [],
+          "mixins": [
+            {
+              "module": "mixins/DelegatesFocusMixin.js",
+              "name": "default"
+            }
+          ],
           "source": {
             "href": "mixins/DelegatesFocusMixin.js"
           },
           "description": "Adds delegated focus behavior to the element's internals for keyboard navigation."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "DelegatesFocusMixin",
+            "module": "mixins/DelegatesFocusMixin.js"
+          }
         }
       ]
     },
@@ -14371,7 +15635,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "DensityMixin",
           "parameters": [
             {
               "name": "Base",
@@ -14414,6 +15678,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "DensityMixin",
+            "module": "mixins/DensityMixin.js"
+          }
+        }
       ]
     },
     {
@@ -14423,7 +15697,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "ElevationMixin",
           "parameters": [
             {
               "name": "Base",
@@ -14444,6 +15718,16 @@
           },
           "description": "Adds CSS properties for elevation via shadows or underlighting."
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ElevationMixin",
+            "module": "mixins/ElevationMixin.js"
+          }
+        }
       ]
     },
     {
@@ -14453,7 +15737,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "FlexableMixin",
           "parameters": [
             {
               "name": "Base",
@@ -14610,6 +15894,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "FlexableMixin",
+            "module": "mixins/FlexableMixin.js"
+          }
+        }
       ]
     },
     {
@@ -14619,7 +15913,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "FormAssociatedMixin",
           "parameters": [
             {
               "name": "Base",
@@ -14873,7 +16167,12 @@
               }
             }
           ],
-          "mixins": [],
+          "mixins": [
+            {
+              "module": "mixins/FormAssociatedMixin.js",
+              "name": "default"
+            }
+          ],
           "source": {
             "href": "mixins/FormAssociatedMixin.js"
           },
@@ -14952,6 +16251,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "FormAssociatedMixin",
+            "module": "mixins/FormAssociatedMixin.js"
+          }
+        }
       ]
     },
     {
@@ -14961,7 +16270,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "HyperlinkMixin",
           "parameters": [
             {
               "name": "Base",
@@ -15218,6 +16527,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "HyperlinkMixin",
+            "module": "mixins/HyperlinkMixin.js"
+          }
+        }
       ]
     },
     {
@@ -15227,7 +16546,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "InputMixin",
           "parameters": [
             {
               "name": "Base",
@@ -15594,6 +16913,10 @@
           ],
           "mixins": [
             {
+              "module": "mixins/InputMixin.js",
+              "name": "default"
+            },
+            {
               "module": "mixins/ControlMixin.js",
               "name": "default"
             },
@@ -15807,6 +17130,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "InputMixin",
+            "module": "mixins/InputMixin.js"
+          }
+        }
       ]
     },
     {
@@ -15816,7 +17149,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "KeyboardNavMixin",
           "parameters": [
             {
               "name": "Base",
@@ -15933,6 +17266,10 @@
           ],
           "mixins": [
             {
+              "module": "mixins/KeyboardNavMixin.js",
+              "name": "default"
+            },
+            {
               "module": "mixins/AriaReflectorMixin.js",
               "name": "default"
             }
@@ -15952,6 +17289,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "KeyboardNavMixin",
+            "module": "mixins/KeyboardNavMixin.js"
+          }
+        }
       ]
     },
     {
@@ -15961,7 +17308,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "PopupMixin",
           "parameters": [
             {
               "name": "Base",
@@ -16149,6 +17496,10 @@
           ],
           "mixins": [
             {
+              "module": "mixins/PopupMixin.js",
+              "name": "default"
+            },
+            {
               "module": "mixins/DelegatesFocusMixin.js",
               "name": "default"
             },
@@ -16219,6 +17570,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "PopupMixin",
+            "module": "mixins/PopupMixin.js"
+          }
+        }
       ]
     },
     {
@@ -16228,7 +17589,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "RTLObserverMixin",
           "parameters": [
             {
               "name": "Base",
@@ -16271,6 +17632,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "RTLObserverMixin",
+            "module": "mixins/RTLObserverMixin.js"
+          }
+        }
       ]
     },
     {
@@ -16280,7 +17651,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "ResizeObserverMixin",
           "parameters": [
             {
               "name": "Base",
@@ -16332,11 +17703,26 @@
               }
             }
           ],
-          "mixins": [],
+          "mixins": [
+            {
+              "module": "mixins/ResizeObserverMixin.js",
+              "name": "default"
+            }
+          ],
           "source": {
             "href": "mixins/ResizeObserverMixin.js"
           },
           "description": "Attaches a shared ResizeObserver to the element and provides lifecycle helpers."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ResizeObserverMixin",
+            "module": "mixins/ResizeObserverMixin.js"
+          }
         }
       ]
     },
@@ -16347,7 +17733,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "RippleMixin",
           "parameters": [
             {
               "name": "Base",
@@ -16375,11 +17761,26 @@
               }
             }
           ],
-          "mixins": [],
+          "mixins": [
+            {
+              "module": "mixins/RippleMixin.js",
+              "name": "default"
+            }
+          ],
           "source": {
             "href": "mixins/RippleMixin.js"
           },
           "description": "Provides visual ripple effects (pointer/press ripples) and helpers to add/remove them."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "RippleMixin",
+            "module": "mixins/RippleMixin.js"
+          }
         }
       ]
     },
@@ -16390,7 +17791,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "ScrollListenerMixin",
           "parameters": [
             {
               "name": "Base",
@@ -16418,11 +17819,26 @@
               }
             }
           ],
-          "mixins": [],
+          "mixins": [
+            {
+              "module": "mixins/ScrollListenerMixin.js",
+              "name": "default"
+            }
+          ],
           "source": {
             "href": "mixins/ScrollListenerMixin.js"
           },
           "description": "Tracks scroll/resize positions and exposes scroll-related lifecycle helpers."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ScrollListenerMixin",
+            "module": "mixins/ScrollListenerMixin.js"
+          }
         }
       ]
     },
@@ -16433,7 +17849,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "SemiStickyMixin",
           "parameters": [
             {
               "name": "Base",
@@ -16473,6 +17889,10 @@
           ],
           "mixins": [
             {
+              "module": "mixins/SemiStickyMixin.js",
+              "name": "default"
+            },
+            {
               "module": "mixins/ScrollListenerMixin.js",
               "name": "default"
             }
@@ -16500,6 +17920,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "SemiStickyMixin",
+            "module": "mixins/SemiStickyMixin.js"
+          }
+        }
       ]
     },
     {
@@ -16509,7 +17939,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "ShapeMaskedMixin",
           "parameters": [
             {
               "name": "Base",
@@ -16628,6 +18058,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ShapeMaskedMixin",
+            "module": "mixins/ShapeMaskedMixin.js"
+          }
+        }
       ]
     },
     {
@@ -16637,7 +18077,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "ShapeMixin",
           "parameters": [
             {
               "name": "Base",
@@ -16775,6 +18215,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ShapeMixin",
+            "module": "mixins/ShapeMixin.js"
+          }
+        }
       ]
     },
     {
@@ -16784,7 +18234,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "StateMixin",
           "parameters": [
             {
               "name": "Base",
@@ -16973,6 +18423,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "StateMixin",
+            "module": "mixins/StateMixin.js"
+          }
+        }
       ]
     },
     {
@@ -16982,7 +18442,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "TextFieldMixin",
           "parameters": [
             {
               "name": "Base",
@@ -17192,6 +18652,10 @@
           ],
           "mixins": [
             {
+              "module": "mixins/TextFieldMixin.js",
+              "name": "default"
+            },
+            {
               "module": "mixins/ControlMixin.js",
               "name": "default"
             },
@@ -17365,6 +18829,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "TextFieldMixin",
+            "module": "mixins/TextFieldMixin.js"
+          }
+        }
       ]
     },
     {
@@ -17374,7 +18848,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "ThemableMixin",
           "parameters": [
             {
               "name": "Base",
@@ -17455,6 +18929,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "ThemableMixin",
+            "module": "mixins/ThemableMixin.js"
+          }
+        }
       ]
     },
     {
@@ -17464,7 +18948,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "TooltipTriggerMixin",
           "parameters": [
             {
               "name": "Base",
@@ -17630,7 +19114,12 @@
               }
             }
           ],
-          "mixins": [],
+          "mixins": [
+            {
+              "module": "mixins/TooltipTriggerMixin.js",
+              "name": "default"
+            }
+          ],
           "source": {
             "href": "mixins/TooltipTriggerMixin.js"
           },
@@ -17653,6 +19142,16 @@
             }
           ]
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "TooltipTriggerMixin",
+            "module": "mixins/TooltipTriggerMixin.js"
+          }
+        }
       ]
     },
     {
@@ -17662,7 +19161,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "TouchTargetMixin",
           "parameters": [
             {
               "name": "Base",
@@ -17683,6 +19182,16 @@
           },
           "description": "Provides a visually hidden touch target area to meet touch size recommendations."
         }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "TouchTargetMixin",
+            "module": "mixins/TouchTargetMixin.js"
+          }
+        }
       ]
     },
     {
@@ -17692,7 +19201,7 @@
         {
           "kind": "mixin",
           "customElement": true,
-          "name": "default",
+          "name": "TypographyMixin",
           "parameters": [
             {
               "name": "Base",
@@ -17796,6 +19305,16 @@
               "fieldName": "textPaddingBottom"
             }
           ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "TypographyMixin",
+            "module": "mixins/TypographyMixin.js"
+          }
         }
       ]
     }
