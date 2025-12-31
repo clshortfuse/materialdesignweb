@@ -92,6 +92,7 @@ declare const _default: typeof import("../index.js").CustomElement & import("../
     _anchorAriaLabelledby: never;
     _anchorHref: never;
     iconVariation: () => string;
+    _customRippleState: never;
 }, any[]>;
 export default _default;
 //# sourceMappingURL=NavBarItem.d.ts.map

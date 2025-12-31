@@ -62,6 +62,9 @@ export default CustomElement
     iconVariation({ active }) {
       return active ? 'filled' : null;
     },
+    _customRippleState({ active }) {
+      return active ? null : 'complete';
+    },
   })
   .html`
     <mdw-icon id=icon aria-hidden=true src={src} active={active} icon={icon} variation={iconVariation}></mdw-icon>
@@ -76,7 +79,7 @@ export default CustomElement
     anchor.setAttribute('href', '{_anchorHref}');
     anchor.before(html`
       <mdw-shape id=shape active={active} shape-style=full>
-        <mdw-ripple id=ripple ripple-origin=center keep-alive hold-ripple ripple-state=${({ active }) => ((active) ? null : 'complete')}></mdw-ripple>
+        <mdw-ripple id=ripple ripple-origin=center keep-alive hold-ripple ripple-state={_customRippleState}></mdw-ripple>
         ${state}
         ${rippleContainer}
       </mdw-shape>

@@ -62,8 +62,8 @@ export function parsePropertyValue(this: ObserverConfiguration<any, any, any, an
  * @return {ObserverConfiguration<T1,T2,C,K>}
  */
 export function defineObservableProperty<T1 extends ObserverPropertyType, T2 extends unknown, C extends Object, K extends keyof C & string>(object: C, key: K, options: ObserverOptions<T1, T2, C>): ObserverConfiguration<T1, T2, C, K>;
-export type ObserverPropertyType = "string" | "boolean" | "map" | "set" | "float" | "integer" | "object" | "function" | "array";
-export type ParsedObserverPropertyType<T extends ObserverPropertyType> = (T extends "boolean" ? boolean : T extends "string" ? string : T extends "float" | "integer" ? number : T extends "array" ? any[] : T extends "object" ? any : T extends "function" ? (...args: any) => any : unknown);
+export type ObserverPropertyType = "string" | "boolean" | "map" | "set" | "float" | "integer" | "number" | "object" | "function" | "array";
+export type ParsedObserverPropertyType<T extends ObserverPropertyType> = (T extends "boolean" ? boolean : T extends "string" ? string : T extends "float" | "integer" | "number" ? number : T extends "array" ? any[] : T extends "object" ? any : T extends "function" ? (...args: any) => any : unknown);
 export type ObserverOptions<T1 extends ObserverPropertyType, T2 extends unknown, C extends Object = any> = {
     type?: T1;
     enumerable?: boolean;

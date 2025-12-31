@@ -92,6 +92,7 @@ declare const _default: typeof CustomElement & import("../core/CustomElement.js"
     _anchorAriaLabelledby: never;
     _anchorHref: never;
     iconVariation: () => string;
+    _customRippleState: never;
 }, any[]>;
 export default _default;
 export type DeprecatedHTMLAnchorElementProperties = "charset" | "coords" | "name" | "shape";
