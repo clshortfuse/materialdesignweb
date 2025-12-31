@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Design Web Samples</title>
+  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb"></script>
+  <style>
+    html {
+      background-color: rgb(var(--mdw-color__surface-container));
+      color: rgb(var(--mdw-color__on-surface));
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <mdw-top-app-bar headline="Samples"></mdw-top-app-bar>
+  <mdw-box padding=pane gap=16>
+    <mdw-headline size="small">Quick Start Samples</mdw-headline>
+    <mdw-list>
+      <mdw-list-item href="hello-world.html" icon="bolt">Hello World</mdw-list-item>
+      <mdw-list-item href="form-example.html" icon="feed">Form Example</mdw-list-item>
+      <mdw-list-item href="dashboard.html" icon="dashboard">Dashboard</mdw-list-item>
+      <mdw-list-item href="pwa-example.html" icon="apps">PWA Shell (root/nav/pane)</mdw-list-item>
+      <mdw-list-item href="acmejs.html" icon="lock">AcmeJS Form (LetsEncrypt)</mdw-list-item>
+    </mdw-list>
+  </mdw-box>
+</body>
+</html>

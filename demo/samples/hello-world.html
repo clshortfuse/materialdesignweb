@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Design Web - Hello World</title>
+  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb"></script>
+  <style>
+    html {
+      background-color: rgb(var(--mdw-color__surface-container));
+      color: rgb(var(--mdw-color__on-surface));
+    }
+
+    body {
+      margin: 0
+    }
+
+  </style>
+</head>
+
+<body>
+  <mdw-top-app-bar headline="Hello World"></mdw-top-app-bar>
+  <mdw-box padding=pane gap=16>
+    <mdw-headline>Welcome to Material Design Web</mdw-headline>
+    <mdw-body>
+      This is a simple starter template using components from @shortfuse/materialdesignweb via CDN.
+    </mdw-body>
+
+    <mdw-button filled>Primary Button</mdw-button>
+    <mdw-button outlined>Outlined Button</mdw-button>
+  </mdw-box>
+</body>
+
+</html>

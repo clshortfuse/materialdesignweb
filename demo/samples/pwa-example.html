@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PWA Example - Material Design Web</title>
+  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb"></script>
+  <style>
+    html {
+      background-color: rgb(var(--mdw-color__surface-container));
+      color: rgb(var(--mdw-color__on-surface));
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+  <mdw-root>
+    <mdw-nav-drawer id="drawer" slot="start" open>
+      <mdw-nav-drawer-item icon="home" selected>Home</mdw-nav-drawer-item>
+      <mdw-nav-drawer-item icon="settings">Settings</mdw-nav-drawer-item>
+      <mdw-nav-drawer-item icon="help">Help</mdw-nav-drawer-item>
+    </mdw-nav-drawer>
+
+    <mdw-nav-bar slot="bottom">
+      <mdw-nav-bar-item icon="home" selected>Home</mdw-nav-bar-item>
+      <mdw-nav-bar-item icon="favorite">Favorites</mdw-nav-bar-item>
+      <mdw-nav-bar-item icon="person">Profile</mdw-nav-bar-item>
+    </mdw-nav-bar>
+
+    <mdw-menu id="app-menu">
+      <mdw-menu-item icon="sync" onclick="document.getElementById('info-dialog').showModal()">Show dialog</mdw-menu-item>
+      <mdw-menu-item icon="refresh">Refresh</mdw-menu-item>
+      <mdw-menu-item icon="settings">Settings</mdw-menu-item>
+    </mdw-menu>
+
+    <mdw-page>
+      <mdw-pane block>
+        <mdw-top-app-bar headline="PWA Example">
+          <mdw-icon-button id="menu-button" slot="leading" icon="menu">Menu</mdw-icon-button>
+          <mdw-icon-button slot="trailing" icon="more_vert" aria-haspopup=menu aria-controls="app-menu"
+            onclick="document.getElementById('app-menu').show(this)">More</mdw-icon-button>
+        </mdw-top-app-bar>
+
+        <mdw-box padding=pane gap=16>
+          <mdw-headline size="small">Primary Pane</mdw-headline>
+          <mdw-body supporting>
+            Use <code>mdw-root</code> with <code>mdw-nav-drawer</code> and <code>mdw-page/mdw-pane</code> to build your app shell.
+          </mdw-body>
+
+          <mdw-grid gap=16>
+            <mdw-card elevated padding=16 gap=8 col-span=4>
+              <mdw-title text-padding=0>Overview</mdw-title>
+              <mdw-body supporting>High-level summary of your app.</mdw-body>
+              <mdw-button filled>Action</mdw-button>
+            </mdw-card>
+
+            <mdw-card elevated padding=16 gap=8 col-span=4>
+              <mdw-title text-padding=0>Statistics</mdw-title>
+              <mdw-body supporting>Key metrics and KPIs.</mdw-body>
+              <mdw-button>Details</mdw-button>
+            </mdw-card>
+
+            <mdw-card elevated padding=16 gap=8 col-span=4>
+              <mdw-title text-padding=0>Tasks</mdw-title>
+              <mdw-body supporting>Track work items and status.</mdw-body>
+              <mdw-button outlined>Open</mdw-button>
+            </mdw-card>
+            <mdw-card elevated padding=16 gap=8 col-span=4>
+              <mdw-title text-padding=0>Dialogs</mdw-title>
+              <mdw-body supporting>Open a dialog to confirm actions.</mdw-body>
+              <mdw-button filled onclick="document.getElementById('info-dialog').showModal()">Open dialog</mdw-button>
+            </mdw-card>
+          </mdw-grid>
+        </mdw-box>
+      </mdw-pane>
+
+      <mdw-pane slot="two">
+        <mdw-box padding=pane gap=16>
+          <mdw-headline size="small">Secondary Pane</mdw-headline>
+          <mdw-body supporting>Use for detail panels or complementary content.</mdw-body>
+          <mdw-list>
+            <mdw-list-item>List item one</mdw-list-item>
+            <mdw-list-item>List item two</mdw-list-item>
+            <mdw-list-item>List item three</mdw-list-item>
+          </mdw-list>
+        </mdw-box>
+      </mdw-pane>
+    </mdw-page>
+
+    <mdw-snackbar-container slot="bottom-fixed">
+      <mdw-snackbar open duration=4000>Toggle the drawer with the menu button.</mdw-snackbar>
+    </mdw-snackbar-container>
+
+    <mdw-dialog id="info-dialog" headline="Ready to sync?" confirm="Start" cancel="Later" default="confirm">
+      This dialog shows how to launch modal flows from your PWA shell.
+    </mdw-dialog>
+  </mdw-root>
+
+  <script>
+    const drawer = document.getElementById('drawer');
+    const menuButton = document.getElementById('menu-button');
+
+    // Simple toggle for the nav drawer
+    menuButton?.addEventListener('click', () => {
+      drawer?.toggleAttribute('open');
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Material Design Web</title>
+  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb"></script>
+  <style>
+    html {
+      background-color: rgb(var(--mdw-color__surface-container));
+      color: rgb(var(--mdw-color__on-surface));
+    }
+    body { margin: 0 }
+  </style>
+</head>
+
+<body>
+  <mdw-top-app-bar headline="Dashboard">
+    <mdw-icon-button slot="trailing" icon="settings">Settings</mdw-icon-button>
+  </mdw-top-app-bar>
+
+  <mdw-box padding=16 gap=16>
+    <div>
+      <mdw-headline>Welcome back!</mdw-headline>
+      <mdw-body>Here's an overview of your data</mdw-body>
+    </div>
+    <mdw-divider></mdw-divider>
+    <mdw-grid gap=16>
+      <mdw-card elevated="" padding=16 gap=16 >
+        <mdw-title text-padding=0>Total Users</mdw-title>
+        <mdw-headline size="large">2,543</mdw-headline>
+        <mdw-body>↑ 12% from last month</mdw-body>
+      </mdw-card>
+
+      <mdw-card elevated padding=16 gap=16 col-span=50%>
+        <mdw-title text-padding=0>Revenue</mdw-title>
+        <mdw-headline size="large">$45,231</mdw-headline>
+        <mdw-body>↑ 8% from last month</mdw-body>
+      </mdw-card>
+
+      <mdw-card elevated padding=16 gap=16 col-span=50%>
+        <mdw-title text-padding=0>Active Sessions</mdw-title>
+        <mdw-headline size="large">1,234</mdw-headline>
+        <mdw-body>↓ 3% from last hour</mdw-body>
+      </mdw-card>
+
+      <mdw-card elevated padding=16 gap=16 col-span=50%>
+        <mdw-title text-padding=0>Conversion Rate</mdw-title>
+        <mdw-headline size="large">3.24%</mdw-headline>
+        <mdw-body>↑ 0.5% from last week</mdw-body>
+      </mdw-card>
+    </mdw-grid>
+
+    <mdw-divider></mdw-divider>
+    <mdw-headline size="small">Recent Activity</mdw-headline>
+    <mdw-card elevated>
+      <mdw-list>
+        <mdw-list-item>New user registration from example@domain.com</mdw-list-item>
+        <mdw-divider></mdw-divider>
+        <mdw-list-item>Payment received: $299.99</mdw-list-item>
+        <mdw-divider></mdw-divider>
+        <mdw-list-item>System backup completed successfully</mdw-list-item>
+        <mdw-divider></mdw-divider>
+        <mdw-list-item>New feature deployed to production</mdw-list-item>
+      </mdw-list>
+    </mdw-card>
+
+  </mdw-box>
+</body>
+
+</html>

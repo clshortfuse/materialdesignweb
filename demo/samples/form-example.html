@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Example - Material Design Web</title>
+  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb"></script>
+  <style>
+    html {
+      background-color: rgb(var(--mdw-color__surface-container));
+      color: rgb(var(--mdw-color__on-surface));
+    }
+    body { margin: 0 }
+  </style>
+</head>
+
+<body>
+  <mdw-top-app-bar headline="Form Example"></mdw-top-app-bar>
+
+  <mdw-box padding=pane max-width=600px>
+    <form onsubmit="handleSubmit(event)">
+      <mdw-box gap=16>
+        <mdw-headline size="small">User Information</mdw-headline>
+
+        <mdw-input outlined label="Full Name" name="fullName" required></mdw-input>
+        <mdw-input outlined label="Email" name="email" type="email" required></mdw-input>
+        <mdw-input outlined label="Phone" name="phone" type="tel"></mdw-input>
+
+        <mdw-headline size="small" text-padding-top=8>Message</mdw-headline>
+        <mdw-textarea outlined label="Comments" name="message" minrows=4 maxrows=8></mdw-textarea>
+
+        <mdw-checkbox name="subscribe" value="yes">Subscribe to updates</mdw-checkbox>
+
+        <mdw-box row gap=8 x=end>
+          <mdw-button type="reset">Clear</mdw-button>
+          <mdw-button type="submit" filled>Submit</mdw-button>
+        </mdw-box>
+      </mdw-box>
+    </form>
+  </mdw-box>
+
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+      console.log('Form submitted:', data);
+      alert('Form submitted! Check console for details.');
+    }
+  </script>
+</body>
+
+</html>
