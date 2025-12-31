@@ -368,12 +368,13 @@ function collectTsExports(sf) {
 /**
  * Find the default export identifier/node for a source file.
  * @param {ts.SourceFile} sf
- * @return {{exportName:string|null, exportExpr:any|null, idNode:any|null}}
+ * @return {{exportName:string|null, exportExpr:any|null, idNode:any|null, isDefault:boolean}}
  */
 function findExportInfo(sf) {
   /** @type {string|null} */
   let exportName = null;
   let exportExpr = null;
+  let isDefault = false;
   for (const stmt of sf.statements) {
     if (ts.isExportAssignment(stmt)) {
       const expr = stmt.expression;
@@ -381,6 +382,7 @@ function findExportInfo(sf) {
         exportName = expr.getText(sf);
       }
       exportExpr = expr;
+      isDefault = true;
       continue;
     }
     if ((ts.isClassDeclaration(stmt) || ts.isFunctionDeclaration(stmt)) && stmt.modifiers) {
@@ -393,6 +395,7 @@ function findExportInfo(sf) {
         } else {
           exportExpr = stmt;
         }
+        isDefault = true;
       }
     }
   }
@@ -413,7 +416,7 @@ function findExportInfo(sf) {
     idNode = exportExpr;
   }
 
-  return { exportName, exportExpr, idNode };
+  return { exportName, exportExpr, idNode, isDefault };
 }
 
 /** @type {ts.Program} */
@@ -748,7 +751,17 @@ function referenceFromSymbol(sym) {
     return { module: 'global:', name: displayName };
   }
   const rel = path.relative(process.cwd(), fn).split(path.sep).join('/');
-  return { module: rel, name: displayName };
+
+  // Use the export name rather than the internal name
+  const exportInfo = findExportInfo(sf);
+  let exportName = displayName;
+  if (exportInfo.isDefault) {
+    exportName = 'default';
+  } else if (exportInfo.exportName) {
+    exportName = exportInfo.exportName;
+  }
+
+  return { module: rel, name: exportName };
 }
 
 /**
@@ -1180,14 +1193,16 @@ function collectMixins(expr) {
 async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
   if (!ref) return null;
   const key = `${ref.module}::${ref.name}`;
-  if (seen.has(key)) return { kind: 'mixin', name: ref.name || '<unknown>', customElement: true };
+  if (seen.has(key)) {
+    throw new Error(`Circular mixin reference detected: ${key}`);
+  }
   seen.add(key);
 
   /** @type {CEMElementMixin} */
   const decl = {
     kind: 'mixin',
     customElement: true,
-    name: ref.name || 'default',
+    name: normalizeExportName(ref?.name),
     parameters: [],
     return: { type: { text: '' } },
     members: [],
@@ -1220,12 +1235,15 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
   const exportExprLocal = exportInfo.exportExpr;
   const exportIdNode = exportInfo.idNode;
   const exportName = exportInfo.exportName;
+  const isDefaultExport = !!exportInfo.isDefault;
 
   // Try to extract the actual function name from the export expression or export name
-  if (exportName && exportName !== 'default') {
-    decl.name = exportName;
+  if (isDefaultExport) {
+    decl.name = 'default';
+  } else if (exportName) {
+    decl.name = normalizeExportName(exportName);
   } else if (exportExprLocal && ts.isFunctionDeclaration(exportExprLocal) && exportExprLocal.name) {
-    decl.name = exportExprLocal.name.getText(srcSf);
+    decl.name = normalizeExportName(exportExprLocal.name.getText(srcSf));
   }
 
   // Prefer resolving the identifier node (if present), fallback to the export expression
@@ -1632,7 +1650,7 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
             kind: 'js',
             name: 'default',
             declaration: {
-              name: decl.name,
+              name: 'default',
               module: moduleForMixin.path,
             },
           });
@@ -1674,10 +1692,11 @@ async function collectMixinDeclarationsFromExport(exportExprLocal) {
       // eslint-disable-next-line no-await-in-loop
       const decl = await buildMixinDeclarationFromRef(m, new Set());
       if (decl) {
+        const mixinName = decl.name || m.name;
         if (m.package) {
-          out.push({ package: m.package, name: decl.name });
+          out.push({ package: m.package, name: normalizeExportName(mixinName) });
         } else {
-          out.push({ module: m.module, name: decl.name });
+          out.push({ module: m.module, name: normalizeExportName(mixinName) });
         }
       }
     }
@@ -1818,9 +1837,13 @@ async function mergeInstanceTypeProperties(
     if (declarations.some((d) => d.file?.includes('lib.dom'))) continue;
     // Skip properties that originate only from the project's CustomElement base
     const customBasePath = getCustomElementRelativePath();
+    const currentRel = path.relative(process.cwd(), src).split(path.sep).join('/');
     if (customBasePath && declarations.length) {
       const rels = declarations.map((d) => path.relative(process.cwd(), d.file).split(path.sep).join('/'));
-      if (rels.length && rels.every((r) => r === customBasePath)) continue;
+      const allFromBase = rels.length && rels.every((r) => r === customBasePath);
+      // Skip base-class members only when analyzing a subclass; keep them
+      // when generating the manifest entry for the base class itself.
+      if (allFromBase && currentRel !== customBasePath) continue;
     }
     // Skip instance props that are declared in mixin modules only when
     // they are methods. We keep non-method instance members so they can
@@ -1949,9 +1972,13 @@ async function mergeConstructorTypeProperties(
     if (declarations.some((d) => d.file?.includes('lib.dom'))) continue;
     // Skip static properties that originate only from the project's CustomElement base
     const customBasePath = getCustomElementRelativePath();
+    const currentRel = path.relative(process.cwd(), src).split(path.sep).join('/');
     if (customBasePath && declarations.length) {
       const rels = declarations.map((d) => path.relative(process.cwd(), d.file).split(path.sep).join('/'));
-      if (rels.length && rels.every((r) => r === customBasePath)) continue;
+      const allFromBase = rels.length && rels.every((r) => r === customBasePath);
+      // Skip base-class static members only for subclasses; keep them on
+      // the base-class declaration.
+      if (allFromBase && currentRel !== customBasePath) continue;
     }
 
     if (VERBOSE) {
@@ -2881,34 +2908,18 @@ async function generateForFile(file) {
       return false;
     }
 
-    // If runtime enumeration data is available, prefer it to filter out
-    // non-enumerable members (e.g. inherited or symbol-backed properties).
-    // Note: this relies on runtime capture (Playwright/JSDOM) and cannot be
-    // validated purely from the static manifest output; when `enumerableProps`
-    // is empty or missing we fall back to previous heuristics.
-
-    if (runtime?.enumerableProps?.size > 0) {
-      const mname = (typeof m.name === 'string') ? m.name : null;
-      if (mname && !runtime.enumerableProps.has(mname)) {
-        if (VERBOSE) {
-          console.log(`[manifest] skipping non-enumerable member ${mname} for ${name}`);
-        }
-        return false;
-      }
-    }
-
-    // Hide underscored internals (unless runtime explicitly observed them).
-    // This prevents leaking implementation details like `_supportingSlotted`
-    // into the manifest when runtime enumeration data is missing.
+    // Hide underscored internals only when runtime enumeration explicitly
+    // observed them; otherwise keep TS-derived members even if they are
+    // non-enumerable (base classes often define non-enumerable helpers).
     const maybeName = (typeof m.name === 'string') ? m.name : null;
-    if (maybeName && maybeName.startsWith('_')) {
-      const seen = runtime?.enumerableProps?.size > 0 ? runtime.enumerableProps.has(maybeName) : false;
-      if (!seen) {
-        if (VERBOSE) {
-          console.log(`[manifest] hiding underscored internal ${maybeName} for ${name}`);
-        }
-        return false;
+    const hasRuntimeEnumeration = runtime?.enumerableProps?.size > 0;
+    const runtimeObserved = hasRuntimeEnumeration && maybeName ? runtime.enumerableProps.has(maybeName) : false;
+
+    if (maybeName && maybeName.startsWith('_') && !runtimeObserved) {
+      if (VERBOSE) {
+        console.log(`[manifest] hiding underscored internal ${maybeName} for ${name}`);
       }
+      return false;
     }
 
     return true;
@@ -2991,7 +3002,7 @@ async function generateForFile(file) {
         kind: 'js',
         name: 'default',
         declaration: {
-          name: cemDecl.name,
+          name: 'default',
           module: modulePath,
         },
       },
@@ -3004,7 +3015,7 @@ async function generateForFile(file) {
       kind: 'custom-element-definition',
       name: runtime.tag,
       declaration: {
-        name: cemDecl.name,
+        name: 'default',
         module: modulePath,
       },
     });
@@ -3027,6 +3038,45 @@ async function getModuleForFile(file) {
   /* eslint-enable no-use-before-define */
   moduleByFile.set(abs, p);
   return await p;
+}
+
+/**
+ * Ensure modules referenced via superclass/mixins are generated so lookups resolve.
+ * @param {Array<CEMModule>} modules
+ * @return {Promise<boolean>} true if any new modules were added
+ */
+async function ensureReferencedModulesGenerated(modules) {
+  let added = false;
+  for (const mod of modules) {
+    if (!mod || mod.kind !== 'javascript-module' || !mod.path) continue;
+    for (const decl of (mod.declarations || [])) {
+      if (!decl) continue;
+      if (decl.kind !== 'class') continue;
+      const refs = [];
+      if (decl.superclass?.module) {
+        refs.push(decl.superclass.module);
+      }
+      if (Array.isArray(decl.mixins)) {
+        for (const m of decl.mixins) {
+          if (m?.module) {
+            refs.push(m.module);
+          }
+        }
+      }
+
+      for (const moduleRef of refs) {
+        if (!moduleRef || moduleRef === 'global:' || moduleRef.startsWith('global:')) continue;
+        const resolved = resolveModulePath(moduleRef);
+        if (!resolved) continue;
+        const abs = path.resolve(resolved);
+        if (moduleByFile.has(abs)) continue;
+        // eslint-disable-next-line no-await-in-loop
+        await getModuleForFile(resolved);
+        added = true;
+      }
+    }
+  }
+  return added;
 }
 
 /**
@@ -3126,12 +3176,22 @@ async function main() {
   }
 
   const allModules = await Promise.all(moduleByFile.values());
-
-  const modules = allModules.filter(Boolean).sort((a, b) => {
+  let modules = allModules.filter(Boolean).sort((a, b) => {
     if (a.path < b.path) return -1;
     if (a.path > b.path) return 1;
     return 0;
   });
+
+  // If superclass/mixin references point to modules not yet generated, generate them and refresh.
+  const addedReferencedModules = await ensureReferencedModulesGenerated(modules);
+  if (addedReferencedModules) {
+    const refreshedModules = await Promise.all(moduleByFile.values());
+    modules = refreshedModules.filter(Boolean).sort((a, b) => {
+      if (a.path < b.path) return -1;
+      if (a.path > b.path) return 1;
+      return 0;
+    });
+  }
 
   // Post-pass: ensure synthesized mixin declarations include nested `mixins` refs.
   // Some mixin module declarations may have been created earlier without nested
@@ -3174,18 +3234,18 @@ async function main() {
 
     for (const d of (mod.declarations || [])) {
       if (!d || d.kind !== 'mixin') continue;
-      if ('customElement' in d === false) continue;
       // Store mixin data using both declaration name and export names
       const mixinData = {
-        attributes: d.attributes || [],
         members: d.members || [],
+        ...('customElement' in d ? { attributes: d.attributes || [] } : {}),
       };
+
       const declKey = `${mod.path}::${d.name}`;
       mixinDataByModuleName.set(declKey, mixinData);
 
       // Also store by export names so references can find it
       for (const exp of (mod.exports || [])) {
-        if (!exp || !exp.declaration || exp.declaration.name !== d.name) continue;
+        if (!exp || !exp.declaration || exp.declaration.module !== mod.path) continue;
         const exportKey = `${mod.path}::${exp.name || 'default'}`;
         if (exportKey !== declKey) {
           mixinDataByModuleName.set(exportKey, mixinData);
@@ -3197,9 +3257,9 @@ async function main() {
     // This allows lookup by either export name or declaration name
     for (const d of (mod.declarations || [])) {
       if (!d || (d.kind !== 'class' && d.kind !== 'mixin')) continue;
-      if ('customElement' in d === false) continue;
+
       const classData = {
-        attributes: d.attributes || [],
+        ...('customElement' in d ? { attributes: d.attributes || [] } : {}),
         members: d.members || [],
       };
 
@@ -3209,7 +3269,7 @@ async function main() {
 
       // Also store by export names so references can find it
       for (const exp of (mod.exports || [])) {
-        if (!exp || !exp.declaration || exp.declaration.name !== d.name) continue;
+        if (!exp || !exp.declaration || exp.declaration.module !== mod.path) continue;
         const exportKey = `${mod.path}::${exp.name || 'default'}`;
         if (exportKey !== declKey) {
           classDataByModuleName.set(exportKey, classData);
@@ -3238,11 +3298,14 @@ async function main() {
     for (const mod of modules) {
       if (!mod || mod.kind !== 'javascript-module' || !mod.path) continue;
       for (const d of (mod.declarations || [])) {
-        if (!d || d.kind !== 'class' || !d.mixins || !('customElement' in d)) continue;
+        if (!d || d.kind !== 'class' || !d.mixins) continue;
+        if (!('customElement' in d)) continue;
 
         // Build sets of existing component-defined names
-        const existingAttrNames = new Set((d.attributes || []).map((a) => a.name));
-        const existingMemberNames = new Set((d.members || []).map((m) => m.name));
+        const attrs = d.attributes || [];
+        const mems = d.members || [];
+        const existingAttrNames = new Set(attrs.map((a) => a.name));
+        const existingMemberNames = new Set(mems.map((m) => m.name));
 
         // For each applied mixin, merge its attributes and members with inheritedFrom
         for (const mref of d.mixins) {
@@ -3288,7 +3351,7 @@ async function main() {
           if (mixinData.attributes) {
             for (const attr of mixinData.attributes) {
               // If already present on the class, just tag inheritedFrom
-              const existing = (d.attributes || []).find((a) => a.name === attr.name);
+              const existing = attrs.find((a) => a.name === attr.name);
               if (existing) {
                 if (!existing.inheritedFrom) {
                   existing.inheritedFrom = { name: mixName, module: mixModule };
@@ -3312,7 +3375,7 @@ async function main() {
           if (mixinData.members) {
             for (const member of mixinData.members) {
               if (!member.name) continue;
-              const existing = (d.members || []).find((m) => m.name === member.name);
+              const existing = mems.find((m) => m.name === member.name);
               if (existing) {
                 if (!existing.inheritedFrom) {
                   existing.inheritedFrom = { name: mixName, module: mixModule };
@@ -3340,7 +3403,7 @@ async function main() {
     for (const mod of modules) {
       if (!mod || mod.kind !== 'javascript-module' || !mod.path) continue;
       for (const d of (mod.declarations || [])) {
-        if (!d || d.kind !== 'class' || !d.superclass || !('customElement' in d)) continue;
+        if (!d || d.kind !== 'class' || !d.superclass) continue;
 
         const superModule = d.superclass.module;
         const superName = d.superclass.name;
@@ -3363,12 +3426,14 @@ async function main() {
         );
 
         // Mark attributes that come from superclass with inheritedFrom
-        for (const attr of (d.attributes || [])) {
-          if (superAttrByName.has(attr.name) && !attr.inheritedFrom) {
-            attr.inheritedFrom = {
-              name: superName,
-              module: superModule,
-            };
+        if (('customElement' in d)) {
+          for (const attr of (d.attributes || [])) {
+            if (superAttrByName.has(attr.name) && !attr.inheritedFrom) {
+              attr.inheritedFrom = {
+                name: superName,
+                module: superModule,
+              };
+            }
           }
         }
 
@@ -3383,22 +3448,24 @@ async function main() {
         }
 
         // Add any superclass attributes/members not already on the subclass
-        const existingAttrNames = new Set((d.attributes || []).map((a) => a.name));
-        const existingMemberNames = new Set((d.members || []).map((m) => m.name));
 
-        for (const attr of superData.attributes) {
-          if (!existingAttrNames.has(attr.name)) {
-            d.attributes = d.attributes || [];
-            d.attributes.push({
-              ...attr,
-              inheritedFrom: {
-                name: superName,
-                module: superModule,
-              },
-            });
+        if (('customElement' in d)) {
+          const existingAttrNames = new Set((d.attributes || []).map((a) => a.name));
+          for (const attr of superData.attributes) {
+            if (!existingAttrNames.has(attr.name)) {
+              d.attributes = d.attributes || [];
+              d.attributes.push({
+                ...attr,
+                inheritedFrom: {
+                  name: superName,
+                  module: superModule,
+                },
+              });
+            }
           }
         }
 
+        const existingMemberNames = new Set((d.members || []).map((m) => m.name));
         for (const member of superData.members) {
           if (member.name && !existingMemberNames.has(member.name)) {
             d.members = d.members || [];
@@ -3415,7 +3482,7 @@ async function main() {
     }
   }
 
-  /** @type {CEMPackage} */
+  /** @type {CEMPackage & { $schema?: string }} */
   const output = {
     $schema: 'https://cdn.jsdelivr.net/npm/custom-elements-manifest@2.1.0/schema.json',
     schemaVersion: '2.1.0',
