@@ -15,7 +15,7 @@ The API is intentionally lightweight and composable, so you can extend a compone
 import CustomElement from './CustomElement.js';
 
 export default CustomElement
-  .extend()                     // Create a subclass (optional if you don't need to add new static methods)
+  .extend()                     // Extend base class
   .observe({                    // Declare reactive properties
     propName: 'type',           // simple type string or an options object
     anotherProp: { type:'string', empty:'' }
@@ -91,7 +91,7 @@ Because `.observe()` accepts either strings or full option objects, you can mix 
 All of the JSDoc annotations in `CustomElement.js` are designed to work with TypeScript’s type inference.  When you write:
 
 ```js
-export default CustomElement.observe({ foo: 'string' })
+  .observe({ foo: 'string' })
 ```
 
 TypeScript will infer that instances have a property `foo` of type `string`.  If you provide an options object, the inferred type comes from the `type` field.  This gives you compile‑time safety while keeping the runtime lightweight.

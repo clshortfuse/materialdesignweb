@@ -45,6 +45,14 @@ if (!isProduction && live) {
   `;
 }
 
+/** @type {esbuild.BuildOptions['footer']} */
+const footer = {};
+if (format === 'iife') {
+  footer.js = /* js */`
+    (typeof globalThis !== 'undefined' ? globalThis : window)['@shortfuse/materialdesignweb'] = f2e635f4_1f55_4b3a_8064_72d0aa34d496;
+  `;
+}
+
 /** @type {esbuild.BuildOptions} */
 const buildOptions = {
   entryPoints,
@@ -53,7 +61,9 @@ const buildOptions = {
   sourcemap: true,
   ...minify,
   banner,
+  footer,
   bundle: true,
+  ...(format === 'iife' ? { globalName: 'f2e635f4_1f55_4b3a_8064_72d0aa34d496' } : {}),
   keepNames: false,
   legalComments: 'linked',
   metafile: cliArgs.has('metafile'),

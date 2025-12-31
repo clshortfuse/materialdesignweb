@@ -37,9 +37,11 @@ npm install @shortfuse/materialdesignweb
 Use the CDN (zero-install):
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4"></script>
+<script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4"></script>
 <mdw-button>Hello World</mdw-button>
 ```
+
+Access exports via : `const { CustomElement } = globalThis['@shortfuse/materialdesignweb'];`
 
 Import what you need (ESM):
 

@@ -5,9 +5,11 @@ Quick use cases
 - CDN (zero-install):
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4"></script>
+<script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4"></script>
 <mdw-button>Hello World</mdw-button>
 ```
+
+For custom elements: `const { CustomElement } = globalThis['@shortfuse/materialdesignweb'];`
 
 - npm (install library):
 
