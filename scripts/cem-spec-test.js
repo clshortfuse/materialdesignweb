@@ -62,6 +62,13 @@ function normalize(p) {
 }
 
 /**
+ * @param {{href?: string, file?: string}|null|undefined} source
+ */
+function hasHrefOrFile(source) {
+  return Boolean(source && (source.href || source.file));
+}
+
+/**
  *
  * @param manifest
  */
@@ -117,7 +124,7 @@ function verify(manifest) {
         }
 
         // Ensure the synthesized mixin declares a source (file or href)
-        if (!decl.source || (!(decl.source.href || decl.source.file))) {
+        if (!hasHrefOrFile(decl.source)) {
           errors.push(`${mod.path}::${declName} missing declaration source`);
         }
 
@@ -129,9 +136,11 @@ function verify(manifest) {
               errors.push(`${mod.path}::${declName} has member with missing name`);
               continue;
             }
-            if (!m.kind) errors.push(`${mod.path}::${declName}.${m.name} missing kind`);
+            if (!m.kind) {
+              errors.push(`${mod.path}::${declName}.${m.name} missing kind`);
+            }
             // Require member to report a source (href or file)
-            if (!m.source || !(m.source.href || m.source.file)) {
+            if (!hasHrefOrFile(m.source)) {
               errors.push(`${mod.path}::${declName}.${m.name} missing member source (href/file)`);
             }
             // static flag should be boolean when present
@@ -162,11 +171,12 @@ function verify(manifest) {
             errors.push('Button has member with missing name'); continue;
           }
           if (!mm.kind) errors.push(`Button.${mm.name} missing kind`);
-          if (mm.source && !(mm.source.href || mm.source.file)) errors.push(`Button.${mm.name} has source but missing href/file`);
+          if (mm.source && !hasHrefOrFile(mm.source)) errors.push(`Button.${mm.name} has source but missing href/file`);
           // Methods that originate in mixins should not be listed on the component
           if (mm.kind === 'method' && mm.source) {
             const href = (mm.source && (mm.source.href || mm.source.file || mm.source)) || '';
             if (String(href).includes('mixins/')) {
+
               errors.push(`Button.${mm.name} is sourced from mixins (${href}); mixin-sourced methods should not appear on Button`);
             }
           }
@@ -226,6 +236,9 @@ function verify(manifest) {
           }
         }
 
+        // Precompute Button attributes once for mixin attribute checks
+        const btnAttrs = new Set(((btnDecl.attributes || []).map((at) => at && at.name).filter(Boolean)));
+
         // --- Validate selected mixin modules declare expected members (fields & methods)
         for (const [mPath, info] of Object.entries(EXPECTED_MIXIN_MEMBERS)) {
           const mixMod = modules.find((mod) => normalize(mod.path) === mPath);
@@ -262,7 +275,6 @@ function verify(manifest) {
             if (!mixAttrs.has(a)) {
               errors.push(`${mPath} mixin missing runtime attribute '${a}'`);
             }
-            const btnAttrs = new Set(((btnDecl.attributes || []).map((at) => at && at.name).filter(Boolean)));
             if (btnAttrs.has(a)) {
               errors.push(`Button should NOT expose mixin attribute '${a}'`);
             }

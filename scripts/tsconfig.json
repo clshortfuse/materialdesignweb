@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "checkJs": true,
+    "declaration": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noErrorTruncation": true,
+    "noImplicitAny": true,
+    "outDir": "/dev/null",
+    "resolveJsonModule": true,
+    "strict": false,
+    "target": "esnext"
+  },
+  "include": [
+    "./**/*.js",
+  ],
+}

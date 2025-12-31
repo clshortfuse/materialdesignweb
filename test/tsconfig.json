@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "checkJs": true,
+    "declaration": false,
     "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,
@@ -9,9 +11,11 @@
     "target": "esnext",
     "allowSyntheticDefaultImports": true,
     "noErrorTruncation": true,
-    "types": ["mocha"]
+    "outDir": "/dev/null",
+    "types": [
+      "mocha"
+    ]
   },
-  
   "exclude": [
     "**/node_modules/*",
     ".history/*",
