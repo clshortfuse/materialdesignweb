@@ -224,7 +224,7 @@ export default class CompositionAdapter {
         domNodeToRemove.replaceWith(correctMetadata.domNode);
 
         if (!skipOnMatch) {
-          console.warn('no skip on match on swap', newIndex);
+          // console.warn('no skip on match on swap', newIndex);
           correctMetadata.render(changes, data);
         }
 
