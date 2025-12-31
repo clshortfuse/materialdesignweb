@@ -140,10 +140,14 @@
   ],
   "contributes": {
     "html": {
-      "customData": ["./docs/html.html-data.json"]
+      "customData": [
+        "./docs/html.html-data.json"
+      ]
     },
     "css": {
-      "customData": ["./docs/css.css-data.json"]
+      "customData": [
+        "./docs/css.css-data.json"
+      ]
     }
   },
   "type": "module",
@@ -154,5 +158,5 @@
       ]
     }
   },
-  "version": "0.9.3"
+  "version": "0.9.4"
 }
