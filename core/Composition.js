@@ -28,6 +28,7 @@ import { generateUID } from './uid.js';
  * @prop {ShadowRoot} [shadowRoot] where
  * @prop {any} [context] `this` on callbacks/events
  * @prop {any} [injections]
+ * @prop {number} [iterationIndex]
  */
 
 /**
@@ -162,6 +163,7 @@ import { generateUID } from './uid.js';
  * @prop {any} [defaultValue]
  * @prop {RenderGraphSearch} search
  * @prop {InterpolateOptions['injections']} [injections]
+ * @prop {number} [adapterIndex]
  */
 
 /**
@@ -379,7 +381,7 @@ function searchWithDeepProp(state, changes, data) {
  * @typedef InitializationState
  * @prop {Element} lastElement
  * @prop {ChildNode} lastChildNode
- * @prop {(Element|Text)[]} nodes
+ * @prop {(ChildNode)[]} nodes
  * @prop {any[]} caches
  * @prop {Comment[]} comments
  * @prop {Uint8Array} nodeStates
@@ -387,6 +389,7 @@ function searchWithDeepProp(state, changes, data) {
  * @prop {HTMLElement[]} refs
  * @prop {number} lastChildNodeIndex
  * @prop {RenderOptions<?>} options
+ * @prop {CompositionAdapter<any>[][]} adapters
  */
 
 /** Splits: `{template}text{template}` as `['', 'template', 'text', 'template', '']` */
@@ -480,6 +483,7 @@ export default class Composition {
     searchIndex: 0,
     cacheIndex: 0,
     commentIndex: 0,
+    adapterIndex: 0,
     /** @type {this['nodesToBind'][0]} */
     nodeEntry: null,
   };
@@ -698,6 +702,7 @@ export default class Composition {
       nodes: [],
       caches: this.initCache.slice(),
       refs: [],
+      adapters: [],
       options,
     };
 
@@ -1256,7 +1261,7 @@ export default class Composition {
       return null;
     }
     const parsedValue = trimmed.slice(1, -1);
-    const [valueName, iterableName] = parsedValue.split(/\s+of\s+/);
+    const [valueName, iterableClause] = parsedValue.split(/\s+of\s+/);
     element.removeAttribute('mdw-for');
     // Create a new composition targetting element as root
 
@@ -1286,6 +1291,9 @@ export default class Composition {
       index: null,
     };
 
+    const iterableParts = iterableClause.split('.');
+    const iterableDeepProp = iterableParts.length > 1 ? iterableParts : null;
+    const iterableName = iterableDeepProp ? iterableParts[0] : iterableClause;
     const propsUsed = [iterableName];
     /** @type {RenderGraphSearch} */
     const search = {
@@ -1293,9 +1301,9 @@ export default class Composition {
       searchIndex: this._interpolationState.searchIndex++,
       query: null,
       prop: null,
-      deepProp: null,
+      deepProp: iterableDeepProp,
       propsUsed,
-      deepPropsUsed: [[iterableName]],
+      deepPropsUsed: iterableDeepProp ? [iterableDeepProp] : [[iterableName]],
       defaultValue: {},
       invocation: null,
     };
@@ -1306,16 +1314,27 @@ export default class Composition {
       nodeIndex: this._interpolationState.nodeIndex,
       search,
       commentIndex: this._interpolationState.commentIndex++,
+      adapterIndex: this._interpolationState.adapterIndex++,
       injections,
       invocation(state, value, changes, data) {
-        if (!newComposition.adapter) {
-          // console.log({ state.options });
+        // Optimistic get
+        let adaptersArray = state.adapters[this.adapterIndex];
+        const iterationIndex = state.options.iterationIndex ?? 0;
+        let adapter;
+        if (!adaptersArray || (!(adapter = adaptersArray[iterationIndex]))) {
           const instanceAnchorElement = state.nodes[this.nodeIndex];
           const anchorNode = createEmptyComment();
+
+          if (state.comments[this.commentIndex]) {
+            throw new Error('Comment already exists at index');
+          }
+
           // Avoid leak
           state.comments[this.commentIndex] = anchorNode;
+
+          // @ts-ignore DocumentFragment in documents can be replaced (bad typings)
           instanceAnchorElement.replaceWith(anchorNode);
-          newComposition.adapter = new CompositionAdapter({
+          adapter = new CompositionAdapter({
             anchorNode,
             composition: newComposition,
             renderOptions: {
@@ -1325,15 +1344,32 @@ export default class Composition {
               injections: this.injections,
             },
           });
+
+          // eslint-disable-next-line no-multi-assign
+          adaptersArray = ((state.adapters[this.adapterIndex] ??= []));
+          adaptersArray[iterationIndex] = adapter;
         }
-        const { adapter } = newComposition;
-        const iterable = (data ?? state.options.store)[iterableName];
+
+        const currentInjections = state.options.injections ?? this.injections;
+        const source = data ?? state.options.store;
+        let iterable = iterableDeepProp
+          ? deepPropFromObject(iterableDeepProp, source)
+          : source[iterableName];
+        if (iterable === undefined && iterableDeepProp && currentInjections) {
+          iterable = deepPropFromObject(iterableDeepProp, currentInjections);
+        }
         // Remove oversized
         if (!iterable || iterable.length === 0) {
           adapter.removeEntries();
           return;
         }
-        const changeList = changes[iterableName];
+
+        const changeList = iterableDeepProp
+          ? deepPropFromObject(iterableDeepProp, changes)
+          : changes[iterableName];
+
+        if (changeList === undefined) return;
+
         const innerChanges = { ...changes };
         const needTargetAll = newComposition.props.some((prop) => prop !== iterableName && prop in changes);
 
@@ -1351,9 +1387,10 @@ export default class Composition {
             const index = (+key);
             const resource = iterable[index];
             innerChanges[valueName] = change;
-            this.injections[valueName] = resource;
-            this.injections.index = index;
-
+            currentInjections[valueName] = resource;
+            currentInjections.index = index;
+            adapter.renderOptions.injections = currentInjections;
+            adapter.renderOptions.iterationIndex = index;
             adapter.renderData(index, innerChanges, data, resource, change);
           }
         } else {
@@ -1376,9 +1413,10 @@ export default class Composition {
               }
               innerChanges[valueName] = change;
             }
-            this.injections[valueName] = resource;
-            this.injections.index = index;
-
+            currentInjections[valueName] = resource;
+            currentInjections.index = index;
+            adapter.renderOptions.injections = currentInjections;
+            adapter.renderOptions.iterationIndex = index;
             adapter.renderData(index, innerChanges, data, resource, change);
             // adapter.renderIndex(index, innerChanges, data, resource);
           }

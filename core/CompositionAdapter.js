@@ -29,6 +29,38 @@ import { createEmptyComment } from './optimizations.js';
  * @prop {Comment} [comment]
  */
 
+/**
+ * @param {any} node
+ * @return {HTMLElement}
+ */
+function captureFocus(node) {
+  return node?.matches?.(':focus') ? node : node?.querySelector?.(':focus');
+}
+
+/** @param {HTMLElement} focused */
+function restoreFocus(focused) {
+  if (focused && focused.isConnected && !focused.matches(':focus')) {
+    focused.focus();
+  }
+}
+
+/**
+ *  @param {Element|Comment} node
+ *  @param {ChildNode} beforeNode
+ */
+function moveNode(node, beforeNode) {
+  const focused = captureFocus(node);
+  if (beforeNode) {
+    beforeNode.before(node);
+  } else {
+    node.parentNode?.append(node);
+  }
+  restoreFocus(focused);
+}
+
+// @ts-expect-error Bad typings
+const hasMoveBefore = typeof Element.prototype.moveBefore === 'function';
+
 /** @template T */
 export default class CompositionAdapter {
   /** @param {DomAdapterCreateOptions<T>} options */
@@ -216,12 +248,27 @@ export default class CompositionAdapter {
 
         const correctMetadata = this.metadata[oldIndex];
 
-        // Move back <=
+        // Swap metadata entries instead of removing/recreating.
         this.metadata[newIndex] = correctMetadata;
-        this.metadata.splice(oldIndex, 1);
+        this.metadata[oldIndex] = metadataAtIndex;
 
         const { domNode: domNodeToRemove } = metadataAtIndex;
-        domNodeToRemove.replaceWith(correctMetadata.domNode);
+
+        const removalContainer = domNodeToRemove.parentNode;
+        const correctNext = correctMetadata.domNode.nextSibling;
+        if (hasMoveBefore) {
+          // @ts-expect-error Bad typings
+          removalContainer.moveBefore(correctMetadata.domNode, domNodeToRemove);
+          if (correctNext) {
+            // @ts-expect-error Bad typings
+            removalContainer.moveBefore(domNodeToRemove, correctNext);
+          }
+        } else {
+          moveNode(correctMetadata.domNode, domNodeToRemove);
+          if (correctNext) {
+            moveNode(domNodeToRemove, correctNext);
+          }
+        }
 
         if (!skipOnMatch) {
           // console.warn('no skip on match on swap', newIndex);
@@ -231,13 +278,7 @@ export default class CompositionAdapter {
         // Remove posterior
 
         this.keys[newIndex] = key;
-        this.keys.splice(oldIndex, 1);
-
-        domNodeToRemove.remove();
-
-        // Don't release in case we may need it later
-        // console.debug('Caching key', key);
-        metadataCache.set(currentKey, metadataAtIndex);
+        this.keys[oldIndex] = currentKey;
 
         return;
       }
