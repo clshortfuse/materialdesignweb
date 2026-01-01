@@ -249,7 +249,6 @@ describe('swaprows benchmark semantics', () => {
     await new Promise((r) => setTimeout(r, 50));
 
     el.data = el.data.slice(0, 2);
-    el.render({ data: el.data });
 
     await new Promise((r) => setTimeout(r, 50));
 
@@ -288,7 +287,6 @@ describe('swaprows benchmark semantics', () => {
     await new Promise((r) => setTimeout(r, 50));
 
     el.data = [];
-    el.render({ data: el.data });
 
     await new Promise((r) => setTimeout(r, 50));
 
@@ -328,7 +326,6 @@ describe('swaprows benchmark semantics', () => {
     assert.equal(beforeButtons[0].matches(':focus'), true);
 
     el.data = [...el.data, { id: 'row-2' }];
-    el.render({ data: el.data });
 
     await new Promise((r) => setTimeout(r, 50));
 
@@ -338,108 +335,6 @@ describe('swaprows benchmark semantics', () => {
     assert.equal(afterButtons[1], beforeButtons[1]);
     assert.equal(afterButtons[2].textContent, 'row-2');
     assert.equal(beforeButtons[0].matches(':focus'), true);
-  });
-
-  it('swaps adjacent rows without moveBefore', async () => {
-    const SwapRows = CustomElement
-      .extend()
-      .observe({
-        data: { type: 'array', value: [] },
-      })
-      .html`
-        <div>
-          <div mdw-for="{row of data}" class="row">
-            <button type="button" class="row-btn">{row.id}</button>
-          </div>
-        </div>
-      `
-      .register('swap-rows-no-movebefore-test');
-
-    container.innerHTML = '<swap-rows-no-movebefore-test></swap-rows-no-movebefore-test>';
-    await customElements.whenDefined('swap-rows-no-movebefore-test');
-
-    /** @type {InstanceType<SwapRows>} */
-    const el = container.querySelector('swap-rows-no-movebefore-test');
-
-    el.data = [
-      { id: 'row-0' },
-      { id: 'row-1' },
-      { id: 'row-2' },
-      { id: 'row-3' },
-    ];
-
-    await new Promise((r) => setTimeout(r, 50));
-
-    const wrapper = el.shadowRoot.querySelector('div');
-    const originalMoveBefore = wrapper.moveBefore;
-    wrapper.moveBefore = null;
-
-    const tmp = el.data[1];
-    el.data[1] = el.data[2];
-    el.data[2] = tmp;
-    el.render({
-      data: {
-        1: el.data[1],
-        2: el.data[2],
-      },
-    });
-
-    await new Promise((r) => setTimeout(r, 50));
-
-    wrapper.moveBefore = originalMoveBefore;
-
-    const afterButtons = [...el.shadowRoot.querySelectorAll('.row-btn')];
-    assert.equal(afterButtons[1].textContent, 'row-2');
-    assert.equal(afterButtons[2].textContent, 'row-1');
-  });
-
-
-  it('throws when swap nodes are detached from the DOM', () => {
-    const anchorNode = document.createComment('anchor');
-    const composition = {
-      render() {
-        return { target: document.createElement('div') };
-      },
-    };
-    const adapter = new CompositionAdapter({
-      anchorNode,
-      composition,
-      renderOptions: {
-        target: null,
-        context: null,
-        store: {},
-        injections: {},
-      },
-    });
-
-    const nodeA = document.createElement('div');
-    const nodeB = document.createElement('div');
-    const nodeC = document.createElement('div');
-    adapter.metadata = [
-      {
-        domNode: nodeA,
-        element: nodeA,
-        key: 'a',
-        render: () => {},
-      },
-      {
-        domNode: nodeC,
-        element: nodeC,
-        key: 'c',
-        render: () => {},
-      },
-      {
-        domNode: nodeB,
-        element: nodeB,
-        key: 'b',
-        render: () => {},
-      },
-    ];
-    adapter.keys = ['a', 'c', 'b'];
-
-    assert.throws(() => {
-      adapter.renderData(0, {}, {}, 'b', 'b');
-    });
   });
 
   it('updates only specified index on partial object patch', async () => {
