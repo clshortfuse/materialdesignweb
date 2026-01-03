@@ -2,7 +2,7 @@ import CustomElement from '../core/CustomElement.js';
 import { ELEMENT_ANIMATION_TYPE, EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
-import FlexableMixin from '../mixins/FlexableMixin.js';
+import FlexboxMixin from '../mixins/FlexboxMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
@@ -98,7 +98,7 @@ CustomElement
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
-  .mixin(FlexableMixin)
+  .mixin(FlexboxMixin)
   .mixin(ShapeMixin)
   .mixin(AriaReflectorMixin)
   .mixin(DelegatesFocusMixin)

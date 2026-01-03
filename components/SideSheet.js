@@ -4,7 +4,7 @@ import { isRtl } from '../core/dom.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import ElevationMixin from '../mixins/ElevationMixin.js';
-import FlexableMixin from '../mixins/FlexableMixin.js';
+import FlexboxMixin from '../mixins/FlexboxMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
@@ -36,7 +36,7 @@ const SUPPORTS_SCROLLEND = 'onscrollend' in window;
 export default CustomElement
   .extend()
   .mixin(ThemableMixin)
-  .mixin(FlexableMixin)
+  .mixin(FlexboxMixin)
   .mixin(ElevationMixin)
   .mixin(ShapeMixin)
   .mixin(AriaReflectorMixin)

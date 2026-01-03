@@ -81,7 +81,7 @@ export { default as ResizeObserverMixin } from './mixins/ResizeObserverMixin.js'
 export { default as DensityMixin } from './mixins/DensityMixin.js';
 export { default as TooltipTriggerMixin } from './mixins/TooltipTriggerMixin.js';
 export { default as ScrollListenerMixin } from './mixins/ScrollListenerMixin.js';
-export { default as FlexableMixin } from './mixins/FlexableMixin.js';
+export { default as FlexboxMixin } from './mixins/FlexboxMixin.js';
 export { default as ThemableMixin } from './mixins/ThemableMixin.js';
 export { default as AriaToolbarMixin } from './mixins/AriaToolbarMixin.js';
 export { default as TextFieldMixin } from './mixins/TextFieldMixin.js';

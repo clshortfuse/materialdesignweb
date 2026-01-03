@@ -1,8 +1,8 @@
 /**
- * Layout helper mixin providing flexible box utilities (gap, padding, axis).
+ * Layout helper mixin providing flexbox utilities (gap, padding, axis).
  * @param {typeof import('../core/CustomElement.js').default} Base
  */
-export default function FlexableMixin(Base) {
+export default function FlexboxMixin(Base) {
   return Base
     .observe({
       /** Set `display: block` on the host (boolean) */
