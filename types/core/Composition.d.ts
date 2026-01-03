@@ -17,6 +17,7 @@ export default class Composition<T> {
         searchIndex: number;
         cacheIndex: number;
         commentIndex: number;
+        adapterIndex: number;
         /** @type {this['nodesToBind'][0]} */
         nodeEntry: this["nodesToBind"][0];
     };
@@ -156,6 +157,7 @@ export type RenderOptions<T> = {
      */
     context?: any;
     injections?: any;
+    iterationIndex?: number;
 };
 export type RenderDraw<T> = {
     target: Element | DocumentFragment;
@@ -229,6 +231,7 @@ export type RenderGraphAction = {
     defaultValue?: any;
     search: RenderGraphSearch;
     injections?: InterpolateOptions["injections"];
+    adapterIndex?: number;
 };
 export type InterpolateOptions = {
     /**
@@ -247,7 +250,7 @@ export type InterpolateOptions = {
 export type InitializationState = {
     lastElement: Element;
     lastChildNode: ChildNode;
-    nodes: (Element | Text)[];
+    nodes: (ChildNode)[];
     caches: any[];
     comments: Comment[];
     nodeStates: Uint8Array;
@@ -255,6 +258,7 @@ export type InitializationState = {
     refs: HTMLElement[];
     lastChildNodeIndex: number;
     options: RenderOptions<unknown>;
+    adapters: CompositionAdapter<any>[][];
 };
 import CompositionAdapter from './CompositionAdapter.js';
 //# sourceMappingURL=Composition.d.ts.map

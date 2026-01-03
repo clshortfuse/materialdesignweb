@@ -1,6 +1,7 @@
 /** @typedef {import('./CustomElement').default} CustomElement */
 
 import { attrNameFromPropName } from './dom.js';
+import { subscribeProxy } from './observe.js';
 
 /**
  * @see https://html.spec.whatwg.org/multipage/webappapis.html#event-handler-attributes
@@ -49,6 +50,71 @@ export const EVENT_HANDLER_TYPE = {
     }
     if (newValue) {
       this.addEventListener(eventName, newValue);
+    }
+  },
+};
+
+/**
+ * @template {unknown} T
+ * @typedef {import('./observe.js').ObserverOptions<'object', T, CustomElement>} STORE_PROXY_TYPE
+ */
+
+/** @typedef {WeakMap<CustomElement, Map<string, Function>>} */
+const StoreProxySubscriptions = new WeakMap();
+
+/**
+ * Proxy store binding. Expects a proxy with a `.subscribe(fn)` method that
+ * returns an unsubscribe function.
+ * @template {unknown} T
+ * @type {import('./observe.js').ObserverOptions<'object', T, CustomElement>}
+ */
+export const STORE_PROXY_TYPE = {
+  type: 'object',
+  reflect: false,
+  parser(v) { return v; },
+  diff: null, // Skip computing entire change
+  propChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    /** @return {void} */
+    function connectedCallback() {
+      let subscriptions = StoreProxySubscriptions.get(this);
+      if (!subscriptions) {
+        subscriptions = new Map();
+        StoreProxySubscriptions.set(this, subscriptions);
+      }
+      const unsubscribeFn = subscribeProxy(this[name], (patch) => {
+        this.render.byProp(name, patch, this);
+      });
+      subscriptions.set(name, unsubscribeFn);
+      // Render immediately
+      this.render.byProp(name, this[name], this);
+    }
+    /** @return {void} */
+    function disconnectedCallback() {
+      const subscriptions = StoreProxySubscriptions.get(this);
+      if (!subscriptions?.has(name)) return;
+      const unsubscribeFn = subscriptions.get(name);
+      unsubscribeFn();
+      subscriptions.delete(name);
+    }
+    if (oldValue) {
+      // Perform unsubscribe
+      disconnectedCallback.call(this);
+    }
+
+    if (newValue) {
+      this.static.on({
+        connected: connectedCallback,
+        disconnected: disconnectedCallback,
+      });
+      if (this.isConnected) {
+        connectedCallback.call(this);
+      }
+    } else {
+      this.static.off({
+        connected: connectedCallback,
+        disconnected: disconnectedCallback,
+      });
     }
   },
 };

@@ -307,7 +307,9 @@ export default class CompositionAdapter {
   removeEntries(startIndex = 0) {
     const { length } = this.metadata;
     for (let index = length - 1; index >= startIndex; index--) {
-      this.metadata[index].domNode.remove();
+      const entry = this.metadata[index];
+      if (!entry || !entry.domNode) continue;
+      entry.domNode.remove();
     }
     this.metadata.length = startIndex;
     this.keys.length = startIndex;

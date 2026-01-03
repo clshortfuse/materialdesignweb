@@ -11,6 +11,10 @@ Quick use cases
 
 For custom elements: `const { CustomElement } = globalThis['@shortfuse/materialdesignweb'];`
 
+Using the component library: `docs/USING_COMPONENTS.md`.
+
+Custom element authoring guide: `docs/CREATING_CUSTOM_ELEMENTS.md`.
+
 - npm (install library):
 
 ```bash
@@ -33,7 +37,8 @@ See the component index: [docs/COMPONENTS.md](docs/COMPONENTS.md).
 
 Theming (short)
 
-- Runtime: use the CDN `?color=` param for prototyping.
+- Runtime: use the CDN params `color`, `custom`, and `lightness` for prototyping.
+- Example: `?color=6750A4&custom=brand:FF5722,success:4CAF50&lightness=dark`
 - Static: generate a theme CSS file with the `mdw-css` CLI if you need a pre-built theme asset.
 
 Notes for contributors

@@ -1,28 +1,3 @@
-/**
- * @template T
- * @typedef {import('./Composition.js').default<T>} Composition
- */
-/**
- * @template T
- * @typedef {import('./Composition.js').RenderOptions<T>} RenderOptions
- */
-/**
- * @template T
- * @typedef {Object} DomAdapterCreateOptions
- * @prop {Comment} anchorNode
- * @prop {(...args:any[]) => HTMLElement} [create]
- * @prop {Composition<T>} composition
- * @prop {RenderOptions<T>} renderOptions
- */
-/**
- * @typedef {Object} ItemMetadata
- * @prop {Element} element
- * @prop {any} key
- * @prop {Element|Comment} domNode
- * @prop {Function} render
- * @prop {boolean} [hidden]
- * @prop {Comment} [comment]
- */
 /** @template T */
 export default class CompositionAdapter<T> {
     /** @param {DomAdapterCreateOptions<T>} options */

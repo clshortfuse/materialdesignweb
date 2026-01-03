@@ -34,7 +34,8 @@
 | `'float'`                   | `number`               | `+(value)`          | `0`                 |
 | `'integer'`                 | `number`               | `Math.round(value)` | `0`                 |
 | `'array'`                   | `any[]`                | `(value) => value`  | `[]`                |
-| `'object'`                  | `Object`               | `(value) => value`  | `{}`                |
+| `'object'`                  | `Object`               | `(value) => value`  | `null`              |
+| `'proxy'`                   | `Object`               | `(value) => value`  | `null`              |
 | `'map'`                     | `Map<any, any>`        | `new Map(value)`    | `new Map()`         |
 | `'set'`                     | `Set<any>`             | `new Set(value)`    | `new Set()`         |
 | `'function'`                | `Function`             | `value` (identity)  | `undefined`         |
@@ -126,6 +127,36 @@ These options help create derived or computed properties and manage internal sta
     // No custom diff or is needed – framework supplies JSON Merge Patch.
   }
 })
+```
+
+### Proxy type (deep reactive objects)
+
+`type: 'proxy'` wraps the object in a Proxy and emits patches on deep mutation.
+
+```js
+.observe({
+  state: { type: 'proxy', value: { user: { name: 'Ada' } } },
+})
+```
+
+Notes:
+- Deep mutations trigger `propChangedCallback` and re-render bindings.
+- Deletes emit `null` patches for that key.
+- For shared stores, use `STORE_PROXY_TYPE` in `core/customTypes.js` with `createSharedProxy`.
+
+### Store proxy binding (shared state)
+
+`STORE_PROXY_TYPE` is a ready-to-use observer option for **shared proxy stores**.
+It subscribes on connect, unsubscribes on disconnect, and re-renders from the latest store.
+
+```js
+import { STORE_PROXY_TYPE } from '../core/customTypes.js';
+import { createSharedProxy } from '../core/observe.js';
+
+observe({ store: STORE_PROXY_TYPE });
+
+const shared = createSharedProxy(rawStore);
+el.store = shared;
 ```
 
 ### Computed property using `get` (the framework will auto‑generate `props` by inspecting the getter)

@@ -1,3 +1,99 @@
+/** @typedef {import('./observe.js').ObserverPropertyType} ObserverPropertyType */
+/**
+ * @template {any} T
+ * @typedef {{
+ * [P in keyof T]:
+ *   T[P] extends (...args:any[]) => infer T2 ? T2
+ *     : T[P] extends ObserverPropertyType
+ *     ? import('./observe.js').ParsedObserverPropertyType<T[P]>
+ *     : T[P] extends {type: ObserverPropertyType}
+ *     ? import('./observe.js').ParsedObserverPropertyType<T[P]['type']>
+ *     : T[P] extends ObserverOptions<null, infer T2>
+ *     ? unknown extends T2 ? string : T2
+ *     : never
+ * }} ParsedProps
+ */
+/**
+ * @template {ObserverPropertyType} T1
+ * @template {any} T2
+ * @template {Object} [C=any]
+ * @typedef {import('./observe.js').ObserverOptions<T1,T2,C>} ObserverOptions
+ */
+/**
+ * @template {{ prototype: unknown; }} T
+ * @typedef {T} ClassOf<T>
+ */
+/**
+ * @template {any} [T=any]
+ * @template {any[]} [A=any[]]
+ * @typedef {abstract new (...args: A) => T} Class
+ */
+/**
+ * @template {any} T1
+ * @template {any} [T2=T1]
+ * @callback HTMLTemplater
+ * @param {TemplateStringsArray} string
+ * @param {...(string|DocumentFragment|Element|((this:T1, data:T2) => any))} substitutions
+ * @return {DocumentFragment}
+ */
+/**
+ * @template {any} [T1=any]
+ * @template {any} [T2=T1]
+ * @typedef {Object} CallbackArguments
+ * @prop {Composition<T1>} composition
+ * @prop {Record<string, HTMLElement>} refs
+ * @prop {HTMLTemplater<T1, Partial<T2>>} html
+ * @prop {(fn: (this:T1, data: T2) => any) => string} inline
+ * @prop {DocumentFragment} template
+ * @prop {T1} element
+ */
+/**
+ * @template {any} T1
+ * @template {any} [T2=T1]
+ * @typedef {{
+ * composed?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+ * constructed?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+ * connected?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+ * disconnected?: (this: T1, options: CallbackArguments<T1, T2>) => any,
+ * props?: {
+ *   [P in keyof T1] : (
+ *   this: T1,
+ *   oldValue: T1[P],
+ *   newValue: T1[P],
+ *   changes:any,
+ *   element: T1
+ *   ) => any
+ * },
+ * attrs?: {[K in keyof any]: (
+ *   this: T1,
+ *   oldValue: string,
+ *   newValue: string,
+ *   element: T1
+ *   ) => unknown
+ * },
+ * } & {
+ * [P in keyof T1 & string as `${P}Changed`]?: (
+ *   this: T1,
+ *   oldValue: T1[P],
+ *   newValue: T1[P],
+ *   changes:any,
+ *   element: T1
+ *   ) => any
+ * }} CompositionCallback
+ */
+/**
+ * @template {Object} C
+ * @typedef {{
+ *  [P in string] :
+ *    ObserverPropertyType
+ *    | ObserverOptions<ObserverPropertyType, unknown, C>
+ *    | ((this:C, data:Partial<C>, fn?: () => any) => any)
+ * }} IDLParameter
+ */
+/**
+ * @template T
+ * @typedef {(T | Array<[keyof T & string, T[keyof T]]>)} ObjectOrObjectEntries
+ */
 /**
  * Clone attribute
  * @param {string} name
@@ -34,10 +130,7 @@ export default class CustomElement extends HTMLElement {
     static interpolatesTemplate: boolean;
     static supportsElementInternals: boolean;
     static supportsElementInternalsRole: boolean;
-    /** @type {boolean} */
-    static templatable: boolean;
     static defined: boolean;
-    static autoRegistration: boolean;
     /** @type {Map<string, typeof CustomElement>} */
     static registrations: Map<string, typeof CustomElement>;
     /**
@@ -161,6 +254,21 @@ export default class CustomElement extends HTMLElement {
      * @param {Function} callback
      */
     static _addCallback<T extends typeof CustomElement, K extends keyof T>(this: T, collection: K, callback: Function): void;
+    /**
+     * @this T
+     * @template {typeof CustomElement} T
+     * @template {keyof T} K
+     * @param {K} collection
+     * @param {Function} [callback]
+     */
+    static _removeCallback<T extends typeof CustomElement, K extends keyof T>(this: T, collection: K, callback?: Function): void;
+    /**
+     * @param {Map<string, Function[]>} map
+     * @param {string} name
+     * @param {Function} [callback]
+     * @return {void}
+     */
+    static _removeFromCallbackMap(map: Map<string, Function[]>, name: string, callback?: Function): void;
     static append<T extends typeof CustomElement>(this: T, ...parts: ConstructorParameters<typeof Composition<InstanceType<T>>>): T;
     static recompose<T1 extends (typeof CustomElement), T2 extends InstanceType<T1>, T3 extends CompositionCallback<T2, T2>["composed"]>(this: T1, callback: T3): T1;
     static css<T1 extends (typeof CustomElement), T2 extends TemplateStringsArray | HTMLStyleElement | CSSStyleSheet | string>(this: T1, array: T2, ...rest: T2 extends string ? any : T2 extends TemplateStringsArray ? any[] : (HTMLStyleElement | CSSStyleSheet)[]): T1;
@@ -181,6 +289,11 @@ export default class CustomElement extends HTMLElement {
     } & ObserverOptions<any, infer R> ? (unknown extends R ? object : R) : OPTIONS extends {
         type: ObserverPropertyType;
     } ? import("./observe").ParsedObserverPropertyType<OPTIONS["type"]> : OPTIONS extends ObserverOptions<any, infer R> ? (unknown extends R ? string : R) : never>>(this: CLASS, name: KEY, options: OPTIONS): CLASS & Class<VALUE, ARGS>;
+    static setPrototype<CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, KEY extends string, OPTIONS extends ObserverPropertyType | ObserverOptions<ObserverPropertyType, unknown, INSTANCE> | ((this: INSTANCE, data: Partial<INSTANCE>, fn?: () => any) => any)>(this: CLASS, name: KEY, options: OPTIONS): OPTIONS extends (...args2: any[]) => infer R ? R : OPTIONS extends ObserverPropertyType ? import("./observe").ParsedObserverPropertyType<OPTIONS> : OPTIONS extends {
+        type: "object";
+    } & ObserverOptions<any, infer R> ? (unknown extends R ? object : R) : OPTIONS extends {
+        type: ObserverPropertyType;
+    } ? import("./observe").ParsedObserverPropertyType<OPTIONS["type"]> : OPTIONS extends ObserverOptions<any, infer R> ? (unknown extends R ? string : R) : never;
     static define<CLASS extends typeof CustomElement, ARGS extends ConstructorParameters<CLASS>, INSTANCE extends InstanceType<CLASS>, PROPS extends { [P in keyof any]: {
         enumerable?: boolean;
         configurable?: boolean;
@@ -200,6 +313,11 @@ export default class CustomElement extends HTMLElement {
     static childEvents<T extends typeof CustomElement>(this: T, listenerMap: { [P in keyof any]: import("./Composition").CompositionEventListenerObject<InstanceType<T>>; }, options?: Partial<import("./Composition").CompositionEventListener<InstanceType<T>>>): T;
     static rootEvents<T extends typeof CustomElement>(this: T, listeners?: import("./Composition").CompositionEventListenerObject<InstanceType<T>>, options?: Partial<import("./Composition").CompositionEventListener<InstanceType<T>>>): T;
     static on<T1 extends typeof CustomElement, T2 extends InstanceType<T1>, T3 extends CompositionCallback<T2, T2>, T4 extends keyof T3>(this: T1, name: T3 | T4, callbacks?: T3[T4] & ThisType<T2>): T1;
+    static off<T1 extends typeof CustomElement, T2 extends InstanceType<T1>, T3 extends CompositionCallback<T2, T2>, T4 extends keyof T3>(this: T1, name: T3 | T4, callbacks?: T3[T4] & ThisType<T2>): T1;
+    static offPropChanged<T1 extends typeof CustomElement, T2 extends InstanceType<T1>>(this: T1, options: ObjectOrObjectEntries<{ [P in keyof T2]?: (this: T2, oldValue: T2[P], newValue: T2[P], changes: any, element: T2) => void; }>): T1;
+    static offAttributeChanged<T1 extends typeof CustomElement, T2 extends InstanceType<T1>>(this: T1, options: {
+        [x: string]: (this: T2, oldValue: string, newValue: string, element: T2) => void;
+    }): T1;
     static onPropChanged<T1 extends typeof CustomElement, T2 extends InstanceType<T1>>(this: T1, options: ObjectOrObjectEntries<{ [P in keyof T2]?: (this: T2, oldValue: T2[P], newValue: T2[P], changes: any, element: T2) => void; }>): T1;
     static onAttributeChanged<T1 extends typeof CustomElement, T2 extends InstanceType<T1>>(this: T1, options: {
         [x: string]: (this: T2, oldValue: string, newValue: string, element: T2) => void;
@@ -207,13 +325,6 @@ export default class CustomElement extends HTMLElement {
     /** @param {any[]} args */
     constructor(...args: any[]);
     compose(parts: (import("./Composition.js").CompositionPart<any>)[]): Composition<any>;
-    /** @type {Map<string,{stringValue:string, parsedValue:any}>} */
-    _propAttributeCache: Map<string, {
-        stringValue: string;
-        parsedValue: any;
-    }>;
-    /** @type {CallbackArguments} */
-    _callbackArguments: CallbackArguments;
     elementInternals: ElementInternals;
     /**
      * Updates nodes based on data
@@ -231,13 +342,7 @@ export default class CustomElement extends HTMLElement {
      * @param {string|null} newValue
      */
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
-    /**
-     * @param {string} name
-     * @param {any} oldValue
-     * @param {any} newValue
-     * @param {any} changes
-     */
-    _onObserverPropertyChanged(name: string, oldValue: any, newValue: any, changes: any): void;
+    get static(): typeof CustomElement;
     /** @param {any} patch */
     patch(patch: any): void;
     /**
@@ -247,8 +352,6 @@ export default class CustomElement extends HTMLElement {
      */
     get refs(): Record<string, HTMLElement>;
     get attributeCache(): Map<any, any>;
-    get static(): typeof CustomElement;
-    get unique(): boolean;
     /**
      * @template {CustomElement} T
      * @this {T}

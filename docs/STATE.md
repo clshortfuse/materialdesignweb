@@ -90,7 +90,7 @@ Declare properties that trigger updates when changed:
 })
 ```
 
-**Common types**: `string`, `integer`, `float`, `boolean`, `array`, `object`
+**Common types**: `string`, `integer`, `float`, `boolean`, `array`, `object`, `proxy`
 
 See [OBSERVABLE_PROPERTIES.md](OBSERVABLE_PROPERTIES.md) for complete type reference and advanced configuration options.
 
@@ -183,6 +183,32 @@ Bind observables, computed observables, and expressions to DOM:
 **Allowed**: `{property}`, `{!property}`, `{!!property}`  
 **Not allowed**: Complex logic - use expressions instead
 
+## List Rendering (`mdw-for`)
+
+Render lists with `mdw-for`:
+
+```html
+<div mdw-for="{item of items}" class="row">{item.title}</div>
+```
+
+Notes:
+- `item` is the current row value.
+- Expressions inside a loop can access both the element state and loop context:
+
+```js
+.expressions({
+  formatRow({ items }, { item, index }) {
+    return `Item ${index + 1} of ${items.length}: ${item.title}`;
+  },
+})
+```
+
+- Falsy values render as empty strings (`false` and `''` render empty, `0` renders `"0"`).
+- Nested loops are supported (`mdw-for` inside another `mdw-for`).
+- Multiple separate loops in one template are supported.
+
+For array mutation details, see [STATE-ARRAY.md](STATE-ARRAY.md).
+
 ## CSS State Reactions
 
 Style elements based on state using attributes:
@@ -229,6 +255,16 @@ this.config = { ...this.config, theme: 'dark' };
 // Batch updates
 this.patch({ title: 'New', price: 29.99 });
 ```
+
+## Choosing a state pattern
+
+Pick the simplest pattern that matches your app:
+
+- **Element-local state** (this doc): best for self-contained components.
+- **Events up / attributes down**: parent owns state, children emit events. See `docs/STATE-ATTR.md`.
+- **Event bus** (window/document events): loosely coupled components. See `docs/STATE-EVENTS.md`.
+- **MVP store** (put/patch events): external data sources or services. See `docs/STATE-MVP.md`.
+- **Proxy store** (deep reactive shared state): shared objects with automatic patches. See `docs/STATE-PROXY.md`.
 
 ## Batch Updates with `patch()`
 

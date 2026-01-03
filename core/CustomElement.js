@@ -114,16 +114,6 @@ import { addInlineFunction, html } from './template.js';
  */
 
 /**
- * @template {abstract new (...args: any) => unknown} T
- * @param {InstanceType<T>} instance
- */
-function superOf(instance) {
-  const staticContext = instance.constructor;
-  const superOfStatic = Object.getPrototypeOf(staticContext);
-  return superOfStatic.prototype;
-}
-
-/**
  * Clone attribute
  * @param {string} name
  * @param {string} target
@@ -191,12 +181,7 @@ export default class CustomElement extends HTMLElement {
   static supportsElementInternalsRole = CustomElement.supportsElementInternals
     && 'role' in ElementInternals.prototype;
 
-  /** @type {boolean} */
-  static templatable = null;
-
   static defined = false;
-
-  static autoRegistration = true;
 
   /** @type {Map<string, typeof CustomElement>} */
   static registrations = new Map();
@@ -324,6 +309,42 @@ export default class CustomElement extends HTMLElement {
     }
     // @ts-expect-error any
     this[collection].push(callback);
+  }
+
+  /**
+   * @this T
+   * @template {typeof CustomElement} T
+   * @template {keyof T} K
+   * @param {K} collection
+   * @param {Function} [callback]
+   */
+  static _removeCallback(collection, callback) {
+    if (!this.hasOwnProperty(collection)) {
+      // @ts-expect-error not typed
+      this[collection] = [...this[collection]];
+    }
+    // @ts-expect-error any
+    this[collection] = this[collection].filter((fn) => fn !== callback);
+  }
+
+  /**
+   * @param {Map<string, Function[]>} map
+   * @param {string} name
+   * @param {Function} [callback]
+   * @return {void}
+   */
+  static _removeFromCallbackMap(map, name, callback) {
+    if (!map.has(name)) return;
+    if (!callback) {
+      map.delete(name);
+      return;
+    }
+    const next = map.get(name).filter((fn) => fn !== callback);
+    if (next.length === 0) {
+      map.delete(name);
+    } else {
+      map.set(name, next);
+    }
   }
 
   /**
@@ -627,7 +648,7 @@ export default class CustomElement extends HTMLElement {
     }
     // TODO: Inspect possible closure bloat
     config.changedCallback = function wrappedChangedCallback(oldValue, newValue, changes) {
-      this._onObserverPropertyChanged.call(this, name, oldValue, newValue, changes);
+      this.#onObserverPropertyChanged.call(this, name, oldValue, newValue, changes);
     };
 
     this.propList.set(name, config);
@@ -642,6 +663,32 @@ export default class CustomElement extends HTMLElement {
 
     // @ts-expect-error Can't cast T
     return this;
+  }
+
+  /**
+   * Creates observable property on instances (via prototype)
+   * @type {{
+   * <
+   *  CLASS extends typeof CustomElement,
+   *  ARGS extends ConstructorParameters<CLASS>,
+   *  INSTANCE extends InstanceType<CLASS>,
+   *  KEY extends string,
+   *  OPTIONS extends ObserverPropertyType
+   *    | ObserverOptions<ObserverPropertyType, unknown, INSTANCE>
+   *    | ((this:INSTANCE, data:Partial<INSTANCE>, fn?: () => any) => any)
+   *  > (this: CLASS, name: KEY, options: OPTIONS)
+   *    : OPTIONS extends (...args2:any[]) => infer R ? R
+   *      : OPTIONS extends ObserverPropertyType ? import('./observe').ParsedObserverPropertyType<OPTIONS>
+   *      : OPTIONS extends {type: 'object'} & ObserverOptions<any, infer R> ? (unknown extends R ? object : R)
+   *      : OPTIONS extends {type: ObserverPropertyType} ? import('./observe').ParsedObserverPropertyType<OPTIONS['type']>
+   *      : OPTIONS extends ObserverOptions<any, infer R> ? (unknown extends R ? string : R)
+   *      : never
+   * }}
+   */
+  static setPrototype(name, typeOrOptions) {
+    // @ts-expect-error Can't cast T
+    this.prop(name, typeOrOptions);
+    return null;
   }
 
   /**
@@ -928,6 +975,109 @@ export default class CustomElement extends HTMLElement {
    * @type {{
    * <
    *  T1 extends typeof CustomElement,
+   *  T2 extends InstanceType<T1>,
+   *  T3 extends CompositionCallback<T2, T2>,
+   *  T4 extends keyof T3,
+   *  >
+   *  (this: T1, name: T3|T4, callbacks?: T3[T4] & ThisType<T2>): T1
+   * }}
+   */
+  static off(nameOrCallbacks, callback) {
+    const callbacks = typeof nameOrCallbacks === 'string'
+      ? { [nameOrCallbacks]: callback }
+      : nameOrCallbacks;
+    for (const [name, fn] of Object.entries(callbacks)) {
+      /** @type {keyof (typeof CustomElement)} */
+      let arrayPropName;
+      switch (name) {
+        case 'composed': arrayPropName = '_onComposeCallbacks'; break;
+        case 'constructed': arrayPropName = '_onConstructedCallbacks'; break;
+        case 'connected': arrayPropName = '_onConnectedCallbacks'; break;
+        case 'disconnected': arrayPropName = '_onDisconnectedCallbacks'; break;
+        case 'props':
+          this.offPropChanged(fn);
+          continue;
+        case 'attrs':
+          this.offAttributeChanged(fn);
+          continue;
+        default:
+          if (name.endsWith('Changed')) {
+            const prop = name.slice(0, name.length - 'Changed'.length);
+            // @ts-expect-error Computed key
+            this.offPropChanged({ [prop]: fn });
+            continue;
+          }
+          throw new Error('Invalid callback name');
+      }
+      this._removeCallback(arrayPropName, fn);
+    }
+
+    return this;
+  }
+
+  /**
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
+   *  T2 extends InstanceType<T1>
+   *  >
+   *  (
+   *    this: T1,
+   *    options: ObjectOrObjectEntries<{
+   *      [P in keyof T2]? : (
+   *      this: T2,
+   *      oldValue: T2[P],
+   *      newValue: T2[P],
+   *      changes:any,
+   *      element: T2
+   *      ) => void
+   *    }>,
+   *  ): T1;
+   * }}
+   */
+  static offPropChanged(options) {
+    const entries = Array.isArray(options) ? options : Object.entries(options);
+    const { propChangedCallbacks } = this;
+    for (const [prop, callback] of entries) {
+      this._removeFromCallbackMap(propChangedCallbacks, prop, callback);
+    }
+
+    return this;
+  }
+
+  /**
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
+   *  T2 extends InstanceType<T1>
+   *  >
+   *  (
+   *    this: T1,
+   *    options: {
+   *      [x:string]: (
+   *      this: T2,
+   *      oldValue: string,
+   *      newValue: string,
+   *      element: T2
+   *      ) => void
+   *    },
+   *  ): T1;
+   * }}
+   */
+  static offAttributeChanged(options) {
+    const entries = Array.isArray(options) ? options : Object.entries(options);
+    const { attributeChangedCallbacks } = this;
+    for (const [name, callback] of entries) {
+      this._removeFromCallbackMap(attributeChangedCallbacks, name, callback);
+    }
+
+    return this;
+  }
+
+  /**
+   * @type {{
+   * <
+   *  T1 extends typeof CustomElement,
    *  T2 extends InstanceType<T1>
    *  >
    *  (
@@ -1009,10 +1159,10 @@ export default class CustomElement extends HTMLElement {
   #pendingPatchRenders = [];
 
   /** @type {Map<string,{stringValue:string, parsedValue:any}>} */
-  _propAttributeCache;
+  #propAttributeCache;
 
   /** @type {CallbackArguments} */
-  _callbackArguments = null;
+  #callbackArguments = null;
 
   /** @param {any[]} args */
   constructor(...args) {
@@ -1141,7 +1291,7 @@ export default class CustomElement extends HTMLElement {
    * @param {any} newValue
    * @param {any} changes
    */
-  _onObserverPropertyChanged(name, oldValue, newValue, changes) {
+  #onObserverPropertyChanged(name, oldValue, newValue, changes) {
     const { propList } = this.static;
     if (propList.has(name)) {
       const { reflect, attr } = propList.get(name);
@@ -1177,10 +1327,12 @@ export default class CustomElement extends HTMLElement {
     this.propChangedCallback(name, oldValue, newValue, changes);
   }
 
+  get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
+
   /** @param {any} patch */
   patch(patch) {
     this.#patching = true;
-    applyMergePatch(this, patch);
+    applyMergePatch(this, patch, 'object');
     for (const [name, changes, state] of this.#pendingPatchRenders) {
       if (name in patch) continue;
       this.render.byProp(name, changes, state);
@@ -1204,9 +1356,6 @@ export default class CustomElement extends HTMLElement {
        * @return {Element}
        */
       get: (target, tag) => {
-        if (!this.#composition) {
-          console.warn(this.static.name, 'Attempted to access references before composing!');
-        }
         const composition = this.composition;
         let element;
         if (!composition.interpolated) {
@@ -1241,12 +1390,8 @@ export default class CustomElement extends HTMLElement {
 
   get attributeCache() {
     // eslint-disable-next-line no-return-assign
-    return (this._propAttributeCache ??= new Map());
+    return (this.#propAttributeCache ??= new Map());
   }
-
-  get static() { return /** @type {typeof CustomElement} */ (/** @type {unknown} */ (this.constructor)); }
-
-  get unique() { return false; }
 
   /**
    * @template {CustomElement} T
@@ -1254,7 +1399,7 @@ export default class CustomElement extends HTMLElement {
    */
   get callbackArguments() {
     // eslint-disable-next-line no-return-assign
-    return this._callbackArguments ??= {
+    return this.#callbackArguments ??= {
       composition: this.#composition,
       refs: this.refs,
       html: html.bind(this),
@@ -1268,7 +1413,7 @@ export default class CustomElement extends HTMLElement {
   get composition() {
     if (this.#composition) return this.#composition;
 
-    if (!this.unique && this.static.hasOwnProperty('_composition')) {
+    if (this.static.hasOwnProperty('_composition')) {
       this.#composition = this.static._composition;
       return this.static._composition;
     }
@@ -1281,10 +1426,8 @@ export default class CustomElement extends HTMLElement {
       callback.call(this, this.callbackArguments);
     }
 
-    if (!this.unique) {
-      // Cache compilation into static property
-      this.static._composition = this.#composition;
-    }
+    // Cache compilation into static property
+    this.static._composition = this.#composition;
 
     return this.#composition;
   }

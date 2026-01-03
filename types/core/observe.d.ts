@@ -1,4 +1,23 @@
 /**
+ * @param {any} proxy
+ * @param {(patch:any) => void} fn
+ * @return {() => void}
+ */
+export function subscribeProxy(proxy: any, fn: (patch: any) => void): () => void;
+/**
+ * @param {any} proxy
+ * @param {(patch:any) => void} fn
+ * @return {void}
+ */
+export function unsubscribeProxy(proxy: any, fn: (patch: any) => void): void;
+/**
+ * Create a shared proxy with a root emitter for fan-out subscriptions.
+ * @template T
+ * @param {T} value
+ * @return {T}
+ */
+export function createSharedProxy<T>(value: T): T;
+/**
  * @param {(data: Partial<any>) => any} fn
  * @param {...any} args
  * @this {any}
@@ -62,8 +81,8 @@ export function parsePropertyValue(this: ObserverConfiguration<any, any, any, an
  * @return {ObserverConfiguration<T1,T2,C,K>}
  */
 export function defineObservableProperty<T1 extends ObserverPropertyType, T2 extends unknown, C extends Object, K extends keyof C & string>(object: C, key: K, options: ObserverOptions<T1, T2, C>): ObserverConfiguration<T1, T2, C, K>;
-export type ObserverPropertyType = "string" | "boolean" | "map" | "set" | "float" | "integer" | "number" | "object" | "function" | "array";
-export type ParsedObserverPropertyType<T extends ObserverPropertyType> = (T extends "boolean" ? boolean : T extends "string" ? string : T extends "float" | "integer" | "number" ? number : T extends "array" ? any[] : T extends "object" ? any : T extends "function" ? (...args: any) => any : unknown);
+export type ObserverPropertyType = "string" | "boolean" | "map" | "set" | "float" | "integer" | "number" | "object" | "function" | "array" | "proxy";
+export type ParsedObserverPropertyType<T extends ObserverPropertyType> = (T extends "boolean" ? boolean : T extends "string" ? string : T extends "float" | "integer" | "number" ? number : T extends "array" ? any[] : T extends "object" | "proxy" ? any : T extends "function" ? (...args: any) => any : unknown);
 export type ObserverOptions<T1 extends ObserverPropertyType, T2 extends unknown, C extends Object = any> = {
     type?: T1;
     enumerable?: boolean;

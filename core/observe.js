@@ -1,7 +1,7 @@
 import { attrNameFromPropName } from './dom.js';
 import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
 
-/** @typedef {'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'number' | 'object' | 'function' | 'array'}   ObserverPropertyType */
+/** @typedef {'string' | 'boolean' | 'map' | 'set' | 'float' | 'integer' | 'number' | 'object' | 'function' | 'array' | 'proxy'}   ObserverPropertyType */
 
 /**
  * @template {ObserverPropertyType} T
@@ -10,7 +10,7 @@ import { buildMergePatch, hasMergePatch } from './jsonMergePatch.js';
  * : T extends 'string' ? string
  * : T extends 'float' | 'integer' | 'number' ? number
  * : T extends 'array' ? any[]
- * : T extends 'object' ? any
+ * : T extends 'object' | 'proxy' ? any
  * : T extends 'function' ? (...args:any) => any
  * : unknown
  * )} ParsedObserverPropertyType
@@ -77,6 +77,7 @@ function emptyFromType(type) {
       return new Set();
     case 'array':
       return [];
+    case 'proxy':
     case 'object':
       return null;
     default:
@@ -116,7 +117,7 @@ function buildProxy(proxyTarget, set, deepSet, prefix) {
     has(target, p) {
       const value = Reflect.has(target, p);
       if (typeof p !== 'symbol') {
-        const arg = prefix ? `${prefix}.p` : p;
+        const arg = prefix ? `${prefix}.${p}` : p;
         if (prefix) {
           deepSet.add(arg);
         } else {
@@ -126,6 +127,156 @@ function buildProxy(proxyTarget, set, deepSet, prefix) {
       return value;
     },
   });
+}
+
+/** @type {WeakMap<object, Map<any, any>>} */
+const proxyCache = new WeakMap();
+/** @type {WeakMap<object, { subscribe: (fn: (patch:any) => void) => void, unsubscribe: (fn: (patch:any) => void) => void, emit: (patch:any) => void }>} */
+const proxyEmitters = new WeakMap();
+
+/**
+ * @param {any} target
+ * @return {{ subscribe: (fn: (patch:any) => void) => void, unsubscribe: (fn: (patch:any) => void) => void, emit: (patch:any) => void }|null}
+ */
+function getProxyEmitter(target) {
+  if (target == null || typeof target !== 'object') return null;
+  /** @type {ReturnType<typeof getProxyEmitter>} */
+  let emitter = proxyEmitters.get(target);
+  if (!emitter) {
+    /** @type {Set<(patch:any) => void>} */
+    const subscribers = new Set();
+    emitter = {
+      /** @param {(patch:any) => void} fn */
+      subscribe(fn) { subscribers.add(fn); },
+      /** @param {(patch:any) => void} fn */
+      unsubscribe(fn) { subscribers.delete(fn); },
+      /** @param {any} patch */
+      emit(patch) {
+        for (const fn of subscribers) fn(patch);
+      },
+    };
+    proxyEmitters.set(target, emitter);
+  }
+  return emitter;
+}
+
+/**
+ * @param {any} proxy
+ * @param {(patch:any) => void} fn
+ * @return {() => void}
+ */
+export function subscribeProxy(proxy, fn) {
+  const emitter = proxyEmitters.get(proxy) ?? getProxyEmitter(proxy);
+  if (!emitter) return () => {};
+  emitter.subscribe(fn);
+  return () => emitter.unsubscribe(fn);
+}
+
+/**
+ * @param {any} proxy
+ * @param {(patch:any) => void} fn
+ * @return {void}
+ */
+export function unsubscribeProxy(proxy, fn) {
+  const emitter = proxyEmitters.get(proxy);
+  if (!emitter) return;
+  emitter.unsubscribe(fn);
+}
+
+/**
+ * @param {string[]} path
+ * @param {any} value
+ * @return {any}
+ */
+function buildPatchFromPath(path, value) {
+  /** @type {Record<string, any>} */
+  const patch = {};
+  /** @type {Record<string, any>} */
+  let cursor = patch;
+  for (let i = 0; i < path.length - 1; i++) {
+    cursor[path[i]] = {};
+    cursor = cursor[path[i]];
+  }
+  cursor[path.at(-1)] = value;
+  return patch;
+}
+
+/**
+ * @template {Object} T
+ * @param {T} target
+ * @param {(changes:any) => void} emit
+ * @param {string[]} path
+ * @param {T} owner
+ * @param {ReturnType<typeof getProxyEmitter>|null} emitter
+ * @return {T}
+ */
+function createPatchProxy(target, emit, path, owner, emitter) {
+  if (target == null || typeof target !== 'object') return target;
+  const localEmitter = getProxyEmitter(target);
+  if (!emitter) {
+    emitter = localEmitter;
+  }
+  /** @type {Map<any, any>} */
+  let cache = proxyCache.get(target);
+  if (!cache) {
+    cache = new Map();
+    proxyCache.set(target, cache);
+  }
+  if (cache.has(owner)) return cache.get(owner);
+
+  const proxy = new Proxy(target, {
+    get(obj, prop) {
+      if (typeof prop === 'symbol') {
+        return /** @type {any} */ (obj)[prop];
+      }
+      const value = /** @type {any} */ (obj)[prop];
+      return createPatchProxy(value, emit, path.concat(prop), owner, emitter);
+    },
+    set(obj, prop, value) {
+      /** @type {any} */ (obj)[prop] = value;
+      if (typeof prop !== 'symbol') {
+        const rootPatch = buildPatchFromPath(path.concat(prop), value);
+        emit(rootPatch);
+        emitter?.emit(rootPatch);
+        if (localEmitter && localEmitter !== emitter) {
+          const localPatch = buildPatchFromPath([prop], value);
+          localEmitter.emit(localPatch);
+        }
+      }
+      return true;
+    },
+    deleteProperty(obj, prop) {
+      if (typeof prop !== 'symbol') {
+        const rootPatch = buildPatchFromPath(path.concat(prop), null);
+        emit(rootPatch);
+        emitter?.emit(rootPatch);
+        if (localEmitter && localEmitter !== emitter) {
+          const localPatch = buildPatchFromPath([prop], null);
+          localEmitter.emit(localPatch);
+        }
+      }
+      return Reflect.deleteProperty(obj, prop);
+    },
+  });
+
+  proxyCache.set(proxy, cache);
+  if (localEmitter) {
+    proxyEmitters.set(proxy, localEmitter);
+  }
+  cache.set(owner, proxy);
+  return proxy;
+}
+
+/**
+ * Create a shared proxy with a root emitter for fan-out subscriptions.
+ * @template T
+ * @param {T} value
+ * @return {T}
+ */
+export function createSharedProxy(value) {
+  if (value == null || typeof value !== 'object') return value;
+  const emitter = getProxyEmitter(value);
+  return createPatchProxy(value, () => {}, [], value, emitter);
 }
 
 /**
@@ -159,6 +310,7 @@ function defaultParserFromType(type) {
       return Set;
     case 'object':
     case 'array':
+    case 'proxy':
       /**
        * Reflect self
        * @template T
@@ -324,13 +476,14 @@ export function parseObserverOptions(name, typeOrOptions, object) {
     }
   }
 
-  is ??= (type === 'object')
+  is ??= (type === 'object' || type === 'proxy')
     ? (a, b) => !hasMergePatch(a, b)
     : ((type === 'array') ? () => false : Object.is);
 
   if (diff === undefined) {
-    // @ts-ignore
-    diff = ((type === 'object') ? (a, b) => buildMergePatch(a, b, 'reference') : null);
+    diff = ((type === 'object')
+      ? (a, b) => buildMergePatch(/** @type {any} */ (a), /** @type {any} */ (b))
+      : null);
   }
 
   return {
@@ -435,6 +588,25 @@ export function defineObservableProperty(object, key, options) {
     parseObserverOptions(key, options, object));
 
   /**
+   * @param {any} value
+   * @return {any}
+   */
+  function wrapProxy(value) {
+    if (config.type !== 'proxy') return value;
+    if (value == null || typeof value !== 'object') return value;
+    const cache = proxyCache.get(value);
+    if (cache && cache.has(this)) return cache.get(this);
+    const owner = this;
+    /** @param {any} changes */
+    const emit = (changes) => {
+      const currentValue = config.values?.get(owner) ?? value;
+      config.propChangedCallback?.call(owner, config.key, currentValue, currentValue, changes);
+      config.changedCallback?.call(owner, currentValue, currentValue, changes);
+    };
+    return createPatchProxy(value, emit, [], owner, null);
+  }
+
+  /**
    * @this {C}
    * @return {T2}
    */
@@ -443,14 +615,46 @@ export function defineObservableProperty(object, key, options) {
   }
 
   /**
+   *
+   */
+  function internalGetProxy() {
+    if (config.values?.has(this)) {
+      return config.values.get(this);
+    }
+    const proxied = wrapProxy.call(this, config.value);
+    if (proxied !== config.value) {
+      if (config.values) {
+        config.values.set(this, proxied);
+      } else {
+        config.values = new WeakMap([[this, proxied]]);
+      }
+    }
+    return proxied;
+  }
+
+  /**
    * @this {C}
    * @param {T2} value
    * @return {void}
    */
   function internalSet(value) {
+    if (object === this && this?.constructor?.prototype === this) return;
     // @ts-ignore
     const oldValue = this[key];
     detectChange.call(this, config, oldValue, value);
+  }
+
+  /**
+   * @this {C}
+   * @param {T2} value
+   * @return {void}
+   */
+  function internalSetProxy(value) {
+    if (object === this && this?.constructor?.prototype === this) return;
+    // @ts-ignore
+    const oldValue = this[key];
+    const nextValue = wrapProxy.call(this, value);
+    detectChange.call(this, config, oldValue, nextValue);
   }
 
   /** @return {void} */
@@ -485,6 +689,20 @@ export function defineObservableProperty(object, key, options) {
 
   /**
    * @this {C}
+   * @return {T2}
+   */
+  function cachedGetProxy() {
+    const newValue = config.get.call(this, this, internalGetProxy.bind(this));
+    const resolvedValue = wrapProxy.call(this, newValue);
+    // Store computed value internally. Used by onInvalidate to get previous value
+    // eslint-disable-next-line no-multi-assign
+    const computedValues = (config.computedValues ??= new WeakMap());
+    computedValues.set(this, resolvedValue);
+    return resolvedValue;
+  }
+
+  /**
+   * @this {C}
    * @param {T2} value
    * @return {void}
    */
@@ -502,12 +720,35 @@ export function defineObservableProperty(object, key, options) {
     detectChange.call(this, config, oldValue, newValue);
   }
 
+  /**
+   * @this {C}
+   * @param {T2} value
+   * @return {void}
+   */
+  function cachedSetProxy(value) {
+    if (config.needsSelfInvalidation) {
+      config.needsSelfInvalidation.add(this);
+    } else {
+      config.needsSelfInvalidation = new WeakSet([this]);
+    }
+    const oldValue = this[key];
+    config.set.call(this, value, internalSetProxy.bind(this));
+    const newValue = this[key];
+    if (!config.needsSelfInvalidation.has(this)) return;
+    config.needsSelfInvalidation.delete(this);
+    detectChange.call(this, config, oldValue, newValue);
+  }
+
   /** @type {Partial<PropertyDescriptor>} */
   const descriptor = {
     enumerable: config.enumerable,
     configurable: true,
-    get: config.get ? cachedGet : internalGet,
-    set: config.set ? cachedSet : internalSet,
+    get: config.get
+      ? (config.type === 'proxy' ? cachedGetProxy : cachedGet)
+      : (config.type === 'proxy' ? internalGetProxy : internalGet),
+    set: config.set
+      ? (config.type === 'proxy' ? cachedSetProxy : cachedSet)
+      : (config.type === 'proxy' ? internalSetProxy : internalSet),
   };
 
   Object.defineProperty(object, key, descriptor);
