@@ -7,7 +7,7 @@
   "bugs": {
     "url": "https://github.com/clshortfuse/materialdesignweb/issues"
   },
-  "customElements": "docs/custom-elements.json",
+  "customElements": "api/custom-elements.json",
   "description": "Material Design for Web",
   "devDependencies": {
     "@babel/preset-env": "^7.26.9",
@@ -67,6 +67,7 @@
     "./utils/*": "./utils/*"
   },
   "files": [
+    "/api",
     "/bin",
     "/dist",
     "/constants",
@@ -103,14 +104,16 @@
     "cem": "node scripts/cem-generate.js && node scripts/cem-vscode.js",
     "demo:rollup": "rollup -c build/rollup.config.js demo/demo.js --dir=demo --compact",
     "build:index": "node build/esbuild.js index.js --outdir=dist --minify --metafile --production --format=iife",
-    "build:demo": "node build/esbuild.js demo/demo.js --outdir=demo --minify --metafile",
+    "build:demo:css": "node bin/mdw-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > demo/theme.css",
+    "build:demo:css-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > demo/alt-theme.css",
+    "build:demo:js": "node build/esbuild.js demo/demo.js --outdir=demo --minify --metafile",
+    "build:demo": "npm run build:demo:css && npm run build:demo:css-alt && npm run build:demo:js",
     "build:custom-element": "node build/esbuild.js core/CustomElement.js --outdir=dist --minify --metafile --production --format=esm",
     "build": "npm run build:index && npm run build:custom-element",
     "demo": "npm run build:demo",
     "dist": "npm run build",
-    "predemo": "node bin/mdw-css.js --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > demo/theme.css",
-    "predemo-alt": "node bin/mdw-css.js --color=a46750 --custom=yellow,orange:orange,green:0f0,alias:aqua | npx esbuild --minify --loader=css > demo/alt-theme.css",
-    "prepublishOnly": "npm run types && npm run cem && npm run dist",
+    "api": "npm run cem",
+    "prepublishOnly": "npm run types && npm run api && npm run dist",
     "eslint": "eslint core components mixins --ignore-path .gitignore --ext .js",
     "lint": "npm run eslint && tsc --noEmit",
     "pretest": "npm run eslint && npm run build:index",
@@ -143,12 +146,12 @@
   "contributes": {
     "html": {
       "customData": [
-        "./docs/html.html-data.json"
+        "./api/html.html-data.json"
       ]
     },
     "css": {
       "customData": [
-        "./docs/css.css-data.json"
+        "./api/css.css-data.json"
       ]
     }
   },

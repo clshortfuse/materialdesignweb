@@ -46,7 +46,7 @@ function runGenerator() {
  *
  */
 function loadManifest() {
-  const manifestPath = path.resolve('docs/custom-elements.json');
+  const manifestPath = path.resolve('api/custom-elements.json');
   if (!fs.existsSync(manifestPath)) {
     throw new Error(`manifest not found: ${manifestPath}`);
   }

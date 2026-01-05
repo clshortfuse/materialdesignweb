@@ -3091,7 +3091,7 @@ async function main() {
   }
   if (args.includes('-h') || args.includes('--help')) {
     console.log('Usage: node scripts/generate-manifests.js [ComponentName ...]');
-    console.log('Builds `docs/custom-elements.json` from components (no per-component AI manifests).');
+    console.log('Builds `api/custom-elements.json` from components (no per-component AI manifests).');
     console.log('Use -v or --verbose for extra runtime logging');
     return;
   }
@@ -3488,7 +3488,7 @@ async function main() {
     schemaVersion: '2.1.0',
     modules,
   };
-  const outPath = path.join(root, 'docs', 'custom-elements.json');
+  const outPath = path.join(root, 'api', 'custom-elements.json');
   await fs.writeFile(outPath, JSON.stringify(output, null, 2), 'utf8');
   console.log('Wrote', outPath);
 

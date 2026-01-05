@@ -30,8 +30,8 @@ async function runValidation(strict = false) {
     allErrors: true, strict: !!strict, verbose: !!strict, allowUnionTypes: true,
   });
 
-  // Default target is the generated docs/custom-elements.json
-  const targetPath = path.resolve(__dirname, '..', 'docs', 'custom-elements.json');
+  // Default target is the generated api/custom-elements.json
+  const targetPath = path.resolve(__dirname, '..', 'api', 'custom-elements.json');
   if (!fs.existsSync(targetPath)) {
     fail(`Target CEM not found: ${targetPath}`);
     return;
