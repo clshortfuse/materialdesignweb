@@ -170,6 +170,7 @@
     "no-return-await": 0,
     "no-undef": 0,
     "no-underscore-dangle": 0,
+    "@typescript-eslint/no-unused-vars": "warn",
     "no-unused-vars": 0,
     "no-void": "off",
     "node/no-unsupported-features/es-syntax": [

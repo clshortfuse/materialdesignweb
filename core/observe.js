@@ -596,6 +596,7 @@ export function defineObservableProperty(object, key, options) {
     if (value == null || typeof value !== 'object') return value;
     const cache = proxyCache.get(value);
     if (cache && cache.has(this)) return cache.get(this);
+    // eslint-disable-next-line unicorn/no-this-assignment
     const owner = this;
     /** @param {any} changes */
     const emit = (changes) => {

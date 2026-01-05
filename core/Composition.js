@@ -748,6 +748,7 @@ export default class Composition {
      * @param {Partial<T>} changes
      * @param {T} data
      */
+    // eslint-disable-next-line no-shadow
     const draw = (changes, data) => {
       if (!changes) return;
       let ranSearch = false;
@@ -801,6 +802,7 @@ export default class Composition {
      * @param {any} value
      * @param {Partial<T>} [data]
      */
+    // eslint-disable-next-line no-shadow
     draw.byProp = (prop, value, data) => {
       if (!this.actionsByPropsUsed?.has(prop)) return;
       let ranSearch = false;
@@ -818,6 +820,7 @@ export default class Composition {
       }
 
       /** @type {Partial<T>} */
+      // eslint-disable-next-line no-shadow
       let changes;
       const actions = this.actionsByPropsUsed.get(prop);
       for (const action of actions) {
