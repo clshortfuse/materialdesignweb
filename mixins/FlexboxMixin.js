@@ -130,7 +130,7 @@ export default function FlexboxMixin(Base) {
       :host(:is([gap="24"])) {gap: 24px;}
 
       :host(:is([padding])) {padding: 0;}
-      :host(:is([padding="pane"])) { padding-inline: var(--mdw-pane__padding-inline, 16px) }
+      :host(:is([padding="pane"])) { padding: var(--mdw-pane__padding, 16px) }
       :host(:is([padding="4"])) {padding: 4px;}
       :host(:is([padding="8"])) {padding: 8px;}
       :host(:is([padding="12"])) {padding: 12px;}
@@ -138,6 +138,7 @@ export default function FlexboxMixin(Base) {
       :host(:is([padding="20"])) {padding: 20px;}
       :host(:is([padding="24"])) {padding: 24px;}
       :host(:is([padding-x])) {padding-inline: 0;}
+      :host(:is([padding-x="pane"])) {padding-inline: var(--mdw-pane__padding-inline, 16px);}
       :host(:is([padding-x="4"])) {padding-inline: 4px;}
       :host(:is([padding-x="8"])) {padding-inline: 8px;}
       :host(:is([padding-x="12"])) {padding-inline: 12px;}
@@ -145,6 +146,7 @@ export default function FlexboxMixin(Base) {
       :host(:is([padding-x="20"])) {padding-inline: 20px;}
       :host(:is([padding-x="24"])) {padding-inline: 24px;}
       :host(:is([padding-y])) {padding-block: 0;}
+      :host(:is([padding-y="pane"])) {padding-block: var(--mdw-pane__padding-block, 16px);}
       :host(:is([padding-y="4"])) {padding-block: 4px;}
       :host(:is([padding-y="8"])) {padding-block: 8px;}
       :host(:is([padding-y="12"])) {padding-block: 12px;}

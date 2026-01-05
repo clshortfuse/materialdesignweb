@@ -66,6 +66,8 @@ export default CustomElement
       --mdw-pane__max-width: 1040px;
       --mdw-pane__margin-inline: 16px;
       --mdw-pane__padding-inline: max(var(--mdw-pane__margin-inline), calc((100% - var(--mdw-pane__max-width)) / 2));
+      --mdw-pane__padding-block: 16px;
+      --mdw-pane__padding: var(--mdw-pane__padding-block) var(--mdw-pane__padding-inline);
       --mdw-pane__shape__size: 0;
       display: grid;
       column-gap: var(--mdw-page__margin);
@@ -83,6 +85,7 @@ export default CustomElement
     @media (min-width: 648px) {
       :host {
         --mdw-pane__margin-inline: 24px;
+        --mdw-pane__padding-block: 24px;
       }
     }
 
