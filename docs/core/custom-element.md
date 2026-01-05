@@ -16,7 +16,7 @@ and how the fluent API reduces author code without a build step.
 - Fluent chains configure a class without mutating the base.
 - Class syntax uses `static {}` or post-class configuration.
 - Observed props should not be declared as class fields.
-- For usage examples and gotchas, see `docs/CREATING_CUSTOM_ELEMENTS.md`.
+- For usage examples and gotchas, see `creating-custom-elements.md`.
 
 ## 3.0 Observed properties
 

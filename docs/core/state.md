@@ -92,7 +92,7 @@ Declare properties that trigger updates when changed:
 
 **Common types**: `string`, `integer`, `float`, `boolean`, `array`, `object`, `proxy`
 
-See [OBSERVABLE_PROPERTIES.md](OBSERVABLE_PROPERTIES.md) for complete type reference and advanced configuration options.
+See [observable-properties.md](observable-properties.md) for complete type reference and advanced configuration options.
 
 ## Expressions
 
@@ -207,7 +207,7 @@ Notes:
 - Nested loops are supported (`mdw-for` inside another `mdw-for`).
 - Multiple separate loops in one template are supported.
 
-For array mutation details, see [STATE-ARRAY.md](STATE-ARRAY.md).
+For array mutation details, see [state-array.md](state-array.md).
 
 ## CSS State Reactions
 
@@ -260,11 +260,23 @@ this.patch({ title: 'New', price: 29.99 });
 
 Pick the simplest pattern that matches your app:
 
-- **Element-local state** (this doc): best for self-contained components.
-- **Events up / attributes down**: parent owns state, children emit events. See `docs/STATE-ATTR.md`.
-- **Event bus** (window/document events): loosely coupled components. See `docs/STATE-EVENTS.md`.
-- **MVP store** (put/patch events): external data sources or services. See `docs/STATE-MVP.md`.
-- **Proxy store** (deep reactive shared state): shared objects with automatic patches. See `docs/STATE-PROXY.md`.
+- **Element-local state**: best for self-contained components.
+- **Events up / attributes down**: parent owns state, children emit events. See `state-attr.md`.
+- **Events (event bus)**: window/document events for loose coupling. See `state-events.md`.
+- **Services**: shared logic and state behind explicit APIs. See `state-service.md`.
+- **MVP store**: put/patch events for external data sources. See `state-mvp.md`.
+- **Proxy store**: deep reactive shared state. See `state-proxy.md`.
+
+### Pattern comparison
+
+| Pattern | Best for | State owner | Coupling | Complexity | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Element-local state | Single component UI state | Component | None | Low | Easiest to reason about |
+| Events up / attributes down | Parent-child flows | Parent | Low | Low | Explicit data flow |
+| Events (event bus) | Loosely coupled components | Manager component | Low | Medium | Event naming and tracing |
+| Services | Shared logic and app state | Service | Medium | Medium | Explicit APIs, easier to test |
+| MVP store | External data sources | Store/service | Medium | Medium | Event-driven updates |
+| Proxy store | Shared reactive data | Store | Medium | Medium | Deep reactivity, shared object |
 
 ## Batch Updates with `patch()`
 
@@ -440,7 +452,7 @@ export default CustomElement
 - Data from external sources (APIs, databases)
 - Application-level state management
 
-For external data sources and shared state, see [STATE-MVP.md](./STATE-MVP.md) for presenter-driven patterns.
+For external data sources and shared state, see [state-mvp.md](./state-mvp.md) for presenter-driven patterns.
 
 ## Type Safety
 
@@ -448,8 +460,10 @@ Add TypeScript or JSDoc types for better tooling:
 
 ```js
 .observe({
-  /** @type {string} */
-  name: 'string',
+  name: {
+    type: 'string',
+    value: '',
+  },
   
   items: {
     type: 'array',

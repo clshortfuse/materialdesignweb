@@ -2,7 +2,7 @@
 
 For parent-child communication, use a unidirectional data flow: **events up, attributes down**.
 
-> **Prerequisites**: Read [STATE.md](STATE.md) and [STATE-EVENTS.md](STATE-EVENTS.md) first.
+> **Prerequisites**: Read [state.md](state.md) and [state-events.md](state-events.md) first.
 
 ## Core Pattern
 
@@ -255,17 +255,6 @@ export default CustomElement
 - `todo-id="{item.id}"` - Binds `item.id` to the `todo-id` attribute
 - When `todos` array changes, the framework automatically re-renders the list
 - No manual DOM manipulation needed!
-
-## Comparison with Other Patterns
-
-| Aspect | Attributes (this doc) | Events Only ([STATE-EVENTS.md](STATE-EVENTS.md)) | Services ([STATE-SERVICE.md](STATE-SERVICE.md)) |
-|--------|----------------------|--------------------------------------------------|------------------------------------------------|
-| **Direction** | Bidirectional (events ↑, attrs ↓) | Any direction | Any direction |
-| **Parent-Child** | Perfect fit | Works but less clear | No parent-child concept |
-| **State Owner** | Parent component | Manager component or distributed | Centralized service |
-| **Reusability** | High - children are pure | Medium | High - shared logic |
-| **Complexity** | Low | Low | Medium |
-| **Use Case** | Forms, lists, parent-child UI | Loosely coupled widgets | App-wide shared state |
 
 ## Best Practices
 

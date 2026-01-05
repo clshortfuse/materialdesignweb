@@ -1,6 +1,0 @@
-html {
-  background-color: rgb(var(--mdw-color__surface-container));
-  color: rgb(var(--mdw-color__on-surface));
-}
-
-body { margin: 0; }

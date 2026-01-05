@@ -5,7 +5,6 @@
   <title>Root</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <link rel="stylesheet" href="../theme.css" />
-  <link rel="stylesheet" href="../demo.css" />
 
   <script src="../demo.min.js"></script>
 </head>
@@ -34,7 +33,7 @@
         <section>
           <mdw-headline size=medium text-padding=0.5em>Sample</mdw-headline>
           <div class="iframe-wrap">
-            <iframe id="iframe" src="root-sample.html" width=400 height=640></iframe>
+            <iframe id="iframe" src="./root-sample.html" width=400 height=640></iframe>
           </div>
         </section>
       </section>
@@ -60,7 +59,7 @@
         refreshSize();
       }
       function updateURL() {
-        let url = new URL('root-sample.html', window.location);
+        let url = new URL('./root-sample.html', window.location);
         for (const option of document.getElementById('options').selectedOptions) {
           url.searchParams.append(option.value, '');
         }
@@ -91,7 +90,6 @@
 
     </style>
   </demo-page>
-
 
 </body>
 

@@ -5,14 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Material Design Web</title>
-  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb"></script>
-  <style>
-    html {
-      background-color: rgb(var(--mdw-color__surface-container));
-      color: rgb(var(--mdw-color__on-surface));
-    }
-    body { margin: 0 }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=E86A2A"></script>
 </head>
 
 <body>
@@ -20,14 +13,12 @@
     <mdw-icon-button slot="trailing" icon="settings">Settings</mdw-icon-button>
   </mdw-top-app-bar>
 
-  <mdw-box padding=16 gap=16>
-    <div>
-      <mdw-headline>Welcome back!</mdw-headline>
-      <mdw-body>Here's an overview of your data</mdw-body>
-    </div>
+  <mdw-box padding=pane gap=16>
+    <mdw-headline>Welcome back!</mdw-headline>
+    <mdw-body>Here's an overview of your data</mdw-body>
     <mdw-divider></mdw-divider>
     <mdw-grid gap=16>
-      <mdw-card elevated="" padding=16 gap=16 >
+      <mdw-card elevated padding=16 gap=16>
         <mdw-title text-padding=0>Total Users</mdw-title>
         <mdw-headline size="large">2,543</mdw-headline>
         <mdw-body>↑ 12% from last month</mdw-body>

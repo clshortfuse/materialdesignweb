@@ -1,62 +1,74 @@
 # materialdesignweb
-Material Design for Web
-
-*A standards-focused, zero-dependency implemention of Material Design 3 (Material You).*
+Material Design 3 (Material You) Web Components — standards‑focused and zero‑dependency.
 
 ![Version](https://badgen.net/npm/v/@shortfuse/materialdesignweb) ![License](https://badgen.net/npm/license/@shortfuse/materialdesignweb) ![MinZip](https://badgen.net/bundlephobia/minzip/@shortfuse/materialdesignweb) ![Dependents](https://badgen.net/npm/dependents/@shortfuse/materialdesignweb)
 
 [![Chromium](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-chromium.yml/badge.svg)](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-chromium.yml) [![Firefox](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-firefox.yml/badge.svg)](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-firefox.yml) [![Webkit](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-webkit.yml/badge.svg)](https://github.com/clshortfuse/materialdesignweb/actions/workflows/test-webkit.yml)
 
 Live demo: https://clshortfuse.github.io/materialdesignweb/
+Samples: https://clshortfuse.github.io/materialdesignweb/samples/
 
-Quick links
-
-**Getting Started**
-- [Getting started](docs/GETTING_STARTED.md)
-- [Theming](docs/THEMING.md)
-- [Component index](docs/COMPONENTS.md)
-
-**Building Components**
-- [Creating custom elements](docs/CREATING_CUSTOM_ELEMENTS.md)
-- [Observable properties reference](docs/OBSERVABLE_PROPERTIES.md)
-- [State management (element-local)](docs/STATE.md)
-- [State management (MVP pattern)](docs/STATE-MVP.md)
-
-**Advanced**
-- [Component manifest (CEM)](docs/custom-elements.json) — see [custom-elements-manifest](https://github.com/webcomponents/custom-elements-manifest)
-- [Custom elements manifest spec](docs/CUSTOM-ELEMENTS-MANIFEST.md)
-- [Contributing](docs/CONTRIBUTING.md)
-
-
-Install via npm:
-
-```bash
-npm install @shortfuse/materialdesignweb
-```
-
-Use the CDN (zero-install):
+## Quick start (CDN)
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4"></script>
 <mdw-button>Hello World</mdw-button>
 ```
 
-Access exports via : `const { CustomElement } = globalThis['@shortfuse/materialdesignweb'];`
+CDN theming params: `color`, `custom`, `lightness`, `resetCSS`.
 
-Import what you need (ESM):
+## Install (ESM)
 
-```js
-import '@shortfuse/materialdesignweb'; // full bundle
-// or
-import Button from '@shortfuse/materialdesignweb/components/Button.js'; // single component
+```bash
+npm install @shortfuse/materialdesignweb
 ```
 
-See theming options: [docs/THEMING.md](docs/THEMING.md)
+Full bundle:
 
-Theming
+```js
+import '@shortfuse/materialdesignweb';
+```
 
-- Use the CDN `?color=` param for quick prototyping, or see [docs/THEMING.md](docs/THEMING.md) for runtime/build options.
+Single component:
 
-Archive
+```js
+import Button from '@shortfuse/materialdesignweb/components/Button.js';
+```
 
-The Material Design 1/2 version has been archived in the [`archive-md2`](https://github.com/clshortfuse/materialdesignweb/tree/archive-md2) branch.
+## Documentation
+
+Material Design Web (MDW) is components-first. If you just want to build UI, start with the component docs and use HTML only — no JavaScript required.
+
+### 1) Use the components
+- [Getting started](docs/components/getting-started.md)
+- [Component library overview](docs/components/README.md)
+- [Layout](docs/components/layout.md)
+- [Typography](docs/components/typography.md)
+- [Controls & inputs](docs/components/controls.md)
+- [Navigation](docs/components/navigation.md)
+- [Feedback & overlays](docs/components/feedback.md)
+- [Content & surfaces](docs/components/content.md)
+- [Component list](docs/components/README.md)
+
+### 2) Theming
+- [Theming overview](docs/theming/README.md)
+
+### 3) Samples
+- [Samples index](docs/samples/index.md)
+
+### 4) Advanced: extend the core system (JavaScript)
+Use these only if you need custom behavior, state models, or new components.
+- [Core overview](docs/core/README.md)
+- [Custom elements](docs/core/creating-custom-elements.md)
+- [CustomElement API](docs/core/custom-element.md)
+- [Observable properties](docs/core/observable-properties.md)
+- [State patterns](docs/core/state.md)
+- [Mixins](docs/core/mixins.md)
+- [Core modules](docs/core/modules.md)
+
+### 5) Reference
+- [API reference](docs/api/README.md)
+- Generated artifacts (API + types) are published to npm on release.
+
+### 6) Contributing
+- [Contributing](docs/CONTRIBUTING.md)

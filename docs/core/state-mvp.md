@@ -2,7 +2,7 @@
 
 For external data sources (APIs, databases, stores), use the **Model-View-Presenter (MVP)** pattern where a store owns data and notifies views.
 
-> **Prerequisites**: Read [STATE.md](STATE.md) first for element-local state basics.
+> **Prerequisites**: Read [state.md](state.md) first for element-local state basics.
 
 ## Overview
 
@@ -270,6 +270,6 @@ export default new UserStore();
 ## Next Steps
 
 For complex applications where multiple components need to stay synchronized:
-- **Service Pattern**: [STATE-SERVICE.md](STATE-SERVICE.md) - Centralized stores with subscriptions
-- **Event Pattern**: [STATE-EVENTS.md](STATE-EVENTS.md) - Decoupled communication via custom events
+- **Service Pattern**: [state-service.md](state-service.md) - Centralized stores with subscriptions
+- **Event Pattern**: [state-events.md](state-events.md) - Decoupled communication via custom events
 

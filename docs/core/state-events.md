@@ -2,7 +2,7 @@
 
 For loosely coupled components, use custom events dispatched on `window` or `document`. Since all CustomElements are EventTargets, they can dispatch and listen to events without centralized stores.
 
-> **Prerequisites**: Read [STATE.md](STATE.md) and [STATE-MVP.md](STATE-MVP.md) first.
+> **Prerequisites**: Read [state.md](state.md) and [state-mvp.md](state-mvp.md) first.
 
 ## Core Pattern
 
@@ -251,18 +251,6 @@ export default CustomElement
   })
   .autoRegister('item-list');
 ```
-
-## Comparison: Events vs Services
-
-| Aspect              | Events (this doc)                | Services ([STATE-SERVICE.md](STATE-SERVICE.md)) |
-| ------------------- | -------------------------------- | ----------------------------------------------- |
-| **Coupling**        | Zero - no imports                | Components import service                       |
-| **Discoverability** | Lower - harder to trace          | Higher - explicit imports                       |
-| **Type Safety**     | Weaker - event names are strings | Stronger - TypeScript/JSDoc on service          |
-| **Coordination**    | Manager component needed         | Service handles coordination                    |
-| **Testing**         | Easy - just dispatch events      | Easy - mock service                             |
-| **Performance**     | Event bubbling overhead          | Direct method calls                             |
-| **Use Case**        | Loosely coupled UI widgets       | Shared business logic                           |
 
 ## Best Practices
 

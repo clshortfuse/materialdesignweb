@@ -5,20 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form Example - Material Design Web</title>
-  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb"></script>
-  <style>
-    html {
-      background-color: rgb(var(--mdw-color__surface-container));
-      color: rgb(var(--mdw-color__on-surface));
-    }
-    body { margin: 0 }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=0F8A5F"></script>
 </head>
 
 <body>
   <mdw-top-app-bar headline="Form Example"></mdw-top-app-bar>
 
-  <mdw-box padding=pane max-width=600px>
+  <mdw-box padding=pane>
     <form onsubmit="handleSubmit(event)">
       <mdw-box gap=16>
         <mdw-headline size="small">User Information</mdw-headline>
@@ -27,7 +20,7 @@
         <mdw-input outlined label="Email" name="email" type="email" required></mdw-input>
         <mdw-input outlined label="Phone" name="phone" type="tel"></mdw-input>
 
-        <mdw-headline size="small" text-padding-top=8>Message</mdw-headline>
+        <mdw-headline size="small">Message</mdw-headline>
         <mdw-textarea outlined label="Comments" name="message" minrows=4 maxrows=8></mdw-textarea>
 
         <mdw-checkbox name="subscribe" value="yes">Subscribe to updates</mdw-checkbox>

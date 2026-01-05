@@ -1,7 +1,7 @@
 # Complex Custom Elements
 
 This guide covers patterns used when components go beyond basic props + template.
-It assumes familiarity with `docs/CREATING_CUSTOM_ELEMENTS.md`.
+It assumes familiarity with `creating-custom-elements.md`.
 
 ## 1.0 Composition and recompose
 
@@ -73,7 +73,7 @@ Use explicit `render()`/`patch()` when:
 
 ## 5.0 Refs and naming
 
-See `docs/CREATING_CUSTOM_ELEMENTS.md` for the kebab-case ↔ camelCase mapping.
+See `creating-custom-elements.md` for the kebab-case ↔ camelCase mapping.
 
 ## 6.0 Custom types
 

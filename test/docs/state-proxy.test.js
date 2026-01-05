@@ -2,7 +2,7 @@ import { assert } from '@esm-bundle/chai';
 
 import CustomElement from '../../core/CustomElement.js';
 
-describe('STATE-PROXY.md', () => {
+describe('docs/core/state-proxy.md', () => {
   /** @type {HTMLDivElement} */
   let container;
 

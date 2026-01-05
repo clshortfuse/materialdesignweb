@@ -206,7 +206,7 @@ Hooks receive `callbackArguments` (composition, refs, html helper, template, ele
 - `el.patch({ someProp: ... })` applies JSON merge patch then renders.
 
 Use `render.byProp` indirectly via observed props or `render()` directly in advanced cases.
-For array behavior details, see `docs/STATE-ARRAY.md`.
+For array behavior details, see `state-array.md`.
 
 ## 10.0 Refs
 
@@ -248,12 +248,12 @@ const el = document.querySelector('mdw-counter-class');
 
 ## 12.0 See also
 
-- `docs/CUSTOMELEMENT.md` for a full static/instance API reference
-- `docs/STATE.md` for the state system overview
+- `custom-element.md` for a full static/instance API reference
+- `state.md` for the state system overview
 - `test/core/custom-element.test.js` for fluent vs class parity
-- `docs/COMPLEX_CUSTOM_ELEMENTS.md` for advanced patterns and custom types
+- `complex-custom-elements.md` for advanced patterns and custom types
 
 ## 13.0 Mixins
 
 Mixins provide shared behavior (forms, theming, ripple, input, etc.). They are optional.
-See the mixin list and status in `docs/COMPONENTS.md`.
+See the mixin list and status in `mixins.md`.

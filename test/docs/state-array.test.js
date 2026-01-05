@@ -2,7 +2,7 @@ import { assert } from '@esm-bundle/chai';
 
 import CustomElement from '../../core/CustomElement.js';
 
-describe('STATE-ARRAY.md', () => {
+describe('docs/core/state-array.md', () => {
   /** @type {HTMLDivElement} */
   let container;
 

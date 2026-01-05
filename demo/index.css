@@ -1,27 +1,3 @@
-html {
-  max-inline-size: 100%;
-  margin: 0;
-  padding: 0;
-
-  background-color: rgb(var(--mdw-color__background));
-  color: rgb(var(--mdw-color__on-background));
-}
-
-body {
-  max-inline-size: 100%;
-  margin: 0;
-
-  padding: 0;
-
-  /* position: relative; */
-
-  font-weight: var(--mdw-typescale__body-large__font-weight);
-  font-size: var(--mdw-typescale__body-large__font-size);
-  line-height: var(--mdw-typescale__body-large__line-height);
-  font-family: var(--mdw-typescale__body-large__font-family);
-  letter-spacing: var(--mdw-typescale__body-large__letter-spacing);
-}
-
 #nav {
   position: sticky;
 

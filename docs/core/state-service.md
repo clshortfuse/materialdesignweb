@@ -2,7 +2,7 @@
 
 For complex applications where multiple components need to stay synchronized, share state through centralized service stores.
 
-> **Prerequisites**: Read [STATE.md](STATE.md) and [STATE-MVP.md](STATE-MVP.md) first.
+> **Prerequisites**: Read [state.md](state.md) and [state-mvp.md](state-mvp.md) first.
 
 ## Core Pattern
 
