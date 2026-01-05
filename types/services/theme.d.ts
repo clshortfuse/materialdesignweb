@@ -5,6 +5,8 @@
 export function generateTypographyCSS(config?: typeof TYPOGRAPHY_DEFAULT): string;
 /** @return {string} */
 export function generateTypographyGlobalCSS(): string;
+/** @return {string} */
+export function generateResetCSS(): string;
 /**
  * @param {typeof SHAPE_ROUNDED_DEFAULT} [config]
  * @return {string}
@@ -39,6 +41,10 @@ export type ThemeOptions = {
      */
     custom?: Iterable<[string, string?]>;
     lightness?: "auto" | "light" | "dark";
+    /**
+     * defaults to true
+     */
+    resetCSS?: boolean;
 };
 import { TYPOGRAPHY_DEFAULT } from '../constants/typography.js';
 import { SHAPE_ROUNDED_DEFAULT } from '../constants/shapes.js';

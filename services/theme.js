@@ -25,6 +25,7 @@ export const TYPE_STYLES = [
  * @prop {string} [color]
  * @prop {Iterable<[string,string?]>} [custom] Map()
  * @prop {'auto'|'light'|'dark'} [lightness='auto']
+ * @prop {boolean} [resetCSS=true] defaults to true
  * @return {string}
  */
 
@@ -95,102 +96,102 @@ function getShapeEdgesSVGs() {
  */
 export function generateTypographyCSS(config = TYPOGRAPHY_DEFAULT) {
   return /* css */ `
-    :root {
-      --mdw-typeface__brand: ${config.face.brand};
-      --mdw-typeface__weight-regular: ${config.face.weight.regular};
-      --mdw-typeface__weight-medium: ${config.face.weight.medium};
-      --mdw-typeface__plain: ${config.face.plain};
+:root {
+  --mdw-typeface__brand: ${config.face.brand};
+  --mdw-typeface__weight-regular: ${config.face.weight.regular};
+  --mdw-typeface__weight-medium: ${config.face.weight.medium};
+  --mdw-typeface__plain: ${config.face.plain};
 
-      --mdw-typescale__display-large__font-family: ${config.scale.display.large.fontFamily};
-      --mdw-typescale__display-large__line-height: calc(${config.scale.display.large.lineHeight} * 0.0625rem);
-      --mdw-typescale__display-large__font-size: calc(${config.scale.display.large.fontSize} * 0.0625rem);
-      --mdw-typescale__display-large__letter-spacing: calc(${config.scale.display.large.letterSpacing} * 0.0625rem);
-      --mdw-typescale__display-large__font-weight: ${config.scale.display.large.weight};
+  --mdw-typescale__display-large__font-family: ${config.scale.display.large.fontFamily};
+  --mdw-typescale__display-large__line-height: calc(${config.scale.display.large.lineHeight} * 0.0625rem);
+  --mdw-typescale__display-large__font-size: calc(${config.scale.display.large.fontSize} * 0.0625rem);
+  --mdw-typescale__display-large__letter-spacing: calc(${config.scale.display.large.letterSpacing} * 0.0625rem);
+  --mdw-typescale__display-large__font-weight: ${config.scale.display.large.weight};
 
-      --mdw-typescale__display-medium__font-family: ${config.scale.display.medium.fontFamily};
-      --mdw-typescale__display-medium__line-height: calc(${config.scale.display.medium.lineHeight} * 0.0625rem);
-      --mdw-typescale__display-medium__font-size: calc(${config.scale.display.medium.fontSize} * 0.0625rem);
-      --mdw-typescale__display-medium__letter-spacing: calc(${config.scale.display.medium.letterSpacing} * 0.0625rem);
-      --mdw-typescale__display-medium__font-weight: ${config.scale.display.medium.weight};
+  --mdw-typescale__display-medium__font-family: ${config.scale.display.medium.fontFamily};
+  --mdw-typescale__display-medium__line-height: calc(${config.scale.display.medium.lineHeight} * 0.0625rem);
+  --mdw-typescale__display-medium__font-size: calc(${config.scale.display.medium.fontSize} * 0.0625rem);
+  --mdw-typescale__display-medium__letter-spacing: calc(${config.scale.display.medium.letterSpacing} * 0.0625rem);
+  --mdw-typescale__display-medium__font-weight: ${config.scale.display.medium.weight};
 
-      --mdw-typescale__display-small__font-family: ${config.scale.display.small.fontFamily};
-      --mdw-typescale__display-small__line-height: calc(${config.scale.display.small.lineHeight} * 0.0625rem);
-      --mdw-typescale__display-small__font-size: calc(${config.scale.display.small.fontSize} * 0.0625rem);
-      --mdw-typescale__display-small__letter-spacing: calc(${config.scale.display.small.letterSpacing} * 0.0625rem);
-      --mdw-typescale__display-small__font-weight: ${config.scale.display.small.weight};
+  --mdw-typescale__display-small__font-family: ${config.scale.display.small.fontFamily};
+  --mdw-typescale__display-small__line-height: calc(${config.scale.display.small.lineHeight} * 0.0625rem);
+  --mdw-typescale__display-small__font-size: calc(${config.scale.display.small.fontSize} * 0.0625rem);
+  --mdw-typescale__display-small__letter-spacing: calc(${config.scale.display.small.letterSpacing} * 0.0625rem);
+  --mdw-typescale__display-small__font-weight: ${config.scale.display.small.weight};
 
-      --mdw-typescale__headline-large__font-family: ${config.scale.headline.large.fontFamily};
-      --mdw-typescale__headline-large__line-height: calc(${config.scale.headline.large.lineHeight} * 0.0625rem);
-      --mdw-typescale__headline-large__font-size: calc(${config.scale.headline.large.fontSize} * 0.0625rem);
-      --mdw-typescale__headline-large__letter-spacing: calc(${config.scale.headline.large.letterSpacing} * 0.0625rem);
-      --mdw-typescale__headline-large__font-weight: ${config.scale.headline.large.weight};
+  --mdw-typescale__headline-large__font-family: ${config.scale.headline.large.fontFamily};
+  --mdw-typescale__headline-large__line-height: calc(${config.scale.headline.large.lineHeight} * 0.0625rem);
+  --mdw-typescale__headline-large__font-size: calc(${config.scale.headline.large.fontSize} * 0.0625rem);
+  --mdw-typescale__headline-large__letter-spacing: calc(${config.scale.headline.large.letterSpacing} * 0.0625rem);
+  --mdw-typescale__headline-large__font-weight: ${config.scale.headline.large.weight};
 
-      --mdw-typescale__headline-medium__font-family: ${config.scale.headline.medium.fontFamily};
-      --mdw-typescale__headline-medium__line-height: calc(${config.scale.headline.medium.lineHeight} * 0.0625rem);
-      --mdw-typescale__headline-medium__font-size: calc(${config.scale.headline.medium.fontSize} * 0.0625rem);
-      --mdw-typescale__headline-medium__letter-spacing: calc(${config.scale.headline.medium.letterSpacing} * 0.0625rem);
-      --mdw-typescale__headline-medium__font-weight: ${config.scale.headline.medium.weight};
+  --mdw-typescale__headline-medium__font-family: ${config.scale.headline.medium.fontFamily};
+  --mdw-typescale__headline-medium__line-height: calc(${config.scale.headline.medium.lineHeight} * 0.0625rem);
+  --mdw-typescale__headline-medium__font-size: calc(${config.scale.headline.medium.fontSize} * 0.0625rem);
+  --mdw-typescale__headline-medium__letter-spacing: calc(${config.scale.headline.medium.letterSpacing} * 0.0625rem);
+  --mdw-typescale__headline-medium__font-weight: ${config.scale.headline.medium.weight};
 
-      --mdw-typescale__headline-small__font-family: ${config.scale.headline.small.fontFamily};
-      --mdw-typescale__headline-small__line-height: calc(${config.scale.headline.small.lineHeight} * 0.0625rem);
-      --mdw-typescale__headline-small__font-size: calc(${config.scale.headline.small.fontSize} * 0.0625rem);
-      --mdw-typescale__headline-small__letter-spacing: calc(${config.scale.headline.small.letterSpacing} * 0.0625rem);
-      --mdw-typescale__headline-small__font-weight: ${config.scale.headline.small.weight};
+  --mdw-typescale__headline-small__font-family: ${config.scale.headline.small.fontFamily};
+  --mdw-typescale__headline-small__line-height: calc(${config.scale.headline.small.lineHeight} * 0.0625rem);
+  --mdw-typescale__headline-small__font-size: calc(${config.scale.headline.small.fontSize} * 0.0625rem);
+  --mdw-typescale__headline-small__letter-spacing: calc(${config.scale.headline.small.letterSpacing} * 0.0625rem);
+  --mdw-typescale__headline-small__font-weight: ${config.scale.headline.small.weight};
 
-      --mdw-typescale__title-large__font-family: ${config.scale.title.large.fontFamily};
-      --mdw-typescale__title-large__line-height: calc(${config.scale.title.large.lineHeight} * 0.0625rem);
-      --mdw-typescale__title-large__font-size: calc(${config.scale.title.large.fontSize} * 0.0625rem);
-      --mdw-typescale__title-large__letter-spacing: calc(${config.scale.title.large.letterSpacing} * 0.0625rem);
-      --mdw-typescale__title-large__font-weight: ${config.scale.title.large.weight};
+  --mdw-typescale__title-large__font-family: ${config.scale.title.large.fontFamily};
+  --mdw-typescale__title-large__line-height: calc(${config.scale.title.large.lineHeight} * 0.0625rem);
+  --mdw-typescale__title-large__font-size: calc(${config.scale.title.large.fontSize} * 0.0625rem);
+  --mdw-typescale__title-large__letter-spacing: calc(${config.scale.title.large.letterSpacing} * 0.0625rem);
+  --mdw-typescale__title-large__font-weight: ${config.scale.title.large.weight};
 
-      --mdw-typescale__title-medium__font-family: ${config.scale.title.medium.fontFamily};
-      --mdw-typescale__title-medium__line-height: calc(${config.scale.title.medium.lineHeight} * 0.0625rem);
-      --mdw-typescale__title-medium__font-size: calc(${config.scale.title.medium.fontSize} * 0.0625rem);
-      --mdw-typescale__title-medium__letter-spacing: calc(${config.scale.title.medium.letterSpacing} * 0.0625rem);
-      --mdw-typescale__title-medium__font-weight: ${config.scale.title.medium.weight};
+  --mdw-typescale__title-medium__font-family: ${config.scale.title.medium.fontFamily};
+  --mdw-typescale__title-medium__line-height: calc(${config.scale.title.medium.lineHeight} * 0.0625rem);
+  --mdw-typescale__title-medium__font-size: calc(${config.scale.title.medium.fontSize} * 0.0625rem);
+  --mdw-typescale__title-medium__letter-spacing: calc(${config.scale.title.medium.letterSpacing} * 0.0625rem);
+  --mdw-typescale__title-medium__font-weight: ${config.scale.title.medium.weight};
 
-      --mdw-typescale__title-small__font-family: ${config.scale.title.small.fontFamily};
-      --mdw-typescale__title-small__line-height: calc(${config.scale.title.small.lineHeight} * 0.0625rem);
-      --mdw-typescale__title-small__font-size: calc(${config.scale.title.small.fontSize} * 0.0625rem);
-      --mdw-typescale__title-small__letter-spacing: calc(${config.scale.title.small.letterSpacing} * 0.0625rem);
-      --mdw-typescale__title-small__font-weight: ${config.scale.title.small.weight};
+  --mdw-typescale__title-small__font-family: ${config.scale.title.small.fontFamily};
+  --mdw-typescale__title-small__line-height: calc(${config.scale.title.small.lineHeight} * 0.0625rem);
+  --mdw-typescale__title-small__font-size: calc(${config.scale.title.small.fontSize} * 0.0625rem);
+  --mdw-typescale__title-small__letter-spacing: calc(${config.scale.title.small.letterSpacing} * 0.0625rem);
+  --mdw-typescale__title-small__font-weight: ${config.scale.title.small.weight};
 
-      --mdw-typescale__label-large__font-family: ${config.scale.label.large.fontFamily};
-      --mdw-typescale__label-large__line-height: calc(${config.scale.label.large.lineHeight} * 0.0625rem);
-      --mdw-typescale__label-large__font-size: calc(${config.scale.label.large.fontSize} * 0.0625rem);
-      --mdw-typescale__label-large__letter-spacing: calc(${config.scale.label.large.letterSpacing} * 0.0625rem);
-      --mdw-typescale__label-large__font-weight: ${config.scale.label.large.weight};
+  --mdw-typescale__label-large__font-family: ${config.scale.label.large.fontFamily};
+  --mdw-typescale__label-large__line-height: calc(${config.scale.label.large.lineHeight} * 0.0625rem);
+  --mdw-typescale__label-large__font-size: calc(${config.scale.label.large.fontSize} * 0.0625rem);
+  --mdw-typescale__label-large__letter-spacing: calc(${config.scale.label.large.letterSpacing} * 0.0625rem);
+  --mdw-typescale__label-large__font-weight: ${config.scale.label.large.weight};
 
-      --mdw-typescale__label-medium__font-family: ${config.scale.label.medium.fontFamily};
-      --mdw-typescale__label-medium__line-height: calc(${config.scale.label.medium.lineHeight} * 0.0625rem);
-      --mdw-typescale__label-medium__font-size: calc(${config.scale.label.medium.fontSize} * 0.0625rem);
-      --mdw-typescale__label-medium__letter-spacing: calc(${config.scale.label.medium.letterSpacing} * 0.0625rem);
-      --mdw-typescale__label-medium__font-weight: ${config.scale.label.medium.weight};
+  --mdw-typescale__label-medium__font-family: ${config.scale.label.medium.fontFamily};
+  --mdw-typescale__label-medium__line-height: calc(${config.scale.label.medium.lineHeight} * 0.0625rem);
+  --mdw-typescale__label-medium__font-size: calc(${config.scale.label.medium.fontSize} * 0.0625rem);
+  --mdw-typescale__label-medium__letter-spacing: calc(${config.scale.label.medium.letterSpacing} * 0.0625rem);
+  --mdw-typescale__label-medium__font-weight: ${config.scale.label.medium.weight};
 
-      --mdw-typescale__label-small__font-family: ${config.scale.label.small.fontFamily};
-      --mdw-typescale__label-small__line-height: calc(${config.scale.label.small.lineHeight} * 0.0625rem);
-      --mdw-typescale__label-small__font-size: calc(${config.scale.label.small.fontSize} * 0.0625rem);
-      --mdw-typescale__label-small__letter-spacing: calc(${config.scale.label.small.letterSpacing} * 0.0625rem);
-      --mdw-typescale__label-small__font-weight: ${config.scale.label.small.weight};
+  --mdw-typescale__label-small__font-family: ${config.scale.label.small.fontFamily};
+  --mdw-typescale__label-small__line-height: calc(${config.scale.label.small.lineHeight} * 0.0625rem);
+  --mdw-typescale__label-small__font-size: calc(${config.scale.label.small.fontSize} * 0.0625rem);
+  --mdw-typescale__label-small__letter-spacing: calc(${config.scale.label.small.letterSpacing} * 0.0625rem);
+  --mdw-typescale__label-small__font-weight: ${config.scale.label.small.weight};
 
-      --mdw-typescale__body-large__font-family: ${config.scale.body.large.fontFamily};
-      --mdw-typescale__body-large__line-height: calc(${config.scale.body.large.lineHeight} * 0.0625rem);
-      --mdw-typescale__body-large__font-size: calc(${config.scale.body.large.fontSize} * 0.0625rem);
-      --mdw-typescale__body-large__letter-spacing: calc(${config.scale.body.large.letterSpacing} * 0.0625rem);
-      --mdw-typescale__body-large__font-weight: ${config.scale.body.large.weight};
+  --mdw-typescale__body-large__font-family: ${config.scale.body.large.fontFamily};
+  --mdw-typescale__body-large__line-height: calc(${config.scale.body.large.lineHeight} * 0.0625rem);
+  --mdw-typescale__body-large__font-size: calc(${config.scale.body.large.fontSize} * 0.0625rem);
+  --mdw-typescale__body-large__letter-spacing: calc(${config.scale.body.large.letterSpacing} * 0.0625rem);
+  --mdw-typescale__body-large__font-weight: ${config.scale.body.large.weight};
 
-      --mdw-typescale__body-medium__font-family: ${config.scale.body.medium.fontFamily};
-      --mdw-typescale__body-medium__line-height: calc(${config.scale.body.medium.lineHeight} * 0.0625rem);
-      --mdw-typescale__body-medium__font-size: calc(${config.scale.body.medium.fontSize} * 0.0625rem);
-      --mdw-typescale__body-medium__letter-spacing: calc(${config.scale.body.medium.letterSpacing} * 0.0625rem);
-      --mdw-typescale__body-medium__font-weight: ${config.scale.body.medium.weight};
+  --mdw-typescale__body-medium__font-family: ${config.scale.body.medium.fontFamily};
+  --mdw-typescale__body-medium__line-height: calc(${config.scale.body.medium.lineHeight} * 0.0625rem);
+  --mdw-typescale__body-medium__font-size: calc(${config.scale.body.medium.fontSize} * 0.0625rem);
+  --mdw-typescale__body-medium__letter-spacing: calc(${config.scale.body.medium.letterSpacing} * 0.0625rem);
+  --mdw-typescale__body-medium__font-weight: ${config.scale.body.medium.weight};
 
-      --mdw-typescale__body-small__font-family: ${config.scale.body.small.fontFamily};
-      --mdw-typescale__body-small__line-height: calc(${config.scale.body.small.lineHeight} * 0.0625rem);
-      --mdw-typescale__body-small__font-size: calc(${config.scale.body.small.fontSize} * 0.0625rem);
-      --mdw-typescale__body-small__letter-spacing: calc(${config.scale.body.small.letterSpacing} * 0.0625rem);
-      --mdw-typescale__body-small__font-weight: ${config.scale.body.small.weight};
-      }`;
+  --mdw-typescale__body-small__font-family: ${config.scale.body.small.fontFamily};
+  --mdw-typescale__body-small__line-height: calc(${config.scale.body.small.lineHeight} * 0.0625rem);
+  --mdw-typescale__body-small__font-size: calc(${config.scale.body.small.fontSize} * 0.0625rem);
+  --mdw-typescale__body-small__letter-spacing: calc(${config.scale.body.small.letterSpacing} * 0.0625rem);
+  --mdw-typescale__body-small__font-weight: ${config.scale.body.small.weight};
+  }`;
 }
 
 /** @return {string} */
@@ -206,6 +207,21 @@ export function generateTypographyGlobalCSS() {
         ].join(' ')
       };`).join('\n'))
     .join('\n')}}`;
+}
+
+/** @return {string} */
+export function generateResetCSS() {
+  return /* css */ `
+html{
+background-color:rgb(var(--mdw-color__surface-container));
+color:rgb(var(--mdw-color__on-surface));
+}
+html,body{
+font:var(--mdw-typescale__body-large__font);
+letter-spacing:var(--mdw-typescale__body-large__letter-spacing);
+margin:0;
+padding:0;
+}`;
 }
 
 /**
@@ -293,7 +309,9 @@ export function themeOptionsFromSearchParams(searchParams) {
     .map((c) => c.split(':')) ?? []);
 
   const lightness = /** @type {ThemeOptions['lightness']} */(searchParams?.get('lightness') ?? 'auto');
-  return { color, custom, lightness };
+  const resetCSSParam = searchParams?.get('resetCSS') ?? searchParams?.get('resetCss');
+  const resetCSS = resetCSSParam !== 'false';
+  return { color, custom, lightness, resetCSS };
 }
 
 /**

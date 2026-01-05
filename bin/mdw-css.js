@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-import { generateThemeCSS, generateTypographyGlobalCSS, themeOptionsFromSearchParams } from '../services/theme.js';
+import { generateResetCSS, generateThemeCSS, generateTypographyGlobalCSS, themeOptionsFromSearchParams } from '../services/theme.js';
 import { getSearchParams } from '../utils/cli.js';
 
-process.stdout.write(
-  generateThemeCSS(
-    themeOptionsFromSearchParams(
-      getSearchParams(),
-    ),
-  ),
-);
+const options = themeOptionsFromSearchParams(getSearchParams());
+process.stdout.write(generateThemeCSS(options));
+
 process.stdout.write(generateTypographyGlobalCSS());
+
+if (options.resetCSS) {
+  process.stdout.write(generateResetCSS());
+}
