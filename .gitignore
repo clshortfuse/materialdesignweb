@@ -1,5 +1,7 @@
 **/**/node_modules/*
 dist/*
+api/**
+types/**
 .test/*
 .nyc_output/*
 **/**/.DS_Store
@@ -12,3 +14,5 @@ demo/meta.json
 demo/theme.css
 coverage/**
 screenshots/difference/*
+!api/README.md
+!types/README.md
