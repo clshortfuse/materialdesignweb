@@ -152,7 +152,9 @@ function getProxyEmitter(target) {
       unsubscribe(fn) { subscribers.delete(fn); },
       /** @param {any} patch */
       emit(patch) {
-        for (const fn of subscribers) fn(patch);
+        for (const fn of subscribers) {
+          fn(patch);
+        }
       },
     };
     proxyEmitters.set(target, emitter);
@@ -596,7 +598,7 @@ export function defineObservableProperty(object, key, options) {
     if (value == null || typeof value !== 'object') return value;
     const cache = proxyCache.get(value);
     if (cache && cache.has(this)) return cache.get(this);
-    // eslint-disable-next-line unicorn/no-this-assignment
+    // eslint-disable-next-line unicorn/no-this-assignment, @typescript-eslint/no-this-alias
     const owner = this;
     /** @param {any} changes */
     const emit = (changes) => {
