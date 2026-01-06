@@ -51,6 +51,14 @@ fi
 current_version=$(node -p "require('./package.json').version")
 echo -e "${GREEN}Current version: ${current_version}${NC}"
 
+# Compute next version/tag and ensure it doesn't already exist
+next_version=$(node -e "const v=require('./package.json').version.split('.');if(v.length<3)process.exit(1);const [ma,mi]=v;console.log([ma,Number(mi)+1,0].join('.'));")
+next_tag="v${next_version}"
+if git rev-parse -q --verify "refs/tags/${next_tag}" >/dev/null; then
+  echo -e "${RED}Error: Tag ${next_tag} already exists. Aborting release.${NC}"
+  exit 1
+fi
+
 # Run npm version minor
 # This will:
 # - Bump package.json and package-lock.json
@@ -59,7 +67,11 @@ echo -e "${GREEN}Current version: ${current_version}${NC}"
 echo -e "${GREEN}Running npm version minor...${NC}"
 npm version minor -m "chore(release): %s"
 
+new_version=$(node -p "require('./package.json').version")
+new_tag="v${new_version}"
+
 echo -e "${GREEN}✓ Release minor complete!${NC}"
+echo -e "${GREEN}Created tag: ${new_tag}${NC}"
 echo -e "${YELLOW}Review the changes and then push with:${NC}"
 echo -e "  git push origin main && git push origin --tags"
 echo ""
