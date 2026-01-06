@@ -7,6 +7,7 @@ live in `/api`.
 
 - **Purpose:** machine-readable metadata describing the library's custom elements, mixins, members, attributes, demos and more, suitable for documentation indexing and metadata extraction.
 - **Location:** generated at release time and published to npm in `/api/custom-elements.json`.
+- **CDN:** https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb/api/custom-elements.json
 
 **What the file contains**
 - **`schemaVersion`**: manifest schema version.
