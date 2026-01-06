@@ -213,8 +213,8 @@ export function generateTypographyGlobalCSS() {
 export function generateResetCSS() {
   return /* css */ `
 html{
-background-color:rgb(var(--mdw-color__surface-container));
-color:rgb(var(--mdw-color__on-surface));
+background-color:rgb(var(--mdw-color__background));
+color:rgb(var(--mdw-color__on-background));
 }
 html,body{
 font:var(--mdw-typescale__body-large__font);
