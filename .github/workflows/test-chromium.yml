@@ -28,6 +28,7 @@ on:
       # - 'screenshots/reference/chromium/**'
       - 'screenshots/reference/firefox/**'
       - 'screenshots/reference/webkit/**'
+  workflow_dispatch:
 jobs:
   test:
     timeout-minutes: 60
