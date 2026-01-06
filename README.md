@@ -8,7 +8,7 @@ Material Design 3 (Material You) Web Components — standards‑focused and zero
 Live demo: https://clshortfuse.github.io/materialdesignweb/
 Samples: https://clshortfuse.github.io/materialdesignweb/samples/
 
-## Quick start (CDN)
+## Use the CDN (zero-install)
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4"></script>
@@ -17,7 +17,13 @@ Samples: https://clshortfuse.github.io/materialdesignweb/samples/
 
 CDN theming params: `color`, `custom`, `lightness`, `resetCSS`.
 
-## Install (ESM)
+Access exports via `globalThis['@shortfuse/materialdesignweb']`:
+
+```js
+const { CustomElement } = globalThis['@shortfuse/materialdesignweb'];
+```
+
+## Import what you need (ESM)
 
 ```bash
 npm install @shortfuse/materialdesignweb
