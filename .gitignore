@@ -14,5 +14,3 @@ demo/meta.json
 demo/theme.css
 coverage/**
 screenshots/difference/*
-!api/README.md
-!types/README.md
