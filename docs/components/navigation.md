@@ -14,14 +14,18 @@ app bars and side navigation.
 
 ```html
 <mdw-root>
-  <mdw-top-app-bar slot=start headline="App"></mdw-top-app-bar>
   <mdw-page>
     <mdw-pane>
+      <mdw-top-app-bar headline="App"></mdw-top-app-bar>
       <mdw-box padding=pane gap=16>
-        <mdw-tab-list value="overview">
-          <mdw-tab value="overview">Overview</mdw-tab>
-          <mdw-tab value="activity">Activity</mdw-tab>
+        <mdw-tab-list tab-content-id="tabs">
+          <mdw-tab href="#overview">Overview</mdw-tab>
+          <mdw-tab href="#activity">Activity</mdw-tab>
         </mdw-tab-list>
+        <mdw-tab-content id="tabs">
+          <mdw-tab-panel id="overview">Overview content</mdw-tab-panel>
+          <mdw-tab-panel id="activity">Activity content</mdw-tab-panel>
+        </mdw-tab-content>
       </mdw-box>
     </mdw-pane>
   </mdw-page>

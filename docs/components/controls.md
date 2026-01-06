@@ -7,7 +7,7 @@ Use `gap` and `padding` from layout components for spacing.
 
 - Buttons: `mdw-button`, `mdw-icon-button`, `mdw-fab`, `mdw-segmented-button`
 - Selection: `mdw-checkbox`, `mdw-radio`, `mdw-switch`
-- Inputs: `mdw-input`, `mdw-text-area`, `mdw-select`
+- Inputs: `mdw-input`, `mdw-textarea`, `mdw-select`
 - Chips: `mdw-chip`, `mdw-filter-chip`, `mdw-input-chip`
 - Sliders: `mdw-slider`
 
@@ -16,7 +16,7 @@ Use `gap` and `padding` from layout components for spacing.
 ```html
 <mdw-box gap=12>
   <mdw-input label="Email" required></mdw-input>
-  <mdw-text-area label="Message"></mdw-text-area>
+  <mdw-textarea label="Message"></mdw-textarea>
   <mdw-box row x=end gap=8>
     <mdw-button outlined>Cancel</mdw-button>
     <mdw-button filled>Send</mdw-button>

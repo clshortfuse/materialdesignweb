@@ -18,9 +18,9 @@ Use feedback components for progress, confirmations, and transient UI.
 
 ```html
 <mdw-dialog id="confirm">
-  <mdw-title slot=header>Confirm</mdw-title>
+  <mdw-title slot=headline>Confirm</mdw-title>
   <mdw-body>Delete this item?</mdw-body>
-  <mdw-dialog-actions slot=footer>
+  <mdw-dialog-actions slot=actions>
     <mdw-button outlined>Cancel</mdw-button>
     <mdw-button filled>Delete</mdw-button>
   </mdw-dialog-actions>

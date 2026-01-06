@@ -9,7 +9,7 @@ Three simple options:
 
 - JS via URL params (loader/CDN): append `?color=6750A4` (and `custom`, `lightness`, `resetCSS`) to the module URL.
   ```html
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@shortfuse/materialdesignweb?color=6750A4"></script>
   <!-- Add resetCSS=false to disable html/body resets -->
   ```
 
@@ -27,13 +27,17 @@ Notes
 
 ## Applying theme colors
 
-Use `color` and `ink` attributes on components:
+Use `color` to set the surface/background token. `ink` is optional and only
+needed to override the default `on-${color}` ink token.
 
 ```html
-<mdw-button color="primary" ink="on-primary">Primary</mdw-button>
-<mdw-button color="secondary" ink="on-secondary">Secondary</mdw-button>
+<mdw-button color="primary">Primary</mdw-button>
+<mdw-button color="secondary">Secondary</mdw-button>
+
+<!-- Override ink when you want a different on-color than the default -->
+<mdw-button color="primary" ink="on-surface">Primary + on-surface</mdw-button>
 <mdw-card color="primary-container">
-  <mdw-title ink="on-primary-container">Card</mdw-title>
+  <mdw-title>Card</mdw-title>
 </mdw-card>
 ```
 

@@ -41,9 +41,9 @@ All spacing is explicit: use `gap` and `padding`.
 
 ```html
 <mdw-root>
-  <mdw-top-app-bar slot=start headline="Demo"></mdw-top-app-bar>
   <mdw-page>
     <mdw-pane>
+      <mdw-top-app-bar headline="Demo"></mdw-top-app-bar>
       <mdw-box padding=pane gap=16>
         <mdw-grid gap=16 y=stretch>
           <mdw-card outlined col-span=4 col-span-12=6>
