@@ -11,7 +11,7 @@ on:
       # - '.github/workflows/test-chromium.yml'
       - '.github/workflows/test-firefox.yml'
       - '.github/workflows/test-webkit.yml'
-      - 'screenshots/reference/chromium/**'
+      # - 'screenshots/reference/chromium/**'
       - 'screenshots/reference/firefox/**'
       - 'screenshots/reference/webkit/**'
   pull_request:
