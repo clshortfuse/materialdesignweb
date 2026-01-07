@@ -57,14 +57,43 @@
     "typescript": "^5.7.3"
   },
   "exports": {
-    "./constants/*": "./constants/*",
-    "./components/*": "./components/*",
-    "./core/*": "./core/*",
-    "./dom/*": "./dom/*",
-    "./loaders/*": "./loaders/*",
-    "./mixins/*": "./mixins/*",
-    "./services/*": "./services/*",
-    "./utils/*": "./utils/*"
+    "./constants/*": {
+      "types": "./types/constants/*",
+      "import": "./constants/*"
+    },
+    "./components/*": {
+      "types": "./types/components/*",
+      "import": "./components/*"
+    },
+    "./core/*": {
+      "types": "./types/core/*",
+      "import": "./core/*"
+    },
+    "./dom/*": {
+      "types": "./types/dom/*",
+      "import": "./dom/*"
+    },
+    "./loaders/*": {
+      "types": "./types/loaders/*",
+      "import": "./loaders/*"
+    },
+    "./mixins/*": {
+      "types": "./types/mixins/*",
+      "import": "./mixins/*"
+    },
+    "./services/*": {
+      "types": "./types/services/*",
+      "import": "./services/*"
+    },
+    "./utils/*": {
+      "types": "./types/utils/*",
+      "import": "./utils/*"
+    },
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./index.js",
+      "require": "./dist/index.min.js"
+    }
   },
   "files": [
     "/api",
