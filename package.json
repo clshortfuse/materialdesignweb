@@ -57,37 +57,37 @@
     "typescript": "^5.7.3"
   },
   "exports": {
-    "./constants/*": {
-      "types": "./types/constants/*",
-      "import": "./constants/*"
+    "./constants/*.js": {
+      "types": "./types/constants/*.d.ts",
+      "import": "./constants/*.js"
     },
-    "./components/*": {
-      "types": "./types/components/*",
-      "import": "./components/*"
+    "./components/*.js": {
+      "types": "./types/components/*.d.ts",
+      "import": "./components/*.js"
     },
-    "./core/*": {
-      "types": "./types/core/*",
-      "import": "./core/*"
+    "./core/*.js": {
+      "types": "./types/core/*.d.ts",
+      "import": "./core/*.js"
     },
-    "./dom/*": {
-      "types": "./types/dom/*",
-      "import": "./dom/*"
+    "./dom/*.js": {
+      "types": "./types/dom/*.d.ts",
+      "import": "./dom/*.js"
     },
-    "./loaders/*": {
-      "types": "./types/loaders/*",
-      "import": "./loaders/*"
+    "./loaders/*.js": {
+      "types": "./types/loaders/*.d.ts",
+      "import": "./loaders/*.js"
     },
-    "./mixins/*": {
-      "types": "./types/mixins/*",
-      "import": "./mixins/*"
+    "./mixins/*.js": {
+      "types": "./types/mixins/*.d.ts",
+      "import": "./mixins/*.js"
     },
-    "./services/*": {
-      "types": "./types/services/*",
-      "import": "./services/*"
+    "./services/*.js": {
+      "types": "./types/services/*.d.ts",
+      "import": "./services/*.js"
     },
-    "./utils/*": {
-      "types": "./types/utils/*",
-      "import": "./utils/*"
+    "./utils/*.js": {
+      "types": "./types/utils/*.d.ts",
+      "import": "./utils/*.js"
     },
     ".": {
       "types": "./types/index.d.ts",
