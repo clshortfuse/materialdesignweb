@@ -196,7 +196,7 @@ function writeDynamicNode({ nodeStates, comments, nodes }, value) {
   const { commentIndex, nodeIndex } = this;
   const nodeState = nodeStates[nodeIndex];
   // eslint-disable-next-line no-bitwise
-  const hidden = nodeState & 0b0001;
+  const hidden = nodeState & 0b0001; // has hidden bit
   const show = value != null && value !== false;
   if (!show) {
     // Should be hidden
@@ -209,16 +209,26 @@ function writeDynamicNode({ nodeStates, comments, nodes }, value) {
     }
     nodes[nodeIndex].replaceWith(comment);
     // eslint-disable-next-line no-bitwise
-    nodeStates[nodeIndex] |= 0b0001;
+    nodeStates[nodeIndex] |= 0b0001; // set hidden bit
     return;
   }
   // Must be shown
   // Update node first (offscreen rendering)
   const node = nodes[nodeIndex];
   // eslint-disable-next-line no-bitwise
-  const isDynamicNode = nodeState & 0b0010;
+  const isDynamicNode = nodeState & 0b0010; // has dynamic-node bit (non-text)
 
-  if (typeof value === 'object') {
+  if (value instanceof Node) {
+    const DOCUMENT_FRAGMENT_NODE = 11; // Node.DOCUMENT_FRAGMENT_NODE
+    if (value.nodeType === DOCUMENT_FRAGMENT_NODE) {
+      console.warn('Dynamic nodes do not support DocumentFragment yet');
+    } else if (node !== value) {
+      node.replaceWith(value);
+      nodes[nodeIndex] = /** @type {Element} */ (value);
+    }
+    // eslint-disable-next-line no-bitwise
+    nodeStates[nodeIndex] |= 0b0010; // set dynamic-node bit
+  } else if (typeof value === 'object') {
     // Not string data, need to replace
     console.warn('Dynamic nodes not supported yet');
   } else if (isDynamicNode) {
@@ -226,7 +236,7 @@ function writeDynamicNode({ nodeStates, comments, nodes }, value) {
     node.replaceWith(textNode);
     nodes[nodeIndex] = textNode;
     // eslint-disable-next-line no-bitwise
-    nodeStates[nodeIndex] &= ~0b0010;
+    nodeStates[nodeIndex] &= ~0b0010; // unset dynamic-node bit
   } else {
     /** @type {Text} */ (node).data = value;
   }
@@ -237,7 +247,7 @@ function writeDynamicNode({ nodeStates, comments, nodes }, value) {
     const comment = comments[commentIndex];
     comment.replaceWith(node);
     // eslint-disable-next-line no-bitwise
-    nodeStates[nodeIndex] &= ~0b0001;
+    nodeStates[nodeIndex] &= ~0b0001; // unset hidden bit
   }
   // Done
 }
@@ -249,7 +259,7 @@ function writeDynamicNode({ nodeStates, comments, nodes }, value) {
 function writeDOMElementAttachedState({ nodeStates, nodes, comments }, value) {
   const { commentIndex, nodeIndex } = this;
   // eslint-disable-next-line no-bitwise
-  const hidden = nodeStates[nodeIndex] & 1;
+  const hidden = nodeStates[nodeIndex] & 1; // has hidden bit
   const show = value != null && value !== false;
   if (show === !hidden) return;
 
@@ -262,11 +272,11 @@ function writeDOMElementAttachedState({ nodeStates, nodes, comments }, value) {
   if (show) {
     comment.replaceWith(element);
     // eslint-disable-next-line no-bitwise
-    nodeStates[nodeIndex] &= ~0b0001;
+    nodeStates[nodeIndex] &= ~0b0001; // unset hidden bit
   } else {
     element.replaceWith(comment);
     // eslint-disable-next-line no-bitwise
-    nodeStates[nodeIndex] |= 0b0001;
+    nodeStates[nodeIndex] |= 0b0001; // set hidden bit
   }
 }
 
@@ -280,7 +290,7 @@ function writeDOMHideNodeOnInit({ comments, nodeStates, nodes }) {
   const comment = createEmptyComment();
   comments[commentIndex] = comment;
   // eslint-disable-next-line no-bitwise
-  nodeStates[nodeIndex] |= 1;
+  nodeStates[nodeIndex] |= 1; // set hidden bit
 
   nodes[nodeIndex].replaceWith(comment);
 }
@@ -589,7 +599,7 @@ export default class Composition {
     this.append(...parts);
   }
 
-  * [Symbol.iterator]() {
+  *[Symbol.iterator]() {
     for (const part of this.styles) {
       yield part;
     }
@@ -1020,7 +1030,7 @@ export default class Composition {
           expression = inlineFunctionOptions.fn;
           invocation = searchWithExpression;
           if (inlineFunctionOptions.props) {
-          // console.log('This function has already been called. Reuse props', inlineFunctionOptions, this);
+            // console.log('This function has already been called. Reuse props', inlineFunctionOptions, this);
             propsUsed = inlineFunctionOptions.props;
             deepPropsUsed = inlineFunctionOptions.deepProps;
             defaultValue = inlineFunctionOptions.defaultValue ?? null;
@@ -1040,7 +1050,7 @@ export default class Composition {
 
         if (!propsUsed) {
           if (typeof defaultValue === 'function') {
-          // Value must be reinterpolated and function observed
+            // Value must be reinterpolated and function observed
             const observeResult = observeFunction.call(this, defaultValue, options?.defaults, options?.injections);
             const uniqueProps = new Set([
               ...observeResult.props.this,
@@ -1056,9 +1066,9 @@ export default class Composition {
             propsUsed = [...uniqueProps];
             deepPropsUsed = [...uniqueDeepProps].map((deepPropString) => deepPropString.split('.'));
             invocation = searchWithExpression;
-          // console.log(this.static.name, fn.name || parsedValue, combinedSet);
+            // console.log(this.static.name, fn.name || parsedValue, combinedSet);
           } else {
-          // property binding
+            // property binding
             const parsedProps = parsedValue.split('.');
             if (parsedProps.length === 1) {
               prop = parsedValue;
@@ -1500,7 +1510,7 @@ export default class Composition {
           break;
         case Node.TEXT_NODE:
           element = node.parentElement;
-          if (this.#interpolateNode(/** @type {Text} */ (node), element, options)) {
+          if (this.#interpolateNode(/** @type {Text} */(node), element, options)) {
             const nextNode = treeWalker.nextNode();
             /** @type {Text} */ (node).remove();
             node = nextNode;
