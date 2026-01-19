@@ -316,7 +316,7 @@ describe('docs/core/state-array.md', () => {
     assert.equal(replacedButtons[1].textContent, 'row-1c');
   });
 
-  it('5.3.a Insert in the middle (current behavior replaces the index)', async () => {
+  it('5.3.a Insert in the middle (keeps existing rows)', async () => {
     const el = await createListElement('array-docs-insert-middle');
 
     el.data = [
@@ -330,10 +330,11 @@ describe('docs/core/state-array.md', () => {
     el.data = next;
 
     const buttons = [...el.shadowRoot.querySelectorAll('.row-btn')];
-    assert.equal(buttons.length, 3);
+    assert.equal(buttons.length, 4);
     assert.equal(buttons[0].textContent, 'row-0');
     assert.equal(buttons[1].textContent, 'row-new');
-    assert.equal(buttons[2].textContent, 'row-2');
+    assert.equal(buttons[2].textContent, 'row-1');
+    assert.equal(buttons[3].textContent, 'row-2');
   });
 
   it('5.3.b Remove from the middle', async () => {

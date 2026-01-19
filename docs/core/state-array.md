@@ -8,7 +8,7 @@ This document describes how array state changes are detected and rendered.
 - In-place mutations do not notify; call `render()` or `patch()` explicitly.
 - `render()` does not mutate state; `patch()` mutates state and renders.
 - Rendering is synchronous; no waiting is required.
-- Assigning the same array reference does not re-render.
+- Assigning the same array reference triggers a render; use it to force a re-render.
 - Reordering moves DOM nodes to match the new indices.
 
 ## 2.0 Assignment (`el.data = nextArray`)
@@ -17,7 +17,7 @@ This document describes how array state changes are detected and rendered.
 - Triggers a render for `data` automatically (synchronous).
 - Best for full replacement, reorders, or length changes.
 - In-place mutations (`el.data[1].title = 'x'`) do not notify.
-- Assigning the same array reference is a no-op for rendering.
+- Assigning the same array reference forces a re-render, but does not change the array value.
 - Reordering can move DOM nodes; do not assume index-stable DOM nodes after a reorder.
 
 ## 3.0 Patch (`el.patch({ data: change })`)
@@ -117,7 +117,7 @@ el.patch({ data: { 0: { title: 'row-0b' }, length: 1 } });
 
 ### 5.3 Render Examples
 
-#### 5.3.a Insert in the middle (current behavior replaces the index)
+#### 5.3.a Insert in the middle
 
 ```js
 const next = el.data.slice();
@@ -125,8 +125,6 @@ next.splice(1, 0, { title: 'row-new' });
 el.data = next;
 ```
 
-Note: Today this behaves like a replace at index `1` rather than a true insert.
-Use append + reorder if you need to keep all rows.
 
 #### 5.3.b Remove from the middle
 
@@ -160,10 +158,7 @@ el.render({ data: { 2: el.data[2] } });
 ## 8.0 Gotchas
 
 - In-place mutations are ignored unless followed by `render()` or `patch()`.
-- Assigning the same array reference does not trigger rendering.
 - `render()` updates the DOM only; it does not update `el.data`.
 - `patch()` updates `el.data` and renders, but array handling is object-merge.
 - Deleting an index via `null` does not remove the DOM row; use `length` to truncate.
-- Inserting into the middle currently replaces the row at that index instead of inserting.
-- Reordering moves DOM nodes; if you need stable DOM nodes, avoid reordering.
 - Length-only patching of nested arrays (e.g. `{ items: { 1: { tags: { length: 1 } } } }`) does not trim nested `mdw-for` loops; replace the nested array to remove rows.
