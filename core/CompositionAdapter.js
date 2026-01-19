@@ -61,9 +61,10 @@ function moveNode(node, beforeNode, parentNode) {
 
 // @ts-expect-error Bad typings
 const hasMoveBefore = typeof Element.prototype.moveBefore === 'function';
-/** @type {(node: Element|Comment, beforeNode: ChildNode, parentNode: ParentNode) => void} */
+/** @type {(node: Element|Comment, beforeNode: ChildNode, parentNode: Node) => void} */
 const moveBeforeNode = hasMoveBefore
   ? (node, beforeNode, parentNode) => {
+    // @ts-ignore Bad typings
     parentNode.moveBefore(node, beforeNode);
   }
   : moveNode;
