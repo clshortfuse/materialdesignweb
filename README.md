@@ -72,7 +72,7 @@ Notes:
 
 ## Documentation
 
-Material Design Web (MDW) is components-first. If you just want to build UI, start with the component docs and use HTML only — no JavaScript required.
+Material Design Web (MDW) is components-first. If you just want to build a UI, start with the component docs and use HTML only — no custom JavaScript required.
 
 ### 1) Use the components
 - [Getting started](docs/components/getting-started.md)
