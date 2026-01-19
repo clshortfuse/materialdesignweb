@@ -598,7 +598,7 @@ export default class Composition {
     this.append(...parts);
   }
 
-  *[Symbol.iterator]() {
+  * [Symbol.iterator]() {
     for (const part of this.styles) {
       yield part;
     }
