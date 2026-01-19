@@ -1,5 +1,4 @@
 import { assert } from '@esm-bundle/chai';
-
 import CustomElement from '../../core/CustomElement.js';
 
 describe('mdw-for with element nodes', () => {
@@ -9,10 +8,13 @@ describe('mdw-for with element nodes', () => {
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
+    // Enable mdw-for debug logs for this suite.
+    globalThis.__MDW_FOR_DEBUG__ = true;
   });
 
   afterEach(() => {
     container.remove();
+    delete globalThis.__MDW_FOR_DEBUG__;
   });
 
   it('renders element nodes inside mdw-for rows', async () => {
@@ -278,4 +280,253 @@ describe('mdw-for with element nodes', () => {
 
     assert.equal(current.firstElementChild, node);
   });
+
+  it('does not crash when parent array size changes', async () => {
+    const PageBases = CustomElement.extend()
+      .observe({
+        dataArray: { type: 'array', value: [] },
+        useFilter: { type: 'boolean', value: false },
+        filteredData({ dataArray, useFilter }) {
+          if (!useFilter) {
+            return dataArray;
+          }
+          return dataArray.filter((item) => !item.siblingProperty);
+        },
+      })
+      .on({
+        connected() {
+          this.dataArray = [
+            {
+              siblingProperty: true,
+              subArray: [],
+            },
+            { subArray: [] },
+            { subArray: [] },
+          ];
+        },
+      })
+      .html`
+        <div mdw-for="{item of filteredData}">
+          <div mdw-for="{subItem of item.subArray}"></div>
+        </div>
+      `
+      .autoRegister('page-bases-test');
+
+    container.innerHTML = '<page-bases-test></page-bases-test>';
+
+    await customElements.whenDefined('page-bases-test');
+
+    /** @type {InstanceType<PageBases>} */
+    const instance = container.querySelector('page-bases-test');
+
+    instance.useFilter = true;
+
+
+    assert(!instance.error, 'No error occurred during filter toggle');
+
+  });
+
+  it('rebuilds nested mdw-for when filteredData shrinks and expands', async () => {
+    const NestedList = CustomElement
+      .extend()
+      .observe({
+        dataArray: { type: 'array', value: [] },
+        useFilter: { type: 'boolean', value: false },
+        filteredData({ dataArray, useFilter }) {
+          if (!useFilter) return dataArray;
+          return dataArray.filter((item) => !item.siblingProperty);
+        },
+      })
+      .methods({
+        async loadData() {
+          this.dataArray = [
+            { siblingProperty: true, subArray: [{}] },
+            { subArray: [] },
+          ];
+        },
+      })
+      .on({
+        connected() {
+          this.loadData();
+        },
+      })
+      .html`
+        <div>
+          <div mdw-for="{item of filteredData}" class="item">
+            <div mdw-for="{subItem of item.subArray}" class="subitem"></div>
+          </div>
+        </div>
+      `
+      .register('nested-list-test');
+
+    container.innerHTML = '<nested-list-test></nested-list-test>';
+    await customElements.whenDefined('nested-list-test');
+
+    /** @type {InstanceType<NestedList>} */
+    const instance = container.querySelector('nested-list-test');
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    const countSubitems = () => instance.shadowRoot.querySelectorAll('.subitem').length;
+    const countItems = () => instance.shadowRoot.querySelectorAll('.item').length;
+
+    assert.equal(countItems(), 2, 'initial item count');
+    assert.equal(countSubitems(), 1, 'initial subitem count');
+
+    instance.useFilter = true;
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    assert.equal(countItems(), 1, 'filtered item count');
+    assert.equal(countSubitems(), 0, 'filtered subitem count');
+
+    instance.useFilter = false;
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    assert.equal(countItems(), 2, 'restored item count');
+    assert.equal(countSubitems(), 1, 'restored subitem count');
+  });
+
+  it('does not duplicate nested nodes after clearing and restoring dataArray', async () => {
+    const ResetList = CustomElement
+      .extend()
+      .observe({
+        dataArray: { type: 'array', value: [] },
+      })
+      .methods({
+        async loadData() {
+          this.dataArray = [
+            { subArray: [{}] },
+            { subArray: [] },
+          ];
+        },
+      })
+      .on({
+        connected() {
+          this.loadData();
+        },
+      })
+      .html`
+        <div>
+          <div mdw-for="{item of dataArray}" class="item">
+            <div mdw-for="{subItem of item.subArray}" class="subitem"></div>
+          </div>
+        </div>
+      `
+      .register('reset-list-test');
+
+    container.innerHTML = '<reset-list-test></reset-list-test>';
+    await customElements.whenDefined('reset-list-test');
+
+    /** @type {InstanceType<ResetList>} */
+    const instance = container.querySelector('reset-list-test');
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+    assert.equal(instance.shadowRoot.querySelectorAll('.subitem').length, 1, 'initial subitem count');
+
+    instance.dataArray = [];
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+    assert.equal(instance.shadowRoot.querySelectorAll('.subitem').length, 0, 'cleared subitem count');
+
+    instance.dataArray = [
+      { subArray: [{}] },
+      { subArray: [] },
+    ];
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+    assert.equal(instance.shadowRoot.querySelectorAll('.subitem').length, 1, 'restored subitem count');
+  });
+
+  it('remains stable under repeated filter toggles with mixed subArray lengths', async () => {
+    const FlakyList = CustomElement
+      .extend()
+      .observe({
+        dataArray: { type: 'array', value: [] },
+        useFilter: { type: 'boolean', value: false },
+        filteredData({ dataArray, useFilter }) {
+          if (!useFilter) return dataArray;
+          return dataArray.filter((item) => !item.siblingProperty);
+        },
+      })
+      .methods({
+        async loadData() {
+          this.dataArray = [
+            { siblingProperty: true, subArray: [{}] },
+            { subArray: [] },
+            { subArray: [] },
+          ];
+        },
+      })
+      .on({
+        connected() {
+          this.loadData();
+        },
+      })
+      .html`
+        <div>
+          <div mdw-for="{item of filteredData}" class="item">
+            <div mdw-for="{subItem of item.subArray}" class="subitem"></div>
+          </div>
+        </div>
+      `
+      .register('flaky-list-test');
+
+    container.innerHTML = '<flaky-list-test></flaky-list-test>';
+    await customElements.whenDefined('flaky-list-test');
+
+    /** @type {InstanceType<FlakyList>} */
+    const instance = container.querySelector('flaky-list-test');
+
+    const countSubitems = () => instance.shadowRoot.querySelectorAll('.subitem').length;
+    const countItems = () => instance.shadowRoot.querySelectorAll('.item').length;
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+    assert.equal(countItems(), 3, 'initial item count');
+    assert.equal(countSubitems(), 1, 'initial subitem count');
+
+    for (let i = 0; i < 5; i += 1) {
+      instance.useFilter = !instance.useFilter;
+      const expectedItems = instance.useFilter ? 2 : 3;
+      const expectedSubitems = instance.useFilter ? 0 : 1;
+      assert.equal(countItems(), expectedItems, `item count after toggle ${i + 1}`);
+      assert.equal(countSubitems(), expectedSubitems, `subitem count after toggle ${i + 1}`);
+    }
+  });
+
+  it('clears nested adapters when a cached row is reinserted', async () => {
+    const CachedRow = CustomElement
+      .extend()
+      .observe({
+        items: { type: 'array', value: [] },
+      })
+      .html`
+        <div>
+          <div mdw-for="{item of items}" class="item">
+            <div mdw-for="{subItem of item.subArray}" class="subitem"></div>
+          </div>
+        </div>
+      `
+      .register('cached-row-test');
+
+    container.innerHTML = '<cached-row-test></cached-row-test>';
+    await customElements.whenDefined('cached-row-test');
+
+    /** @type {InstanceType<CachedRow>} */
+    const instance = container.querySelector('cached-row-test');
+
+    const itemA = { id: 'a', subArray: [{}] };
+    const itemB = { id: 'b', subArray: [] };
+    const itemC = { id: 'c', subArray: [] };
+    const itemX = { id: 'x', subArray: [] };
+
+    instance.items = [itemA, itemB, itemC];
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+    assert.equal(instance.shadowRoot.querySelectorAll('.subitem').length, 1, 'initial subitem count');
+
+    itemA.subArray = [];
+    instance.patch({ items: [itemX, itemB, itemA] });
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+    assert.equal(instance.shadowRoot.querySelectorAll('.subitem').length, 0, 'subitems cleared after cached reinsert');
+  });
+
 });
