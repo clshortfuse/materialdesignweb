@@ -47,19 +47,26 @@ function restoreFocus(focused) {
 /**
  *  @param {Element|Comment} node
  *  @param {ChildNode} beforeNode
+ *  @param {ParentNode} parentNode
  */
-function moveNode(node, beforeNode) {
+function moveNode(node, beforeNode, parentNode) {
   const focused = captureFocus(node);
   if (beforeNode) {
     beforeNode.before(node);
   } else {
-    node.parentNode?.append(node);
+    parentNode.append(node);
   }
   restoreFocus(focused);
 }
 
 // @ts-expect-error Bad typings
 const hasMoveBefore = typeof Element.prototype.moveBefore === 'function';
+/** @type {(node: Element|Comment, beforeNode: ChildNode, parentNode: ParentNode) => void} */
+const moveBeforeNode = hasMoveBefore
+  ? (node, beforeNode, parentNode) => {
+    parentNode.moveBefore(node, beforeNode);
+  }
+  : moveNode;
 
 /** @template T */
 export default class CompositionAdapter {
@@ -137,11 +144,14 @@ export default class CompositionAdapter {
   }
 
   /** @param {number} index */
-  removeByIndex(index) {
+  moveToEndByIndex(index) {
     const [metadata] = this.metadata.splice(index, 1);
     const { domNode, key } = metadata;
     this.keys.splice(index, 1);
-    domNode.remove();
+    const removalContainer = domNode.parentNode;
+    if (removalContainer) {
+      moveNode(domNode, null, removalContainer);
+    }
 
     // Don't release in case we may need it later
     if (this.metadataCache) {
@@ -213,8 +223,8 @@ export default class CompositionAdapter {
           this.metadata.splice(newIndex, 0, previousMetadata);
           this.keys.splice(newIndex, 0, key);
 
-          const previousSibling = this.metadata[newIndex - 1]?.domNode ?? this.anchorNode;
-          previousSibling.after(previousMetadata.domNode);
+          moveBeforeNode(previousMetadata.domNode, metadataAtIndex.domNode, metadataAtIndex.domNode.parentNode);
+          previousMetadata.render(changes, data);
           metadataCache.delete(key);
           return;
         }
@@ -233,11 +243,11 @@ export default class CompositionAdapter {
         // console.warn('Found key for', newIndex, '@', oldIndex);
         // console.warn('swapping', newIndex, '<=>', oldIndex);
         if ((newIndex - oldIndex) === -1) {
-          // (Optimistic removal)
-          // If element should be one step sooner, remove instead to shift up.
+          // (Optimistic move-to-end)
+          // If element should be one step sooner, move current to end to shift up.
           // If should have been swap, will correct itself next step.
-          // console.warn('Removing', newIndex, 'instead');
-          this.removeByIndex(newIndex);
+          // console.warn('Moving', newIndex, 'to end instead');
+          this.moveToEndByIndex(newIndex);
           return;
         }
         // Swap with other element
@@ -256,18 +266,9 @@ export default class CompositionAdapter {
 
         const removalContainer = domNodeToRemove.parentNode;
         const correctNext = correctMetadata.domNode.nextSibling;
-        if (hasMoveBefore) {
-          // @ts-expect-error Bad typings
-          removalContainer.moveBefore(correctMetadata.domNode, domNodeToRemove);
-          if (correctNext) {
-            // @ts-expect-error Bad typings
-            removalContainer.moveBefore(domNodeToRemove, correctNext);
-          }
-        } else {
-          moveNode(correctMetadata.domNode, domNodeToRemove);
-          if (correctNext) {
-            moveNode(domNodeToRemove, correctNext);
-          }
+        moveBeforeNode(correctMetadata.domNode, domNodeToRemove, removalContainer);
+        if (correctNext) {
+          moveBeforeNode(domNodeToRemove, correctNext, removalContainer);
         }
 
         if (!skipOnMatch) {

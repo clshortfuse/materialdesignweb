@@ -28,7 +28,6 @@ import { generateUID } from './uid.js';
  * @prop {ShadowRoot} [shadowRoot] where
  * @prop {any} [context] `this` on callbacks/events
  * @prop {any} [injections]
- * @prop {number} [iterationIndex]
  */
 
 /**
@@ -374,7 +373,7 @@ function searchWithProp(state, changes) {
 function searchWithDeepProp(state, changes, data) {
   let scope = changes;
   for (const prop of this.deepProp) {
-    if (scope === null) return null;
+    if (scope == null) return scope;
     if (prop in scope === false) return undefined;
     scope = scope[prop];
   }
@@ -399,7 +398,7 @@ function searchWithDeepProp(state, changes, data) {
  * @prop {HTMLElement[]} refs
  * @prop {number} lastChildNodeIndex
  * @prop {RenderOptions<?>} options
- * @prop {CompositionAdapter<any>[][]} adapters
+ * @prop {CompositionAdapter<any>[]} adapters
  */
 
 /** Splits: `{template}text{template}` as `['', 'template', 'text', 'template', '']` */
@@ -1331,10 +1330,8 @@ export default class Composition {
       injections,
       invocation(state, value, changes, data) {
         // Optimistic get
-        let adaptersArray = state.adapters[this.adapterIndex];
-        const iterationIndex = state.options.iterationIndex ?? 0;
-        let adapter;
-        if (!adaptersArray || (!(adapter = adaptersArray[iterationIndex]))) {
+        let adapter = state.adapters[this.adapterIndex];
+        if (!adapter) {
           const instanceAnchorElement = state.nodes[this.nodeIndex];
           const anchorNode = createEmptyComment();
 
@@ -1358,9 +1355,7 @@ export default class Composition {
             },
           });
 
-          // eslint-disable-next-line no-multi-assign
-          adaptersArray = ((state.adapters[this.adapterIndex] ??= []));
-          adaptersArray[iterationIndex] = adapter;
+          state.adapters[this.adapterIndex] = adapter;
         }
 
         const currentInjections = state.options.injections ?? this.injections;
@@ -1403,7 +1398,6 @@ export default class Composition {
             currentInjections[valueName] = resource;
             currentInjections.index = index;
             adapter.renderOptions.injections = currentInjections;
-            adapter.renderOptions.iterationIndex = index;
             adapter.renderData(index, innerChanges, data, resource, change);
           }
         } else {
@@ -1429,7 +1423,6 @@ export default class Composition {
             currentInjections[valueName] = resource;
             currentInjections.index = index;
             adapter.renderOptions.injections = currentInjections;
-            adapter.renderOptions.iterationIndex = index;
             adapter.renderData(index, innerChanges, data, resource, change);
             // adapter.renderIndex(index, innerChanges, data, resource);
           }
