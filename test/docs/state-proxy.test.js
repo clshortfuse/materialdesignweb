@@ -132,4 +132,121 @@ describe('docs/core/state-proxy.md', () => {
     el.state.user.name = 'Bea';
     assert.equal(el.shadowRoot.querySelector('.name').textContent, 'Ada');
   });
+
+  it('9.0 Filtering: basic mdw-if on proxy rows', async () => {
+    const ProxyIfBasic = CustomElement
+      .extend()
+      .observe({
+        rows: { type: 'proxy', value: [] },
+        showBeta: 'boolean',
+      })
+      .expressions({
+        rowMatches({ showBeta }, { row }) {
+          if (!row?.child) return false;
+          return showBeta ? row.child.option === 'beta' : row.child.option === 'alpha';
+        },
+      })
+      .html`
+        <div>
+          <div mdw-for="{row of rows}" class="row">
+            <span class="label" mdw-if={rowMatches}>{row.label}</span>
+            <span class="flag" mdw-if={row.show}>flag</span>
+          </div>
+        </div>
+      `
+      .register('proxy-doc-if-basic');
+
+    container.innerHTML = '<proxy-doc-if-basic></proxy-doc-if-basic>';
+    await customElements.whenDefined('proxy-doc-if-basic');
+
+    /** @type {InstanceType<ProxyIfBasic>} */
+    const el = container.querySelector('proxy-doc-if-basic');
+
+    el.rows.push(
+      { label: 'One', show: true, child: { option: 'alpha' } },
+      { label: 'Two', show: false, child: { option: 'beta' } },
+      { label: 'Three', show: true, child: { option: 'alpha' } },
+    );
+
+    // Default showBeta=false -> match alpha rows
+    let labels = el.shadowRoot.querySelectorAll('.label');
+    assert.equal(labels.length, 2);
+    assert.equal(labels[0].textContent, 'One');
+    assert.equal(labels[1].textContent, 'Three');
+
+    // Toggle row flag via proxy
+    let flags = el.shadowRoot.querySelectorAll('.flag');
+    assert.equal(flags.length, 2);
+    el.rows[0].show = false;
+    flags = el.shadowRoot.querySelectorAll('.flag');
+    assert.equal(flags.length, 1);
+
+    // Switch to beta
+    el.showBeta = true;
+    el.rows[1].child.option = 'beta';
+    labels = el.shadowRoot.querySelectorAll('.label');
+    assert.equal(labels.length, 1);
+    assert.equal(labels[0].textContent, 'Two');
+
+    // Switch back to alpha
+    el.showBeta = false;
+    el.rows[1].child.option = 'alpha';
+    labels = el.shadowRoot.querySelectorAll('.label');
+    assert.equal(labels.length, 3);
+  });
+
+  it('9.0 Filtering: nested mdw-if on proxy children', async () => {
+    const ProxyIfNested = CustomElement
+      .extend()
+      .observe({
+        rows: { type: 'proxy', value: [] },
+        activeFilter: { type: 'string', value: 'all' },
+      })
+      .expressions({
+        childMatches({ activeFilter }, { child }) {
+          return activeFilter === 'all' || child.type === activeFilter;
+        },
+      })
+      .html`
+        <div>
+          <div mdw-for="{row of rows}" class="row">
+            <span class="row-label">{row.label}</span>
+            <div mdw-for="{child of row.children}" mdw-if={childMatches} class="child">{child.label}</div>
+          </div>
+        </div>
+      `
+      .register('proxy-doc-if-nested');
+
+    container.innerHTML = '<proxy-doc-if-nested></proxy-doc-if-nested>';
+    await customElements.whenDefined('proxy-doc-if-nested');
+
+    /** @type {InstanceType<ProxyIfNested>} */
+    const el = container.querySelector('proxy-doc-if-nested');
+
+    el.rows.push({
+      label: 'Row',
+      children: [
+        { label: 'A', type: 'alpha' },
+        { label: 'B', type: 'beta' },
+        { label: 'C', type: 'alpha' },
+      ],
+    });
+
+    // all -> all children visible
+    let children = el.shadowRoot.querySelectorAll('.child');
+    assert.equal(children.length, 3);
+
+    // filter beta
+    el.activeFilter = 'beta';
+    children = el.shadowRoot.querySelectorAll('.child');
+    assert.equal(children.length, 1);
+    assert.equal(children[0].textContent.trim(), 'B');
+
+    // filter alpha
+    el.activeFilter = 'alpha';
+    children = el.shadowRoot.querySelectorAll('.child');
+    assert.equal(children.length, 2);
+    assert.equal(children[0].textContent.trim(), 'A');
+    assert.equal(children[1].textContent.trim(), 'C');
+  });
 });

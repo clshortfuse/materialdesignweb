@@ -134,4 +134,234 @@ describe('proxy observable properties', () => {
     assert.equal(items[1].textContent, 'C');
   });
 
+  it('filters proxy rows by child option and toggles mdw-if', async () => {
+    const ProxyFilter = CustomElement
+      .extend()
+      .observe({
+        rows: {
+          type: 'proxy',
+          value: [],
+        },
+        showBeta: 'boolean',
+      })
+      .expressions({
+        rowMatches({ showBeta }, { row }) {
+          if (!row?.child) return false;
+          return showBeta ? row.child.option === 'beta' : row.child.option === 'alpha';
+        },
+      })
+      .html`
+        <div>
+          <div mdw-for="{row of rows}" class="row">
+            <span class="label" mdw-if={rowMatches}>{row.label}</span>
+            <span class="flag" mdw-if={row.show}>flag</span>
+          </div>
+        </div>
+      `
+      .register('proxy-filter-test');
+
+    container.innerHTML = '<proxy-filter-test></proxy-filter-test>';
+    await customElements.whenDefined('proxy-filter-test');
+
+    /** @type {InstanceType<ProxyFilter>} */
+    const el = container.querySelector('proxy-filter-test');
+
+    el.rows.push(
+      { label: 'One', show: true, child: { option: 'alpha' } },
+      { label: 'Two', show: false, child: { option: 'beta' } },
+      { label: 'Three', show: true, child: { option: 'alpha' } },
+    );
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    let labels = el.shadowRoot.querySelectorAll('.label');
+    assert.equal(labels.length, 2);
+    assert.equal(labels[0].textContent, 'One');
+    assert.equal(labels[1].textContent, 'Three');
+
+    let flags = el.shadowRoot.querySelectorAll('.flag');
+    assert.equal(flags.length, 2);
+
+    el.rows[0].show = false;
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    flags = el.shadowRoot.querySelectorAll('.flag');
+    assert.equal(flags.length, 1);
+
+    el.showBeta = true;
+    el.rows[1].child.option = 'beta';
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    labels = el.shadowRoot.querySelectorAll('.label');
+    assert.equal(labels.length, 1);
+    assert.equal(labels[0].textContent, 'Two');
+
+    el.showBeta = false;
+    el.rows[1].child.option = 'alpha';
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    labels = el.shadowRoot.querySelectorAll('.label');
+    assert.equal(labels.length, 3);
+    assert.equal(labels[0].textContent, 'One');
+    assert.equal(labels[1].textContent, 'Two');
+    assert.equal(labels[2].textContent, 'Three');
+  });
+
+  it('filters nested rows with proxy flags only', async () => {
+    const ProxyNestedFilter = CustomElement
+      .extend()
+      .observe({
+        rows: {
+          type: 'proxy',
+          value: [],
+        },
+        showBeta: 'boolean',
+      })
+      .html`
+        <div>
+          <div mdw-for="{row of rows}" class="row">
+            <span class="label">{row.label}</span>
+            <div mdw-for="{child of row.children}" class="child">
+              {child.label}
+            </div>
+          </div>
+        </div>
+      `
+      .register('proxy-nested-filter-test');
+
+    container.innerHTML = '<proxy-nested-filter-test></proxy-nested-filter-test>';
+    await customElements.whenDefined('proxy-nested-filter-test');
+
+    /** @type {InstanceType<ProxyNestedFilter>} */
+    const el = container.querySelector('proxy-nested-filter-test');
+
+    const rowAChildren = [
+      { label: 'A1', option: 'alpha' },
+      { label: 'A2', option: 'beta' },
+    ];
+    const rowBChildren = [
+      { label: 'B1', option: 'beta' },
+      { label: 'B2', option: 'alpha' },
+    ];
+
+    const rowA = {
+      label: 'Row A',
+      child: { option: 'alpha' },
+      children: [...rowAChildren],
+    };
+    const rowB = {
+      label: 'Row B',
+      child: { option: 'beta' },
+      children: [...rowBChildren],
+    };
+
+    el.rows.push(rowA, rowB);
+
+    const applyFilter = (showBeta) => {
+      el.showBeta = showBeta;
+      const target = showBeta ? rowB : rowA;
+      const sourceChildren = showBeta ? rowBChildren : rowAChildren;
+      const option = showBeta ? 'beta' : 'alpha';
+      const filteredChildren = sourceChildren.filter((child) => child.option === option);
+      target.children = filteredChildren;
+      el.rows.splice(0, el.rows.length, target);
+    };
+
+    applyFilter(false);
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    let labels = el.shadowRoot.querySelectorAll('.label');
+    let children = el.shadowRoot.querySelectorAll('.child');
+    assert.equal(labels.length, 1);
+    assert.equal(children.length, 1);
+    assert.equal(labels[0].textContent, 'Row A');
+    assert.equal(children[0].textContent.trim(), 'A1');
+
+    applyFilter(true);
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    labels = el.shadowRoot.querySelectorAll('.label');
+    children = el.shadowRoot.querySelectorAll('.child');
+    assert.equal(labels.length, 1);
+    assert.equal(children.length, 1);
+    assert.equal(labels[0].textContent, 'Row B');
+    assert.equal(children[0].textContent.trim(), 'B1');
+
+    applyFilter(false);
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    labels = el.shadowRoot.querySelectorAll('.label');
+    children = el.shadowRoot.querySelectorAll('.child');
+    assert.equal(labels.length, 1);
+    assert.equal(children.length, 1);
+    assert.equal(labels[0].textContent, 'Row A');
+    assert.equal(children[0].textContent.trim(), 'A1');
+  });
+
+  it('re-renders nested mdw-if when only host prop changes', async () => {
+    const ProxyNestedPropFilter = CustomElement
+      .extend()
+      .observe({
+        rows: {
+          type: 'proxy',
+          value: [],
+        },
+        showBeta: 'boolean',
+      })
+      .html`
+        <div>
+          <div mdw-for="{row of rows}" class="row">
+            <span class="beta-attr" data-beta={showBeta}>{showBeta}</span>
+            <div mdw-for="{child of row.children}" class="child" mdw-if={showBeta}>
+              {child.label}
+            </div>
+          </div>
+        </div>
+      `
+      .register('proxy-nested-prop-filter-test');
+
+    container.innerHTML = '<proxy-nested-prop-filter-test></proxy-nested-prop-filter-test>';
+    await customElements.whenDefined('proxy-nested-prop-filter-test');
+
+    /** @type {InstanceType<ProxyNestedPropFilter>} */
+    const el = container.querySelector('proxy-nested-prop-filter-test');
+    assert.include(el.composition.props, 'showBeta');
+
+    el.showBeta = true;
+    el.rows.push({
+      label: 'Row A',
+      children: [
+        { label: 'A1' },
+        { label: 'A2' },
+      ],
+    });
+
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    let children = el.shadowRoot.querySelectorAll('.child');
+    let betaAttrs = el.shadowRoot.querySelectorAll('.beta-attr');
+    assert.equal(children.length, 2);
+    assert.equal(children[0].textContent.trim(), 'A1');
+    assert.equal(children[1].textContent.trim(), 'A2');
+    assert.equal(betaAttrs.length, 1);
+    assert.equal(betaAttrs[0].getAttribute('data-beta'), '');
+    assert.equal(betaAttrs[0].textContent.trim(), 'true');
+
+    const adapter = el.render.state.adapters[0];
+    assert.include(adapter.composition.props, 'showBeta');
+
+    el.showBeta = false;
+    await new Promise((resolve) => { setTimeout(resolve, 50); });
+
+    children = el.shadowRoot.querySelectorAll('.child');
+    betaAttrs = el.shadowRoot.querySelectorAll('.beta-attr');
+    assert.equal(children.length, 0);
+    assert.equal(betaAttrs.length, 1);
+    assert.equal(betaAttrs[0].getAttribute('data-beta'), null);
+    assert.equal(betaAttrs[0].textContent.trim(), '');
+  });
+
 });

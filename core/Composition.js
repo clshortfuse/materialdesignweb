@@ -1344,6 +1344,9 @@ export default class Composition {
 
           // @ts-ignore DocumentFragment in documents can be replaced (bad typings)
           instanceAnchorElement.replaceWith(anchorNode);
+          // Store parent props that nested composition needs
+          const parentProps = newComposition.props.filter((p) => p !== valueName && p !== iterableName);
+
           adapter = new CompositionAdapter({
             anchorNode,
             composition: newComposition,
@@ -1353,6 +1356,7 @@ export default class Composition {
               store: state.options.store,
               injections: this.injections,
             },
+            parentProps,
           });
 
           state.adapters[this.adapterIndex] = adapter;
@@ -1375,11 +1379,12 @@ export default class Composition {
         const changeList = iterableDeepProp
           ? deepPropFromObject(iterableDeepProp, changes)
           : changes[iterableName];
+        const needTargetAll = newComposition.props
+          .some((prop) => prop !== valueName && prop !== iterableName && prop in changes);
 
-        if (changeList === undefined) return;
+        if (changeList === undefined && !needTargetAll) return;
 
         const innerChanges = { ...changes };
-        const needTargetAll = newComposition.props.some((prop) => prop !== iterableName && prop in changes);
 
         adapter.startBatch();
         let isArray;
@@ -1398,7 +1403,7 @@ export default class Composition {
             currentInjections[valueName] = resource;
             currentInjections.index = index;
             adapter.renderOptions.injections = currentInjections;
-            adapter.renderData(index, innerChanges, data, resource, change);
+            adapter.renderData(index, innerChanges, source, resource, change);
           }
         } else {
           if (!changeList) {
@@ -1423,7 +1428,7 @@ export default class Composition {
             currentInjections[valueName] = resource;
             currentInjections.index = index;
             adapter.renderOptions.injections = currentInjections;
-            adapter.renderData(index, innerChanges, data, resource, change);
+            adapter.renderData(index, innerChanges, source, resource, change);
             // adapter.renderIndex(index, innerChanges, data, resource);
           }
         }

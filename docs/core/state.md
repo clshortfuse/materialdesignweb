@@ -207,6 +207,23 @@ Notes:
 - Nested loops are supported (`mdw-for` inside another `mdw-for`).
 - Multiple separate loops in one template are supported.
 
+### Filtering Lists
+
+Use computed properties to filter arrays dynamically:
+
+```js
+.observe({
+  items: { type: 'array', value: [] },
+  showActive: { type: 'boolean', value: true },
+  filteredItems({ items, showActive }) {
+    return showActive ? items.filter(item => item.active) : items;
+  },
+})
+.html`<div mdw-for="{item of filteredItems}">{item.name}</div>`
+```
+
+When filter criteria change, the computed property recalculates and the loop updates automatically. This pattern works with nested loops and proxy stores.
+
 For array mutation details, see [state-array.md](state-array.md).
 
 ## CSS State Reactions

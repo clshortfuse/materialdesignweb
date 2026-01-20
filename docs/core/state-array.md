@@ -16,7 +16,7 @@ This document describes how array state changes are detected and rendered.
 - Replaces the array value on the component.
 - Triggers a render for `data` automatically (synchronous).
 - Best for full replacement, reorders, or length changes.
-- In-place mutations (`el.data[1].title = 'x'`) do not notify.
+- Deep mutations (`el.data[1].title = 'x'`) do not trigger render.
 - Assigning the same array reference forces a re-render, but does not change the array value.
 - Reordering can move DOM nodes; do not assume index-stable DOM nodes after a reorder.
 
@@ -38,6 +38,13 @@ This document describes how array state changes are detected and rendered.
   - Partial index map: `el.render({ data: { 1: el.data[1] } })`
 - If the array length changes, also update `el.data` so the iterable uses the new length.
 - Rendering a partial index does not change array length.
+
+### 4.1 What “render” actually does
+
+- A “render” is an evaluation pass over the relevant bindings. It is not a cache miss by itself.
+- Even a full re-render is backed by internal caches (text/attr/node states). If values don’t change, no DOM writes occur.
+- “Full re-render” means re-evaluate all rows and bindings; it does not necessarily mean any nodes are created/removed/updated.
+- DOM is only touched when the newly evaluated values differ from the cached ones.
 
 ## 5.0 Examples
 
@@ -154,6 +161,102 @@ el.data = [el.data[2], el.data[1], el.data[0]];
 el.data[2].title = 'Updated';
 el.render({ data: { 2: el.data[2] } });
 ```
+
+## 6.0 Filtering Arrays
+
+Filtering arrays is a common pattern for toggling visibility of list items. Use computed properties to derive filtered arrays from source data.
+
+### 6.1 Basic Filtering
+
+Create a computed property that returns the filtered array:
+
+```js
+CustomElement
+  .extend()
+  .observe({
+    items: { type: 'array', value: [] },
+    showActive: { type: 'boolean', value: true },
+    filteredItems({ items, showActive }) {
+      if (!showActive) return items;
+      return items.filter(item => item.active);
+    },
+  })
+  .html`
+    <div mdw-for="{item of filteredItems}">
+      {item.name}
+    </div>
+  `
+```
+
+When `showActive` or `items` changes, `filteredItems` automatically recomputes and the `mdw-for` loop updates.
+
+### 6.2 Nested Filtering
+
+For nested `mdw-for` loops with filtering, the parent context is automatically available:
+
+```js
+CustomElement
+  .extend()
+  .observe({
+    dataArray: { type: 'array', value: [] },
+    useFilter: { type: 'boolean', value: false },
+    filteredData({ dataArray, useFilter }) {
+      if (!useFilter) return dataArray;
+      return dataArray.filter(item => !item.hidden);
+    },
+  })
+  .html`
+    <div mdw-for="{item of filteredData}" class="item">
+      <div mdw-for="{subItem of item.subArray}" class="subitem">
+        {subItem.label}
+      </div>
+    </div>
+  `
+```
+
+**Key behaviors:**
+- Nested `mdw-for` correctly rebuilds when parent array shrinks/expands
+- Parent context (`item`) is properly passed through filtering
+- Toggling filters multiple times works reliably
+
+**Note:** For proxy store filtering patterns, see [state-proxy.md](state-proxy.md#90-filtering-arrays-in-proxy-stores).
+
+### 6.3 Multiple Filter Criteria
+
+Combine multiple filters in computed properties:
+
+```js
+.observe({
+  items: { type: 'array', value: [] },
+  searchText: { type: 'string', value: '' },
+  category: { type: 'string', value: 'all' },
+  showInactive: { type: 'boolean', value: false },
+  
+  filteredItems({ items, searchText, category, showInactive }) {
+    return items.filter(item => {
+      // Active filter
+      if (!showInactive && !item.active) return false;
+      
+      // Category filter
+      if (category !== 'all' && item.category !== category) return false;
+      
+      // Search filter
+      if (searchText && !item.name.toLowerCase().includes(searchText.toLowerCase())) {
+        return false;
+      }
+      
+      return true;
+    });
+  },
+})
+```
+
+### 7.0 Performance Considerations
+
+- Array assignments always trigger a render, even if you assign the same reference. Avoid assigning when nothing changed.
+- Prefer targeted updates: mutate a row and call `render({ data: { index: row } })` instead of replacing the whole array.
+- For filtering, use a computed property bound to `mdw-for` (as shown above) and only update filter criteria; do not reassign the base array on every toggle.
+- Keep object identity stable when possible. Reordering with the same object references allows the renderer to move existing DOM nodes instead of recreating them.
 
 ## 8.0 Gotchas
 

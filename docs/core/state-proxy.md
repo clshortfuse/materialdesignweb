@@ -110,7 +110,119 @@ Proxy is a convenience layer. The core rendering model is still patch-based:
 Both paths use the same renderer. Proxy just generates the patch for you.
 If performance is critical, prefer manual patching.
 
-## 9.0 Gotchas
+## 9.0 Filtering Arrays in Proxy Stores
+
+When using proxy stores with `mdw-for` loops, use `mdw-if` to toggle visibility of items instead of creating filtered arrays. The proxy will emit patches automatically when flags change.
+
+### Basic Filtering with mdw-if
+
+```js
+CustomElement
+  .extend()
+  .observe({
+    rows: { type: 'proxy', value: [] },
+    showBeta: 'boolean',
+    .expressions({
+      rowMatches({ showBeta }, { row }) {
+        if (!row?.child) return false;
+        return showBeta ? row.child.option === 'beta' : row.child.option === 'alpha';
+      },
+    })
+  })
+  .html`
+    <div mdw-for="{row of rows}" class="row">
+      <span mdw-if={rowMatches}>{row.label}</span>
+      <span mdw-if={row.show}>flag</span>
+    </div>
+  `
+```
+
+Toggle visibility by mutating proxy properties:
+
+```js
+// Toggle individual item visibility
+el.rows[0].show = false;
+
+// Toggle filter criteria
+el.showBeta = true;
+
+// Update nested property
+el.rows[1].child.option = 'beta';
+```
+
+**Key benefits:**
+- No need to create filtered arrays or track source data
+- DOM nodes remain stable (just hidden/shown)
+- Works seamlessly with nested properties
+- Proxy emits patches automatically for the array mutation
+
+### Nested Loop Filtering
+
+For nested `mdw-for` loops, use `mdw-if` on the nested items:
+
+```js
+CustomElement
+  .extend()
+  .observe({
+    rows: { type: 'proxy', value: [] },
+    activeFilter: { type: 'string', value: 'all' },
+    .expressions({
+      childMatches({ activeFilter }, { child }) {
+        return activeFilter === 'all' || child.type === activeFilter;
+      },
+    })
+  })
+  .html`
+    <div mdw-for="{row of rows}" class="row">
+      <span>{row.label}</span>
+      <div mdw-for="{child of row.children}" mdw-if={childMatches} class="child">
+        {child.label}
+      </div>
+    </div>
+  `
+```
+
+Update the filter:
+
+```js
+// All children instantly re-evaluate mdw-if
+el.activeFilter = 'beta';
+
+// Or toggle individual child flags
+el.rows[0].children[1].visible = false;
+```
+
+### Multiple Filter Criteria
+
+Combine multiple conditions in expressions:
+
+```js
+.expressions({
+  shouldShow({ searchText, category, showInactive }, { item }) {
+    // Active filter
+    if (!showInactive && !item.active) return false;
+    
+    // Category filter
+    if (category !== 'all' && item.category !== category) return false;
+    
+    // Search filter
+    if (searchText && !item.name.toLowerCase().includes(searchText.toLowerCase())) {
+      return false;
+    }
+    
+    return true;
+  },
+})
+.html`<div mdw-for="{item of items}" mdw-if={shouldShow}>{item.name}</div>`
+```
+
+**Advantages over array filtering:**
+- No array copying or splicing needed
+- Proxy automatically emits patches for all criteria changes
+- Filter state and data state are separate
+- DOM element recycling is more efficient
+
+## 10.0 Gotchas
 
 - Frozen/sealed objects cannot be proxied safely.
 - If you mutate the raw object directly (not through the proxy), no change is emitted.

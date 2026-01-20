@@ -12,11 +12,12 @@ import { createEmptyComment } from './optimizations.js';
 
 /**
  * @template T
- * @typedef {Object} DomAdapterCreateOptions
+ * @typedef {Object} CompositionAdapterCreateOptions
  * @prop {Comment} anchorNode
  * @prop {(...args:any[]) => HTMLElement} [create]
  * @prop {Composition<T>} composition
  * @prop {RenderOptions<T>} renderOptions
+ * @prop {string[]} [parentProps]
  */
 
 /**
@@ -106,6 +107,8 @@ export default class CompositionAdapter {
     this.batchStartIndex = null;
     /** @type {number|null} */
     this.batchEndIndex = null;
+
+    this.parentProps = options.parentProps || [];
   }
 
   /**
@@ -286,7 +289,17 @@ export default class CompositionAdapter {
       }
     }
 
-    const render = this.render(changes, data);
+    const initialChanges = { ...changes };
+
+    if (this.parentProps.length) {
+      for (const prop of this.parentProps) {
+        if (prop in data) {
+          initialChanges[prop] = data[prop];
+        }
+      }
+    }
+
+    const render = this.render(initialChanges, data);
     const element = /** @type {Element} */ (render.target);
 
     this.metadata[newIndex] = {
