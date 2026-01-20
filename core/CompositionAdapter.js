@@ -72,7 +72,7 @@ const moveBeforeNode = hasMoveBefore
 
 /** @template T */
 export default class CompositionAdapter {
-  /** @param {DomAdapterCreateOptions<T>} options */
+  /** @param {CompositionAdapterCreateOptions<T>} options */
   constructor(options) {
     this.anchorNode = options.anchorNode;
 
