@@ -749,6 +749,10 @@ export default function TextFieldMixin(Base) {
         color: rgba(var(--mdw-color__on-surface), 0.38);
       }
 
+      #control[disabled] {
+        color: rgba(var(--mdw-color__on-surface), 0.38);
+      }
+
       mdw-icon[disabled] {
         color: rgba(var(--mdw-color__on-surface), 0.38);
       }

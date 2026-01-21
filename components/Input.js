@@ -26,6 +26,7 @@ function getSharedPopup() {
     sharedPopup.matchSourceWidth = true;
     sharedPopup.flow = 'corner';
     sharedPopup.elevation = 2;
+    sharedPopup.setAttribute('aria-hidden', 'true');
   }
   return sharedPopup;
 }
@@ -107,6 +108,13 @@ export default CustomElement
     /** Last computed listbox value (non-nullable string). */
     _lastComputedListboxValue: { type: 'string', nullable: false },
 
+    /** Currently suggested option (used for aria-activedescendant labels). */
+    _suggestionOption: {
+      type: 'object',
+      /** @type {Pick<HTMLOptionElement, 'label'|'value'|'selected'>} */
+      value: null,
+    },
+
     _values: {
       type: 'array',
       /** @type {string[]} */
@@ -138,8 +146,6 @@ export default CustomElement
     _onPopupFocusoutListener: null,
     _suggestionText: '',
     _suggestionValue: '',
-    /** @type {Pick<HTMLOptionElement, 'label'|'value'|'selected'>} */
-    _suggestionOption: null,
   })
   .define({
     stateTargetElement() { return this.refs.control; },
@@ -190,8 +196,8 @@ export default CustomElement
       // Ignore if focus lost to pop-up (likely pointerdown).
       if (relatedTarget) {
         if (this === relatedTarget) return;
-        if (this.contains(/** @type {any} */ (relatedTarget))) return;
-        if (getSharedPopup().contains(/** @type {any} */ (relatedTarget))) return;
+        if (this.contains(/** @type {any} */(relatedTarget))) return;
+        if (getSharedPopup().contains(/** @type {any} */(relatedTarget))) return;
       }
       this.closeListbox();
     },
@@ -341,6 +347,7 @@ export default CustomElement
       let backup;
       let backupIndex = -1;
       let optionIndex = -1;
+      this._listboxSize = _listbox?.options?.length ?? -1;
       for (const option of _listbox.options) {
         optionIndex++;
         if (!current && option.focused) {
@@ -409,10 +416,12 @@ export default CustomElement
       }
       if (suggestionIndex === -1) {
         this._focusedPosInSet = -1;
+        this._focusedValue = '';
         this._hasSuggestion = false;
         return;
       }
       this._focusedPosInSet = suggestionIndex + 1;
+      this._focusedValue = suggestion?.value ?? '';
       suggestion.focused = true;
       suggestion.scrollIntoView({
         behavior: 'instant',
@@ -668,6 +677,7 @@ export default CustomElement
         }
         this._listbox = listbox;
         if (listbox) {
+          this._listboxSize = listbox.length;
           // Bind and store
           if (!this.multiple) {
             listbox.required = true; // Don't allow unclick
@@ -695,7 +705,7 @@ export default CustomElement
       // Ignore if focus lost to pop-up (likely pointerdown).
       const popup = getSharedPopup();
       if (popup === relatedTarget) return;
-      if (relatedTarget && popup.contains(/** @type {Node} */ (relatedTarget))) return;
+      if (relatedTarget && popup.contains(/** @type {Node} */(relatedTarget))) return;
       if (popup.matches(':focus-within,:focus')) return;
       this.closeListbox();
     },
@@ -770,6 +780,9 @@ export default CustomElement
       if (_expanded && _focusedValue) return 'aria-active';
       return '';
     },
+    ariaActiveLabel({ _suggestionOption }) {
+      return _suggestionOption?.label ?? '';
+    },
     controlRoleAttrValue({ _hasListbox }) {
       if (_hasListbox) return 'combobox';
       return null;
@@ -801,7 +814,7 @@ export default CustomElement
       } else if (this._isSelect) {
         this._value = value;
       } else {
-      // Apply user value to input and read back result to apply control to parse
+        // Apply user value to input and read back result to apply control to parse
         this._input.value = value;
         this._value = this._input.value;
       }
@@ -872,13 +885,28 @@ export default CustomElement
       this._chipSelected = false;
       this.closeListbox();
     },
+    disconnected() {
+      // Ensure shared popup/listbox are cleaned up if element is removed while open.
+      if (this._expanded) {
+        if (sharedPopup?.contains(this._listbox)) {
+          this.closeListbox();
+        } else {
+          this._expanded = false;
+        }
+      } else if (this._listbox && sharedPopup?.contains(this._listbox)) {
+        // Defensive cleanup in case popup stole the listbox.
+        this.replaceChildren(this._listbox);
+        sharedPopup?.remove();
+      }
+      sharedPopup?.removeEventListener('focusout', this._onPopupFocusoutListener);
+    },
   })
   .html`
     <div id=chips mdw-if={multiple}></div>
-    <slot id=slot></slot>
+    <slot id=slot aria-hidden=true></slot>
     <div id=aria-listbox role=listbox mdw-if={_hasListbox}>
-      <div id=aria-active role=option aria-hidden=false aria-label={selectedOption.label}
-        aria-setsize="{_listbox.length}" aria-posinset={_focusedPosInSet}></div>
+      <div id=aria-active role=option aria-hidden=false aria-label={ariaActiveLabel}
+        aria-setsize={_listboxSize} aria-posinset={_focusedPosInSet}></div>
     </div>
   `
   .css`
@@ -887,7 +915,7 @@ export default CustomElement
     }
 
     #aria-listbox {
-      display: none;
+      pointer-events: none;
     }
 
     #trailing-icon {
