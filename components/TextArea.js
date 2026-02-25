@@ -152,7 +152,7 @@ export default CustomElement
           const lastClientHeight = textarea.clientHeight;
           textarea.rows--;
           if ((lastClientHeight === textarea.clientHeight)
-        || (textarea.scrollHeight > textarea.clientHeight)) {
+            || (textarea.scrollHeight > textarea.clientHeight)) {
             textarea.rows++;
             break;
           }
@@ -168,6 +168,13 @@ export default CustomElement
     /** Called by the ResizeObserver mixin; triggers a resize unless active. */
     onResizeObserved() {
       if (this.matches(':active')) return;
+      this.resize();
+    },
+  })
+  .overrides({
+    _onSetValue(value) {
+      this._textarea.value = value;
+      this._value = this._textarea.value;
       this.resize();
     },
   })
@@ -232,8 +239,7 @@ export default CustomElement
     },
     _formResetChanged(oldValue, newValue) {
       if (!newValue) return;
-      this._textarea.value = this.defaultValue;
-      this._value = this._textarea.value;
+      this._onSetValue(this.defaultValue);
     },
     attrs: {
       cols: cloneAttributeCallback('cols', 'control'),
