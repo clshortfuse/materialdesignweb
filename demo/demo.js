@@ -36,6 +36,7 @@ import '../components/NavBar.js';
 import '../components/NavBarItem.js';
 import '../components/NavDrawer.js';
 import '../components/NavDrawerItem.js';
+import '../components/NavDrawerSection.js';
 import '../components/NavItem.js';
 import '../components/NavRail.js';
 import '../components/NavRailItem.js';

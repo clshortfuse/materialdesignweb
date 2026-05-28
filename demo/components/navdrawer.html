@@ -15,19 +15,33 @@
       <mdw-grid gap=16 role=region y=stretch>
 
         <demo-preview-card label="Standard" col-span=12 code="
-&lt;mdw-nav-drawer&gt;
-  &lt;mdw-nav-drawer-item icon=&quot;edit&quot; href=&quot;#navdrawer&quot; badge=&quot;5&quot;&gt;Default&lt;/mdw-nav-drawer-item&gt;
-  &lt;mdw-nav-drawer-item icon=&quot;change_history&quot; href=&quot;#navdrawer&quot; color=&quot;primary-container&quot;&gt;Primary&lt;/mdw-nav-drawer-item&gt;
-  &lt;mdw-nav-drawer-item icon=&quot;change_history&quot; href=&quot;#navdrawer&quot; color=&quot;tertiary-container&quot;&gt;Tertiary&lt;/mdw-nav-drawer-item&gt;
+&lt;mdw-nav-drawer headline=&quot;Mail&quot;&gt;
+  &lt;mdw-nav-drawer-section&gt;
+    &lt;mdw-nav-drawer-item icon=&quot;inbox&quot; href=&quot;#navdrawer&quot; active badge=&quot;24&quot;&gt;Inbox&lt;/mdw-nav-drawer-item&gt;
+    &lt;mdw-nav-drawer-item icon=&quot;send&quot; href=&quot;#navdrawer&quot;&gt;Outbox&lt;/mdw-nav-drawer-item&gt;
+    &lt;mdw-nav-drawer-item icon=&quot;favorite&quot; href=&quot;#navdrawer&quot;&gt;Favorites&lt;/mdw-nav-drawer-item&gt;
+    &lt;mdw-nav-drawer-item icon=&quot;delete&quot; href=&quot;#navdrawer&quot;&gt;Trash&lt;/mdw-nav-drawer-item&gt;
+  &lt;/mdw-nav-drawer-section&gt;
+  &lt;mdw-nav-drawer-section divider label=&quot;Labels&quot;&gt;
+    &lt;mdw-nav-drawer-item icon=&quot;folder&quot; href=&quot;#navdrawer&quot;&gt;Label&lt;/mdw-nav-drawer-item&gt;
+    &lt;mdw-nav-drawer-item icon=&quot;folder&quot; href=&quot;#navdrawer&quot;&gt;Label&lt;/mdw-nav-drawer-item&gt;
+    &lt;mdw-nav-drawer-item icon=&quot;folder&quot; href=&quot;#navdrawer&quot;&gt;Label&lt;/mdw-nav-drawer-item&gt;
+  &lt;/mdw-nav-drawer-section&gt;
 &lt;/mdw-nav-drawer&gt;
 ">
 
-          <mdw-nav-drawer auto-open=0 fixed-breakpoint=0 style="min-height:400px;max-height:400px">
-            <mdw-nav-drawer-item icon="edit" href="#navdrawer" badge="5">Default</mdw-nav-drawer-item>
-            <mdw-nav-drawer-item icon="change_history" href="#navdrawer"
-              color=primary-container>Primary</mdw-nav-drawer-item>
-            <mdw-nav-drawer-item icon="change_history" href="#navdrawer"
-              color=tertiary-container>Tertiary</mdw-nav-drawer-item>
+          <mdw-nav-drawer headline="Mail" auto-open=0 fixed-breakpoint=0 style="min-height:560px;max-height:560px">
+            <mdw-nav-drawer-section>
+              <mdw-nav-drawer-item icon="inbox" href="#navdrawer" active badge="24">Inbox</mdw-nav-drawer-item>
+              <mdw-nav-drawer-item icon="send" href="#navdrawer">Outbox</mdw-nav-drawer-item>
+              <mdw-nav-drawer-item icon="favorite" href="#navdrawer">Favorites</mdw-nav-drawer-item>
+              <mdw-nav-drawer-item icon="delete" href="#navdrawer">Trash</mdw-nav-drawer-item>
+            </mdw-nav-drawer-section>
+            <mdw-nav-drawer-section divider label="Labels">
+              <mdw-nav-drawer-item icon="folder" href="#navdrawer">Label</mdw-nav-drawer-item>
+              <mdw-nav-drawer-item icon="folder" href="#navdrawer">Label</mdw-nav-drawer-item>
+              <mdw-nav-drawer-item icon="folder" href="#navdrawer">Label</mdw-nav-drawer-item>
+            </mdw-nav-drawer-section>
           </mdw-nav-drawer>
 
         </demo-preview-card>

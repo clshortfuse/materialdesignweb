@@ -34,6 +34,7 @@ export { default as NavBar } from './components/NavBar.js';
 export { default as NavBarItem } from './components/NavBarItem.js';
 export { default as NavDrawer } from './components/NavDrawer.js';
 export { default as NavDrawerItem } from './components/NavDrawerItem.js';
+export { default as NavDrawerSection } from './components/NavDrawerSection.js';
 export { default as NavItem } from './components/NavItem.js';
 export { default as NavRail } from './components/NavRail.js';
 export { default as NavRailItem } from './components/NavRailItem.js';

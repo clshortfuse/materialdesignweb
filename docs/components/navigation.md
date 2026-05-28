@@ -7,8 +7,27 @@ app bars and side navigation.
 
 - App bars: `mdw-top-app-bar`, `mdw-bottom-app-bar`
 - Navigation: `mdw-nav-bar`, `mdw-nav-drawer`, `mdw-nav-rail`
+- Drawer organization: `mdw-nav-drawer`, `mdw-nav-drawer-section`
 - Tabs: `mdw-tab`, `mdw-tab-list`, `mdw-tab-panel`, `mdw-tab-content`
 - Menus & lists: `mdw-menu`, `mdw-list`, `mdw-listbox`
+
+## Navigation drawer sections
+
+Use `headline` or `slot="headline"` to label the drawer. Use drawer sections to
+group related destinations. Add `divider` to render the recommended divider
+before a section, and use `label` or `slot="label"` for visible group labels.
+
+```html
+<mdw-nav-drawer headline="Mail">
+  <mdw-nav-drawer-section>
+    <mdw-nav-drawer-item icon="inbox" active badge="24">Inbox</mdw-nav-drawer-item>
+    <mdw-nav-drawer-item icon="send">Outbox</mdw-nav-drawer-item>
+  </mdw-nav-drawer-section>
+  <mdw-nav-drawer-section divider label="Labels">
+    <mdw-nav-drawer-item icon="folder">Label</mdw-nav-drawer-item>
+  </mdw-nav-drawer-section>
+</mdw-nav-drawer>
+```
 
 ## Example
 

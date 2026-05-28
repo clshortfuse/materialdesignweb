@@ -9,6 +9,11 @@ import SideSheet from './SideSheet.js';
 export default SideSheet
   .extend()
   .observe({
+    /** Drawer headline text shorthand. */
+    headline: 'string',
+    /** Internal flag set when headline content is provided via slot. */
+    _headlineSlotted: 'boolean',
+
     /** When true, apply drawer shape at the end edge (RTL-aware). */
     shapeEnd: {
       type: 'boolean',
@@ -32,6 +37,23 @@ export default SideSheet
       type: 'float',
       empty: 1248,
     },
+  })
+  .expressions({
+    hasHeadline() {
+      return Boolean(this.headline || this._headlineSlotted);
+    },
+  })
+  .methods({
+    /** @param {Event & {currentTarget: HTMLSlotElement}} event */
+    onHeadlineSlotChange({ currentTarget }) {
+      this._headlineSlotted = currentTarget.assignedNodes().some((node) => (
+        node.nodeType === node.ELEMENT_NODE
+        || (node.nodeType === node.TEXT_NODE && node.nodeValue.trim().length)
+      ));
+    },
+  })
+  .recompose(({ html, refs: { slot } }) => {
+    slot.before(html`<slot id=headline name=headline hidden={!hasHeadline} on-slotchange={onHeadlineSlotChange}>{headline}</slot>`);
   })
   .css`
     /* https://m3.material.io/components/navigation-drawer/specs */
@@ -57,6 +79,41 @@ export default SideSheet
 
     ::slotted(mdw-divider) {
       padding-inline: 16px;
+    }
+
+    #headline {
+      --mdw-ink: var(--mdw-color__on-surface-variant);
+
+      display: flex;
+      align-items: center;
+
+      box-sizing: border-box;
+      min-block-size: 56px;
+      inline-size: 100%;
+
+      padding-inline: 16px;
+
+      overflow: hidden;
+
+      color: rgb(var(--mdw-ink));
+
+      font: var(--mdw-typescale__title-small__font);
+      letter-spacing: var(--mdw-typescale__title-small__letter-spacing);
+
+      text-align: start;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #headline[hidden] {
+      display: none;
+    }
+
+    #headline::slotted(*) {
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
   `

@@ -6,6 +6,7 @@ import '../../components/MenuItem.js';
 import '../../components/TopAppBar.js';
 import '../../components/NavDrawer.js';
 import '../../components/NavDrawerItem.js';
+import '../../components/NavDrawerSection.js';
 
 import NavItem from '../../components/NavItem.js';
 import CustomElement from '../../core/CustomElement.js';
