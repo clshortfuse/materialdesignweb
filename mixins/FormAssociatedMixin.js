@@ -245,7 +245,6 @@ export default function FormAssociatedMixin(Base) {
         if (value === this.value) {
           // console.log('Control.formIPCEvent: Continue match', this.name, this.value);
         } else {
-          console.debug('FormAssociatedMixin: Unchecking', this);
           this.checked = false;
         }
       },
@@ -278,7 +277,6 @@ export default function FormAssociatedMixin(Base) {
           return;
         }
         if (this.type === 'checkbox' || this.type === 'radio') {
-          console.debug('FormAssociatedMixin: (Restore) Setting Checkbox checked state.', state, this);
           this.checked = (state === 'checked');
           return;
         }
@@ -290,7 +288,6 @@ export default function FormAssociatedMixin(Base) {
           return;
         }
 
-        console.debug('FormAssociatedMixin: (Restore) Setting value state.', state, this);
         this.value = state;
       },
 

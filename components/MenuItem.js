@@ -117,7 +117,6 @@ export default ListOption
   })
   .on({
     _selectedChanged(oldValue, newValue) {
-      console.log('_selectedChanged', oldValue, newValue);
       if (newValue) {
         this.elementInternals.setFormValue(this.value);
         if (this.type === 'radio') {
