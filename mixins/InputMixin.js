@@ -326,6 +326,9 @@ export default function InputMixin(Base) {
             return;
           }
           const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+          if (input.type === 'file') {
+            this._files = input.files;
+          }
           this.checked = input.checked;
         },
         change(event) {
@@ -335,6 +338,9 @@ export default function InputMixin(Base) {
             return;
           }
           const input = /** @type {HTMLInputElement} */ (event.currentTarget);
+          if (input.type === 'file') {
+            this._files = input.files;
+          }
           this.checked = input.checked;
         },
       },

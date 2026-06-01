@@ -316,7 +316,7 @@ export default function FormAssociatedMixin(Base) {
             break;
           case 'file': {
             const { elementInternals, _files, name } = this;
-            if (!_files || _files.length) {
+            if (!_files || !_files.length) {
               elementInternals.setFormValue(null);
             } else {
               const fd = new FormData();
