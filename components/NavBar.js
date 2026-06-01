@@ -31,6 +31,9 @@ export default CustomElement
 
     /** ARIA role applied to the host element (default: 'navigation'). */
     _ariaRole: 'navigation',
+
+    /** @type {EventListener} */
+    _onWindowResize: null,
   })
   .html`<slot id=slot></slot>`
   .css`
@@ -88,10 +91,14 @@ export default CustomElement
   })
   .on({
     constructed() {
-      window.addEventListener('resize', this.onWindowResize.bind(this));
+      this._onWindowResize = this.onWindowResize.bind(this);
     },
     connected() {
+      window.addEventListener('resize', this._onWindowResize);
       this.onWindowResize();
+    },
+    disconnected() {
+      window.removeEventListener('resize', this._onWindowResize);
     },
   })
   .autoRegister('mdw-nav-bar');

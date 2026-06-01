@@ -100,6 +100,8 @@ export default CustomElement
   .set({
     /** @type {InstanceType<Scrim>} */
     _scrim: null,
+    /** @type {EventListener} */
+    _onWindowResize: null,
   })
   .observe({
     /** Computed host style when `fixed` and `fixedColor` are set. */
@@ -109,6 +111,7 @@ export default CustomElement
         if (fixed && fixedColor) {
           return { backgroundColor: `rgb(var(--mdw-color__${fixedColor}))` };
         }
+        return null;
       },
     },
     /** Computed animation/style object applied to the host for open/close. */
@@ -258,10 +261,14 @@ export default CustomElement
       this.checkForScrim(false);
     },
     constructed() {
-      window.addEventListener('resize', this.onWindowResize.bind(this));
+      this._onWindowResize = this.onWindowResize.bind(this);
     },
     connected() {
+      window.addEventListener('resize', this._onWindowResize);
       this.onWindowResize();
+    },
+    disconnected() {
+      window.removeEventListener('resize', this._onWindowResize);
     },
     inlineEndChanged(previous, inlineEnd) {
       this._isSideSheetRtl = isRtl(this) ? !inlineEnd : inlineEnd;
