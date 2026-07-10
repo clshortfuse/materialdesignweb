@@ -336,6 +336,21 @@
           </mdw-card>
         </mdw-box>
       </demo-preview-card>
+
+      <demo-preview-card label="Expandable" col-span=12 x=center y=stretch code="
+        <mdw-card filled padding=16 gap=16 style=&quot;max-width: 480px;&quot;>
+          <mdw-title>World tour</mdw-title>
+          <mdw-button aria-expanded=false onclick=&quot;const card = this.closest('mdw-card'); card.toggleExpanded(); this.textContent = card.expanded ? 'Collapse' : 'Expand'; this.setAttribute('aria-expanded', card.expanded ? 'true' : 'false');&quot;>Expand</mdw-button>
+          <mdw-body slot=expansion>Expanded card content can be arbitrary author-provided markup.</mdw-body>
+        </mdw-card>
+      ">
+        <mdw-card filled padding=16 gap=16 style="max-width: 480px;">
+          <mdw-title>World tour</mdw-title>
+          <mdw-button aria-expanded=false onclick="const card = this.closest('mdw-card'); card.toggleExpanded(); this.textContent = card.expanded ? 'Collapse' : 'Expand'; this.setAttribute('aria-expanded', card.expanded ? 'true' : 'false');">Expand</mdw-button>
+          <mdw-body slot=expansion>Expanded card content can be arbitrary author-provided markup.</mdw-body>
+        </mdw-card>
+      </demo-preview-card>
+
     </mdw-grid>
   </demo-page>
 </body>

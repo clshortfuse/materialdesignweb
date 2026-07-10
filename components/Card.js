@@ -1,7 +1,10 @@
+import './Button.js';
+
 import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import AriaReflectorMixin from '../mixins/AriaReflectorMixin.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import ElevationMixin from '../mixins/ElevationMixin.js';
+import ExpandableMixin from '../mixins/ExpandableMixin.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 import HyperlinkMixin from '../mixins/HyperlinkMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
@@ -24,6 +27,7 @@ export default Box
   .mixin(AriaReflectorMixin)
   .mixin(DelegatesFocusMixin)
   .mixin(HyperlinkMixin)
+  .mixin(ExpandableMixin)
   .set({
     _ariaRole: 'figure',
   })
@@ -42,10 +46,15 @@ export default Box
   .define({
     /**
      * Element used as the target for state styling (pressed/focus).
-     * Returns the internal action control when actionable, otherwise the host.
+     * Returns the internal action control when actionable or linked, otherwise the host.
      * @return {HTMLElement}
      */
-    stateTargetElement() { return this.actionable ? this.refs.action : this; },
+    stateTargetElement() { return (this.actionable || this.href) ? this.refs.action : this; },
+  })
+  .overrides({
+    getExpandableAriaElement() {
+      return null;
+    },
   })
   .expressions({
     showBlocker: ({ disabledState, disabled }) => disabledState && (!disabled || !SUPPORTS_INERT),
@@ -53,12 +62,12 @@ export default Box
   })
   .methods({
     /**
-     * Focuses the internal action control if the card is actionable and not disabled.
+     * Focuses the internal action control if the card is actionable or linked and not disabled.
      * @return {void}
      */
     focus() {
       if (this.disabledState) return;
-      if (!this.actionable) return;
+      if (!this.actionable && !this.href) return;
       this.refs.action.focus();
     },
   })
@@ -70,12 +79,15 @@ export default Box
       rel={rel}
       hreflang={hreflang}
       referrerpolicy={referrerPolicy} id=action disabled={disabledState}></mdw-button>
+    <div id=expansion>
+      <slot id=expansion-slot name=expansion></slot>
+    </div>
     <div mdw-if={showBlocker} id=inert-blocker></div>
   `
-  .recompose(({ refs: { anchor, inertBlocker, slot } }) => {
+  .recompose(({ refs: { anchor, expansion, slot } }) => {
     anchor.remove();
     slot.setAttribute('disabled', '{disabledState}');
-    inertBlocker.before(slot);
+    expansion.before(slot);
   })
   .css`
     :host {
@@ -170,6 +182,13 @@ export default Box
       z-index: 0;
 
       color: inherit
+    }
+
+    :host([expandable]) #expansion {
+      grid-column: 1 / -1;
+
+      inline-size: 100%;
+      min-inline-size: 0;
     }
   `
   .recompose(({ refs: { slot, outline } }) => {

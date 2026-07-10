@@ -1,7 +1,6 @@
 import { constructHTMLOptionsCollectionProxy } from '../dom/HTMLOptionsCollectionProxy.js';
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
-import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import StateMixin from '../mixins/StateMixin.js';
 
 import List from './List.js';
@@ -16,7 +15,6 @@ export default List
   .extend()
   .mixin(StateMixin)
   .mixin(FormAssociatedMixin)
-  .mixin(KeyboardNavMixin)
   .mixin(DelegatesFocusMixin)
   .observe({
     /** When true, multiple options may be selected (select-multiple semantics). */
@@ -28,6 +26,9 @@ export default List
   .set({
     /** ARIA role applied to the host element (default: 'listbox'). */
     _ariaRole: 'listbox',
+
+    /** Resolved list role used by inherited list behavior. */
+    _listRole: 'listbox',
 
     /**
      * Lazily-constructed options collection proxy exposing `add`, indexed
@@ -44,6 +45,10 @@ export default List
 
     /** When true, form resets are honored; toggled when form association changes. */
     _handleFormReset: true,
+  })
+  .overrides({
+    /** @return {boolean} */
+    _shouldAutoResolveListRole() { return false; },
   })
   .define({
     options() {

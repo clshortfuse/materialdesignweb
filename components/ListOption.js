@@ -2,7 +2,7 @@
 
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 
-import ListItem from './ListItem.js';
+import ListItemBase from './ListItemBase.js';
 
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
 
@@ -10,7 +10,7 @@ import ListItem from './ListItem.js';
  * List options represent selectable choices within a `mdw-listbox` or list.
  * @see https://m3.material.io/components/lists/specs
  */
-export default ListItem
+export default ListItemBase
   .extend()
   .mixin(DelegatesFocusMixin)
   .setStatic({

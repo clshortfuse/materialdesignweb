@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Details</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <link rel="stylesheet" href="../theme.css" />
+
+  <script src="../demo.min.js"></script>
+</head>
+
+<body>
+  <demo-page>
+    <mdw-box gap=16 padding=pane>
+      <mdw-grid gap=16 role=region y=stretch x=stretch>
+        <mdw-headline text-padding=0 col-span=12>Details</mdw-headline>
+        <mdw-body col-span=12>
+          Use <code>mdw-details</code> for disclosure, expansion panel, and accordion-style sections. It owns
+          expansion behavior while slotted content owns the visual treatment.
+        </mdw-body>
+
+        <demo-preview-card label="Default summary" col-span=6 col-span-12=12 x=stretch y=start code="
+          <mdw-details style=&quot;max-width: 520px; inline-size: 100%;&quot;>
+            <mdw-body>
+              No summary is provided, so mdw-details supplies the native-like default label: Details.
+            </mdw-body>
+          </mdw-details>
+        ">
+          <mdw-details style="max-width: 520px; inline-size: 100%;">
+            <mdw-body>
+              No summary is provided, so mdw-details supplies the native-like default label: Details.
+            </mdw-body>
+          </mdw-details>
+        </demo-preview-card>
+
+        <demo-preview-card label="Disclosure" col-span=6 col-span-12=12 x=stretch y=start code="
+          <mdw-details summary=&quot;What is mdw-details?&quot; style=&quot;max-width: 520px; inline-size: 100%;&quot;>
+            <mdw-body>
+              A small disclosure primitive with native-like open state, ARIA, inert collapsed content, and animated expansion.
+            </mdw-body>
+          </mdw-details>
+        ">
+          <mdw-details summary="What is mdw-details?" style="max-width: 520px; inline-size: 100%;">
+            <mdw-body>
+              A small disclosure primitive with native-like open state, ARIA, inert collapsed content, and animated expansion.
+            </mdw-body>
+          </mdw-details>
+        </demo-preview-card>
+
+        <demo-preview-card label="Expansion panel" col-span=6 col-span-12=12 x=stretch y=start code="
+          <mdw-card outlined style=&quot;max-width: 520px; inline-size: 100%;&quot;>
+            <mdw-details open>
+              <mdw-box slot=summary row y=center gap=12>
+                <mdw-icon icon=event></mdw-icon>
+                <mdw-box gap=2>
+                  <mdw-label>Trip details</mdw-label>
+                  <mdw-body size=small>Flight, hotel, and itinerary</mdw-body>
+                </mdw-box>
+              </mdw-box>
+              <mdw-divider></mdw-divider>
+              <mdw-box padding=16 gap=8>
+                <mdw-body>Flight 42 leaves at 9:30 AM.</mdw-body>
+                <mdw-button filled=tonal>Manage trip</mdw-button>
+              </mdw-box>
+            </mdw-details>
+          </mdw-card>
+        ">
+          <mdw-card outlined style="max-width: 520px; inline-size: 100%;">
+            <mdw-details open>
+              <mdw-box slot=summary row y=center gap=12>
+                <mdw-icon icon=event></mdw-icon>
+                <mdw-box gap=2>
+                  <mdw-label>Trip details</mdw-label>
+                  <mdw-body size=small>Flight, hotel, and itinerary</mdw-body>
+                </mdw-box>
+              </mdw-box>
+              <mdw-divider></mdw-divider>
+              <mdw-box padding=16 gap=8>
+                <mdw-body>Flight 42 leaves at 9:30 AM.</mdw-body>
+                <mdw-button filled=tonal>Manage trip</mdw-button>
+              </mdw-box>
+            </mdw-details>
+          </mdw-card>
+        </demo-preview-card>
+
+        <demo-preview-card label="Accordion stack" col-span=6 col-span-12=12 x=stretch y=start code="
+          <mdw-card outlined style=&quot;max-width: 520px; inline-size: 100%; overflow: hidden;&quot;>
+            <mdw-details name=account-settings open>
+              <mdw-box slot=summary>
+                <mdw-label>Personal information</mdw-label>
+              </mdw-box>
+              <mdw-box padding=16 padding-top=0>
+                <mdw-body size=small>Name, email, and profile settings.</mdw-body>
+              </mdw-box>
+            </mdw-details>
+            <mdw-divider></mdw-divider>
+            <mdw-details name=account-settings>
+              <mdw-box slot=summary>
+                <mdw-label>Notifications</mdw-label>
+              </mdw-box>
+              <mdw-box padding=16 padding-top=0>
+                <mdw-body size=small>Email, push, and digest preferences.</mdw-body>
+              </mdw-box>
+            </mdw-details>
+            <mdw-divider></mdw-divider>
+            <mdw-details name=account-settings>
+              <mdw-box slot=summary>
+                <mdw-label>Advanced</mdw-label>
+              </mdw-box>
+              <mdw-box padding=16 padding-top=0>
+                <mdw-body size=small>Developer and diagnostics settings.</mdw-body>
+              </mdw-box>
+            </mdw-details>
+          </mdw-card>
+        ">
+          <mdw-card outlined style="max-width: 520px; inline-size: 100%; overflow: hidden;">
+            <mdw-details name=account-settings open>
+              <mdw-box slot=summary>
+                <mdw-label>Personal information</mdw-label>
+              </mdw-box>
+              <mdw-box padding=16 padding-top=0>
+                <mdw-body size=small>Name, email, and profile settings.</mdw-body>
+              </mdw-box>
+            </mdw-details>
+            <mdw-divider></mdw-divider>
+            <mdw-details name=account-settings>
+              <mdw-box slot=summary>
+                <mdw-label>Notifications</mdw-label>
+              </mdw-box>
+              <mdw-box padding=16 padding-top=0>
+                <mdw-body size=small>Email, push, and digest preferences.</mdw-body>
+              </mdw-box>
+            </mdw-details>
+            <mdw-divider></mdw-divider>
+            <mdw-details name=account-settings>
+              <mdw-box slot=summary>
+                <mdw-label>Advanced</mdw-label>
+              </mdw-box>
+              <mdw-box padding=16 padding-top=0>
+                <mdw-body size=small>Developer and diagnostics settings.</mdw-body>
+              </mdw-box>
+            </mdw-details>
+          </mdw-card>
+        </demo-preview-card>
+
+        <demo-preview-card label="Composed styling" col-span=6 col-span-12=12 x=stretch y=start code="
+          <mdw-details color=primary-container style=&quot;max-width: 520px; inline-size: 100%;&quot;>
+            <mdw-box slot=summary row y=center gap=12>
+              <mdw-icon icon=palette></mdw-icon>
+              <mdw-label>Styled summary</mdw-label>
+            </mdw-box>
+            <mdw-card filled color=surface-container-high padding=16 gap=8>
+              <mdw-title size=small text-padding=0>Styled content</mdw-title>
+              <mdw-body size=small>
+                Put layout, color, ink, padding, and shape components inside mdw-details instead of making the disclosure own every style.
+              </mdw-body>
+            </mdw-card>
+          </mdw-details>
+        ">
+          <mdw-details color=primary-container style="max-width: 520px; inline-size: 100%;">
+            <mdw-box slot=summary row y=center gap=12>
+              <mdw-icon icon=palette></mdw-icon>
+              <mdw-label>Styled summary</mdw-label>
+            </mdw-box>
+            <mdw-card filled color=surface-container-high padding=16 gap=8>
+              <mdw-title size=small text-padding=0>Styled content</mdw-title>
+              <mdw-body size=small>
+                Put layout, color, ink, padding, and shape components inside mdw-details instead of making the disclosure own every style.
+              </mdw-body>
+            </mdw-card>
+          </mdw-details>
+        </demo-preview-card>
+      </mdw-grid>
+    </mdw-box>
+  </demo-page>
+</body>
+
+</html>

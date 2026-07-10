@@ -59,6 +59,32 @@
       </mdw-grid>
 
       <mdw-grid gap=16 role=region y=stretch>
+        <demo-preview-card label="Expandable lists" col-span=12 code="
+      &lt;mdw-list color=&quot;surface&quot; style=&quot;width:100%&quot;&gt;
+        &lt;mdw-list-item icon=&quot;folder&quot; expanded&gt;
+          Project files
+          &lt;mdw-list slot=&quot;expansion&quot;&gt;
+            &lt;mdw-list-item&gt;Designs&lt;/mdw-list-item&gt;
+            &lt;mdw-list-item&gt;Documents&lt;/mdw-list-item&gt;
+          &lt;/mdw-list&gt;
+        &lt;/mdw-list-item&gt;
+        &lt;mdw-list-item icon=&quot;attach_money&quot;&gt;Pay invoice&lt;/mdw-list-item&gt;
+      &lt;/mdw-list&gt;
+      ">
+          <mdw-list color="surface" style="width:100%">
+            <mdw-list-item icon="folder" expanded>
+              Project files
+              <mdw-list slot="expansion">
+                <mdw-list-item>Designs</mdw-list-item>
+                <mdw-list-item>Documents</mdw-list-item>
+              </mdw-list>
+            </mdw-list-item>
+            <mdw-list-item icon="attach_money">Pay invoice</mdw-list-item>
+          </mdw-list>
+        </demo-preview-card>
+      </mdw-grid>
+
+      <mdw-grid gap=16 role=region y=stretch>
         <demo-preview-card label="Two-line lists (Explicit)" col-span=12 code="
       &lt;mdw-list color=&quot;surface&quot; style=&quot;width:100%&quot;&gt;
         &lt;mdw-list-item lines=2&gt;Headline (textContent)&lt;/mdw-list-item&gt;

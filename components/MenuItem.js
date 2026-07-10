@@ -189,7 +189,9 @@ export default ListOption
       this.dispatchEvent(new CustomEvent('mdw-menu-item:cascader-blur', { detail: this.cascades, bubbles: true }));
     },
   })
-  .recompose(({ inline, html, refs: { checkbox: checkboxRef, radio: radioRef, anchor, trailing, trailingIcon } }) => {
+  .recompose(({ inline, html, refs }) => {
+    const { checkbox: checkboxRef, radio: radioRef, row } = refs;
+    const { anchor, trailing, trailingIcon } = refs;
     checkboxRef.remove();
     radioRef.remove();
 
@@ -202,7 +204,7 @@ export default ListOption
     // MenuItems use checked instead of selected as in list items.
     anchor.setAttribute('ariaChecked', anchor.getAttribute('aria-selected'));
 
-    anchor.after(html`
+    row.prepend(html`
       <mdw-icon id=selection
         mdw-if=${({ checkbox, radio }) => checkbox ?? radio ?? false}
         class=${({ checkbox, radio }) => checkbox || radio || 'leading'}
@@ -224,13 +226,15 @@ export default ListOption
     /* https://m3.material.io/components/menus/specs */
 
     :host {
-      gap: 12px;
-
-      padding-inline: 12px;
-
       cursor: pointer;
 
       white-space: nowrap;
+    }
+
+    #row {
+      gap: 12px;
+
+      padding-inline: 12px;
     }
 
     #content {

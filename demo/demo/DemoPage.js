@@ -67,6 +67,7 @@ export default CustomElement
           <mdw-nav-drawer-item icon=view_comfy href="/components/cards.html">Cards</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=check_box href="/components/checkbox.html">Checkbox</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=edit_attributes href="/components/chips.html">Chips</mdw-nav-drawer-item>
+          <mdw-nav-drawer-item icon=unfold_more href="/components/details.html">Details</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=select_all href="/components/dialogs.html">Dialogs</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=border_horizontal href="/components/dividers.html">Dividers</mdw-nav-drawer-item>
           <mdw-nav-drawer-item icon=list href="/components/list.html">Lists</mdw-nav-drawer-item>

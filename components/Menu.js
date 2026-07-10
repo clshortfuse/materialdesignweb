@@ -42,7 +42,7 @@ export default CustomElement
   })
   .define({
     kbdNavChildren() {
-      const items = [...this.querySelectorAll('mdw-menu-item')];
+      const items = /** @type {HTMLElement[]} */ ([...this.querySelectorAll('mdw-menu-item')]);
       // eslint-disable-next-line unicorn/prefer-set-has
       const submenuItems = [...this.querySelectorAll(':scope mdw-menu mdw-menu-item')];
       return items.filter((el) => !submenuItems.includes(el));
