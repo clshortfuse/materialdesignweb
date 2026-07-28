@@ -67,5 +67,12 @@ describe('mdw-box', () => {
       assert.equal(color, 'rgb(255, 255, 255)');
       assert.equal(backgroundColor, 'rgb(103, 80, 164)');
     });
+
+    it('[color=surface-container] uses on-surface ink', () => {
+      const element = html`<mdw-box color=surface-container>foo</mdw-box>`;
+      const { color, backgroundColor } = window.getComputedStyle(element);
+      assert.equal(color, 'rgb(29, 27, 32)');
+      assert.equal(backgroundColor, 'rgb(242, 236, 244)');
+    });
   });
 });
