@@ -1334,11 +1334,12 @@ export default class CustomElement extends HTMLElement {
   patch(patch) {
     this.#patching = true;
     applyMergePatch(this, patch, 'object');
-    for (const [name, changes, state] of this.#pendingPatchRenders) {
+    const pendingPatchRenders = this.#pendingPatchRenders.splice(0);
+    this.#patching = false;
+    for (const [name, changes, state] of pendingPatchRenders) {
       if (name in patch) continue;
       this.render.byProp(name, changes, state);
     }
-    this.#pendingPatchRenders.slice(0, this.#pendingPatchRenders.length);
     this.render(patch);
     this.#patching = false;
   }
