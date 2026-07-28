@@ -10,7 +10,7 @@ let id = 1;
 CustomElement
   .extend()
   .observe({
-    data: { type: 'object', reflect: false },
+    data: { type: 'object', reflect: false, value: [] },
     selected: { type: 'integer', reflect: false },
   })
   .methods({
@@ -52,7 +52,7 @@ CustomElement
     <div class=container>
       <div class=jumbotron>
         <div class=row>
-          <div class=col-md-6><h1>MDW unkeyed</h1></div>
+          <div class=col-md-6><h1>MDW keyed</h1></div>
           <div class=col-md-6>
             <div class=row>
               <div class="col-sm-6 smallpad">
@@ -108,15 +108,11 @@ CustomElement
     },
     update: {
       click() {
-        for (let i = 0; i < this.data.length; i += 10) {
-          this.patch({
-            data: {
-              [i]: {
-                label: `${this.data[i].label} !!!`,
-              },
-            },
-          });
-        }
+        this.mutate((draft) => {
+          for (let i = 0; i < draft.data.length; i += 10) {
+            draft.data[i].label += ' !!!';
+          }
+        });
       },
     },
     swaprows: {
@@ -142,7 +138,7 @@ CustomElement
     },
     table: {
       click({ target }) {
-        const { action, id } = target.dataset;
+        const { action, id } = target.closest('[data-action]')?.dataset ?? {};
         switch (action) {
           case 'select':
             this.selected = id;
