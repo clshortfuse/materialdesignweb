@@ -76,18 +76,25 @@ export default ListOption
     },
   })
   .overrides({
+    /** @return {boolean} */
+    _isRadioSelected() {
+      return this.selected;
+    },
+    _updateFormAssociatedValue() {
+      if (this.selected) {
+        this.elementInternals.setFormValue(this.value);
+        if (this.type === 'radio') {
+          this._notifyRadioChange(this.name);
+        }
+      } else {
+        this.elementInternals.setFormValue(null);
+      }
+    },
     formIPCEvent(event) {
-      if (event.target instanceof HTMLFormElement && event.target !== this.form) {
-        console.warn('Control.formIPCEvent: Abort from wrong form');
-        return;
-      }
-      if (this.type !== 'radio') {
-        console.warn('Control.formIPCEvent: Abort from not radio');
-        return;
-      }
-      const [name, value] = event.detail;
-      if (this.name !== name) return;
-      if (value === this.value) return;
+      if ((event.target instanceof HTMLFormElement && event.target !== this.form)
+        || this.type !== 'radio') return;
+      const [name, source] = event.detail;
+      if (!name || this.name !== name || source === this) return;
       this.selected = false;
     },
   })
@@ -116,15 +123,8 @@ export default ListOption
     },
   })
   .on({
-    _selectedChanged(oldValue, newValue) {
-      if (newValue) {
-        this.elementInternals.setFormValue(this.value);
-        if (this.type === 'radio') {
-          this._notifyRadioChange(this.name, this.value);
-        }
-      } else {
-        this.elementInternals.setFormValue(null);
-      }
+    _selectedChanged() {
+      this._updateFormAssociatedValue();
       if (this._selectedDirty) {
         this.dispatchEvent(new Event('change', { bubbles: true }));
       }
