@@ -34,7 +34,14 @@ npm run serve
 ```bash
 npm run sample
 npm run benchmark
+npm run benchmark:mdw-for
 ```
+
+`benchmark:mdw-for` builds a temporary production bundle and reports median,
+p90, and minimum synchronous render-plus-layout times in Chromium, Firefox,
+and WebKit. Use `npm run benchmark:mdw-for -- --help` for row-count, sample,
+browser, and JSON output options. Generated files stay in the operating
+system's temporary directory.
 
 - Generate a static theme file for demo pages (optional):
 

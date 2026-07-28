@@ -165,6 +165,7 @@
     "watch": "node build/esbuild.js demo/demo.js --outdir=demo --watch --metafile",
     "sample": "node build/esbuild.js demo/sample/sample.js --outdir=demo/sample --watch --metafile --serve --live",
     "benchmark": "node build/esbuild.js demo/benchmark/main.js --outdir=demo/benchmark --minify --production --metafile --serve --watch",
+    "benchmark:mdw-for": "node scripts/benchmark-mdw-for.js",
     "examples:serve": "npx http-server examples -c-1"
   },
   "sideEffects": [
