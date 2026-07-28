@@ -94,6 +94,27 @@ describe('KeyboardNavMixin', () => {
     assert.equal(document.activeElement, first);
   });
 
+  it('prefers authored host ARIA attributes over internals defaults', () => {
+    /** @type {InstanceType<KeyboardNavTestElement>} */
+    const element = createKeyboardNavTestElement(`
+      <button id=first>First</button>
+      <button id=second>Second</button>
+    `);
+    const first = /** @type {HTMLButtonElement} */ (element.querySelector('#first'));
+    const second = /** @type {HTMLButtonElement} */ (element.querySelector('#second'));
+
+    element.setAttribute('role', 'toolbar');
+    element.setAttribute('aria-orientation', 'horizontal');
+
+    assert.equal(element.readAriaProperty('role'), 'toolbar');
+    assert.equal(element.readAriaProperty('ariaOrientation'), 'horizontal');
+
+    first.focus();
+    dispatchKeyboardNavigation(first, 'ArrowRight');
+
+    assert.equal(document.activeElement, second);
+  });
+
   it('restores author tabindex values when kbdNav is disabled', () => {
     /** @type {InstanceType<KeyboardNavTestElement>} */
     const element = createKeyboardNavTestElement(`

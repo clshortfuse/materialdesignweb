@@ -12,8 +12,17 @@ export default function AriaReflectorMixin(Base) {
     .observe({
       /** Role string mirrored to ARIA `role` property/attribute. */
       _ariaRole: 'string',
+
+      /** Reads authored role changes for the attribute-reflection fallback. */
+      _ariaRoleAttribute: { attr: 'role', reflect: 'read' },
     })
     .set({
+      /** Role attribute captured before any internal fallback reflection. */
+      _authoredAriaRole: null,
+
+      /** Prevents internal fallback reflection from being treated as authored. */
+      _updatingAriaRole: false,
+
       /**
        * Browsers that do not support ARIAMixin in ElementInternals need to have
        * their attributes set after construction.
@@ -26,18 +35,15 @@ export default function AriaReflectorMixin(Base) {
        * @param {keyof HTMLElement & keyof ElementInternals} name
        */
       readAriaProperty(name) {
-        if (this.elementInternals && name in this.elementInternals) {
-          return this.elementInternals[name];
-        } if (name in this) {
-          return this[name];
-        }
-        // console.warn('Unknown ARIA property', name, this);
         /** @type {string} */
         let attrName = name;
         if (attrName.startsWith('aria')) {
           attrName = `aria-${attrName.slice(4).toLowerCase()}`;
         }
-        return this.getAttribute(name);
+        return this.getAttribute(attrName)
+          ?? this[name]
+          ?? this.elementInternals?.[name]
+          ?? null;
       },
       /**
        * @template {StringKeyOfARIAMixin<keyof ARIAMixin>} K
@@ -58,9 +64,19 @@ export default function AriaReflectorMixin(Base) {
               attrName = `aria-${attrName.slice(4).toLowerCase()}`;
             }
             if (value == null) {
-              this.removeAttribute(name);
+              this._updatingAriaRole = name === 'role';
+              try {
+                this.removeAttribute(attrName);
+              } finally {
+                this._updatingAriaRole = false;
+              }
             } else {
-              this.setAttribute(attrName, value);
+              this._updatingAriaRole = name === 'role';
+              try {
+                this.setAttribute(attrName, value);
+              } finally {
+                this._updatingAriaRole = false;
+              }
             }
           }
         } else {
@@ -72,14 +88,30 @@ export default function AriaReflectorMixin(Base) {
     })
     .on({
       _ariaRoleChanged(oldValue, newValue) {
+        if (!(this.elementInternals && 'role' in this.elementInternals)
+          && this._authoredAriaRole != null) return;
         this.updateAriaProperty('role', newValue);
       },
+      _ariaRoleAttributeChanged(oldValue, newValue) {
+        if (this._updatingAriaRole) return;
+        this._authoredAriaRole = newValue;
+        if (newValue == null) {
+          this.updateAriaProperty('role', this._ariaRole);
+        }
+      },
       constructed() {
-        this.updateAriaProperty('role', this._ariaRole);
+        this._authoredAriaRole = this.getAttribute('role');
+        if ((this.elementInternals && 'role' in this.elementInternals)
+          || this._authoredAriaRole == null) {
+          this.updateAriaProperty('role', this._ariaRole);
+        }
       },
       connected() {
         if (!this._onConnectAriaValues) return;
         for (const [key, value] of this._onConnectAriaValues) {
+          if (key === 'role'
+            && !(this.elementInternals && 'role' in this.elementInternals)
+            && this.getAttribute('role') !== this._authoredAriaRole) continue;
           this.updateAriaProperty(key, value);
         }
         this._onConnectAriaValues = null;

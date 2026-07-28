@@ -24,6 +24,16 @@ describe('mdw-bottom-app-bar', () => {
   });
 
   describe('aria', () => {
+    it('restores its internal role after an authored role is removed', () => {
+      const element = html`<mdw-bottom-app-bar role=region></mdw-bottom-app-bar>`;
+
+      assert.equal(element.readAriaProperty('role'), 'region');
+
+      element.removeAttribute('role');
+
+      assert.equal(element.readAriaProperty('role'), 'toolbar');
+    });
+
     it('returns toolbar role', async () => {
       const element = html`<mdw-bottom-app-bar>foo</mdw-bottom-app-bar>`;
       const results = await axTree({ selector: element.tagName });
