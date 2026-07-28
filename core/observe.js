@@ -134,6 +134,38 @@ const proxyCache = new WeakMap();
 /** @type {WeakMap<object, { subscribe: (fn: (patch:any) => void) => void, unsubscribe: (fn: (patch:any) => void) => void, emit: (patch:any) => void }>} */
 const proxyEmitters = new WeakMap();
 
+const ARRAY_MUTATION_METHODS = new Set([
+  'copyWithin',
+  'fill',
+  'pop',
+  'push',
+  'reverse',
+  'shift',
+  'sort',
+  'splice',
+  'unshift',
+]);
+
+/**
+ * @param {string} method
+ * @param {any[]} args
+ * @param {number} previousLength
+ * @return {number}
+ */
+function arrayMutationWriteStart(method, args, previousLength) {
+  const requestedStart = method === 'push' || method === 'pop'
+    ? previousLength
+    : Number(args[method === 'fill' ? 1 : 0] ?? 0);
+  return method === 'unshift'
+    || method === 'shift'
+    || method === 'reverse'
+    || method === 'sort'
+    ? 0
+    : (requestedStart < 0
+      ? Math.max(previousLength + requestedStart, 0)
+      : Math.min(requestedStart, previousLength));
+}
+
 /**
  * @param {any} target
  * @return {{ subscribe: (fn: (patch:any) => void) => void, unsubscribe: (fn: (patch:any) => void) => void, emit: (patch:any) => void }|null}
@@ -226,36 +258,65 @@ function createPatchProxy(target, emit, path, owner, emitter) {
   }
   if (cache.has(owner)) return cache.get(owner);
 
+  /** @type {Map<string, Function>|null} */
+  const arrayMutationWrappers = Array.isArray(target) ? new Map() : null;
+
+  /** @param {any} rootPatch @param {any} localPatch */
+  function emitPatches(rootPatch, localPatch) {
+    emit(rootPatch);
+    emitter?.emit(rootPatch);
+    if (localEmitter && localEmitter !== emitter) {
+      localEmitter.emit(localPatch);
+    }
+  }
+
   const proxy = new Proxy(target, {
     get(obj, prop) {
       if (typeof prop === 'symbol') {
         return /** @type {any} */ (obj)[prop];
       }
       const value = /** @type {any} */ (obj)[prop];
+      if (arrayMutationWrappers && ARRAY_MUTATION_METHODS.has(prop)) {
+        if (arrayMutationWrappers.has(prop)) return arrayMutationWrappers.get(prop);
+        /** @param {...any} args */
+        const mutation = function mutateArray(...args) {
+          const array = /** @type {any[]} */ (/** @type {unknown} */ (obj));
+          const previousLength = array.length;
+          const result = Reflect.apply(value, array, args);
+          if (((prop === 'push' || prop === 'unshift' || prop === 'splice') && !args.length)
+              || ((prop === 'pop' || prop === 'shift') && !previousLength)
+              || ((prop === 'reverse' || prop === 'sort') && previousLength < 2)) {
+            return result === obj ? proxy : result;
+          }
+          const writeStart = arrayMutationWriteStart(prop, args, previousLength);
+          /** @type {Record<string, any>} */
+          const localPatch = { length: array.length };
+          for (let index = writeStart; index < array.length; index++) {
+            localPatch[index] = index in array ? array[index] : null;
+          }
+          const rootPatch = buildPatchFromPath(path, localPatch);
+          emitPatches(rootPatch, localPatch);
+          return result === obj ? proxy : result;
+        };
+        arrayMutationWrappers.set(prop, mutation);
+        return mutation;
+      }
       return createPatchProxy(value, emit, path.concat(prop), owner, emitter);
     },
     set(obj, prop, value) {
       /** @type {any} */ (obj)[prop] = value;
       if (typeof prop !== 'symbol') {
         const rootPatch = buildPatchFromPath(path.concat(prop), value);
-        emit(rootPatch);
-        emitter?.emit(rootPatch);
-        if (localEmitter && localEmitter !== emitter) {
-          const localPatch = buildPatchFromPath([prop], value);
-          localEmitter.emit(localPatch);
-        }
+        const localPatch = buildPatchFromPath([prop], value);
+        emitPatches(rootPatch, localPatch);
       }
       return true;
     },
     deleteProperty(obj, prop) {
       if (typeof prop !== 'symbol') {
         const rootPatch = buildPatchFromPath(path.concat(prop), null);
-        emit(rootPatch);
-        emitter?.emit(rootPatch);
-        if (localEmitter && localEmitter !== emitter) {
-          const localPatch = buildPatchFromPath([prop], null);
-          localEmitter.emit(localPatch);
-        }
+        const localPatch = buildPatchFromPath([prop], null);
+        emitPatches(rootPatch, localPatch);
       }
       return Reflect.deleteProperty(obj, prop);
     },

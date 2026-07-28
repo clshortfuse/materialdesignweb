@@ -102,4 +102,99 @@ describe('mdw-for reconciliation regressions', () => {
     assert.isAtMost(indexOfCalls, items.length, 'performs at most one lookup per row');
     assert.equal(element.shadowRoot.querySelector('.row').textContent, '999');
   });
+
+  it('coalesces a proxy array mutator into one render dispatch', () => {
+    const ProxyRows = CustomElement
+      .extend()
+      .observe({ state: { type: 'proxy', value: { items: [] } } })
+      .html`
+        <div>
+          <span mdw-for="{item of state.items}" class="row">{item.label}</span>
+        </div>
+      `
+      .register('mdw-for-proxy-mutation-regression-test');
+
+    element = new ProxyRows();
+    document.body.append(element);
+    element.state.items.push(
+      ...Array.from({ length: 200 }, (_, index) => ({ label: `${index}` })),
+    );
+
+    let propertyRenders = 0;
+    const originalByProp = element.render.byProp;
+    /** @param {...any} args */
+    element.render.byProp = function countPropertyRender(...args) {
+      propertyRenders += 1;
+      return originalByProp.apply(this, args);
+    };
+
+    element.state.items.unshift({ label: 'head' });
+
+    assert.equal(propertyRenders, 1);
+    assert.lengthOf(element.shadowRoot.querySelectorAll('.row'), 201);
+    assert.equal(element.shadowRoot.querySelector('.row').textContent, 'head');
+  });
+
+  it('coalesces native mutators and cleans duplicate results', () => {
+    const ProxyMutators = CustomElement
+      .extend()
+      .observe({ state: { type: 'proxy', value: { items: [] } } })
+      .html`
+        <div>
+          <span mdw-for="{item of state.items}" class="row">{item.label}</span>
+        </div>
+      `
+      .register('mdw-for-proxy-mutators-regression-test');
+
+    element = new ProxyMutators();
+    document.body.append(element);
+    element.state.items.push(
+      { label: 'A' },
+      { label: 'B' },
+      { label: 'C' },
+      { label: 'D' },
+    );
+
+    let propertyRenders = 0;
+    const originalByProp = element.render.byProp;
+    /** @param {...any} args */
+    element.render.byProp = function countPropertyRender(...args) {
+      propertyRenders += 1;
+      return originalByProp.apply(this, args);
+    };
+    /** @param {() => any} callback @param {string[]} expectedLabels */
+    const mutate = (callback, expectedLabels) => {
+      const previousRenders = propertyRenders;
+      const result = callback();
+      const labels = [...element.shadowRoot.querySelectorAll('.row')]
+        .map((row) => row.textContent);
+      assert.equal(propertyRenders - previousRenders, 1, 'one dispatch per mutator');
+      assert.deepEqual(labels, expectedLabels);
+      return result;
+    };
+    /** @param {{label:string}} a @param {{label:string}} b */
+    const compareLabels = (a, b) => a.label.localeCompare(b.label);
+
+    const reversed = mutate(
+      () => element.state.items.reverse(),
+      ['D', 'C', 'B', 'A'],
+    );
+    assert.equal(reversed, element.state.items, 'chainable mutators return the proxy');
+    mutate(
+      () => element.state.items.sort(compareLabels),
+      ['A', 'B', 'C', 'D'],
+    );
+    mutate(() => element.state.items.shift(), ['B', 'C', 'D']);
+    mutate(() => element.state.items.push({ label: 'E' }), ['B', 'C', 'D', 'E']);
+    mutate(() => element.state.items.pop(), ['B', 'C', 'D']);
+    mutate(() => element.state.items.unshift({ label: 'A' }), ['A', 'B', 'C', 'D']);
+    mutate(
+      () => element.state.items.splice(1, 2, { label: 'X' }, { label: 'Y' }),
+      ['A', 'X', 'Y', 'D'],
+    );
+    const duplicate = { label: 'Z' };
+    mutate(() => element.state.items.fill(duplicate, 1, 3), ['A', 'Z', 'Z', 'D']);
+    mutate(() => element.state.items.copyWithin(1, 2), ['A', 'Z', 'D', 'D']);
+    mutate(() => element.state.items.splice(0), []);
+  });
 });
