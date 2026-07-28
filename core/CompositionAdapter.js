@@ -45,6 +45,29 @@ function restoreFocus(focused) {
   }
 }
 
+/** @param {CompositionAdapter<any>} adapter @param {ItemMetadata} metadata */
+function cacheMetadata(adapter, metadata) {
+  const entries = adapter.metadataCache?.get(metadata.key);
+  if (entries) {
+    entries.push(metadata);
+  } else if (adapter.metadataCache) {
+    adapter.metadataCache.set(metadata.key, [metadata]);
+  } else {
+    adapter.metadataCache = new Map([[metadata.key, [metadata]]]);
+  }
+}
+
+/** @param {CompositionAdapter<any>} adapter @param {any} key */
+function takeCachedMetadata(adapter, key) {
+  const entries = adapter.metadataCache?.get(key);
+  if (!entries?.length) return null;
+  const metadata = entries.shift();
+  if (!entries.length) {
+    adapter.metadataCache.delete(key);
+  }
+  return metadata;
+}
+
 /**
  *  @param {Element|Comment} node
  *  @param {ChildNode} beforeNode
@@ -97,7 +120,7 @@ export default class CompositionAdapter {
     /** @type {RenderOptions<T>} */
     this.renderOptions = options.renderOptions;
 
-    /** @type {Map<any, ItemMetadata>} */
+    /** @type {Map<any, ItemMetadata[]>} */
     this.metadataCache = null;
 
     /** @type {Element[]} */
@@ -140,8 +163,10 @@ export default class CompositionAdapter {
     this.batchStartIndex = null;
     this.batchEndIndex = null;
     if (this.metadataCache) {
-      for (const { domNode } of this.metadataCache.values()) {
-        domNode.remove();
+      for (const entries of this.metadataCache.values()) {
+        for (const { domNode } of entries) {
+          domNode.remove();
+        }
       }
       this.metadataCache.clear();
     }
@@ -150,7 +175,7 @@ export default class CompositionAdapter {
   /** @param {number} index */
   moveToEndByIndex(index) {
     const [metadata] = this.metadata.splice(index, 1);
-    const { domNode, key } = metadata;
+    const { domNode } = metadata;
     this.keys.splice(index, 1);
     const removalContainer = domNode.parentNode;
     if (removalContainer) {
@@ -158,11 +183,7 @@ export default class CompositionAdapter {
     }
 
     // Don't release in case we may need it later
-    if (this.metadataCache) {
-      this.metadataCache.set(key, metadata);
-    } else {
-      this.metadataCache = new Map([[key, metadata]]);
-    }
+    cacheMetadata(this, metadata);
   }
 
   /**
@@ -211,7 +232,7 @@ export default class CompositionAdapter {
       if (this.needsArrayKeyFastPath) {
         // Invoking includes will ensure Chrome generates an internal hash map
         failedFastPath = !this.keys.includes(key);
-        this.needsArrayFastPath = false;
+        this.needsArrayKeyFastPath = false;
       }
       const oldIndex = failedFastPath ? -1 : this.keys.indexOf(key, newIndex + 1);
       if (oldIndex === -1) {
@@ -223,13 +244,12 @@ export default class CompositionAdapter {
           // (Optimistic insert)
           // Key was removed and should be here instead
           // If should have been replace, will correct next step
-          const previousMetadata = metadataCache.get(key);
+          const previousMetadata = takeCachedMetadata(this, key);
           this.metadata.splice(newIndex, 0, previousMetadata);
           this.keys.splice(newIndex, 0, key);
 
           moveBeforeNode(previousMetadata.domNode, metadataAtIndex.domNode, metadataAtIndex.domNode.parentNode);
           previousMetadata.render(changes, data);
-          metadataCache.delete(key);
           return;
         }
 
@@ -239,7 +259,7 @@ export default class CompositionAdapter {
         // Allows multiple inserts to batch instead of one-by-one
 
         // console.log('completely new key', 'removing old. will replace', newIndex);
-        metadataCache.set(currentKey, metadataAtIndex);
+        cacheMetadata(this, metadataAtIndex);
 
         // Continue to PUT below
       } else {

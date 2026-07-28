@@ -405,20 +405,6 @@ function searchWithDeepProp(state, changes, data) {
 const STRING_INTERPOLATION_REGEX = /{([^}]*)}/g;
 
 /**
- * Returns event listener bound to shadow root host.
- * Use this function to avoid generating extra closures
- * @this {HTMLElement}
- * @param {Function} fn
- */
-function buildShadowRootChildListener(fn) {
-  /** @param {Event & {currentTarget:{getRootNode: () => ShadowRoot}}} event */
-  return function onShadowRootChildEvent(event) {
-    const host = event.currentTarget.getRootNode().host;
-    fn.call(host, event);
-  };
-}
-
-/**
  * @example
  *  propFromObject('foo', {foo:'bar'}) == ['foo', 'bar'];
  * @param {string} prop
@@ -721,10 +707,10 @@ export default class Composition {
       let textNode;
       if (tag === '') {
         if (!textNodes.length) {
-          console.warn('why was root tagged?');
+          console.assert(false, 'Composition invariant: root binding has no text nodes');
           continue;
         }
-        console.warn('found empty tag??');
+        console.assert(false, 'Composition invariant: root text binding');
         refs.push(null);
         nodes.push(null);
         textNode = /** @type {Text} */ (instanceFragment.firstChild);
@@ -930,7 +916,7 @@ export default class Composition {
     if (text) {
       // eslint-disable-next-line unicorn/consistent-destructuring
       if (element !== text.parentElement) {
-        console.warn('mismatch?');
+        console.assert(false, 'Composition invariant: text parent mismatch');
         element = text.parentElement;
       }
       textNodeIndex = 0;
@@ -943,7 +929,7 @@ export default class Composition {
       // @ts-ignore Skip cast
       // eslint-disable-next-line unicorn/consistent-destructuring
       if (element !== attr.ownerElement) {
-        console.warn('mismatch?');
+        console.assert(false, 'Composition invariant: attribute owner mismatch');
         element = attr.ownerElement;
       }
       if (nodeName.startsWith('on')) {
@@ -1121,7 +1107,7 @@ export default class Composition {
           invocation(value) {
             if (this.doubleNegate) return !!value;
             if (this.negate) return !value;
-            console.warn('Unknown query mutation', this.query);
+            console.assert(false, 'Composition invariant: unknown query mutation', this.query);
             return value;
           },
         };
@@ -1258,17 +1244,7 @@ export default class Composition {
     // TODO: Microbenchmark element.attributes
     const forAttr = element.getAttribute('mdw-for');
     const trimmed = forAttr?.trim();
-    if (!trimmed) {
-      console.warn('Malformed mdw-for found at', element);
-      return null;
-    }
-
-    if (trimmed[0] !== '{') {
-      console.warn('Malformed mdw-for found at', element);
-      return null;
-    }
-    const { length } = trimmed;
-    if (trimmed[length - 1] !== '}') {
+    if (!trimmed || trimmed[0] !== '{' || trimmed.at(-1) !== '}') {
       console.warn('Malformed mdw-for found at', element);
       return null;
     }
@@ -1415,7 +1391,7 @@ export default class Composition {
             if (changeList) {
               // console.warn('full array render has changeList?', changeList);
               if (!needTargetAll && !(index in changeList)) {
-                console.warn('huh?');
+                console.assert(false, 'Composition invariant: sparse iterable change', index);
                 continue;
               }
               change = changeList[index];
@@ -1444,7 +1420,11 @@ export default class Composition {
       injections,
     });
 
-    propsUsed.push(...newComposition.props);
+    for (const prop of newComposition.props) {
+      if (!propsUsed.includes(prop)) {
+        propsUsed.push(prop);
+      }
+    }
     this.addSearch(search);
     this.addAction(action);
     // eslint-disable-next-line no-multi-assign

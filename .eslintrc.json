@@ -134,6 +134,7 @@
       "warn",
       {
         "allow": [
+          "assert",
           "warn",
           "error",
           "time",
