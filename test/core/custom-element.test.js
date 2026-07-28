@@ -1616,6 +1616,28 @@ describe('CustomElement API parity', () => {
     }
   });
 
+  it('undefine removes computed watchers from their dependencies', () => {
+    const Computed = CustomElement
+      .extend()
+      .observe({
+        count: { type: 'integer', value: 0 },
+        double({ count }) { return count * 2; },
+      });
+    const callbacks = Computed.propChangedCallbacks.get('count');
+    const previousLength = callbacks.length;
+    const originalWarn = console.warn;
+    console.warn = () => {};
+    try {
+      Computed.define({
+        double() { return this.count * 2; },
+      });
+    } finally {
+      console.warn = originalWarn;
+    }
+
+    assert.lengthOf(callbacks, previousLength - 1);
+  });
+
   it('events accept deep prop strings', async () => {
     const tag = nextTag('events-deep-prop');
     /** @type {string[]} */

@@ -764,9 +764,10 @@ export default class CustomElement extends HTMLElement {
     Reflect.deleteProperty(this.prototype, name);
     if (this.propList.has(name)) {
       const { watchers, attr, reflect } = this.propList.get(name);
-      if (watchers.length && this.propChangedCallbacks.has(name)) {
-        const propWatchers = this.propChangedCallbacks.get(name);
+      if (watchers.length) {
         for (const [prop, watcher] of watchers) {
+          const propWatchers = this.propChangedCallbacks.get(prop);
+          if (!propWatchers) continue;
           const index = propWatchers.indexOf(watcher);
           if (index !== -1) {
             console.warn('Unwatching', name);
