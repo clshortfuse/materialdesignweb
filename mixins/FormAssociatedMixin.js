@@ -26,6 +26,8 @@ export default function FormAssociatedMixin(Base) {
       _ipcTarget: null,
       /** @type {FileList} */
       _files: null,
+      /** Last message supplied through setCustomValidity(). */
+      _customValidityMessage: '',
     })
     .observe({
       /** ARIA 'controls' attribute (string). */
@@ -178,42 +180,57 @@ export default function FormAssociatedMixin(Base) {
 
       reportValidity() { return this.elementInternals.reportValidity(); },
 
+      /** Refreshes validity flags owned by this generic form control. */
+      _updateFormValidity() {
+        const message = this._customValidityMessage;
+        this.elementInternals.setValidity(
+          { customError: !!message },
+          message,
+        );
+        this._invalid = !!message;
+        this._validationMessage = message;
+      },
+
       /**
        * @param {string} error
        * @return {void}
        */
       setCustomValidity(error) {
-        this.elementInternals.setValidity({
-          ...this.elementInternals.validity,
-          customError: !!error,
-        }, this.elementInternals.validationMessage || error);
+        this._customValidityMessage = String(error);
+        this._updateFormValidity();
       },
 
       /**
        * @param {string} key
-       * @param {string} value
        * @return {void}
        */
-      _notifyRadioChange(key, value) {
+      _notifyRadioChange(key) {
         this._ipcTarget?.dispatchEvent(
-          new CustomEvent(FORM_IPC_EVENT, { detail: [key, value] }),
+          new CustomEvent(FORM_IPC_EVENT, { detail: [key, this] }),
         );
       },
 
+      /** @return {boolean} */
+      _isRadioSelected() {
+        return this.checked;
+      },
+
       refreshFormAssociation() {
-        const newTarget = this.elementInternals.form ?? this.getRootNode();
+        const newTarget = this.type === 'radio' && this.isConnected
+          ? this.elementInternals.form ?? this.getRootNode()
+          : null;
         if (newTarget === this._ipcTarget) {
-          // console.warn('Already associated?', newTarget);
           return;
         }
-        if (this._ipcTarget) {
-          this._ipcTarget.removeEventListener(FORM_IPC_EVENT, this._ipcListener);
-        }
-        if (this.type !== 'radio') return;
-
+        this._ipcTarget?.removeEventListener(FORM_IPC_EVENT, this._ipcListener);
         this._ipcTarget = newTarget;
+        if (!newTarget) return;
+
         this._ipcListener ??= this.formIPCEvent.bind(this);
-        this._ipcTarget.addEventListener(FORM_IPC_EVENT, this._ipcListener);
+        newTarget.addEventListener(FORM_IPC_EVENT, this._ipcListener);
+        if (this._isRadioSelected()) {
+          this._notifyRadioChange(this.name);
+        }
       },
 
       /**
@@ -223,30 +240,21 @@ export default function FormAssociatedMixin(Base) {
        * @return {void}
        */
       formAssociatedCallback(form) {
+        void form;
         this.refreshFormAssociation();
         this.checkValidity();
       },
 
       /**
-       * @param {CustomEvent<[string, string]>} event
+       * @param {CustomEvent<[string, EventTarget]>} event
        * @return {void}
        */
       formIPCEvent(event) {
-        if (event.target instanceof HTMLFormElement && event.target !== this.form) {
-          console.warn('Control.formIPCEvent: Abort from wrong form');
-          return;
-        }
-        if (this.type !== 'radio') {
-          console.warn('Control.formIPCEvent: Abort from not radio');
-          return;
-        }
-        const [name, value] = event.detail;
-        if (this.name !== name) return;
-        if (value === this.value) {
-          // console.log('Control.formIPCEvent: Continue match', this.name, this.value);
-        } else {
-          this.checked = false;
-        }
+        if ((event.target instanceof HTMLFormElement && event.target !== this.form)
+          || this.type !== 'radio') return;
+        const [name, source] = event.detail;
+        if (!name || this.name !== name || source === this) return;
+        this.checked = false;
       },
 
       /** @param {boolean} disabled */
@@ -267,6 +275,7 @@ export default function FormAssociatedMixin(Base) {
        * @param {'autocomplete'|'restore'} mode
        */
       formStateRestoreCallback(state, mode) {
+        void mode;
         if (CHROME_VERSION < 115) {
           // formStateRestoreCallback is broken on Chromium
           // https://bugs.chromium.org/p/chromium/issues/detail?id=1429585
@@ -280,14 +289,6 @@ export default function FormAssociatedMixin(Base) {
           this.checked = (state === 'checked');
           return;
         }
-        if (this.type === 'radio') {
-          // Due to lifecycle quirks, other radio elements on the page may not have
-          // been upgraded to Custom Element yet and would not receive
-          // the 'uncheck' communication. Delay notice until then.
-          this.checked = (state === 'checked');
-          return;
-        }
-
         this.value = state;
       },
 
@@ -295,7 +296,7 @@ export default function FormAssociatedMixin(Base) {
         switch (this.type) {
           case 'radio':
             if (this.checked) {
-              this._notifyRadioChange(this.name, this.value || 'on');
+              this._notifyRadioChange(this.name);
             }
             // Fallthrough
           case 'checkbox':
@@ -354,6 +355,10 @@ export default function FormAssociatedMixin(Base) {
         // Bind to global if no form is present (used by radio)
         this.refreshFormAssociation();
       },
+      disconnected() {
+        this._ipcTarget?.removeEventListener(FORM_IPC_EVENT, this._ipcListener);
+        this._ipcTarget = null;
+      },
       checkedChanged() {
         this._updateFormAssociatedValue();
       },
@@ -367,6 +372,7 @@ export default function FormAssociatedMixin(Base) {
       },
       typeChanged() {
         this._updateFormAssociatedValue();
+        this.refreshFormAssociation();
       },
     });
 }
