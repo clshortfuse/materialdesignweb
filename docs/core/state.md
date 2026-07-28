@@ -271,6 +271,12 @@ this.config = { ...this.config, theme: 'dark' };
 
 // Batch updates
 this.patch({ title: 'New', price: 29.99 });
+
+// Synchronous deep mutation with one sparse render
+this.mutate((draft) => {
+  draft.items[0].selected = true;
+  draft.items[2].label = 'Updated';
+});
 ```
 
 ## Choosing a state pattern
@@ -323,6 +329,34 @@ Update multiple properties efficiently in a single operation:
 - Single DOM update cycle
 - Only changed properties trigger expression updates
 - Cleaner than multiple assignments
+
+## Deep Updates with `mutate()`
+
+Use `mutate()` when several deep writes belong to one interaction:
+
+```js
+this.mutate((draft) => {
+  for (let index = 0; index < draft.items.length; index += 10) {
+    draft.items[index].label += ' !!!';
+  }
+});
+```
+
+`mutate()` is strictly synchronous. It records writes through its temporary
+draft, renders one sparse change set, and returns only after the DOM is current.
+It does not schedule a Promise, microtask, animation frame, or deferred flush.
+
+The draft is valid only during the mutator call. Plain objects and arrays are
+tracked deeply; functions and custom objects are treated as values. Keep
+`patch()` for explicit JSON Merge Patch data and use `mutate()` for mutation
+syntax—`patch()` never interprets function values as control flow.
+
+Nested `mutate()` calls join the outer transaction. The mutator must return
+nothing and complete synchronously; its return value is not inspected or
+awaited. TypeScript declarations reject asynchronous mutators. A draft retained
+after the call is revoked. Writes are applied as they occur; if a mutator throws,
+already-applied writes are rendered before the original error is rethrown rather
+than being rolled back.
 
 ## Complete Example: Product Card
 

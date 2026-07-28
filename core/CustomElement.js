@@ -4,7 +4,7 @@ import Composition from './Composition.js';
 import { css } from './css.js';
 import { attrNameFromPropName, attrValueFromDataValue } from './dom.js';
 import { applyMergePatch } from './jsonMergePatch.js';
-import { defineObservableProperty } from './observe.js';
+import { createMutationDraft, defineObservableProperty } from './observe.js';
 import { addInlineFunction, html } from './template.js';
 
 /** @typedef {import('./observe.js').ObserverPropertyType} ObserverPropertyType */
@@ -1159,6 +1159,9 @@ export default class CustomElement extends HTMLElement {
   /** @type {Array<[string, any, CustomElement]>} */
   #pendingPatchRenders = [];
 
+  /** @type {ReturnType<typeof createMutationDraft>} */
+  #mutation = null;
+
   /** @type {Map<string,{stringValue:string, parsedValue:any}>} */
   #propAttributeCache;
 
@@ -1341,7 +1344,54 @@ export default class CustomElement extends HTMLElement {
       this.render.byProp(name, changes, state);
     }
     this.render(patch);
+  }
+
+  /**
+   * Synchronously mutate deep element state and render one sparse change set.
+   * The draft is only valid while `mutator` is running.
+   * @param {(draft:this) => undefined} mutator
+   * @return {void}
+   */
+  mutate(mutator) {
+    if (this.#mutation) {
+      mutator(/** @type {this} */ (this.#mutation.draft));
+      return;
+    }
+
+    const mutation = createMutationDraft(this);
+    this.#mutation = mutation;
+    this.#patching = true;
+
+    let mutationError;
+    try {
+      mutator(/** @type {this} */ (mutation.draft));
+    } catch (error) {
+      mutationError = error;
+    }
+
+    const pendingPatchRenders = this.#pendingPatchRenders.splice(0);
+    for (const [name, changes] of pendingPatchRenders) {
+      if (!mutation.has(name)) {
+        mutation.add(name, changes);
+      }
+    }
+    const changes = mutation.changes();
+
+    this.#mutation = null;
     this.#patching = false;
+    mutation.revoke();
+
+    let renderError;
+    if (Object.keys(changes).length) {
+      try {
+        this.render(changes);
+      } catch (error) {
+        renderError = error;
+      }
+    }
+
+    if (mutationError) throw mutationError;
+    if (renderError) throw renderError;
   }
 
   /**

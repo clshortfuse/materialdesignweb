@@ -89,6 +89,7 @@ describe('CustomElement docs parity', () => {
     assert.equal(typeof el.render, 'function', 'instance render is missing');
     assert.equal(typeof el.render.byProp, 'function', 'render.byProp is missing');
     assert.equal(typeof el.patch, 'function', 'instance patch is missing');
+    assert.equal(typeof el.mutate, 'function', 'instance mutate is missing');
 
     const instanceGetters = [
       'composition',

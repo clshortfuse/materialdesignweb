@@ -223,6 +223,9 @@ export function unsubscribeProxy(proxy, fn) {
  * @return {any}
  */
 function buildPatchFromPath(path, value) {
+  if (!path.length) {
+    return value;
+  }
   /** @type {Record<string, any>} */
   const patch = {};
   /** @type {Record<string, any>} */
@@ -233,6 +236,187 @@ function buildPatchFromPath(path, value) {
   }
   cursor[path.at(-1)] = value;
   return patch;
+}
+
+/**
+ * @typedef {Object} MutationNode
+ * @prop {Map<string, MutationNode>} [children]
+ * @prop {boolean} changed
+ * @prop {any} [value]
+ */
+
+/** @return {MutationNode} */
+function createMutationNode() {
+  return { changed: false };
+}
+
+/**
+ * @param {MutationNode} root
+ * @param {string[]} path
+ * @param {any} value
+ */
+function recordMutation(root, path, value) {
+  let node = root;
+  for (const prop of path) {
+    if (node.changed) return;
+    let { children } = node;
+    if (!children) {
+      children = new Map();
+      node.children = children;
+    }
+    let child = children.get(prop);
+    if (!child) {
+      child = createMutationNode();
+      children.set(prop, child);
+    }
+    node = child;
+  }
+  node.changed = true;
+  node.value = value;
+  node.children = null;
+}
+
+/** @param {MutationNode} node @return {any} */
+function mutationFromNode(node) {
+  if (node.changed) return node.value;
+  const mutation = Object.create(null);
+  if (!node.children) return mutation;
+  for (const [prop, child] of node.children) {
+    mutation[prop] = mutationFromNode(child);
+  }
+  return mutation;
+}
+
+/** @param {any} value @return {boolean} */
+function isDraftable(value) {
+  if (value == null || typeof value !== 'object') return false;
+  if (Array.isArray(value)) return true;
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
+}
+
+/**
+ * Create a synchronous, transaction-local draft that writes through to `target`
+ * while recording one sparse change tree. Drafts are revocable and only recurse
+ * into arrays and plain objects.
+ * @param {Object} target
+ */
+export function createMutationDraft(target) {
+  const root = createMutationNode();
+  /** @type {(() => void)[]} */
+  const revokers = [];
+  /** @type {WeakMap<object, object>} */
+  const proxyTargets = new WeakMap();
+
+  /** @param {any} value */
+  const unwrap = (value) => (
+    value != null && typeof value === 'object' && proxyTargets.has(value)
+      ? proxyTargets.get(value)
+      : value
+  );
+
+  /**
+   * @param {Object} object
+   * @param {string[]} path
+   * @param {boolean} [isRoot]
+   * @return {Object}
+   */
+  function createDraft(object, path, isRoot = false) {
+    /** @type {Map<string, {value:any, proxy:Object}>} */
+    const childProxies = new Map();
+    /** @type {Map<string, Function>} */
+    const arrayMutationWrappers = Array.isArray(object) ? new Map() : null;
+    /** @type {{current:Object|null}} */
+    const proxyRef = { current: null };
+
+    const revocable = Proxy.revocable(object, {
+      get(current, prop) {
+        const value = Reflect.get(current, prop, isRoot ? current : proxyRef.current);
+        if (typeof prop !== 'string') return value;
+
+        if (arrayMutationWrappers && ARRAY_MUTATION_METHODS.has(prop)) {
+          if (arrayMutationWrappers.has(prop)) return arrayMutationWrappers.get(prop);
+          /** @param {...any} args */
+          const mutation = function mutateArray(...args) {
+            const array = /** @type {any[]} */ (current);
+            const previousLength = array.length;
+            let result;
+            let mutationError;
+            try {
+              result = Reflect.apply(value, array, args.map((arg) => unwrap(arg)));
+            } catch (error) {
+              mutationError = error;
+            }
+            const writeStart = arrayMutationWriteStart(prop, args, previousLength);
+            for (let index = writeStart; index < array.length; index++) {
+              recordMutation(root, path.concat(`${index}`), array[index]);
+            }
+            if (array.length !== previousLength) {
+              recordMutation(root, path.concat('length'), array.length);
+            }
+            if (mutationError) throw mutationError;
+            return result === array ? proxyRef.current : result;
+          };
+          arrayMutationWrappers.set(prop, mutation);
+          return mutation;
+        }
+
+        const rawValue = unwrap(value);
+        if (!isDraftable(rawValue)) return rawValue;
+        const cached = childProxies.get(prop);
+        if (cached?.value === rawValue) return cached.proxy;
+        const childProxy = createDraft(rawValue, path.concat(prop));
+        childProxies.set(prop, { value: rawValue, proxy: childProxy });
+        return childProxy;
+      },
+      set(current, prop, value) {
+        const rawValue = unwrap(value);
+        const oldValue = Reflect.get(current, prop, isRoot ? current : proxyRef.current);
+        const success = Reflect.set(current, prop, rawValue, current);
+        if (success && typeof prop === 'string') {
+          const newValue = Reflect.get(current, prop, current);
+          if (!Object.is(oldValue, newValue)) {
+            recordMutation(root, path.concat(prop), newValue);
+          }
+        }
+        return success;
+      },
+      deleteProperty(current, prop) {
+        const hadProperty = Reflect.has(current, prop);
+        const success = Reflect.deleteProperty(current, prop);
+        if (success && hadProperty && typeof prop === 'string') {
+          recordMutation(root, path.concat(prop), null);
+        }
+        return success;
+      },
+    });
+    const { proxy } = revocable;
+    proxyRef.current = proxy;
+    proxyTargets.set(proxy, object);
+    revokers.push(revocable.revoke);
+    return proxy;
+  }
+
+  return {
+    draft: createDraft(target, [], true),
+    /** @param {string} prop @param {any} value */
+    add(prop, value) {
+      recordMutation(root, [prop], value);
+    },
+    /** @param {string} prop */
+    has(prop) {
+      return root.children?.has(prop) ?? false;
+    },
+    changes() {
+      return mutationFromNode(root);
+    },
+    revoke() {
+      for (const revoke of revokers) {
+        revoke();
+      }
+      revokers.length = 0;
+    },
+  };
 }
 
 /**

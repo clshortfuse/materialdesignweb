@@ -111,6 +111,7 @@ this.prop('label', { type: 'string', value: 'ok' });
 - `render(...)`: initial render + incremental updates.
 - `render.byProp(...)`: targeted updates for a single prop.
 - `patch(patch)`: apply JSON merge patch, then render.
+- `mutate(mutator)`: synchronously record deep draft writes and render one sparse change set; the mutator returns nothing.
 - `propChangedCallback(...)`: internal prop update hook.
 - `attributeChangedCallback(...)`: standard hook, extended by CustomElement.
 - `connectedCallback()` / `disconnectedCallback()`: standard hooks, extended by CustomElement.
