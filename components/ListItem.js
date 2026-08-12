@@ -4,6 +4,9 @@ import ExpandableMixin from '../mixins/ExpandableMixin.js';
 
 import ListItemBase from './ListItemBase.js';
 
+/** ListItems currently resolved as branches by their owning ListTree. */
+const TREE_EXPANDABLE_ITEMS = new WeakSet();
+
 /**
  * @param {HTMLElement} element
  * @param {Event} event
@@ -32,7 +35,9 @@ export default ListItemBase
   .mixin(ExpandableMixin)
   .overrides({
     getExpandableAriaElement() {
-      if (this._ariaRole === 'treeitem') return this;
+      if (this._ariaRole === 'treeitem') {
+        return TREE_EXPANDABLE_ITEMS.has(this) ? this : null;
+      }
       if (this.href != null) return null;
       return this.refs.row;
     },
@@ -56,6 +61,14 @@ export default ListItemBase
     _updateRowDisclosureState() {
       const row = this.refs.row;
       if (!row) return;
+      const anchor = this.refs.anchor;
+      if (anchor) {
+        if (this.href != null && this._ariaRole === 'treeitem') {
+          anchor.tabIndex = -1;
+        } else {
+          anchor.removeAttribute('tabindex');
+        }
+      }
       const isDisclosure = this._expandable
         && this.href == null
         && this._ariaRole !== 'treeitem';
@@ -79,15 +92,25 @@ export default ListItemBase
 
     /**
      * Sets the item role that corresponds to the parent list role.
-     * @param {string} listRole
+     * @param {string|null} listRole
+     * @param {boolean} [treeExpandable]
      * @return {void}
      */
-    _setListRole(listRole) {
-      const explicitRole = this.getAttribute('role');
-      this._ariaRole = explicitRole
-        || ((listRole === 'tree' || listRole === 'group') ? 'treeitem' : 'listitem');
-      if (!explicitRole) {
+    _setListRole(listRole, treeExpandable = false) {
+      if (treeExpandable) {
+        TREE_EXPANDABLE_ITEMS.add(this);
+      } else {
+        TREE_EXPANDABLE_ITEMS.delete(this);
+      }
+      const updatingAriaRole = this._updatingAriaRole;
+      this._updatingAriaRole = true;
+      try {
+        this._ariaRole = (listRole === 'tree' || listRole === 'group')
+          ? 'treeitem'
+          : 'listitem';
         this.updateAriaProperty('role', this._ariaRole);
+      } finally {
+        this._updatingAriaRole = updatingAriaRole;
       }
       this._updateRowDisclosureState();
       this._updateExpandableAria();
@@ -136,7 +159,8 @@ export default ListItemBase
       grid-area: 2 / 1;
     }
 
-    #expansion-slot::slotted(mdw-list) {
+    #expansion-slot::slotted(mdw-list),
+    #expansion-slot::slotted(mdw-list-tree) {
       padding-block-start: 0;
       padding-inline-start: 40px;
     }
@@ -147,6 +171,17 @@ export default ListItemBase
       }
     }
   `
+  .childEvents({
+    expansionSlot: {
+      slotchange() {
+        if (!this.isConnected) return;
+        this.dispatchEvent(new Event('mdw-list-item:listtopologychange', {
+          bubbles: true,
+          composed: true,
+        }));
+      },
+    },
+  })
   .events({
     click(event) {
       const targetsExpansion = eventTargetsExpansion(this, event);
@@ -156,6 +191,7 @@ export default ListItemBase
         && !targetsExpansion) {
         this.focus();
       }
+      if (this._ariaRole === 'treeitem' && !TREE_EXPANDABLE_ITEMS.has(this)) return;
       if (!this._expandable) return;
       if (this.href != null) return;
       if (this.disabledState) return;
@@ -165,6 +201,21 @@ export default ListItemBase
       event.preventDefault();
     },
     keydown(event) {
+      if (this._ariaRole === 'treeitem'
+        && this.href != null
+        && !this.disabledState
+        && !event.ctrlKey
+        && !event.altKey
+        && !event.shiftKey
+        && !event.metaKey
+        && event.composedPath()[0] === this
+        && (event.key === 'Enter')) {
+        this.refs.anchor.click();
+        event.stopPropagation();
+        event.preventDefault();
+        return;
+      }
+      if (this._ariaRole === 'treeitem' && !TREE_EXPANDABLE_ITEMS.has(this)) return;
       if (!this._expandable) return;
       if (this.href != null) return;
       if (this.disabledState) return;
@@ -177,6 +228,22 @@ export default ListItemBase
     },
   })
   .on({
+    connected() {
+      const parentName = this.parentElement?.localName;
+      if (parentName !== 'mdw-list' && parentName !== 'mdw-list-tree') {
+        this._setListRole(null);
+        return;
+      }
+      const parentList = /** @type {HTMLElement & {_listRole?: unknown}} */ (
+        this.parentElement
+      );
+      if (typeof parentList._listRole === 'string') {
+        this._setListRole(parentList._listRole);
+      }
+    },
+    disconnected() {
+      this._setListRole(null);
+    },
     hrefChanged() {
       this._updateRowDisclosureState();
     },

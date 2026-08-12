@@ -46,10 +46,6 @@ export default List
     /** When true, form resets are honored; toggled when form association changes. */
     _handleFormReset: true,
   })
-  .overrides({
-    /** @return {boolean} */
-    _shouldAutoResolveListRole() { return false; },
-  })
   .define({
     options() {
       if (!this._optionsCollection) {
@@ -85,8 +81,6 @@ export default List
     /** Query selector used by keyboard navigation mixin to find focusable options. */
     kbdNavQuery() { return ListOption.elementName; },
 
-    /** Allow keyboard navigation to focus disabled options in some patterns. */
-    kbdNavFocusableWhenDisabled() { return true; },
   })
   .define({
     length() { return this.options.length; },
@@ -131,7 +125,6 @@ export default List
   })
   .on({
     disabledStateChanged(oldValue, newValue) {
-      this._kbdFocusable = !newValue;
       this.tabIndex = newValue ? -1 : 0;
     },
     multipleChanged(oldValue, newValue) {
@@ -271,7 +264,9 @@ export default List
   .childEvents({
     slot: {
       slotchange() {
-        this.refreshTabIndexes();
+        if (this.isConnected) {
+          this.refreshTabIndexes();
+        }
         let index = 0;
         for (const el of this.options) {
           el._index = index++;

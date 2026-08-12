@@ -348,6 +348,9 @@ export default CustomElement
   .childEvents({
     slot: {
       slotchange() {
+        if (this.isConnected) {
+          this.refreshTabIndexes();
+        }
         this.clearCache();
         this.updateIndicator();
         this.searchForTabContent();

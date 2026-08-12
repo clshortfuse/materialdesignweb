@@ -28,6 +28,7 @@ export { default as Label } from './components/Label.js';
 export { default as List } from './components/List.js';
 export { default as ListItem } from './components/ListItem.js';
 export { default as ListOption } from './components/ListOption.js';
+export { default as ListTree } from './components/ListTree.js';
 export { default as Listbox } from './components/Listbox.js';
 export { default as Menu } from './components/Menu.js';
 export { default as MenuItem } from './components/MenuItem.js';

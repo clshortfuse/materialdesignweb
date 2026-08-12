@@ -6,6 +6,13 @@ import SemiStickyMixin from '../mixins/SemiStickyMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+/** @param {HTMLElement & {refreshTabIndexes(): void}} appBar */
+function refreshTabIndexesIfConnected(appBar) {
+  if (appBar.isConnected) {
+    appBar.refreshTabIndexes();
+  }
+}
+
 /**
  * Top App Bars should have a background-color that is identical to
  * `transparent`, though an explicit value allows updating the environment's
@@ -79,16 +86,30 @@ export default CustomElement
   })
   .html`
     <div id=raised-background raised={_raised}></div>
-    <slot id=leading name=leading on-slotchange={refreshTabIndexes}></slot>
-    <div id=headline ink={ink} color={color} type-style={typeStyle} on-slotchange={refreshTabIndexes}>
+    <slot id=leading name=leading></slot>
+    <div id=headline ink={ink} color={color} type-style={typeStyle}>
       {headline}
       <slot id=headline-slot></slot>
     </div>
-    <slot id=trailing name=trailing on-slotchange={refreshTabIndexes}></slot>
+    <slot id=trailing name=trailing></slot>
     <div mdw-if={_companionIf} id=companion aria-hidden=true size={size} color={color} raised={_raised}>
       <slot id=companion-slot name=companion size={size}>{headline}</span>
     </div>
   `
+  .childEvents({
+    leading: {
+      slotchange() { refreshTabIndexesIfConnected(this); },
+    },
+    headline: {
+      slotchange() { refreshTabIndexesIfConnected(this); },
+    },
+    trailing: {
+      slotchange() { refreshTabIndexesIfConnected(this); },
+    },
+    companionSlot: {
+      slotchange() { refreshTabIndexesIfConnected(this); },
+    },
+  })
   .on({
     _scrollListenerPositionYChanged(oldValue, newValue) {
       this._raised = (newValue > this._semiStickyOffsetY);

@@ -35,6 +35,7 @@ npm run serve
 npm run sample
 npm run benchmark
 npm run benchmark:mdw-for
+npm run benchmark:components
 ```
 
 `benchmark:mdw-for` builds a temporary production bundle and reports median,
@@ -42,6 +43,16 @@ p90, and minimum synchronous render-plus-layout times in Chromium, Firefox,
 and WebKit. Use `npm run benchmark:mdw-for -- --help` for row-count, sample,
 browser, and JSON output options. Generated files stay in the operating
 system's temporary directory.
+
+`benchmark:components` uses the same temporary production-build and sequential
+browser model for component ownership and interaction hot paths. Each scenario
+asserts DOM correctness and deterministic operation counts after every sample;
+elapsed timings are evidence rather than hard CI thresholds. Use
+`npm run benchmark:components -- --help` to select a suite, browser, fixture
+size, sample count, warm-up count, or JSON output. The initial `keyboard-nav`
+suite separates live-collection reconciliation, steady sibling traversal, idle
+topology churn, live focus behavior, and topology bursts followed by
+immediate navigation.
 
 - Generate a static theme file for demo pages (optional):
 

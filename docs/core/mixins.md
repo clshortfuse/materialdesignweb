@@ -12,7 +12,7 @@
 | [Form Associated](../../mixins/FormAssociatedMixin.js) | ✅ | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/mixins/FormAssociatedMixin.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [Hyperlink](../../mixins/HyperlinkMixin.js) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/mixins/HyperlinkMixin.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [Input](../../mixins/InputMixin.js) | ✅ | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/mixins/InputMixin.js?compression=gzip&softmax=2048&max=4096&label=) |
-| [Keyboard Nav](../../mixins/KeyboardNavMixin.js) | ⚠️ | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/mixins/KeyboardNavMixin.js?compression=gzip&softmax=2048&max=4096&label=) |
+| [Keyboard Nav](KeyboardNavMixin.md) | ⚠️ | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/mixins/KeyboardNavMixin.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [Navigation Listener](../../mixins/NavigationListenerMixin.js) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/mixins/NavigationListenerMixin.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [Popup](../../mixins/PopupMixin.js) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/mixins/PopupMixin.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [RTL Observer](../../mixins/RTLObserverMixin.js) | ✅ | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/mixins/RTLObserverMixin.js?compression=gzip&softmax=2048&max=4096&label=) |

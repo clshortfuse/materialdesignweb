@@ -20,6 +20,15 @@ export default Surface
   .observe({
     color: { empty: 'surface-container' },
   })
+  .childEvents({
+    slot: {
+      slotchange() {
+        if (this.isConnected) {
+          this.refreshTabIndexes();
+        }
+      },
+    },
+  })
   .css`
     :host {
       --mdw-bg: var(--mdw-color__surface-container);

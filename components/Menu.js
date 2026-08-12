@@ -1,5 +1,4 @@
 import CustomElement from '../core/CustomElement.js';
-import { attemptFocus } from '../core/dom.js';
 import DensityMixin from '../mixins/DensityMixin.js';
 import ElevationMixin from '../mixins/ElevationMixin.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
@@ -41,11 +40,8 @@ export default CustomElement
     _submenu: null,
   })
   .define({
-    kbdNavChildren() {
-      const items = /** @type {HTMLElement[]} */ ([...this.querySelectorAll('mdw-menu-item')]);
-      // eslint-disable-next-line unicorn/prefer-set-has
-      const submenuItems = [...this.querySelectorAll(':scope mdw-menu mdw-menu-item')];
-      return items.filter((el) => !submenuItems.includes(el));
+    kbdNavQuery() {
+      return 'mdw-menu-item';
     },
     /** Return the internal dialog element used for popup rendering (if any). */
     _dialog() {
@@ -111,10 +107,7 @@ export default CustomElement
       return result;
     },
     focus() {
-      const [firstItem] = this.kbdNavChildren;
-      if (!attemptFocus(firstItem)) {
-        this.focusNext(firstItem);
-      }
+      this.focusFirst();
     },
     /**
      * @param {HTMLElement} cascader Element that calls for submenu cascade
@@ -198,6 +191,15 @@ export default CustomElement
         if (submenu && submenu.matches(':is(:focus-within,:focus)')) return;
         this.close(false);
       });
+    },
+  })
+  .childEvents({
+    slot: {
+      slotchange() {
+        if (this.isConnected) {
+          this.refreshTabIndexes();
+        }
+      },
     },
   })
   .autoRegister('mdw-menu');

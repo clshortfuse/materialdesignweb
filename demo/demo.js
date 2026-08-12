@@ -28,6 +28,7 @@ import '../components/InputChip.js';
 import '../components/Label.js';
 import '../components/Root.js';
 import '../components/List.js';
+import '../components/ListTree.js';
 import '../components/ListItem.js';
 import '../components/ListOption.js';
 import '../components/Listbox.js';

@@ -23,7 +23,11 @@ export default Box
   })
   .childEvents({
     slot: {
-      slotchange: 'refreshTabIndexes',
+      slotchange() {
+        if (this.isConnected) {
+          this.refreshTabIndexes();
+        }
+      },
     },
   })
   .css`
