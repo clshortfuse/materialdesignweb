@@ -108,6 +108,9 @@ export default CustomElement
     },
   })
   .expressions({
+    _anchorHref({ disabledState, href }) {
+      return disabledState ? null : href;
+    },
     isInteractive({ href }) {
       return href != null;
     },
@@ -157,6 +160,7 @@ export default CustomElement
     },
   }) => {
     anchor.setAttribute('mdw-if', '{href}');
+    anchor.setAttribute('href', '{_anchorHref}');
     anchor.setAttribute('aria-labelledby', 'content');
     row.append(
       state,

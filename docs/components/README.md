@@ -111,11 +111,33 @@ All components follow Material Design 3. Size is shown for quick comparison.*
 | [Menu](../../components/Menu.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/menus.html) | [Spec](https://m3.material.io/components/menus) | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/Menu.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [MenuItem](../../components/MenuItem.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/menus.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/MenuItem.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [List](../../components/List.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/list.html) | [Spec](https://m3.material.io/components/lists) | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/List.js?compression=gzip&softmax=2048&max=4096&label=) |
+| [ListGrid](../../components/ListGrid.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/list.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/ListGrid.js?compression=gzip&softmax=2048&max=4096&label=) |
+| [ListRow](../../components/ListRow.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/list.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/ListRow.js?compression=gzip&softmax=2048&max=4096&label=) |
+| [ListCell](../../components/ListCell.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/list.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/ListCell.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [ListTree](../../components/ListTree.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/list.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/ListTree.js?compression=gzip&softmax=2048&max=4096&label=) |
+| [ListTreeItem](../../components/ListTreeItem.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/list.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/ListTreeItem.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [ListItem](../../components/ListItem.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/list.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/ListItem.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [Listbox](../../components/Listbox.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/listbox.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/Listbox.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [ListOption](../../components/ListOption.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/listbox.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/ListOption.js?compression=gzip&softmax=2048&max=4096&label=) |
 | [Search](../../components/Search.js) | [Demo](https://clshortfuse.github.io/materialdesignweb/components/search.html) | - | ![](https://img.badgesize.io/clshortfuse/materialdesignweb/main/components/Search.js?compression=gzip&softmax=2048&max=4096&label=) |
+
+`ListGrid` requires direct `ListRow` children. Each trailing keyboard column is
+authored as a direct `ListCell` in its row with `slot="trailing-action"`. These
+components expose fixed `grid`, `row`, and `gridcell` semantics; moving them
+between parents never changes their role. The primary and optional disclosure
+cells remain owned by `ListRow`'s internal presentation. Ordinary `ListItem`,
+hierarchical `ListTreeItem`, and grid-only `ListRow` contracts stay distinct.
+
+The component source-count and bundle ceilings include this semantic boundary;
+the three-file component-count increase is the explicit cost of keeping row,
+cell, and tree-item identity static rather than adding parent-derived role modes
+to `ListItem`.
+Focused benchmarks guard its interaction hot path against row rebuilds, retained
+topology indexes, broad mutation observation, and stale action or row ownership.
+Current action targets are discovered synchronously when focus activates inside
+the grid and during keyboard operations. Native slots update direct row
+topology. Descendant visibility mutations are not predicted; actual focus
+delivery determines whether navigation continues to a target.
 
 ### Feedback & overlays (details: [feedback.md](feedback.md))
 

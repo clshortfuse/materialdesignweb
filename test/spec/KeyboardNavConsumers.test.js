@@ -2,9 +2,9 @@ import { assert } from '@esm-bundle/chai';
 
 import '../../loaders/theme.js';
 import List from '../../components/List.js';
-import ListItem from '../../components/ListItem.js';
 import ListOption from '../../components/ListOption.js';
 import ListTree from '../../components/ListTree.js';
+import ListTreeItem from '../../components/ListTreeItem.js';
 import Listbox from '../../components/Listbox.js';
 import Menu from '../../components/Menu.js';
 import MenuItem from '../../components/MenuItem.js';
@@ -84,25 +84,25 @@ describe('keyboard navigation lifecycle consumers', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item id=parent expanded>
+        <mdw-list-tree-item id=parent expanded>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item id=first tabindex=3>First</mdw-list-item>
+            <mdw-list-tree-item id=first tabindex=3>First</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.querySelector('#parent'));
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.querySelector('#parent'));
     const group = /** @type {InstanceType<ListTree>} */ (
       list.querySelector('mdw-list-tree')
     );
-    const first = /** @type {InstanceType<ListItem>} */ (list.querySelector('#first'));
+    const first = /** @type {InstanceType<ListTreeItem>} */ (list.querySelector('#first'));
 
     assert.instanceOf(list, ListTree);
-    assert.instanceOf(parent, ListItem);
-    const second = /** @type {InstanceType<ListItem>} */ (
-      makeFromString('<mdw-list-item tabindex=4>Second</mdw-list-item>', false)
+    assert.instanceOf(parent, ListTreeItem);
+    const second = /** @type {InstanceType<ListTreeItem>} */ (
+      makeFromString('<mdw-list-tree-item tabindex=4>Second</mdw-list-tree-item>', false)
     );
     group.append(second);
     await nextTask();
@@ -134,17 +134,17 @@ describe('keyboard navigation lifecycle consumers', () => {
     /** @type {InstanceType<ListTree>} */
     const outer = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Outer item
           <mdw-list-tree id=independent>
-            <mdw-list-item expanded>
+            <mdw-list-tree-item expanded>
               Independent parent
               <mdw-list-tree id=group slot=expansion>
-                <mdw-list-item id=first>First</mdw-list-item>
+                <mdw-list-tree-item id=first>First</mdw-list-tree-item>
               </mdw-list-tree>
-            </mdw-list-item>
+            </mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
@@ -152,12 +152,12 @@ describe('keyboard navigation lifecycle consumers', () => {
       outer.querySelector('#independent')
     );
     const group = /** @type {InstanceType<ListTree>} */ (outer.querySelector('#group'));
-    const independentParent = /** @type {InstanceType<ListItem>} */ (
+    const independentParent = /** @type {InstanceType<ListTreeItem>} */ (
       independent.firstElementChild
     );
-    const first = /** @type {InstanceType<ListItem>} */ (group.firstElementChild);
-    const second = /** @type {InstanceType<ListItem>} */ (
-      makeFromString('<mdw-list-item>Second</mdw-list-item>', false)
+    const first = /** @type {InstanceType<ListTreeItem>} */ (group.firstElementChild);
+    const second = /** @type {InstanceType<ListTreeItem>} */ (
+      makeFromString('<mdw-list-tree-item>Second</mdw-list-tree-item>', false)
     );
     const refreshTabIndexes = outer.refreshTabIndexes;
     let outerRefreshes = 0;
@@ -182,20 +182,20 @@ describe('keyboard navigation lifecycle consumers', () => {
     /** @type {InstanceType<ListTree>} */
     const outer = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Outer item
           <mdw-list-tree id=independent>
-            <mdw-list-item>Independent item</mdw-list-item>
+            <mdw-list-tree-item>Independent item</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
     const independent = /** @type {InstanceType<ListTree>} */ (
       outer.querySelector('#independent')
     );
-    const added = /** @type {InstanceType<ListItem>} */ (
-      makeFromString('<mdw-list-item>Added</mdw-list-item>', false)
+    const added = /** @type {InstanceType<ListTreeItem>} */ (
+      makeFromString('<mdw-list-tree-item>Added</mdw-list-tree-item>', false)
     );
     const refreshTabIndexes = outer.refreshTabIndexes;
     let outerRefreshes = 0;

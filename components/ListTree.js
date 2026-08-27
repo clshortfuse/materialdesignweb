@@ -1,8 +1,8 @@
 import List from './List.js';
+import ListTreeItem from './ListTreeItem.js';
 
 /** @typedef {HTMLElement & { disabledState: boolean, expanded: boolean, toggleExpanded(force?: boolean): void }} TreeItemElement */
 /** @typedef {HTMLElement & { _listRole: string, refreshTabIndexes(): void }} ListTreeElement */
-/** @typedef {HTMLElement & { _setListRole?(role: string, treeExpandable?: boolean): void }} ListTreeItemElement */
 
 /**
  * Returns the first direct expansion tree owned by an item.
@@ -18,11 +18,43 @@ function getChildTreeGroup(item) {
   return null;
 }
 
+/**
+ * Returns the direct expansion tree synchronized by its owning ListTree.
+ * @param {HTMLElement} item
+ * @return {HTMLElement|null}
+ */
+function getOwnedTreeGroup(item) {
+  const group = /** @type {HTMLElement & Record<string, any>|null} */ (
+    (/** @type {any} */ (item))._ownedTreeGroup
+  );
+  return group?.parentElement === item
+    && group.slot === 'expansion'
+    && group._listRole === 'group'
+    ? group
+    : null;
+}
+
 /** @param {HTMLElement|null} group @return {boolean} */
 function isOwnedTreeGroup(group) {
   return group?.localName === 'mdw-list-tree'
     && group.slot === 'expansion'
     && (/** @type {ListTreeElement} */ (group))._listRole === 'group';
+}
+
+/** @param {ListTreeElement} tree @param {HTMLElement} item */
+function syncDirectTreeItem(tree, item) {
+  if (item.parentElement !== tree || item.localName !== ListTreeItem.elementName) return;
+  const listItem = /** @type {HTMLElement & Record<string, any>} */ (item);
+  if (typeof listItem._setOwnedTreeGroup !== 'function') return;
+  const group = getChildTreeGroup(item);
+  listItem._setOwnedTreeGroup(isOwnedTreeGroup(group) ? group : null);
+}
+
+/** @param {ListTreeElement} tree */
+function syncTreeItemRoles(tree) {
+  for (const child of tree.children) {
+    syncDirectTreeItem(tree, /** @type {HTMLElement} */ (child));
+  }
 }
 
 /**
@@ -32,13 +64,13 @@ function isOwnedTreeGroup(group) {
  */
 function* getTreeItems(element) {
   for (const child of element.children) {
-    if (child.localName !== 'mdw-list-item') continue;
+    if (child.localName !== ListTreeItem.elementName) continue;
     const item = /** @type {TreeItemElement} */ (child);
     yield item;
 
     if (!item.expanded) continue;
-    const group = getChildTreeGroup(item);
-    if (!group || !isOwnedTreeGroup(group)) continue;
+    const group = getOwnedTreeGroup(item);
+    if (!group) continue;
     yield* getTreeItems(group);
   }
 }
@@ -54,12 +86,28 @@ function ownsTreeItem(tree, item) {
     const group = currentItem.parentElement;
     if (!isOwnedTreeGroup(group)) return false;
     const parentItem = group.parentElement;
-    if (parentItem?.localName !== 'mdw-list-item') return false;
-    if (getChildTreeGroup(parentItem) !== group) return false;
+    if (parentItem?.localName !== ListTreeItem.elementName) return false;
+    if (getOwnedTreeGroup(parentItem) !== group) return false;
     if (!(/** @type {TreeItemElement} */ (parentItem)).expanded) return false;
     currentItem = /** @type {HTMLElement} */ (parentItem);
   }
-  return currentItem.localName === 'mdw-list-item';
+  return currentItem.localName === ListTreeItem.elementName;
+}
+
+/**
+ * @param {HTMLElement} tree
+ * @param {Event} event
+ * @param {boolean} [composed]
+ * @return {HTMLElement|null}
+ */
+function getEventTreeItem(tree, event, composed = false) {
+  const path = composed ? event.composedPath() : [event.target];
+  for (const target of path) {
+    if (!(target instanceof HTMLElement)) continue;
+    if (target.localName !== ListTreeItem.elementName) continue;
+    return ownsTreeItem(tree, target) ? target : null;
+  }
+  return null;
 }
 
 /**
@@ -72,8 +120,8 @@ function getParentTreeItem(tree, item) {
   const group = item.parentElement;
   if (!isOwnedTreeGroup(group)) return null;
   const parentItem = group.parentElement;
-  return parentItem?.localName === 'mdw-list-item'
-    && getChildTreeGroup(parentItem) === group
+  return parentItem?.localName === ListTreeItem.elementName
+    && getOwnedTreeGroup(parentItem) === group
     && ownsTreeItem(tree, parentItem)
     ? /** @type {HTMLElement} */ (parentItem)
     : null;
@@ -83,7 +131,7 @@ function getParentTreeItem(tree, item) {
 function getResolvedListRole(tree) {
   const parentItem = tree.parentElement;
   const expansionParent = tree.slot === 'expansion'
-    && parentItem?.localName === 'mdw-list-item'
+    && parentItem?.localName === ListTreeItem.elementName
     ? parentItem
     : null;
   const parentTree = expansionParent?.parentElement;
@@ -103,7 +151,7 @@ function getListTreeTopologyRoot(tree) {
   let root = tree;
   let crossesCurrentBoundary = getResolvedListRole(root) !== root._listRole;
   for (let parentItem = root.parentElement; parentItem; parentItem = root.parentElement) {
-    const parentTree = parentItem?.localName === 'mdw-list-item'
+    const parentTree = parentItem?.localName === ListTreeItem.elementName
       ? parentItem.parentElement
       : null;
     const currentlyOwned = root.slot === 'expansion'
@@ -126,7 +174,7 @@ function getListTreeTopologyRoot(tree) {
 function collectListTreeTopology(tree, trees = new Set()) {
   trees.add(tree);
   for (const child of tree.children) {
-    if (child.localName !== 'mdw-list-item') continue;
+    if (child.localName !== ListTreeItem.elementName) continue;
     for (const group of child.children) {
       if (group.localName !== 'mdw-list-tree') continue;
       const nestedTree = /** @type {ListTreeElement & Record<string, any>} */ (group);
@@ -150,50 +198,39 @@ function listTreeOwnerNeedsRefresh(owner) {
   return (managed?.size ?? 0) !== ownedCount;
 }
 
-/** @param {Iterable<ListTreeElement & Record<string, any>>} trees @return {boolean} */
-function listTreeRolesNeedResolution(trees) {
-  for (const tree of trees) {
-    if (tree._listRole !== getResolvedListRole(tree)) return true;
+/** @param {ListTreeElement & Record<string, any>} tree @param {'tree'|'group'} role */
+function setListTreeRole(tree, role) {
+  tree._listRole = role;
+  const updatingAriaRole = tree._updatingAriaRole;
+  tree._updatingAriaRole = true;
+  try {
+    tree._ariaRole = role;
+    tree._authoredAriaRole = role;
+    tree.updateAriaProperty('role', role);
+    tree._updatingAriaRole = true;
+    if (tree.getAttribute('role') !== role) {
+      tree.setAttribute('role', role);
+    }
+  } finally {
+    tree._updatingAriaRole = updatingAriaRole;
   }
-  return false;
 }
 
 /** @param {Iterable<ListTreeElement & Record<string, any>>} trees */
 function resolveListRoles(trees) {
   for (const tree of trees) {
     const role = getResolvedListRole(tree);
-    tree._listRole = role;
-    const updatingAriaRole = tree._updatingAriaRole;
-    tree._updatingAriaRole = true;
-    try {
-      tree._ariaRole = role;
-      tree.updateAriaProperty('role', role);
-    } finally {
-      tree._updatingAriaRole = updatingAriaRole;
-    }
+    setListTreeRole(tree, role);
   }
   for (const tree of trees) {
-    const role = tree._listRole;
-    for (const child of tree.children) {
-      if (child.localName !== 'mdw-list-item') continue;
-      const item = /** @type {ListTreeItemElement} */ (child);
-      item._setListRole?.(role, isOwnedTreeGroup(getChildTreeGroup(item)));
-    }
+    syncTreeItemRoles(tree);
   }
 }
 
 /** @param {ListTreeElement & Record<string, any>} tree */
 function releaseDetachedListRole(tree) {
   if (tree._listRole !== 'group') return;
-  tree._listRole = 'tree';
-  const updatingAriaRole = tree._updatingAriaRole;
-  tree._updatingAriaRole = true;
-  try {
-    tree._ariaRole = 'tree';
-    tree.updateAriaProperty('role', 'tree');
-  } finally {
-    tree._updatingAriaRole = updatingAriaRole;
-  }
+  setListTreeRole(tree, 'tree');
 }
 
 /** @param {ListTreeElement & Record<string, any>} tree */
@@ -223,10 +260,18 @@ function refreshListRole(tree) {
 /** @param {ListTreeElement & Record<string, any>} tree */
 function refreshCurrentListTreeTopology(tree) {
   const root = getListTreeTopologyRoot(tree);
-  if (listTreeRolesNeedResolution(collectListTreeTopology(root))) {
+  const trees = collectListTreeTopology(root);
+  if ([...trees].some((currentTree) => (
+    currentTree._listRole !== getResolvedListRole(currentTree)
+  ))) {
     refreshListRole(tree);
-  } else if (listTreeOwnerNeedsRefresh(root)) {
-    root.refreshTabIndexes();
+  } else {
+    for (const currentTree of trees) {
+      syncTreeItemRoles(currentTree);
+    }
+    if (listTreeOwnerNeedsRefresh(root)) {
+      root.refreshTabIndexes();
+    }
   }
 }
 
@@ -255,13 +300,7 @@ export default List
 
     _getKbdEventTarget(event, composed = false) {
       if (!this.shouldUseKbdNav()) return null;
-      const path = composed ? event.composedPath() : [event.target];
-      for (const target of path) {
-        if (!(target instanceof HTMLElement)) continue;
-        if (target.localName !== 'mdw-list-item') continue;
-        return this._kbdOwnsKbdNavChild(target) ? target : null;
-      }
-      return null;
+      return getEventTreeItem(this, event, composed);
     },
 
     * getKbdNavChildren() {
@@ -272,37 +311,82 @@ export default List
     /** Trees use an operation-local recursive order. */
     _kbdNavUsesDirectChildren() { return false; },
   })
+  .methods({
+    /** @param {HTMLElement} item */
+    _syncDirectTreeItem(item) {
+      syncDirectTreeItem(this, item);
+    },
+  })
   .events({
-    'mdw-list-item:listtopologychange'(event) {
+    'mdw-list-tree-item:listtopologychange'(event) {
       if (!this.isConnected) return;
       const item = /** @type {HTMLElement|null} */ (event.target);
-      if (!item || item.localName !== 'mdw-list-item') return;
+      if (!item || item.localName !== ListTreeItem.elementName) return;
       if (item.parentElement === this) {
         refreshCurrentListTreeTopology(this);
         event.stopPropagation();
       }
     },
-    'mdw-list-item:expandedchange'(event) {
+    'mdw-list-tree-item:expandedchange'(event) {
       const item = /** @type {HTMLElement|null} */ (event.target);
-      if (!this.isConnected || !item || !ownsTreeItem(this, item)) return;
+      if (!this.isConnected
+        || this._listRole !== 'tree'
+        || !item
+        || !ownsTreeItem(this, item)) return;
       this.refreshTabIndexes();
     },
     keydown(event) {
       if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) return;
 
-      const item = this._getKbdEventTarget(event);
+      const directItem = event.target instanceof HTMLElement
+        && event.target.localName === ListTreeItem.elementName
+        && event.target.parentElement === this
+        ? event.target
+        : null;
+      const [origin] = event.composedPath();
+      if (directItem
+        && (event.key === 'Enter' || event.key === 'Spacebar' || event.key === ' ')
+        && origin === directItem
+        && !(/** @type {TreeItemElement} */ (directItem)).disabledState) {
+        const directTreeItem = /** @type {TreeItemElement & Record<string, any>} */ (directItem);
+        let activated = false;
+        if (directTreeItem.href != null) {
+          if (event.key === 'Enter') {
+            directTreeItem.refs.anchor.click();
+            activated = true;
+          }
+        } else if (directTreeItem.actionable) {
+          directTreeItem.refs.primaryAction.click();
+          activated = true;
+        } else {
+          const group = getOwnedTreeGroup(directItem);
+          if (group && !directTreeItem.refs.expansionAction?.isConnected) {
+            const expanded = directTreeItem.expanded;
+            directTreeItem.refs.primaryInteraction.click();
+            activated = directTreeItem.expanded !== expanded;
+          }
+        }
+        if (activated) {
+          event.stopPropagation();
+          event.preventDefault();
+          return;
+        }
+      }
+
+      if (!this.shouldUseKbdNav()) return;
+      const item = getEventTreeItem(this, event);
       if (!item) return;
-      const group = getChildTreeGroup(item);
+      const treeItem = /** @type {TreeItemElement & Record<string, any>} */ (item);
       let handled = false;
 
       switch (event.key) {
         case 'ArrowDown':
         case 'Down':
-          handled = this.focusNext(item) != null;
+          handled = this.focusNext(item, false) != null;
           break;
         case 'ArrowUp':
         case 'Up':
-          handled = this.focusPrevious(item) != null;
+          handled = this.focusPrevious(item, false) != null;
           break;
         case 'Home': {
           const focused = this.focusFirst();
@@ -316,8 +400,8 @@ export default List
         }
         case 'ArrowRight':
         case 'Right': {
-          if (!group || !isOwnedTreeGroup(group)) break;
-          const treeItem = /** @type {TreeItemElement} */ (item);
+          const group = getOwnedTreeGroup(item);
+          if (!group) break;
           if (treeItem.disabledState) break;
           if (!treeItem.expanded) {
             treeItem.toggleExpanded(true);
@@ -325,7 +409,7 @@ export default List
             break;
           }
           for (const child of getTreeItems(group)) {
-            if (getChildTreeGroup(item) !== group || !isOwnedTreeGroup(group)) break;
+            if (getOwnedTreeGroup(item) !== group) break;
             if (!this._attemptKbdFocus(child)) {
               if (!this.shouldUseKbdNav()) break;
               continue;
@@ -337,9 +421,8 @@ export default List
         }
         case 'ArrowLeft':
         case 'Left': {
-          const treeItem = /** @type {TreeItemElement} */ (item);
+          const group = getOwnedTreeGroup(item);
           if (group
-            && isOwnedTreeGroup(group)
             && treeItem.expanded
             && !treeItem.disabledState) {
             treeItem.toggleExpanded(false);
@@ -369,7 +452,15 @@ export default List
     },
   })
   .on({
+    _ariaRoleAttributeChanged() {
+      if (this._updatingAriaRole
+        || this.getAttribute('role') === this._listRole) return;
+      setListTreeRole(this, /** @type {'tree'|'group'} */ (this._listRole));
+    },
     connected() {
+      if (this._listRole === 'group'
+        && getResolvedListRole(this) === 'group'
+        && getOwnedTreeGroup(this.parentElement) === this) return;
       refreshListRole(this);
     },
     disconnected() {

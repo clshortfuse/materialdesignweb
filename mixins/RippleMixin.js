@@ -59,6 +59,7 @@ export default function RippleMixin(Base) {
       '~pointerdown'(event) {
         if (event.button) return;
         if (this.disabledState) return;
+        if (!this._isStateTargetEvent(event)) return;
 
         const { rippleContainer } = this.refs;
         if (!rippleContainer.isConnected) return; // Detached?
@@ -73,6 +74,7 @@ export default function RippleMixin(Base) {
         this.addRipple(x, y, true);
       },
       '~click'(e) {
+        if (!this._isStateTargetEvent(e)) return;
         if (this._rippleAdded) {
           // Avoid double event
           return;

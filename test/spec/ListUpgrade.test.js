@@ -3,28 +3,27 @@ import { assert } from '@esm-bundle/chai';
 beforeEach(() => document.body.replaceChildren());
 
 describe('mdw-list-tree upgrade order', () => {
-  it('upgrades pre-existing nested lists before their items', async () => {
+  it('upgrades pre-existing dedicated tree-item topology', async () => {
     const container = document.createElement('div');
     container.innerHTML = `
       <mdw-list-tree>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
       <mdw-list>
         <mdw-list-item>Option</mdw-list-item>
       </mdw-list>
       <mdw-list-tree id=plain-tree>
-        <mdw-list-item>Plain item</mdw-list-item>
+        <mdw-list-tree-item>Plain item</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     document.body.append(container);
 
     await import('../../components/ListTree.js');
-    await import('../../components/ListItem.js');
     await new Promise((resolve) => setTimeout(resolve, 0));
 
     const list = /** @type {HTMLElement & { _listRole: string }} */ (
@@ -49,11 +48,11 @@ describe('mdw-list-tree upgrade order', () => {
     assert.equal(plainItem._ariaRole, 'treeitem');
 
     let topologyChanges = 0;
-    plainTree.addEventListener('mdw-list-item:listtopologychange', () => {
+    plainTree.addEventListener('mdw-list-tree-item:listtopologychange', () => {
       topologyChanges += 1;
     });
     const added = /** @type {HTMLElement & {_ariaRole: string}} */ (
-      document.createElement('mdw-list-item')
+      document.createElement('mdw-list-tree-item')
     );
     plainTree.append(added);
 

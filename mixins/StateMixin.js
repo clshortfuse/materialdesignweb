@@ -49,6 +49,13 @@ export default function StateMixin(Base) {
       /** @return {HTMLElement} */
       stateTargetElement() { return this; },
     })
+    .methods({
+      /** @param {Event} event @return {boolean} */
+      _isStateTargetEvent(event) {
+        void event;
+        return true;
+      },
+    })
     .html`
       <div id=state mdw-if={stateLayer}
         disabled={disabledState}
@@ -61,28 +68,37 @@ export default function StateMixin(Base) {
         aria-hidden=true></div>
     `
     .events({
-      pointerenter(event) {
+      '~pointerover'(event) {
         if (!event.isTrusted) return;
         if (!event.isPrimary) return;
         this._pointerPressed = this.stateTargetElement.matches(':active');
         if (event.pointerType === 'touch') return;
-        this._hovered = true;
+        this._hovered = this._isStateTargetEvent(event);
       },
       '~pointerdown'(event) {
         if (!event.isTrusted) return;
         if (!event.isPrimary) return;
+        if (!this._isStateTargetEvent(event)) return;
         this._lastInteraction = /** @type {'touch'|'mouse'|'pen'} */ (event.pointerType);
         this._pointerPressed = true;
       },
       '~pointerup'(event) {
         if (!event.isTrusted) return;
         if (!event.isPrimary) return;
+        if (!this._isStateTargetEvent(event)) {
+          this._pointerPressed = false;
+          return;
+        }
         this._lastInteraction = /** @type {'touch'|'mouse'|'pen'} */ (event.pointerType);
         this._pointerPressed = false;
       },
       pointercancel(event) {
         if (!event.isTrusted) return;
         if (!event.isPrimary) return;
+        if (!this._isStateTargetEvent(event)) {
+          this._pointerPressed = false;
+          return;
+        }
         this._pointerPressed = this.stateTargetElement.matches(':active');
       },
       pointerleave(event) {
@@ -93,6 +109,7 @@ export default function StateMixin(Base) {
       },
       '~keydown'(event) {
         if (!event.isTrusted) return;
+        if (!this._isStateTargetEvent(event)) return;
         this._lastInteraction = 'key';
         if (event.repeat) return;
         if (event.key !== ' ') return;
@@ -100,6 +117,10 @@ export default function StateMixin(Base) {
       },
       '~keyup'(event) {
         if (!event.isTrusted) return;
+        if (!this._isStateTargetEvent(event)) {
+          this._keyPressed = false;
+          return;
+        }
         this._lastInteraction = 'key';
         if (event.key !== ' ') return;
         this._keyPressed = false;
@@ -110,6 +131,7 @@ export default function StateMixin(Base) {
       },
       blur(event) {
         if (!event.isTrusted) return;
+        if (!this._isStateTargetEvent(event)) return;
         this._focused = false;
         this._focusedSynthetic = false;
         this._keyPressed = false;
@@ -120,6 +142,11 @@ export default function StateMixin(Base) {
       },
       focus(event) {
         if (!event.isTrusted) return;
+        if (!this._isStateTargetEvent(event)) {
+          this._focused = false;
+          this._focusedSynthetic = false;
+          return;
+        }
         this._focusedSynthetic = 'sourceCapabilities' in event
           ? !event.sourceCapabilities
           : (this._lastInteraction === null && !event.relatedTarget);

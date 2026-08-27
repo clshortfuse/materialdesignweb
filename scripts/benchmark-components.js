@@ -8,7 +8,7 @@ import { build } from 'esbuild';
 import { chromium, firefox, webkit } from 'playwright';
 
 const browserTypes = { chromium, firefox, webkit };
-const availableSuites = ['keyboard-nav'];
+const availableSuites = ['keyboard-nav', 'list-grid'];
 const args = new Map(process.argv.slice(2).map((arg) => {
   const [name, value = 'true'] = arg.replace(/^--/, '').split('=', 2);
   return [name, value];
@@ -18,9 +18,9 @@ if (args.has('help')) {
   console.log(`Usage: npm run benchmark:components -- [options]
 
 Options:
-  --suite=all                         Suite to run: all or keyboard-nav
+  --suite=all                         Suite to run: all, keyboard-nav, or list-grid
   --browsers=chromium,firefox,webkit  Browsers to run
-  --size=1000                         Direct owned target count
+  --size=1000                         Keyboard targets or three-action ListGrid rows
   --samples=15                        Measured samples per scenario
   --warmups=3                         Warm-up samples per scenario
   --json=true                         Print machine-readable JSON`);
@@ -50,6 +50,7 @@ for (const name of browserNames) {
 const benchmarkSource = `
   import CustomElement from './core/CustomElement.js';
   import KeyboardNavMixin from './mixins/KeyboardNavMixin.js';
+  import './components/ListGrid.js';
 
   CustomElement
     .extend()
@@ -99,6 +100,16 @@ const benchmarkSource = `
       height: 1px;
       left: 0;
       position: absolute;
+      top: 0;
+      width: 1px;
+    }
+    mdw-list-grid[data-runtime-benchmark] {
+      contain: strict;
+      display: block;
+      height: 1px;
+      left: 0;
+      overflow: hidden;
+      position: fixed;
       top: 0;
       width: 1px;
     }
@@ -408,11 +419,185 @@ const benchmarkSource = `
     return results;
   }
 
+  function instrumentListGrid(host) {
+    const counters = {
+      managedTabStops: 0,
+    };
+    return counters;
+  }
+
+  async function createListGridFixture(rowCount) {
+    const host = document.createElement('mdw-list-grid');
+    host.setAttribute('data-runtime-benchmark', '');
+    const fragment = document.createDocumentFragment();
+    const rows = [];
+    for (let index = 0; index < rowCount; index += 1) {
+      const row = document.createElement('mdw-list-row');
+      row.setAttribute('actionable', '');
+      row.append('row-' + index);
+      for (let actionIndex = 0; actionIndex < 2; actionIndex += 1) {
+        const cell = document.createElement('mdw-list-cell');
+        cell.slot = 'trailing-action';
+        const action = document.createElement('button');
+        action.textContent = 'action-' + actionIndex;
+        cell.append(action);
+        row.append(cell);
+      }
+      rows.push(row);
+      fragment.append(row);
+    }
+    host.append(fragment);
+    document.body.append(host);
+    await settleMutations();
+    const counters = instrumentListGrid(host);
+    return { counters, host, rows };
+  }
+
+  function validateListGridFixture(fixture, rowCount) {
+    const { counters, host } = fixture;
+    if (host.children.length !== rowCount) {
+      throw new Error('expected ' + rowCount + ' direct grid rows');
+    }
+    for (const property of ['_gridRows', '_gridOwnedRows', '_gridRowIndexes', '_gridTargetPositions']) {
+      if (property in host) throw new Error('ListGrid retained navigation topology in ' + property);
+    }
+    if ('_gridTabIndexWrites' in host) {
+      throw new Error('ListGrid retained a mutation write ledger');
+    }
+    for (const row of fixture.rows) {
+      for (const property of ['_listItemMutationObserver', '_trailingActions', '_gridActionCells', '_listGridOwner']) {
+        if (property in row) throw new Error('ListRow retained observed action state in ' + property);
+      }
+      if ('_isGridRow' in row) throw new Error('ListRow retained a dynamic grid-role mode');
+      for (const cell of row.querySelectorAll('mdw-list-cell')) {
+        for (const property of ['_listGridMutationObserver', '_listGridOwner']) {
+          if (property in cell) throw new Error('ListCell retained observed action state in ' + property);
+        }
+      }
+    }
+    let managedTabStops = 0;
+    for (const target of host._kbdManagedTabIndexes?.keys() ?? []) {
+      if (target.getAttribute('tabindex') === '0') managedTabStops += 1;
+    }
+    counters.managedTabStops = managedTabStops;
+    if (managedTabStops !== 1) {
+      throw new Error('expected one managed grid tab stop');
+    }
+  }
+
+  function getFocusedGridTarget(host) {
+    for (const target of host.getKbdNavChildren()) {
+      if (target.matches(':focus')) return target;
+    }
+    return null;
+  }
+
+  const listGridScenarios = [
+    {
+      name: 'two-dimensional movement',
+      operations() { return 10000; },
+      async run(fixture, operations) {
+        const { counters, host } = fixture;
+        let [current] = host.getKbdNavChildren();
+        current.focus();
+        resetCounters(counters);
+        const keys = ['ArrowRight', 'ArrowRight', 'ArrowLeft', 'ArrowLeft', 'ArrowDown', 'ArrowUp'];
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          dispatchNavigation(current, keys[index % keys.length]);
+          const next = getFocusedGridTarget(host);
+          if (!next || next === current) {
+            throw new Error('ListGrid navigation did not move focus');
+          }
+          current = next;
+        }
+        const elapsed = performance.now() - start;
+        validateListGridFixture(fixture, fixture.rows.length);
+        return elapsed;
+      },
+    },
+    {
+      name: 'live action replacement',
+      operations() { return 1000; },
+      async run(fixture, operations) {
+        const { counters, rows } = fixture;
+        resetCounters(counters);
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          const row = rows[index % rows.length];
+          const cell = row.querySelector('mdw-list-cell');
+          const action = document.createElement('button');
+          action.textContent = 'replacement-' + index;
+          cell.replaceChildren(action);
+          const primary = row.shadowRoot.getElementById('primary-action');
+          primary.focus();
+          dispatchNavigation(primary, 'ArrowRight');
+          if (!action.matches(':focus')) {
+            throw new Error('ListGrid did not discover the replacement action');
+          }
+        }
+        const elapsed = performance.now() - start;
+        validateListGridFixture(fixture, rows.length);
+        return elapsed;
+      },
+    },
+    {
+      name: 'row topology changes',
+      operations() { return 100; },
+      async run(fixture, operations) {
+        const { counters, host, rows } = fixture;
+        resetCounters(counters);
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          const row = rows.at(-1);
+          if (row.isConnected) {
+            row.remove();
+          } else {
+            host.append(row);
+          }
+          const current = rows[0].shadowRoot.getElementById('primary-action');
+          current.focus();
+          dispatchNavigation(current, 'ArrowDown');
+        }
+        const elapsed = performance.now() - start;
+        validateListGridFixture(fixture, rows.length);
+        return elapsed;
+      },
+    },
+  ];
+
+  async function runListGridSuite(options) {
+    const results = [];
+    for (const scenario of listGridScenarios) {
+      const timings = [];
+      const counterSamples = [];
+      const operations = scenario.operations(options.targetCount);
+      for (let index = -options.warmupCount; index < options.sampleCount; index += 1) {
+        const fixture = await createListGridFixture(options.targetCount);
+        try {
+          const elapsed = await scenario.run(fixture, operations);
+          if (index >= 0) {
+            timings.push(elapsed);
+            counterSamples.push(copyCounters(fixture.counters));
+          }
+        } finally {
+          fixture.host.remove();
+          await settleMutations();
+        }
+        await new Promise(requestAnimationFrame);
+      }
+      results.push(summarize(scenario.name, operations, timings, counterSamples));
+    }
+    return results;
+  }
+
   window.runComponentBenchmark = async (options) => {
     const results = {};
     for (const suiteName of options.suiteNames) {
       if (suiteName === 'keyboard-nav') {
         results[suiteName] = await runKeyboardNavSuite(options);
+      } else if (suiteName === 'list-grid') {
+        results[suiteName] = await runListGridSuite(options);
       }
     }
     return results;
@@ -488,9 +673,7 @@ try {
           p90Ms: result.p90Ms.toFixed(2),
           minMs: result.minMs.toFixed(2),
           meanMs: result.meanMs.toFixed(2),
-          customOrderReads: result.counters.customOrderReads,
-          ownedOrderChecks: result.counters.ownedOrderChecks,
-          reconciliations: result.counters.reconciliations,
+          ...result.counters,
         })));
       }
     }

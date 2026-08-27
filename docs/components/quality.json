@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "states": {
+    "classification": ["public", "internal", "legacy"],
+    "audit": ["unreviewed", "auditing", "reviewed"],
+    "conformance": ["unknown", "partial", "conformant", "not-applicable"]
+  },
+  "defaults": {
+    "classification": "public",
+    "audit": "unreviewed",
+    "conformance": "unknown",
+    "evidence": {
+      "spec": [],
+      "demo": [],
+      "screenshot": [],
+      "material": []
+    },
+    "performance": {
+      "ownership": "unreviewed",
+      "invalidation": "unreviewed",
+      "hotPath": "unreviewed",
+      "cleanup": "unreviewed"
+    }
+  },
+  "components": {
+    "BottomAppBar": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/BottomAppBar.test.js"],
+        "demo": ["demo/components/bottomappbar.html"]
+      },
+      "performance": {
+        "ownership": "direct default-slot keyboard targets only",
+        "invalidation": "owned slotchange reconciles target readiness in one live direct-child pass without target arrays, membership sets, or retained topology",
+        "hotPath": "keyboard movement follows live element sibling links and derives the roving anchor through a scoped direct-child tabindex query without collection materialization, index maps, or mutation observation",
+        "cleanup": "keyboard mixin restores managed tabindex values on disconnect"
+      }
+    },
+    "DialogActions": {
+      "classification": "internal",
+      "conformance": "not-applicable"
+    },
+    "List": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/List.test.js", "test/spec/KeyboardNavConsumers.test.js"],
+        "demo": ["demo/components/list.html"]
+      },
+      "performance": {
+        "ownership": "matching direct children only; component type defines semantics, recursive ownership requires ListTree, and Listbox specializes the same direct boundary for options",
+        "invalidation": "connected owned-slot readiness reconciles current direct targets; detached delivery is inert and ListTree subclasses retain their custom-order boundary",
+        "hotPath": "linear movement follows live direct sibling links without custom-order materialization or recursive ownership checks",
+        "cleanup": "inherited keyboard navigation restores authored tabindex on ownership departure or disconnect"
+      }
+    },
+    "ListGrid": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/ListGrid.test.js", "test/spec/ListGridUpgrade.test.js"],
+        "demo": ["demo/components/list.html"],
+        "screenshot": ["test/screenshot/List.test.js"]
+      },
+      "performance": {
+        "ownership": "direct mdw-list-row children only; each row contributes its framework primary/disclosure controls and one owned target from each direct mdw-list-cell[slot=trailing-action], while nested grids and composite widgets retain their own targets",
+        "invalidation": "native direct-row slot delivery establishes initial ownership; each focus activation and keypress reads current direct row siblings, direct trailing cells, and owned targets without descendant mutation or availability observation, while grid, row, and cell roles remain intrinsic",
+        "hotPath": "focus activation reconciles only its current row plus the previous tab stop; keyboard movement lazily follows current direct sibling rows and current row-owned targets, and actual focus delivery rejects unavailable targets without rebuilding arrays for unvisited rows or maintaining row, column, or target-position indexes; focused tests bound unrelated-row ownership reads and the runtime benchmark rejects retained topology fields",
+        "cleanup": "authored tabindex changes are adopted during the next focus, keyboard, explicit refresh, or disconnect operation; whole-grid cleanup restores managed values before descendant owner references clear without reactivating a detached grid"
+      }
+    },
+    "ListRow": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/ListGrid.test.js", "test/spec/ListGridUpgrade.test.js"],
+        "demo": ["demo/components/list.html"]
+      },
+      "performance": {
+        "ownership": "fixed row semantics; inherited primary and optional disclosure presentation cells are shadow-owned, while each trailing keyboard column is one direct mdw-list-cell assigned to the native trailing-action slot",
+        "invalidation": "the owning grid reads current row controls during focus and keyboard activation; no row-specific availability observer or owner cache is retained",
+        "hotPath": "activation and feedback use the inherited state-target event hook; grid target discovery remains module-private to ListGrid",
+        "cleanup": "no row-specific observer, owner cache, timer, or global listener persists"
+      }
+    },
+    "ListCell": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/ListGrid.test.js", "test/spec/ListGridUpgrade.test.js"],
+        "demo": ["demo/components/list.html"]
+      },
+      "performance": {
+        "ownership": "fixed gridcell semantics and one native default slot containing one cell's authored content or action",
+        "invalidation": "the owning grid discovers current authored action content during focus and keyboard activation; no descendant mutation or availability observer is installed",
+        "hotPath": "no direct keyboard handler; ListGrid discovers the current structural target during focus reconciliation or navigation and lets actual focus delivery decide success",
+        "cleanup": "no observer, owner cache, timer, or global listener persists"
+      }
+    },
+    "ListItem": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/List.test.js", "test/spec/ListTree.test.js", "test/spec/ListItemUpgrade.test.js"],
+        "demo": ["demo/components/list.html"],
+        "screenshot": ["test/screenshot/List.test.js"]
+      },
+      "performance": {
+        "ownership": "fixed listitem semantics with one shadow primary cell, sibling trailing and disclosure actions, and direct authored expansion content; no parent-derived tree or grid semantics",
+        "invalidation": "framework expressions synchronously update fixed shadow targets; owned slots update action and expansion presentation",
+        "hotPath": "primary, trailing, and ordinary disclosure activation use fixed refs without parent discovery or descendant scans",
+        "cleanup": "inherited expansion lifecycle clears its deferred refresh and restores collapsed authored elements on disconnect"
+      }
+    },
+    "ListTree": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/ListTree.test.js", "test/spec/ListUpgrade.test.js", "test/spec/ListItemUpgrade.test.js"],
+        "demo": ["demo/components/list.html"]
+      },
+      "performance": {
+        "ownership": "direct mdw-list-tree-item children and the first direct mdw-list-tree expansion group owned by each item; ordinary list items are outside the tree boundary",
+        "invalidation": "direct expansion-slot topology resolves explicit ListTree ancestry; unchanged owned groups skip duplicate nested connection sweeps, displaced owners release before new owners acquire targets within supported topology order, and independent nested trees reconcile as separate owners",
+        "hotPath": "each ListTree handles host-keyboard activation only for direct tree items; the root follows synchronized direct expansion links for horizontal disclosure and materializes vertical order without descendant queries, observers, or retained flattened topology",
+        "cleanup": "inherited keyboard navigation restores authored tabindex; displaced or detached expansion trees release inherited group ownership"
+      }
+    },
+    "ListTreeItem": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/ListTreeItem.test.js", "test/spec/ListTree.test.js"],
+        "demo": ["demo/components/list.html"]
+      },
+      "performance": {
+        "ownership": "fixed shadow primary, trailing, and disclosure controls plus one direct expansion tree assigned by the direct ListTree owner",
+        "invalidation": "framework expressions synchronously update fixed action targets; direct expansion slotchange asks only the direct tree owner to reconcile topology",
+        "hotPath": "activation and state feedback use fixed refs; tree navigation traverses direct ownership links without descendant queries",
+        "cleanup": "disconnect releases the owned expansion group; inherited expansion lifecycle clears deferred work and restores collapsed authored elements"
+      }
+    },
+    "ListItemBase": {
+      "classification": "internal",
+      "conformance": "not-applicable",
+      "performance": {
+        "ownership": "base implementation; concrete owner defines child topology",
+        "invalidation": "unreviewed",
+        "hotPath": "unreviewed",
+        "cleanup": "unreviewed"
+      }
+    },
+    "ListOption": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/Listbox.test.js", "test/spec/KeyboardNavConsumers.test.js"],
+        "demo": ["demo/components/list.html"]
+      },
+      "performance": {
+        "ownership": "direct Listbox association; owned light-DOM text defines the fallback value",
+        "invalidation": "selected, value, disabled, and text-content changes notify the direct owner; text observation runs only without an explicit value",
+        "hotPath": "activation and scalar value reads use local state without owner discovery scans",
+        "cleanup": "text-content observation disconnects with the option lifecycle"
+      }
+    },
+    "Listbox": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/Listbox.test.js", "test/spec/KeyboardNavConsumers.test.js"],
+        "demo": ["demo/components/listbox.html"]
+      },
+      "performance": {
+        "ownership": "direct mdw-list-option children only",
+        "invalidation": "direct topology, canonical indexed option mutation, selectedness, option value/text/disabled, and relevant form-attribute changes synchronize validity and submission; sparse nullish assignment does not grow the collection, invalid option values are rejected before mutation, and reflection preserves Proxy integrity invariants",
+        "hotPath": "one consumer-side direct-option pass synchronizes selection, validity, and form state; keyboard movement follows live direct sibling links and derives the roving anchor through a scoped direct-child tabindex query",
+        "cleanup": "owned listeners follow component lifecycle"
+      }
+    },
+    "Menu": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/KeyboardNavConsumers.test.js"],
+        "demo": ["demo/components/menus.html"]
+      },
+      "performance": {
+        "ownership": "direct mdw-menu-item children only; nested menus own their own items",
+        "invalidation": "owned slotchange reconciles custom-target readiness and restores items that leave direct ownership",
+        "hotPath": "keyboard movement follows live direct sibling links and uses only a scoped direct-child tabindex query for the roving anchor, without broad descendant scans or retained topology; popup entry starts at the first direct item",
+        "cleanup": "keyboard mixin restores managed tabindex values on disconnect"
+      }
+    },
+    "MenuItem": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/MenuItem.test.js"],
+        "demo": ["demo/components/menus.html"]
+      },
+      "performance": {
+        "ownership": "owned shadow activation target; no descendant discovery",
+        "invalidation": "reactive own selection, link, disabled, and cascade state",
+        "hotPath": "activation uses direct refs without rebuilding collections",
+        "cleanup": "pending cascade timeout clears on mouseout, invalidating state changes, and disconnect"
+      }
+    },
+    "Ripple": {
+      "classification": "internal",
+      "conformance": "not-applicable"
+    },
+    "Scrim": {
+      "classification": "internal",
+      "conformance": "not-applicable"
+    },
+    "Table": {
+      "classification": "legacy",
+      "conformance": "unknown"
+    },
+    "TabList": {
+      "audit": "auditing",
+      "conformance": "unknown",
+      "evidence": {
+        "spec": ["test/spec/KeyboardNavConsumers.test.js"],
+        "demo": ["demo/components/tabs.html"]
+      },
+      "performance": {
+        "ownership": "direct mdw-tab children in live host element order",
+        "invalidation": "slot changes refresh selection, metrics, and keyboard state",
+        "hotPath": "keyboard movement follows live sibling links and derives the roving anchor through a scoped direct-child tabindex query; selection and indicator work iterate only the direct owned collection",
+        "cleanup": "keyboard and resize mixins release lifecycle state on disconnect"
+      }
+    }
+  },
+  "budgets": {
+    "source": {
+      "components": {
+        "maxFiles": 75,
+        "maxLines": 14500
+      },
+      "mixins": {
+        "maxFiles": 52,
+        "maxLines": 5750
+      }
+    },
+    "bundle": {
+      "file": "dist/index.min.js",
+      "maxRawBytes": 370000,
+      "maxGzipBytes": 96000,
+      "maxBrotliBytes": 78000
+    }
+  }
+}

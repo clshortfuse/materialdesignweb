@@ -61,25 +61,25 @@
       <mdw-grid gap=16 role=region y=stretch>
         <demo-preview-card label="List trees" col-span=12 code="
       &lt;mdw-list-tree color=&quot;surface&quot; style=&quot;width:100%&quot;&gt;
-        &lt;mdw-list-item icon=&quot;folder&quot; expanded&gt;
+        &lt;mdw-list-tree-item icon=&quot;folder&quot; expanded&gt;
           Project files
           &lt;mdw-list-tree slot=&quot;expansion&quot;&gt;
-            &lt;mdw-list-item&gt;Designs&lt;/mdw-list-item&gt;
-            &lt;mdw-list-item&gt;Documents&lt;/mdw-list-item&gt;
+            &lt;mdw-list-tree-item&gt;Designs&lt;/mdw-list-tree-item&gt;
+            &lt;mdw-list-tree-item&gt;Documents&lt;/mdw-list-tree-item&gt;
           &lt;/mdw-list-tree&gt;
-        &lt;/mdw-list-item&gt;
-        &lt;mdw-list-item icon=&quot;attach_money&quot;&gt;Pay invoice&lt;/mdw-list-item&gt;
+        &lt;/mdw-list-tree-item&gt;
+        &lt;mdw-list-tree-item icon=&quot;attach_money&quot;&gt;Pay invoice&lt;/mdw-list-tree-item&gt;
       &lt;/mdw-list-tree&gt;
       ">
           <mdw-list-tree color="surface" style="width:100%">
-            <mdw-list-item icon="folder" expanded>
+            <mdw-list-tree-item icon="folder" expanded>
               Project files
               <mdw-list-tree slot="expansion">
-                <mdw-list-item>Designs</mdw-list-item>
-                <mdw-list-item>Documents</mdw-list-item>
+                <mdw-list-tree-item>Designs</mdw-list-tree-item>
+                <mdw-list-tree-item>Documents</mdw-list-tree-item>
               </mdw-list-tree>
-            </mdw-list-item>
-            <mdw-list-item icon="attach_money">Pay invoice</mdw-list-item>
+            </mdw-list-tree-item>
+            <mdw-list-tree-item icon="attach_money">Pay invoice</mdw-list-tree-item>
           </mdw-list-tree>
         </demo-preview-card>
       </mdw-grid>
@@ -221,6 +221,57 @@
               supporting="Oversized supporting *attribute* that clips text automatically based on available space. Instead of being clamped to only 1 line, this is now clamped to 2">Headline</mdw-list-item>
           </mdw-list>
           </demo-preview-card>
+      </mdw-grid>
+
+      <mdw-grid gap=16 role=region y=stretch>
+        <demo-preview-card label="Multi-action lists" col-span=12 code="
+      &lt;mdw-list-grid color=&quot;surface&quot; style=&quot;width:100%&quot;
+        aria-label=&quot;Song actions&quot;&gt;
+        &lt;mdw-list-row href=&quot;#first-song&quot; lines=2 supporting=&quot;Artist name&quot;&gt;
+          First song
+          &lt;mdw-list-cell slot=&quot;trailing-action&quot;&gt;
+            &lt;mdw-icon-button icon=&quot;bookmark_border&quot;
+              aria-label=&quot;Bookmark First song&quot;&gt;&lt;/mdw-icon-button&gt;
+          &lt;/mdw-list-cell&gt;
+          &lt;mdw-list-cell slot=&quot;trailing-action&quot;&gt;
+            &lt;mdw-icon-button icon=&quot;more_horiz&quot;
+              aria-label=&quot;More options for First song&quot;&gt;&lt;/mdw-icon-button&gt;
+          &lt;/mdw-list-cell&gt;
+        &lt;/mdw-list-row&gt;
+        &lt;mdw-list-row actionable onaction=&quot;alert('Play Second song')&quot; lines=2 supporting=&quot;Artist name&quot;&gt;
+          Second song
+          &lt;mdw-list-cell slot=&quot;trailing-action&quot;&gt;
+            &lt;mdw-icon-button icon=&quot;bookmark_border&quot;
+              aria-label=&quot;Bookmark Second song&quot;&gt;&lt;/mdw-icon-button&gt;
+          &lt;/mdw-list-cell&gt;
+          &lt;mdw-list-cell slot=&quot;trailing-action&quot;&gt;
+            &lt;mdw-icon-button icon=&quot;more_horiz&quot;
+              aria-label=&quot;More options for Second song&quot;&gt;&lt;/mdw-icon-button&gt;
+          &lt;/mdw-list-cell&gt;
+        &lt;/mdw-list-row&gt;
+      &lt;/mdw-list-grid&gt;
+      ">
+          <mdw-list-grid color="surface" style="width:100%" aria-label="Song actions">
+            <mdw-list-row href="#first-song" lines=2 supporting="Artist name">
+              First song
+              <mdw-list-cell slot="trailing-action">
+                <mdw-icon-button icon="bookmark_border" aria-label="Bookmark First song"></mdw-icon-button>
+              </mdw-list-cell>
+              <mdw-list-cell slot="trailing-action">
+                <mdw-icon-button icon="more_horiz" aria-label="More options for First song"></mdw-icon-button>
+              </mdw-list-cell>
+            </mdw-list-row>
+            <mdw-list-row actionable onaction="alert('Play Second song')" lines=2 supporting="Artist name">
+              Second song
+              <mdw-list-cell slot="trailing-action">
+                <mdw-icon-button icon="bookmark_border" aria-label="Bookmark Second song"></mdw-icon-button>
+              </mdw-list-cell>
+              <mdw-list-cell slot="trailing-action">
+                <mdw-icon-button icon="more_horiz" aria-label="More options for Second song"></mdw-icon-button>
+              </mdw-list-cell>
+            </mdw-list-row>
+          </mdw-list-grid>
+        </demo-preview-card>
       </mdw-grid>
 
       <mdw-grid gap=16 role=region y=stretch>

@@ -1,11 +1,17 @@
 import { assert } from '@esm-bundle/chai';
 
 import '../../loaders/theme.js';
-import '../../components/ListItem.js';
 import ListTree from '../../components/ListTree.js';
-import { html, makeFromConstructor, sendKeypress } from '../utils.js';
+import {
+  html,
+  leftClickElement,
+  makeFromConstructor,
+  sendKeydown,
+  sendKeypress,
+  sendKeyup,
+} from '../utils.js';
 
-/** @typedef {import('../../components/ListItem.js').default} ListItem */
+/** @typedef {import('../../components/ListTreeItem.js').default} ListTreeItem */
 
 beforeEach(() => document.body.replaceChildren());
 
@@ -38,32 +44,59 @@ describe('mdw-list-tree', () => {
     assert.equal(element._listRole, 'tree');
   });
 
+  it('owns only dedicated direct tree items', async () => {
+    /** @type {InstanceType<ListTree>} */
+    const list = html`
+      <mdw-list-tree>
+        <mdw-list-item>Ordinary item</mdw-list-item>
+        <mdw-list-tree-item>Tree item</mdw-list-tree-item>
+      </mdw-list-tree>
+    `;
+    await nextTask();
+    const ordinaryItem = /** @type {HTMLElement & Record<string, any>} */ (
+      list.firstElementChild
+    );
+    const treeItem = /** @type {InstanceType<ListTreeItem>} */ (
+      list.lastElementChild
+    );
+
+    assert.equal(ordinaryItem.readAriaProperty('role'), 'listitem');
+    assert.equal(treeItem.readAriaProperty('role'), 'treeitem');
+    const ownedItems = [...list.getKbdNavChildren()];
+    assert.equal(ownedItems.length, 1);
+    assert.strictEqual(ownedItems[0], treeItem);
+    assert.isFalse(list._kbdManagedTabIndexes.has(ordinaryItem));
+    assert.isTrue(list._kbdManagedTabIndexes.has(treeItem));
+  });
+
   it('uses Left and Right for disclosure navigation', async () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
-        <mdw-list-item>Sibling</mdw-list-item>
+        </mdw-list-tree-item>
+        <mdw-list-tree-item>Sibling</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const [parent] = /** @type {InstanceType<ListItem>[]} */ ([...list.children]);
+    const [parent] = /** @type {InstanceType<ListTreeItem>[]} */ ([...list.children]);
     const childList = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('mdw-list-tree')
     );
-    const [child] = /** @type {InstanceType<ListItem>[]} */ ([...childList.children]);
+    const [child] = /** @type {InstanceType<ListTreeItem>[]} */ ([...childList.children]);
 
     assert.equal(list._listRole, 'tree');
     assert.equal(parent._ariaRole, 'treeitem');
+    assert.notProperty(parent, '_treeItem');
     assert.equal(childList._listRole, 'group');
     assert.equal(child._ariaRole, 'treeitem');
-    assert.isFalse(parent.refs.row.hasAttribute('role'));
-    assert.isFalse(parent.refs.row.hasAttribute('tabindex'));
+    assert.notProperty(child, '_treeItem');
+    assert.isFalse(parent.refs.primaryCell.hasAttribute('role'));
+    assert.isFalse(parent.refs.primaryCell.hasAttribute('tabindex'));
     assert.isTrue(parent.refs.state.isConnected);
     assert.isTrue(parent.refs.rippleContainer.isConnected);
     assert.isFalse(parent.expanded);
@@ -88,20 +121,68 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item href=#destination>Destination</mdw-list-item>
+        <mdw-list-tree-item href=#destination actionable>Destination</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const item = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const item = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const anchor = /** @type {HTMLAnchorElement} */ (item.refs.anchor);
     let activations = 0;
+    let actions = 0;
     anchor.addEventListener('click', (event) => {
       activations += 1;
       event.preventDefault();
     });
+    item.addEventListener('action', () => { actions += 1; });
 
     assert.equal(item.tabIndex, 0);
     assert.equal(anchor.tabIndex, -1);
+
+    item.focus();
+    await sendKeydown(' ');
+    assert.isFalse(item.pressedState);
+    await sendKeyup(' ');
+
+    const event = dispatchKeydown(item, 'Enter');
+
+    assert.isTrue(event.defaultPrevented);
+    assert.equal(activations, 1);
+    assert.isTrue(document.activeElement === item);
+
+    const spaceEvent = dispatchKeydown(item, ' ');
+
+    assert.isFalse(spaceEvent.defaultPrevented);
+    assert.equal(activations, 1);
+    assert.equal(actions, 0);
+
+    item.blur();
+    anchor.click();
+
+    assert.equal(activations, 2);
+    assert.equal(actions, 0);
+    assert.isTrue(document.activeElement === item);
+  });
+
+  it('activates actionable treeitems from their single managed tab stop', async () => {
+    /** @type {InstanceType<ListTree>} */
+    const list = html`
+      <mdw-list-tree>
+        <mdw-list-tree-item actionable>
+          Run task
+          <mdw-list-tree slot=expansion>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
+          </mdw-list-tree>
+        </mdw-list-tree-item>
+      </mdw-list-tree>
+    `;
+    await nextTask();
+    const item = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
+    let activations = 0;
+    item.addEventListener('action', () => { activations += 1; });
+
+    assert.equal(item.tabIndex, 0);
+    assert.equal(item.refs.primaryAction.tabIndex, -1);
+    assert.equal(item.refs.expansionAction.tabIndex, -1);
 
     item.focus();
     const event = dispatchKeydown(item, 'Enter');
@@ -109,41 +190,69 @@ describe('mdw-list-tree', () => {
     assert.isTrue(event.defaultPrevented);
     assert.equal(activations, 1);
     assert.isTrue(document.activeElement === item);
+
+    item.blur();
+    item.refs.primaryAction.click();
+
+    assert.equal(activations, 2);
+    assert.isTrue(document.activeElement === item);
+
+    item.refs.expansionAction.click();
+
+    assert.isTrue(item.expanded);
+    assert.isTrue(document.activeElement === item);
+  });
+
+  it('uses one primary hit target for static treeitem presentation', async () => {
+    /** @type {InstanceType<ListTree>} */
+    const list = html`
+      <mdw-list-tree>
+        <mdw-list-tree-item><span id=label>Leaf</span></mdw-list-tree-item>
+      </mdw-list-tree>
+    `;
+    await nextTask();
+    const item = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
+    const label = /** @type {HTMLElement} */ (item.querySelector('#label'));
+    let origin = null;
+    item.addEventListener('click', (event) => {
+      [origin] = event.composedPath();
+    }, { once: true });
+
+    await leftClickElement(label);
+
+    assert.strictEqual(origin, item.refs.primaryInteraction);
+    assert.strictEqual(document.activeElement, item);
+    assert.isTrue(item.refs.state.hasAttribute('focused'));
+    assert.isNotNull(item._lastRipple);
   });
 
   it('reconciles one owner once when an expansion group is inserted', async () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <span slot=expansion>Existing expansion</span>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const group = document.createElement('mdw-list-tree');
     group.slot = 'expansion';
-    group.innerHTML = '<mdw-list-item>Child</mdw-list-item>';
+    group.innerHTML = '<mdw-list-tree-item>Child</mdw-list-tree-item>';
     const refreshTabIndexes = list.refreshTabIndexes;
-    const setListRole = parent._setListRole;
     let refreshes = 0;
-    let roleUpdates = 0;
     list.refreshTabIndexes = function refreshTabIndexesCounter() {
       refreshes += 1;
       return refreshTabIndexes.call(this);
-    };
-    parent._setListRole = function setListRoleCounter(...args) {
-      roleUpdates += 1;
-      return setListRole.apply(this, args);
     };
 
     parent.append(group);
     await nextTask();
 
     assert.equal(refreshes, 1);
-    assert.equal(roleUpdates, 1);
+    assert.equal(parent.readAriaProperty('role'), 'treeitem');
     assert.equal(group._listRole, 'group');
     assert.isTrue(list._kbdManagedTabIndexes.has(group.firstElementChild));
   });
@@ -152,24 +261,24 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item id=nested-parent expanded>
+            <mdw-list-tree-item id=nested-parent expanded>
               Nested parent
               <span slot=expansion>Existing expansion</span>
-            </mdw-list-item>
+            </mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const nestedParent = /** @type {InstanceType<ListItem>} */ (
+    const nestedParent = /** @type {InstanceType<ListTreeItem>} */ (
       list.querySelector('#nested-parent')
     );
     const group = document.createElement('mdw-list-tree');
     group.slot = 'expansion';
-    group.innerHTML = '<mdw-list-item>Nested child</mdw-list-item>';
+    group.innerHTML = '<mdw-list-tree-item>Nested child</mdw-list-tree-item>';
     const refreshTabIndexes = list.refreshTabIndexes;
     let refreshes = 0;
     list.refreshTabIndexes = function refreshTabIndexesCounter() {
@@ -189,12 +298,12 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree role=tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
@@ -203,17 +312,23 @@ describe('mdw-list-tree', () => {
     );
 
     assert.equal(group._listRole, 'group');
+    assert.equal(group.readAriaProperty('role'), 'group');
+    assert.equal(group.getAttribute('role'), 'group');
     assert.isTrue(list._kbdManagedTabIndexes.has(group.firstElementChild));
 
     group.setAttribute('role', 'listbox');
 
     assert.equal(group._listRole, 'group');
+    assert.equal(group.readAriaProperty('role'), 'group');
+    assert.equal(group.getAttribute('role'), 'group');
     assert.isTrue(list._kbdManagedTabIndexes.has(group.firstElementChild));
 
     group.removeAttribute('slot');
     await nextTask();
 
     assert.equal(group._listRole, 'tree');
+    assert.equal(group.readAriaProperty('role'), 'tree');
+    assert.equal(group.getAttribute('role'), 'tree');
     assert.isFalse(list._kbdManagedTabIndexes.has(group.firstElementChild));
     assert.isTrue(group._kbdManagedTabIndexes.has(group.firstElementChild));
   });
@@ -222,11 +337,11 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item href=#destination>Destination</mdw-list-item>
+        <mdw-list-tree-item href=#destination>Destination</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const item = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const item = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const anchor = /** @type {HTMLAnchorElement} */ (item.refs.anchor);
     let activations = 0;
     anchor.addEventListener('click', (event) => {
@@ -253,23 +368,31 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>First</mdw-list-item>
-        <mdw-list-item>Last</mdw-list-item>
+        <mdw-list-tree-item>First</mdw-list-tree-item>
+        <mdw-list-tree-item>Last</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const [first, last] = /** @type {InstanceType<ListItem>[]} */ ([...list.children]);
+    const [first, last] = /** @type {InstanceType<ListTreeItem>[]} */ ([...list.children]);
 
     first.focus();
+    const upEvent = dispatchKeydown(first, 'ArrowUp');
+    const upKeptFocus = document.activeElement === first;
     const homeEvent = dispatchKeydown(first, 'Home');
     const homeKeptFocus = document.activeElement === first;
 
     last.focus();
+    const downEvent = dispatchKeydown(last, 'ArrowDown');
+    const downKeptFocus = document.activeElement === last;
     const endEvent = dispatchKeydown(last, 'End');
     const endKeptFocus = document.activeElement === last;
 
+    assert.isFalse(upEvent.defaultPrevented);
+    assert.isTrue(upKeptFocus);
     assert.isFalse(homeEvent.defaultPrevented);
     assert.isTrue(homeKeptFocus);
+    assert.isFalse(downEvent.defaultPrevented);
+    assert.isTrue(downKeptFocus);
     assert.isFalse(endEvent.defaultPrevented);
     assert.isTrue(endKeptFocus);
     assert.strictEqual(list._kbdTabStop, last);
@@ -279,18 +402,18 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree aria-orientation=horizontal>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
-        <mdw-list-item>Sibling</mdw-list-item>
+        </mdw-list-tree-item>
+        <mdw-list-tree-item>Sibling</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
-    const child = /** @type {InstanceType<ListItem>} */ (parent.querySelector('mdw-list-item'));
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
+    const child = /** @type {InstanceType<ListTreeItem>} */ (parent.querySelector('mdw-list-tree-item'));
     parent.focus();
 
     const expandEvent = dispatchKeydown(parent, 'ArrowRight');
@@ -310,16 +433,16 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree kbd-nav=false>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
 
     const event = dispatchKeydown(parent, 'ArrowRight');
 
@@ -331,17 +454,17 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
-    parent.addEventListener('mdw-list-item:expandedchange', () => {
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
+    parent.addEventListener('mdw-list-tree-item:expandedchange', () => {
       list.kbdNav = 'false';
     });
 
@@ -362,25 +485,25 @@ describe('mdw-list-tree', () => {
   it('does not cross the owning tree boundary with ArrowLeft', async () => {
     const outer = html`
       <mdw-list-tree>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Outer item
           <mdw-list-tree>
-            <mdw-list-item>
+            <mdw-list-tree-item>
               Inner parent
               <mdw-list-tree slot=expansion>
-                <mdw-list-item>Inner child</mdw-list-item>
+                <mdw-list-tree-item>Inner child</mdw-list-tree-item>
               </mdw-list-tree>
-            </mdw-list-item>
+            </mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const outerItem = /** @type {InstanceType<ListItem>} */ (outer.firstElementChild);
+    const outerItem = /** @type {InstanceType<ListTreeItem>} */ (outer.firstElementChild);
     const inner = /** @type {InstanceType<ListTree>} */ (
       outerItem.querySelector('mdw-list-tree')
     );
-    const innerParent = /** @type {InstanceType<ListItem>} */ (inner.firstElementChild);
+    const innerParent = /** @type {InstanceType<ListTreeItem>} */ (inner.firstElementChild);
     innerParent.focus();
 
     const event = dispatchKeydown(innerParent, 'ArrowLeft');
@@ -394,31 +517,50 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item actionable expanded>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item tabindex=3>Child</mdw-list-item>
+            <mdw-list-tree-item tabindex=3>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const nested = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('mdw-list-tree')
     );
-    const child = /** @type {InstanceType<ListItem>} */ (nested.firstElementChild);
+    const child = /** @type {InstanceType<ListTreeItem>} */ (nested.firstElementChild);
 
     assert.equal(nested._listRole, 'group');
     assert.equal(nested.elementInternals?.role ?? nested.getAttribute('role'), 'group');
+    assert.strictEqual(parent._ownedTreeGroup, nested);
+    assert.equal(parent.getAttribute('aria-expanded'), 'true');
     assert.isTrue(list._kbdManagedTabIndexes.has(child));
     assert.isFalse(nested._kbdManagedTabIndexes?.has(child) ?? false);
 
+    const expansionAction = parent.refs.expansionAction;
+    assert.isTrue(expansionAction.isConnected);
+    assert.equal(expansionAction.getAttribute('tabindex'), '-1');
     nested.removeAttribute('slot');
+    expansionAction.click();
+    const immediateClick = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+    });
+    parent.refs.primaryCell.dispatchEvent(immediateClick);
+
+    assert.isFalse(immediateClick.defaultPrevented);
+    assert.isTrue(parent.expanded);
+
     await nextTask();
 
     assert.equal(nested._listRole, 'tree');
     assert.equal(nested.elementInternals?.role ?? nested.getAttribute('role'), 'tree');
+    assert.isNull(parent._ownedTreeGroup);
+    assert.isFalse(parent.hasAttribute('aria-expanded'));
+    assert.isFalse(expansionAction.isConnected);
     assert.isFalse(list._kbdManagedTabIndexes.has(child));
     assert.isTrue(nested._kbdManagedTabIndexes.has(child));
     assert.equal(child.tabIndex, 0);
@@ -430,6 +572,9 @@ describe('mdw-list-tree', () => {
     assert.equal(nested._ariaRole, 'group');
     assert.equal(nested._listRole, 'group');
     assert.equal(nested.elementInternals?.role ?? nested.getAttribute('role'), 'group');
+    assert.strictEqual(parent._ownedTreeGroup, nested);
+    assert.equal(parent.getAttribute('aria-expanded'), 'true');
+    assert.equal(expansionAction.getAttribute('tabindex'), '-1');
     assert.isFalse(nested._kbdManagedTabIndexes.has(child));
     assert.isTrue(list._kbdManagedTabIndexes.has(child));
     assert.equal(child.tabIndex, -1);
@@ -439,57 +584,65 @@ describe('mdw-list-tree', () => {
     assert.equal(child.getAttribute('tabindex'), '3');
   });
 
-  it('releases parent-derived item semantics outside a list owner', async () => {
+  it('retains fixed item semantics while releasing tree ownership', async () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
-        <mdw-list-item id=sibling>Sibling</mdw-list-item>
+        </mdw-list-tree-item>
+        <mdw-list-tree-item id=sibling>Sibling</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     const outside = document.createElement('div');
     document.body.append(outside);
     await nextTask();
-    const item = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
-    const sibling = /** @type {InstanceType<ListItem>} */ (
+    const item = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
+    const sibling = /** @type {InstanceType<ListTreeItem>} */ (
       list.querySelector('#sibling')
     );
 
     assert.equal(item._ariaRole, 'treeitem');
-    assert.isFalse(item.refs.row.hasAttribute('role'));
+    assert.strictEqual(item._ownedTreeGroup, item.querySelector('mdw-list-tree'));
+    assert.isFalse(item.refs.primaryCell.hasAttribute('role'));
+    assert.equal(item.refs.anchor.getAttribute('tabindex'), '-1');
+    assert.equal(item.refs.primaryAction.getAttribute('tabindex'), '-1');
+    assert.equal(item.refs.expansionAction.getAttribute('tabindex'), '-1');
 
     outside.append(item, sibling);
 
-    assert.equal(item._ariaRole, 'listitem');
-    assert.equal(item.refs.row.getAttribute('role'), 'button');
-    assert.equal(sibling._ariaRole, 'listitem');
+    assert.equal(item._ariaRole, 'treeitem');
+    assert.isNull(item._ownedTreeGroup);
+    assert.isFalse(item.refs.primaryCell.hasAttribute('role'));
+    assert.equal(item.refs.anchor.getAttribute('tabindex'), '-1');
+    assert.equal(item.refs.primaryAction.getAttribute('tabindex'), '-1');
+    assert.equal(item.refs.expansionAction.getAttribute('tabindex'), '-1');
+    assert.equal(sibling._ariaRole, 'treeitem');
   });
 
   it('does not overlap an independent nested tree', async () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree>
-            <mdw-list-item>Independent child</mdw-list-item>
-            <mdw-list-item>Independent sibling</mdw-list-item>
+            <mdw-list-tree-item>Independent child</mdw-list-tree-item>
+            <mdw-list-tree-item>Independent sibling</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
-        <mdw-list-item>Root sibling</mdw-list-item>
+        </mdw-list-tree-item>
+        <mdw-list-tree-item>Root sibling</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const nested = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('mdw-list-tree')
     );
-    const [child, childSibling] = /** @type {InstanceType<ListItem>[]} */ (
+    const [child, childSibling] = /** @type {InstanceType<ListTreeItem>[]} */ (
       [...nested.children]
     );
 
@@ -509,70 +662,76 @@ describe('mdw-list-tree', () => {
 
     assert.isTrue(nestedEvent.defaultPrevented);
     assert.strictEqual(document.activeElement, childSibling);
+
+    let clickTarget = null;
+    child.addEventListener('click', (event) => {
+      clickTarget = event.target;
+    }, { once: true });
+    child.refs.primaryCell.dispatchEvent(new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+    }));
+
+    assert.strictEqual(clickTarget, child);
+    assert.isTrue(document.activeElement === child);
+    assert.isFalse(document.activeElement === parent);
+    assert.isTrue(child.refs.state.hasAttribute('focused'));
   });
 
   it('does not reconcile through an unchanged independent tree', async () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Branch A
           <mdw-list-tree slot=expansion>
-            <mdw-list-item expanded>
+            <mdw-list-tree-item expanded>
               Nested owner
               <mdw-list-tree id=independent>
-                <mdw-list-item id=independent-child>Independent</mdw-list-item>
+                <mdw-list-tree-item id=independent-child>Independent</mdw-list-tree-item>
               </mdw-list-tree>
-            </mdw-list-item>
+            </mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
-        <mdw-list-item expanded>
+        </mdw-list-tree-item>
+        <mdw-list-tree-item expanded>
           Branch B
           <mdw-list-tree id=changed slot=expansion>
-            <mdw-list-item>Changed child</mdw-list-item>
+            <mdw-list-tree-item>Changed child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
     const independent = /** @type {InstanceType<ListTree>} */ (
       list.querySelector('#independent')
     );
-    const independentChild = /** @type {InstanceType<ListItem>} */ (
-      list.querySelector('#independent-child')
-    );
     const changed = /** @type {InstanceType<ListTree>} */ (
       list.querySelector('#changed')
     );
-    const setListRole = independentChild._setListRole;
-    let roleWrites = 0;
-    independentChild._setListRole = function setListRoleCounter(...args) {
-      roleWrites += 1;
-      return setListRole.apply(this, args);
-    };
 
     changed.removeAttribute('slot');
     await nextTask();
 
     assert.equal(changed._listRole, 'tree');
     assert.equal(independent._listRole, 'tree');
-    assert.equal(roleWrites, 0);
+    assert.equal(list.querySelector('#independent-child').readAriaProperty('role'), 'treeitem');
   });
 
   it('does not disclose an independent collapsed nested tree', async () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree>
-            <mdw-list-item>Independent child</mdw-list-item>
+            <mdw-list-tree-item>Independent child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     parent.focus();
 
     const event = dispatchKeydown(parent, 'ArrowRight');
@@ -586,17 +745,17 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
-    const child = /** @type {InstanceType<ListItem>} */ (parent.querySelector('mdw-list-item'));
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
+    const child = /** @type {InstanceType<ListTreeItem>} */ (parent.querySelector('mdw-list-tree-item'));
     child.focus = () => {};
     parent.focus();
 
@@ -611,21 +770,21 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item hidden>Hidden child</mdw-list-item>
-            <mdw-list-item>Available child</mdw-list-item>
+            <mdw-list-tree-item hidden>Hidden child</mdw-list-tree-item>
+            <mdw-list-tree-item>Available child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const group = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('mdw-list-tree')
     );
-    const [hidden, available] = /** @type {InstanceType<ListItem>[]} */ ([...group.children]);
+    const [hidden, available] = /** @type {InstanceType<ListTreeItem>[]} */ ([...group.children]);
     let hiddenFocusAttempts = 0;
     hidden.focus = () => { hiddenFocusAttempts += 1; };
     parent.focus();
@@ -646,30 +805,30 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree id=initial-group slot=expansion>
-            <mdw-list-item id=received>Received</mdw-list-item>
-            <mdw-list-item id=stale>Stale</mdw-list-item>
+            <mdw-list-tree-item id=received>Received</mdw-list-tree-item>
+            <mdw-list-tree-item id=stale>Stale</mdw-list-tree-item>
           </mdw-list-tree>
           <mdw-list-tree id=replacement-group slot=expansion>
-            <mdw-list-item>Replacement</mdw-list-item>
+            <mdw-list-tree-item>Replacement</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const initialGroup = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('#initial-group')
     );
     const replacementGroup = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('#replacement-group')
     );
-    const received = /** @type {InstanceType<ListItem>} */ (
+    const received = /** @type {InstanceType<ListTreeItem>} */ (
       initialGroup.querySelector('#received')
     );
-    const stale = /** @type {InstanceType<ListItem>} */ (
+    const stale = /** @type {InstanceType<ListTreeItem>} */ (
       initialGroup.querySelector('#stale')
     );
     let staleFocusReceipts = 0;
@@ -690,30 +849,30 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree id=initial-group slot=expansion>
-            <mdw-list-item id=rejected>Rejected</mdw-list-item>
-            <mdw-list-item id=stale>Stale</mdw-list-item>
+            <mdw-list-tree-item id=rejected>Rejected</mdw-list-tree-item>
+            <mdw-list-tree-item id=stale>Stale</mdw-list-tree-item>
           </mdw-list-tree>
           <mdw-list-tree id=replacement-group slot=expansion>
-            <mdw-list-item>Replacement</mdw-list-item>
+            <mdw-list-tree-item>Replacement</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const initialGroup = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('#initial-group')
     );
     const replacementGroup = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('#replacement-group')
     );
-    const rejected = /** @type {InstanceType<ListItem>} */ (
+    const rejected = /** @type {InstanceType<ListTreeItem>} */ (
       initialGroup.querySelector('#rejected')
     );
-    const stale = /** @type {InstanceType<ListItem>} */ (
+    const stale = /** @type {InstanceType<ListTreeItem>} */ (
       initialGroup.querySelector('#stale')
     );
     let staleFocusReceipts = 0;
@@ -733,21 +892,21 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
-        <mdw-list-item>Sibling</mdw-list-item>
+        </mdw-list-tree-item>
+        <mdw-list-tree-item>Sibling</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const [parent, sibling] = /** @type {InstanceType<ListItem>[]} */ ([...list.children]);
+    const [parent, sibling] = /** @type {InstanceType<ListTreeItem>[]} */ ([...list.children]);
     const group = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('mdw-list-tree')
     );
-    const child = /** @type {InstanceType<ListItem>} */ (group.firstElementChild);
+    const child = /** @type {InstanceType<ListTreeItem>} */ (group.firstElementChild);
 
     group.inert = false;
     list.refreshTabIndexes();
@@ -767,14 +926,14 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>First</mdw-list-item>
-        <mdw-list-item hidden>Hidden</mdw-list-item>
-        <mdw-list-item inert>Inert</mdw-list-item>
-        <mdw-list-item>Last</mdw-list-item>
+        <mdw-list-tree-item>First</mdw-list-tree-item>
+        <mdw-list-tree-item hidden>Hidden</mdw-list-tree-item>
+        <mdw-list-tree-item inert>Inert</mdw-list-tree-item>
+        <mdw-list-tree-item>Last</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const [first, hidden, inert, last] = /** @type {InstanceType<ListItem>[]} */ (
+    const [first, hidden, inert, last] = /** @type {InstanceType<ListTreeItem>[]} */ (
       [...list.children]
     );
     let hiddenFocusAttempts = 0;
@@ -799,17 +958,17 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>First</mdw-list-item>
-        <mdw-list-item aria-hidden=true>
+        <mdw-list-tree-item>First</mdw-list-tree-item>
+        <mdw-list-tree-item aria-hidden=true>
           Aria hidden
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const [first, ariaHidden] = /** @type {InstanceType<ListItem>[]} */ ([...list.children]);
+    const [first, ariaHidden] = /** @type {InstanceType<ListTreeItem>[]} */ ([...list.children]);
 
     first.focus();
     const moveEvent = dispatchKeydown(first, 'ArrowDown');
@@ -830,29 +989,29 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded aria-hidden=true>
+        <mdw-list-tree-item expanded aria-hidden=true>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>
+            <mdw-list-tree-item>
               Child
               <mdw-list-tree slot=expansion>
-                <mdw-list-item>Grandchild</mdw-list-item>
+                <mdw-list-tree-item>Grandchild</mdw-list-tree-item>
               </mdw-list-tree>
-            </mdw-list-item>
+            </mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
-        <mdw-list-item>Sibling</mdw-list-item>
+        </mdw-list-tree-item>
+        <mdw-list-tree-item>Sibling</mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const [parent, sibling] = /** @type {InstanceType<ListItem>[]} */ ([...list.children]);
-    const child = /** @type {InstanceType<ListItem>} */ (parent.querySelector('mdw-list-item'));
+    const [parent, sibling] = /** @type {InstanceType<ListTreeItem>[]} */ ([...list.children]);
+    const child = /** @type {InstanceType<ListTreeItem>} */ (parent.querySelector('mdw-list-tree-item'));
     child.focus();
 
     const event = dispatchKeydown(child, 'ArrowRight');
 
-    const grandchild = /** @type {InstanceType<ListItem>} */ (
-      child.querySelector('mdw-list-item')
+    const grandchild = /** @type {InstanceType<ListTreeItem>} */ (
+      child.querySelector('mdw-list-tree-item')
     );
     assert.deepEqual([...list.getKbdNavChildren()], [parent, child, grandchild, sibling]);
     assert.isTrue(event.defaultPrevented);
@@ -863,29 +1022,29 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>First child</mdw-list-item>
+            <mdw-list-tree-item>First child</mdw-list-tree-item>
           </mdw-list-tree>
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>
+            <mdw-list-tree-item>
               Outside order
               <mdw-list-tree slot=expansion>
-                <mdw-list-item>Outside descendant</mdw-list-item>
+                <mdw-list-tree-item>Outside descendant</mdw-list-tree-item>
               </mdw-list-tree>
-            </mdw-list-item>
+            </mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const groups = /** @type {NodeListOf<InstanceType<ListTree>>} */ (
       parent.querySelectorAll(':scope > mdw-list-tree[slot=expansion]')
     );
-    const firstChild = /** @type {InstanceType<ListItem>} */ (groups[0].firstElementChild);
-    const outsideOrder = /** @type {InstanceType<ListItem>} */ (groups[1].firstElementChild);
+    const firstChild = /** @type {InstanceType<ListTreeItem>} */ (groups[0].firstElementChild);
+    const outsideOrder = /** @type {InstanceType<ListTreeItem>} */ (groups[1].firstElementChild);
 
     assert.deepEqual([...list.getKbdNavChildren()], [parent, firstChild]);
     assert.equal(groups[0]._listRole, 'group');
@@ -904,29 +1063,31 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree id=first-group slot=expansion>
-            <mdw-list-item tabindex=3>First child</mdw-list-item>
+            <mdw-list-tree-item tabindex=3>First child</mdw-list-tree-item>
           </mdw-list-tree>
           <mdw-list-tree id=next-group slot=expansion>
-            <mdw-list-item tabindex=4>Next child</mdw-list-item>
+            <mdw-list-tree-item tabindex=4>Next child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const firstGroup = /** @type {InstanceType<ListTree>} */ (parent.querySelector('#first-group'));
     const nextGroup = /** @type {InstanceType<ListTree>} */ (parent.querySelector('#next-group'));
-    const firstChild = /** @type {InstanceType<ListItem>} */ (firstGroup.firstElementChild);
-    const nextChild = /** @type {InstanceType<ListItem>} */ (nextGroup.firstElementChild);
+    const firstChild = /** @type {InstanceType<ListTreeItem>} */ (firstGroup.firstElementChild);
+    const nextChild = /** @type {InstanceType<ListTreeItem>} */ (nextGroup.firstElementChild);
 
     firstGroup.remove();
     await nextTask();
 
     const order = [...list.getKbdNavChildren()];
     assert.equal(nextGroup._listRole, 'group');
+    assert.strictEqual(parent._ownedTreeGroup, nextGroup);
+    assert.equal(parent.getAttribute('aria-expanded'), 'true');
     assert.equal(order.length, 2);
     assert.strictEqual(order[0], parent);
     assert.strictEqual(order[1], nextChild);
@@ -941,23 +1102,23 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree id=first-group slot=expansion>
-            <mdw-list-item tabindex=3>First child</mdw-list-item>
+            <mdw-list-tree-item tabindex=3>First child</mdw-list-tree-item>
           </mdw-list-tree>
           <mdw-list-tree id=next-group slot=expansion>
-            <mdw-list-item tabindex=4>Next child</mdw-list-item>
+            <mdw-list-tree-item tabindex=4>Next child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const firstGroup = /** @type {InstanceType<ListTree>} */ (parent.querySelector('#first-group'));
     const nextGroup = /** @type {InstanceType<ListTree>} */ (parent.querySelector('#next-group'));
-    const firstChild = /** @type {InstanceType<ListItem>} */ (firstGroup.firstElementChild);
-    const nextChild = /** @type {InstanceType<ListItem>} */ (nextGroup.firstElementChild);
+    const firstChild = /** @type {InstanceType<ListTreeItem>} */ (firstGroup.firstElementChild);
+    const nextChild = /** @type {InstanceType<ListTreeItem>} */ (nextGroup.firstElementChild);
 
     firstGroup.removeAttribute('slot');
     await nextTask();
@@ -965,6 +1126,8 @@ describe('mdw-list-tree', () => {
     assert.equal(firstGroup._listRole, 'tree');
     assert.equal(firstChild._ariaRole, 'treeitem');
     assert.equal(nextGroup._listRole, 'group');
+    assert.strictEqual(parent._ownedTreeGroup, nextGroup);
+    assert.equal(parent.getAttribute('aria-expanded'), 'true');
     assert.equal(nextChild._ariaRole, 'treeitem');
     assert.deepEqual([...list.getKbdNavChildren()], [parent, nextChild]);
     assert.equal(firstChild.getAttribute('tabindex'), '0');
@@ -979,23 +1142,23 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item expanded>
+        <mdw-list-tree-item expanded>
           Parent
           <mdw-list-tree id=first-group slot=expansion>
-            <mdw-list-item tabindex=3>First child</mdw-list-item>
+            <mdw-list-tree-item tabindex=3>First child</mdw-list-tree-item>
           </mdw-list-tree>
           <mdw-list-tree id=next-group slot=expansion>
-            <mdw-list-item tabindex=4>Next child</mdw-list-item>
+            <mdw-list-tree-item tabindex=4>Next child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const parent = /** @type {InstanceType<ListItem>} */ (list.firstElementChild);
+    const parent = /** @type {InstanceType<ListTreeItem>} */ (list.firstElementChild);
     const firstGroup = /** @type {InstanceType<ListTree>} */ (parent.querySelector('#first-group'));
     const nextGroup = /** @type {InstanceType<ListTree>} */ (parent.querySelector('#next-group'));
-    const firstChild = /** @type {InstanceType<ListItem>} */ (firstGroup.firstElementChild);
-    const nextChild = /** @type {InstanceType<ListItem>} */ (nextGroup.firstElementChild);
+    const firstChild = /** @type {InstanceType<ListTreeItem>} */ (firstGroup.firstElementChild);
+    const nextChild = /** @type {InstanceType<ListTreeItem>} */ (nextGroup.firstElementChild);
 
     firstGroup.before(nextGroup);
     await nextTask();
@@ -1003,6 +1166,8 @@ describe('mdw-list-tree', () => {
     const order = [...list.getKbdNavChildren()];
     assert.equal(nextGroup._listRole, 'group');
     assert.equal(firstGroup._listRole, 'tree');
+    assert.strictEqual(parent._ownedTreeGroup, nextGroup);
+    assert.equal(parent.getAttribute('aria-expanded'), 'true');
     assert.equal(order.length, 2);
     assert.strictEqual(order[0], parent);
     assert.strictEqual(order[1], nextChild);
@@ -1018,22 +1183,32 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Details
           <button slot=expansion>Action</button>
-        </mdw-list-item>
-        <mdw-list-item>
+        </mdw-list-tree-item>
+        <mdw-list-tree-item id=actionable actionable>
+          Actionable details
+          <button slot=expansion>Action</button>
+        </mdw-list-tree-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const [details] = /** @type {InstanceType<ListItem>[]} */ ([...list.children]);
+    const [details] = /** @type {InstanceType<ListTreeItem>[]} */ ([...list.children]);
+    const actionable = /** @type {InstanceType<ListTreeItem>} */ (
+      list.querySelector('#actionable')
+    );
 
     assert.isFalse(details.hasAttribute('aria-expanded'));
+    assert.isFalse(details.refs.expandIcon.isConnected);
+    assert.isFalse(actionable.hasAttribute('aria-expanded'));
+    assert.isFalse(actionable.refs.expansionAction.isConnected);
 
     details.focus();
     const arrowEvent = dispatchKeydown(details, 'ArrowRight');
@@ -1049,16 +1224,16 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item disabled>
+        <mdw-list-tree-item disabled>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const [parent] = /** @type {InstanceType<ListItem>[]} */ ([...list.children]);
+    const [parent] = /** @type {InstanceType<ListTreeItem>[]} */ ([...list.children]);
 
     const event = dispatchKeydown(parent, 'ArrowRight');
 
@@ -1070,33 +1245,33 @@ describe('mdw-list-tree', () => {
     /** @type {InstanceType<ListTree>} */
     const list = html`
       <mdw-list-tree>
-        <mdw-list-item>
+        <mdw-list-tree-item>
           Parent
           <mdw-list-tree slot=expansion>
-            <mdw-list-item>Child</mdw-list-item>
+            <mdw-list-tree-item>Child</mdw-list-tree-item>
           </mdw-list-tree>
-        </mdw-list-item>
+        </mdw-list-tree-item>
       </mdw-list-tree>
     `;
     await nextTask();
-    const [parent] = /** @type {InstanceType<ListItem>[]} */ ([...list.children]);
+    const [parent] = /** @type {InstanceType<ListTreeItem>[]} */ ([...list.children]);
 
     assert.equal(parent._ariaRole, 'treeitem');
     assert.equal(parent.getAttribute('aria-expanded'), 'false');
-    assert.isFalse(parent.refs.row.hasAttribute('aria-expanded'));
+    assert.isFalse(parent.refs.primaryCell.hasAttribute('aria-expanded'));
   });
 
   it('includes expanded child list items in roving tabindex', async () => {
     const container = html`
       <div>
         <mdw-list-tree>
-          <mdw-list-item expanded>
+          <mdw-list-tree-item expanded>
             Parent
             <mdw-list-tree slot=expansion>
-              <mdw-list-item>Child</mdw-list-item>
+              <mdw-list-tree-item>Child</mdw-list-tree-item>
             </mdw-list-tree>
-          </mdw-list-item>
-          <mdw-list-item>Sibling</mdw-list-item>
+          </mdw-list-tree-item>
+          <mdw-list-tree-item>Sibling</mdw-list-tree-item>
         </mdw-list-tree>
         <button id=after>After</button>
       </div>
@@ -1107,17 +1282,17 @@ describe('mdw-list-tree', () => {
       container.querySelector('mdw-list-tree')
     );
     const after = /** @type {HTMLButtonElement} */ (container.querySelector('#after'));
-    const [parent, sibling] = /** @type {InstanceType<ListItem>[]} */ ([...list.children]);
+    const [parent, sibling] = /** @type {InstanceType<ListTreeItem>[]} */ ([...list.children]);
     const childList = /** @type {InstanceType<ListTree>} */ (
       parent.querySelector('mdw-list-tree')
     );
-    const [child] = /** @type {InstanceType<ListItem>[]} */ ([...childList.children]);
+    const [child] = /** @type {InstanceType<ListTreeItem>[]} */ ([...childList.children]);
 
     assert.equal(parent.tabIndex, 0);
     assert.equal(child.tabIndex, -1);
     assert.equal(sibling.tabIndex, -1);
 
-    child.refs.row.dispatchEvent(new MouseEvent('click', {
+    child.refs.primaryCell.dispatchEvent(new MouseEvent('click', {
       bubbles: true,
       cancelable: true,
       composed: true,

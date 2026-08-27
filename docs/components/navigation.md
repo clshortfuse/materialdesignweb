@@ -9,26 +9,28 @@ app bars and side navigation.
 - Navigation: `mdw-nav-bar`, `mdw-nav-drawer`, `mdw-nav-rail`
 - Drawer organization: `mdw-nav-drawer`, `mdw-nav-drawer-section`
 - Tabs: `mdw-tab`, `mdw-tab-list`, `mdw-tab-panel`, `mdw-tab-content`
-- Menus & lists: `mdw-menu`, `mdw-list`, `mdw-list-tree`, `mdw-listbox`
+- Menus & lists: `mdw-menu`, `mdw-list`, `mdw-list-tree`,
+  `mdw-list-tree-item`, `mdw-listbox`
 
 ## List trees
 
-Use `mdw-list-tree` for hierarchical list items. Nested branches use another
-`mdw-list-tree` assigned to the parent item's `expansion` slot. The first direct
-expansion tree is an owned `group`. A ListTree outside that expansion topology is
-an independent tree owner. The framework derives all ARIA roles from this HTML
-structure. Only an item with that owned expansion tree is exposed and activated
-as a collapsible tree branch; other expansion content does not acquire tree
-disclosure semantics.
+Use `mdw-list-tree` with direct `mdw-list-tree-item` children. Nested branches
+use another `mdw-list-tree` assigned to the parent item's `expansion` slot. The
+first direct expansion tree is an owned `group`. A ListTree outside that
+expansion topology is an independent tree owner. The component types provide
+fixed ARIA semantics: ordinary `mdw-list-item` elements are not tree items. Only
+a tree item with an owned expansion tree is exposed and activated as a
+collapsible branch; other expansion content does not acquire tree disclosure
+semantics.
 
 ```html
 <mdw-list-tree>
-  <mdw-list-item expanded>
+  <mdw-list-tree-item expanded>
     Parent
     <mdw-list-tree slot="expansion">
-      <mdw-list-item>Child</mdw-list-item>
+      <mdw-list-tree-item>Child</mdw-list-tree-item>
     </mdw-list-tree>
-  </mdw-list-item>
+  </mdw-list-tree-item>
 </mdw-list-tree>
 ```
 

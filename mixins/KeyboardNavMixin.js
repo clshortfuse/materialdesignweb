@@ -42,6 +42,7 @@ function materializeKbdNavChildren(host) {
  * @param {number} tabIndex
  */
 function setKbdTabIndex(host, child, tabIndex) {
+  if (host._setKbdTabIndex) { host._setKbdTabIndex(child, tabIndex); return; }
   host._kbdManagedTabIndexes ??= new Map();
   if (!host._kbdManagedTabIndexes.has(child)) {
     host._kbdManagedTabIndexes.set(child, child.getAttribute('tabindex'));
@@ -93,6 +94,7 @@ function getKbdDirectEdge(host, reverse) {
 /** @param {HTMLElement & Record<string, any>} host @param {HTMLElement} child */
 function restoreKbdTabIndex(host, child) {
   if (!host._kbdManagedTabIndexes?.has(child)) return;
+  if (host._restoreKbdTabIndex) { host._restoreKbdTabIndex(child); return; }
   const tabIndex = host._kbdManagedTabIndexes.get(child);
   if (child.getAttribute('tabindex') !== tabIndex) {
     if (tabIndex == null) {

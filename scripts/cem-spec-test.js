@@ -301,12 +301,12 @@ function verify(manifest) {
         if (internal) {
           errors.push('ListOption must not declare \'_supportingSlotted\' (internal/non-enumerable)');
         }
-        // Ensure ListOption reports the correct superclass (should be ListItem)
+        // Ensure ListOption reports its current shared implementation base.
         const superRef = listDecl.superclass;
         if (superRef) {
           const superMod = normalize(superRef.module || superRef.package || '');
-          if (superMod !== 'components/ListItem.js') {
-            errors.push(`ListOption superclass expected components/ListItem.js but found ${superMod || JSON.stringify(superRef)}`);
+          if (superMod !== 'components/ListItemBase.js') {
+            errors.push(`ListOption superclass expected components/ListItemBase.js but found ${superMod || JSON.stringify(superRef)}`);
           }
         } else {
           errors.push('ListOption declaration missing superclass');
@@ -316,6 +316,73 @@ function verify(manifest) {
       }
     } else {
       errors.push('components/ListOption.js module missing');
+    }
+  }
+
+  /** @param {string} modulePath @param {string} [name] */
+  const declarationFor = (modulePath, name) => modules
+    .find((module) => normalize(module.path) === modulePath)?.declarations
+    ?.find((declaration) => (name ? declaration.name === name : declaration.kind === 'class'));
+  /** @param {string} modulePath @param {string} name */
+  const shouldCheckModule = (modulePath, name) => REQUESTED_MODULES.length === 0
+    || EFFECTIVE_MODULES.includes('all')
+    || EFFECTIVE_MODULES.includes(name)
+    || EFFECTIVE_MODULES.includes(modulePath);
+
+  // --- Guard the explicit fixed-role list specialization contract.
+  for (const [modulePath, name, tagName, superclass] of [
+    ['components/ListGrid.js', 'ListGrid', 'mdw-list-grid', 'components/List.js'],
+    ['components/ListRow.js', 'ListRow', 'mdw-list-row', 'components/ListItem.js'],
+    ['components/ListCell.js', 'ListCell', 'mdw-list-cell', 'core/CustomElement.js'],
+    ['components/ListTreeItem.js', 'ListTreeItem', 'mdw-list-tree-item', 'components/ListItem.js'],
+  ]) {
+    if (!shouldCheckModule(modulePath, name)) continue;
+    const componentModule = modules.find((module) => normalize(module.path) === modulePath);
+    const declaration = declarationFor(modulePath, name);
+    if (!declaration) {
+      errors.push(`${modulePath} declaration ${name} missing`);
+      continue;
+    }
+    if (declaration.customElement !== true || declaration.tagName !== tagName) {
+      errors.push(`${name} expected custom-element tag ${tagName}`);
+    }
+    if (normalize(declaration.superclass?.module) !== superclass) {
+      errors.push(`${name} superclass expected ${superclass} but found ${normalize(declaration.superclass?.module) || '(missing)'}`);
+    }
+    if (!(componentModule?.exports || []).some((item) => (
+      item?.kind === 'custom-element-definition' && item.name === tagName
+    ))) {
+      errors.push(`${modulePath} missing definition export for ${tagName}`);
+    }
+  }
+
+  if (shouldCheckModule('components/ListItem.js', 'ListItem')) {
+    const declaration = declarationFor('components/ListItem.js', 'ListItem');
+    const actionable = (declaration?.members || []).find((member) => member.name === 'actionable');
+    const onaction = (declaration?.members || []).find((member) => member.name === 'onaction');
+    const actionableAttribute = (declaration?.attributes || [])
+      .find((attribute) => attribute.name === 'actionable');
+    if (actionable?.type?.text !== 'boolean' || actionableAttribute?.type?.text !== 'boolean') {
+      errors.push('ListItem must expose boolean actionable property and attribute');
+    }
+    if (onaction?.type?.text !== 'EventListener') {
+      errors.push(`ListItem.onaction expected EventListener but found ${onaction?.type?.text || '(missing)'}`);
+    }
+    if (!(declaration?.events || []).some((event) => event.name === 'action')) {
+      errors.push('ListItem must expose the action event');
+    }
+  }
+
+  for (const [modulePath, name] of [
+    ['components/List.js', 'List'],
+    ['components/ListTree.js', 'ListTree'],
+    ['components/Listbox.js', 'Listbox'],
+  ]) {
+    if (!shouldCheckModule(modulePath, name)) continue;
+    const declaration = declarationFor(modulePath, name);
+    if ((declaration?.members || []).some((member) => member.name === 'multiAction')
+      || (declaration?.attributes || []).some((attribute) => attribute.name === 'multi-action')) {
+      errors.push(`${name} must not expose multiAction or multi-action`);
     }
   }
 
