@@ -3,8 +3,43 @@
 import DelegatesFocusMixin from '../mixins/DelegatesFocusMixin.js';
 
 import ListItemBase from './ListItemBase.js';
-
 // https://html.spec.whatwg.org/multipage/form-elements.html#htmloptionelement
+
+const LISTBOX_NAME = 'mdw-listbox';
+/** @typedef {HTMLFormElement|null} ListOptionForm */
+/** @type {WeakMap<HTMLElement, HTMLElement>} */
+const listOptionOwners = new WeakMap();
+
+/** @param {Node} node @return {string} */
+function collectOptionText(node) {
+  let text = '';
+  for (const child of node.childNodes) {
+    if (child.nodeType === Node.TEXT_NODE) {
+      text += child.nodeValue;
+    } else if (child instanceof Element && child.localName !== 'script') {
+      text += collectOptionText(child);
+    }
+  }
+  return text.replaceAll(/[\t\n\f\r ]+/g, ' ').trim();
+}
+
+/** @param {HTMLElement} option */
+function notifyListOptionChanged(option) {
+  option.dispatchEvent(new Event('mdw-list-option:changed', {
+    bubbles: true,
+    composed: true,
+  }));
+}
+
+/** @param {HTMLElement} option */
+function releaseListOptionOwner(option) {
+  const owner = listOptionOwners.get(option);
+  listOptionOwners.delete(option);
+  if (!owner || option.parentElement === owner) return;
+  owner.dispatchEvent(new CustomEvent('mdw-list-option:disconnected', {
+    detail: option,
+  }));
+}
 
 /**
  * List options represent selectable choices within a `mdw-listbox` or list.
@@ -13,124 +48,93 @@ import ListItemBase from './ListItemBase.js';
 export default ListItemBase
   .extend()
   .mixin(DelegatesFocusMixin)
-  .setStatic({
-    formAssociated: true,
-  })
   .set({
-    /** ARIA role applied to the option container (anchor receives role 'option'). */
+    /** The inner anchor exposes the option role. */
     _ariaRole: 'none',
-
-    /** Index of this option within its list/listbox (managed externally). */
-    _index: -1,
-
-    /** Internal flag indicating selection was modified via API rather than default. */
+    /** Runtime selection no longer follows the default. */
     _selectedDirty: false,
-
-    /** Whether this option behaves as an interactive selectable item. */
+    /** Last synchronously assigned direct-owner index. */
+    _index: -1,
+    /** Preserve ListItem interaction presentation. */
     isInteractive: true,
   })
+  .set(/** @type {{form: ListOptionForm}} */ ({ form: null }))
   .observe({
-    // ListOption.prototype._form = ListOption.prop('_form');
-
     /**
      * Explicit label for accessibility. Reflected to attribute `label`.
-     * Falls back to `textContent` when not provided.
+     * Falls back to `text` when not provided.
      */
-    _label: { attr: 'label', reflect: true, nullParser: String },
-
-    /**
-     * Explicit text content for the option. Reflected to attribute `text`.
-     */
-    _text: { attr: 'text', reflect: true, nullParser: String },
-
-    /**
-     * Initial/default selection state (reflected to `selected` attribute).
-     * Use `selected` property to control runtime selection.
-     */
+    _label: { attr: 'label', reflect: true },
+    /** Explicit option text. Reflected to attribute `text`. */
+    _text: { attr: 'text', reflect: true },
+    /** Initial/default selection state reflected to the `selected` attribute. */
     defaultSelected: { attr: 'selected', reflect: true, type: 'boolean' },
-
     /** Internal boolean representing the current selected state. */
     _selected: 'boolean',
-
-    /**
-     * Underlying option value (reflected to `value` attribute). Defaults to
-     * the option's text content when not provided.
-     */
+    /** Explicit option value. Falls back to `text` when absent. */
     _value: { attr: 'value', reflect: true },
-
-    /** Set when form association disables the option. */
-    _formDisabled: 'boolean',
   })
   .observe({
-    selected: {
+    /** Current selection; setting it marks selectedness dirty. */ selected: {
       reflect: false,
       type: 'boolean',
-      get({ _selectedDirty, defaultSelected, _selected }) {
-        if (!_selectedDirty) return defaultSelected;
-        return _selected;
-      },
+      get({ _selected }) { return _selected; },
       /** @param {boolean} value */
       set(value) {
         this._selectedDirty = true;
         this._selected = value;
       },
     },
-    disabledState({ _formDisabled, disabled }) {
-      if (_formDisabled) return true;
-      return !!disabled;
-    },
+    /** Effective disabled state. */ disabledState({ disabled }) { return !!disabled; },
   })
   .define({
-    /** Numeric index of the option inside the parent listbox. */
-    index() { return this._index; },
-
-    /** Associated form owner (if any) for form-associated behavior. */
-    form() { return /** @type {HTMLInputElement} */ (this.parentElement)?.form; },
-
-    /**
-     * Text content for the option; setting updates the internal `_text` field.
-     * If not provided, the getter falls back to element textContent.
-     */
+    /** Numeric index inside a direct owning Listbox, or -1 when unowned. */
+    index() {
+      const owner = this.parentElement;
+      if (owner?.localName !== LISTBOX_NAME) return -1;
+      const indexedOptions = /** @type {Map<HTMLElement, number>|null} */ (
+        /** @type {any} */ (owner)._indexedOptions);
+      const indexed = indexedOptions?.get(this);
+      if (indexed != null) return indexed;
+      let index = 0;
+      for (const element of owner.children) {
+        if (element.localName !== this.localName) continue;
+        if (element === this) return index;
+        index += 1;
+      }
+      return -1;
+    },
+    /** Option text normalized like `HTMLOptionElement.text`. */
     text: {
-      // Incomplete
-      get() { return this._text ?? this.textContent; },
+      get() { return this._text ?? collectOptionText(this); },
       /** @param {string} value */
       set(value) {
-        this._text = value;
+        this.textContent = String(value);
+        const hadExplicitText = this._text != null;
+        this._text = null;
+        if (!hadExplicitText) {
+          notifyListOptionChanged(this);
+        }
       },
     },
-
-    /**
-     * Accessible label for the option. Falls back to `text` or the element
-     * content when not explicitly set.
-     */
+    /** Accessible label, falling back to normalized option text. */
     label: {
-      get() { return this._label ?? this._text ?? this.textContent; },
+      get() { return this._label ?? this._text ?? collectOptionText(this); },
       /** @param {string} value */
       set(value) {
-        this._label = value;
+        this._label = String(value);
       },
     },
-
-    /**
-     * Option `value` used when the option is selected in a form. Defaults to
-     * the option's text when not explicitly defined.
-     */
+    /** Submitted option value, falling back to explicit or collected text. */
     value: {
-      get() { return this._value ?? this.textContent; },
+      get() { return this._value ?? this._text ?? collectOptionText(this); },
       /** @param {string} value */
-      set(value) { this._value = value; },
+      set(value) { this._value = String(value); },
     },
   })
   .methods({
-    /** @param {boolean} formDisabled  */
-    formDisabledCallback(formDisabled) {
-      this._formDisabled = formDisabled;
-    },
     /** @type {HTMLElement['focus']} */
-    focus(...options) {
-      this.refs.anchor.focus(...options);
-    },
+    focus(...options) { this.refs.anchor.focus(...options); },
   })
   .expressions({
     anchorAriaLabelledBy({ _label }) {
@@ -145,11 +149,8 @@ export default ListItemBase
     },
   })
   .recompose(({ inline, refs: { checkbox, radio, anchor, state, content } }) => {
-    // Form Associated elements cannot receive focus unless using delegatesFocus
-    // Workaround by redirecting focus to an inner element
-    // Reuse HTMLAnchorElement with no HREF
-    // Issues: Siblings (images) are not contained within tree
-
+    // Redirect focus to the inner option surface so options retain their
+    // interactive ListItem presentation without becoming form controls.
     anchor.setAttribute('disabled', '{disabledState}');
     anchor.setAttribute('role', 'option');
     anchor.setAttribute('aria-disabled', inline(({ disabledState }) => `${disabledState}`));
@@ -161,23 +162,52 @@ export default ListItemBase
     anchor.setAttribute('aria-label', '{_label}');
     anchor.removeAttribute('href');
     anchor.removeAttribute('mdw-if');
-
     // eslint-disable-next-line no-shadow
     checkbox.setAttribute('mdw-if', inline(({ checkbox, icon }) => !icon && checkbox));
-
     // eslint-disable-next-line no-shadow
     radio.setAttribute('mdw-if', inline(({ radio, icon }) => !icon && radio));
-
     content.setAttribute('aria-hidden', 'true');
     content.setAttribute('selected', '{selected}');
-
     state.setAttribute('state-disabled', 'focus');
   })
   .on({
+    defaultSelectedChanged(oldValue, newValue) {
+      if (!this._selectedDirty) {
+        this._selected = newValue;
+      }
+    },
     selectedChanged(previous, current) {
-      // Used by HTMLCollection
       this.classList.toggle('mdw-list-option__selected', current);
-      this.dispatchEvent(new Event('mdw-list-option:changed', { bubbles: true, composed: true }));
+      notifyListOptionChanged(this);
+    },
+    _textChanged() {
+      if (this._value == null) {
+        notifyListOptionChanged(this);
+      }
+    },
+    _valueChanged() {
+      notifyListOptionChanged(this);
+    },
+    disabledStateChanged() {
+      notifyListOptionChanged(this);
+    },
+    connected() {
+      const owner = /** @type {(HTMLElement & Record<string, any>)|null} */ (this.parentElement);
+      if (owner?.localName === LISTBOX_NAME) {
+        listOptionOwners.set(this, owner);
+        const index = owner._indexedOptions?.get(this);
+        let previousOption = this.previousElementSibling;
+        while (previousOption && previousOption.localName !== this.localName) {
+          previousOption = previousOption.previousElementSibling;
+        }
+        if (index == null
+          || owner._indexedOptionsArray?.[index - 1] !== (previousOption ?? undefined)) {
+          notifyListOptionChanged(this);
+        }
+      }
+    },
+    disconnected() {
+      releaseListOptionOwner(this);
     },
   })
   .css`
@@ -185,7 +215,6 @@ export default ListItemBase
       --mdw-bg: var(--mdw-color__secondary-container);
       --mdw-ink: var(--mdw-color__on-secondary-container);
       cursor: pointer;
-    
       z-index: 0;
     }
 
@@ -196,18 +225,15 @@ export default ListItemBase
     :host([href]) {
       cursor: pointer;
     }
-    
     :host([disabled]) {
       cursor: not-allowed;
       pointer-events: none;
     }
-    
     #content {
       -webkit-user-select: none;
       user-select: none;
       pointer-events: none;
     }
-    
     #content[selected] {
       color: rgb(var(--mdw-ink));
     }
@@ -234,14 +260,25 @@ export default ListItemBase
         this.text = text;
       }
       if (value !== undefined) {
-        this._value = value;
+        this.value = value;
       }
       if (defaultSelected !== undefined) {
         this.defaultSelected = defaultSelected;
       }
-      if (selected !== undefined) {
+      if (selected === undefined) {
+        this._selected = false;
+      } else {
+        this._selectedDirty = true;
         this._selected = selected;
       }
+    }
+
+    /** @return {ListOptionForm} Associated form of a direct owning Listbox. */
+    // @ts-expect-error -- Replace the typed prototype field with a read-only getter.
+    get form() {
+      const owner = /** @type {HTMLElement & {form?: ListOptionForm}} */ (this.parentElement);
+      if (owner?.localName !== LISTBOX_NAME) return null;
+      return owner.form ?? null;
     }
 
     connectedCallback() {

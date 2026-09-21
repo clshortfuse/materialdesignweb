@@ -8,7 +8,7 @@ import { build } from 'esbuild';
 import { chromium, firefox, webkit } from 'playwright';
 
 const browserTypes = { chromium, firefox, webkit };
-const availableSuites = ['keyboard-nav', 'list-grid'];
+const availableSuites = ['keyboard-nav', 'list-grid', 'listbox'];
 const args = new Map(process.argv.slice(2).map((arg) => {
   const [name, value = 'true'] = arg.replace(/^--/, '').split('=', 2);
   return [name, value];
@@ -18,7 +18,7 @@ if (args.has('help')) {
   console.log(`Usage: npm run benchmark:components -- [options]
 
 Options:
-  --suite=all                         Suite to run: all, keyboard-nav, or list-grid
+  --suite=all                         Suite to run: all, keyboard-nav, list-grid, or listbox
   --browsers=chromium,firefox,webkit  Browsers to run
   --size=1000                         Keyboard targets or three-action ListGrid rows
   --samples=15                        Measured samples per scenario
@@ -51,6 +51,7 @@ const benchmarkSource = `
   import CustomElement from './core/CustomElement.js';
   import KeyboardNavMixin from './mixins/KeyboardNavMixin.js';
   import './components/ListGrid.js';
+  import './components/Listbox.js';
 
   CustomElement
     .extend()
@@ -104,6 +105,16 @@ const benchmarkSource = `
       width: 1px;
     }
     mdw-list-grid[data-runtime-benchmark] {
+      contain: strict;
+      display: block;
+      height: 1px;
+      left: 0;
+      overflow: hidden;
+      position: fixed;
+      top: 0;
+      width: 1px;
+    }
+    mdw-listbox[data-runtime-benchmark] {
       contain: strict;
       display: block;
       height: 1px;
@@ -591,6 +602,210 @@ const benchmarkSource = `
     return results;
   }
 
+  function instrumentListbox(host) {
+    const counters = {
+      managedTabStops: 0,
+      stateSynchronizations: 0,
+      tabIndexReconciliations: 0,
+    };
+    const updateFormAssociatedValue = host._updateFormAssociatedValue;
+    const refreshTabIndexes = host.refreshTabIndexes;
+    host._updateFormAssociatedValue = function updateFormAssociatedValueCounter(...args) {
+      if (args.length) counters.stateSynchronizations += 1;
+      return updateFormAssociatedValue.call(this, ...args);
+    };
+    host.refreshTabIndexes = function refreshTabIndexesCounter() {
+      counters.tabIndexReconciliations += 1;
+      return refreshTabIndexes.call(this);
+    };
+    return counters;
+  }
+
+  async function createListboxFixture(optionCount) {
+    const form = document.createElement('form');
+    const host = document.createElement('mdw-listbox');
+    host.setAttribute('data-runtime-benchmark', '');
+    host.name = 'choice';
+    host.required = true;
+    const fragment = document.createDocumentFragment();
+    for (let index = 0; index < optionCount; index += 1) {
+      const option = document.createElement('mdw-list-option');
+      option.id = 'option-' + index;
+      option.value = 'value-' + index;
+      option.textContent = 'Option ' + index;
+      if (index === 0) option.defaultSelected = true;
+      fragment.append(option);
+    }
+    host.append(fragment);
+    form.append(host);
+    document.body.append(form);
+    await settleMutations();
+    const counters = instrumentListbox(host);
+    return {
+      counters,
+      form,
+      host,
+      options: host.options,
+      selectedOptions: host.selectedOptions,
+    };
+  }
+
+  function validateListboxFixture(fixture, expectedLength, reconcileTabIndexes = false) {
+    const { counters, form, host, options, selectedOptions } = fixture;
+    if (host.options !== options || host.selectedOptions !== selectedOptions) {
+      throw new Error('Listbox collection identity changed');
+    }
+    if (options.length !== expectedLength || host.length !== expectedLength) {
+      throw new Error('Listbox collection length diverged');
+    }
+    const selectedIndex = host.selectedIndex;
+    const selected = options[selectedIndex];
+    if (!selected
+      || options.selectedIndex !== selectedIndex
+      || selectedOptions.length !== 1
+      || selectedOptions[0] !== selected
+      || host.value !== selected.value) {
+      throw new Error('Listbox selection state diverged');
+    }
+    if (!host.validity.valid || new FormData(form).get('choice') !== selected.value) {
+      throw new Error('Listbox validity or submitted value diverged');
+    }
+    if (reconcileTabIndexes) host.refreshTabIndexes();
+    let managedTabStops = 0;
+    for (const option of options) {
+      if (option.getAttribute('tabindex') === '0') managedTabStops += 1;
+    }
+    counters.managedTabStops = managedTabStops;
+    if (managedTabStops !== 1) {
+      throw new Error('expected one managed Listbox tab stop');
+    }
+  }
+
+  const listboxScenarios = [
+    {
+      name: 'indexed and named reads',
+      operations(optionCount) { return Math.max(1000, optionCount); },
+      async run(fixture, operations) {
+        const { counters, host, options } = fixture;
+        resetCounters(counters);
+        let checksum = 0;
+        const start = performance.now();
+        for (let operation = 0; operation < operations; operation += 1) {
+          const index = operation % options.length;
+          if (options[index]?.value === 'value-' + index) checksum += 1;
+          if (options.namedItem('option-' + index)?.value === 'value-' + index) checksum += 1;
+        }
+        const elapsed = performance.now() - start;
+        if (checksum !== operations * 2) throw new Error('live option reads diverged');
+        requireCounter(counters, 'stateSynchronizations', 0);
+        requireCounter(counters, 'tabIndexReconciliations', 0);
+        validateListboxFixture(fixture, host.children.length);
+        return elapsed;
+      },
+    },
+    {
+      name: 'value and selected-index changes',
+      operations() { return 1000; },
+      async run(fixture, operations) {
+        const { counters, host, options } = fixture;
+        resetCounters(counters);
+        const start = performance.now();
+        for (let operation = 0; operation < operations; operation += 1) {
+          const index = operation % options.length;
+          host.value = 'value-' + index;
+          host.selectedIndex = (index + 1) % options.length;
+        }
+        const elapsed = performance.now() - start;
+        requireCounter(counters, 'stateSynchronizations', operations * 2);
+        requireCounter(counters, 'tabIndexReconciliations', 0);
+        validateListboxFixture(fixture, options.length);
+        return elapsed;
+      },
+    },
+    {
+      name: 'add remove and replace transactions',
+      operations() { return 1000; },
+      async run(fixture, operations) {
+        const { counters, host, options } = fixture;
+        const expectedLength = options.length;
+        resetCounters(counters);
+        const start = performance.now();
+        for (let operation = 0; operation < operations; operation += 1) {
+          const transient = document.createElement('mdw-list-option');
+          transient.value = 'transient-' + operation;
+          options.add(transient, 1);
+          options.remove(1);
+
+          const original = options[1];
+          const replacement = document.createElement('mdw-list-option');
+          replacement.value = 'replacement-' + operation;
+          options[1] = replacement;
+          options[1] = original;
+        }
+        const elapsed = performance.now() - start;
+        await settleMutations();
+        requireCounter(counters, 'stateSynchronizations', operations * 4);
+        requireCounter(counters, 'tabIndexReconciliations', 0);
+        validateListboxFixture(fixture, expectedLength, true);
+        requireCounter(counters, 'tabIndexReconciliations', 1);
+        if (host.children.length !== expectedLength) {
+          throw new Error('Listbox transaction length diverged');
+        }
+        return elapsed;
+      },
+    },
+    {
+      name: 'bulk length changes',
+      operations() { return 100; },
+      async run(fixture, operations) {
+        const { counters, host, options } = fixture;
+        const expectedLength = options.length;
+        const reducedLength = expectedLength - Math.max(1, Math.floor(expectedLength / 100));
+        resetCounters(counters);
+        const start = performance.now();
+        for (let operation = 0; operation < operations; operation += 1) {
+          options.length = reducedLength;
+          options.length = expectedLength;
+        }
+        const elapsed = performance.now() - start;
+        await settleMutations();
+        requireCounter(counters, 'stateSynchronizations', operations * 2);
+        requireCounter(counters, 'tabIndexReconciliations', 0);
+        validateListboxFixture(fixture, expectedLength, true);
+        requireCounter(counters, 'tabIndexReconciliations', 1);
+        if (host.children.length !== expectedLength) {
+          throw new Error('Listbox bulk length diverged');
+        }
+        return elapsed;
+      },
+    },
+  ];
+
+  async function runListboxSuite(options) {
+    const results = [];
+    for (const scenario of listboxScenarios) {
+      const timings = [];
+      const counterSamples = [];
+      const operations = scenario.operations(options.targetCount);
+      for (let index = -options.warmupCount; index < options.sampleCount; index += 1) {
+        const fixture = await createListboxFixture(options.targetCount);
+        try {
+          const elapsed = await scenario.run(fixture, operations);
+          if (index >= 0) {
+            timings.push(elapsed);
+            counterSamples.push(copyCounters(fixture.counters));
+          }
+        } finally {
+          fixture.form.remove();
+          await settleMutations();
+        }
+        await new Promise(requestAnimationFrame);
+      }
+      results.push(summarize(scenario.name, operations, timings, counterSamples));
+    }
+    return results;
+  }
+
   window.runComponentBenchmark = async (options) => {
     const results = {};
     for (const suiteName of options.suiteNames) {
@@ -598,6 +813,8 @@ const benchmarkSource = `
         results[suiteName] = await runKeyboardNavSuite(options);
       } else if (suiteName === 'list-grid') {
         results[suiteName] = await runListGridSuite(options);
+      } else if (suiteName === 'listbox') {
+        results[suiteName] = await runListboxSuite(options);
       }
     }
     return results;
