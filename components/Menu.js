@@ -6,6 +6,8 @@ import PopupMixin from '../mixins/PopupMixin.js';
 import ShapeMixin from '../mixins/ShapeMixin.js';
 import ThemableMixin from '../mixins/ThemableMixin.js';
 
+import MenuItem from './MenuItem.js';
+
 /**
  * Menus provide a list of choices or actions in a temporary surface.
  * @see https://m3.material.io/components/menus/specs
@@ -72,8 +74,10 @@ export default CustomElement
       },
     },
   })
-  .recompose(({ refs: { scrim } }) => {
+  .recompose(({ refs: { dialog, scrim } }) => {
     scrim.setAttribute('invisible', '');
+    dialog.setAttribute('role', 'menu');
+    dialog.removeAttribute('aria-modal');
     // Wrap slot in scroller
   })
   .css`
@@ -107,7 +111,7 @@ export default CustomElement
       return result;
     },
     focus() {
-      this.focusFirst();
+      this.focusCurrentOrFirst();
     },
     /**
      * @param {HTMLElement} cascader Element that calls for submenu cascade
@@ -116,15 +120,43 @@ export default CustomElement
       this.cascader = cascader;
       this.showPopup(cascader, true, 'adjacent');
     },
+    /** Closes this menu and each owning cascader menu after command activation. */
+    _closeActivatedMenuChain() {
+      const parent = this.cascader?.parentElement;
+      const parentMenu = parent?.localName === this.localName
+        ? /** @type {typeof this} */ (parent)
+        : null;
+      this.close(undefined, !parentMenu);
+      parentMenu?._closeActivatedMenuChain();
+    },
+  })
+  .on({
+    openChanged(oldValue, newValue) {
+      const cascader = this.cascader;
+      if (cascader instanceof MenuItem) {
+        /** @type {InstanceType<typeof MenuItem>} */ (cascader)._cascadeExpanded = newValue;
+      }
+    },
+    disconnected() {
+      if (this.open) {
+        this.close(undefined, false);
+      }
+    },
   })
   .events({
     'mdw-menu-item:cascade'(event) {
       const menuItem = /** @type {HTMLElement} */ (event.target);
+      if (!(menuItem instanceof MenuItem) || menuItem.parentElement !== this) return;
       const subMenuId = /** @type {CustomEvent<string>} */ (event).detail;
       event.stopPropagation();
 
       const root = /** @type {DocumentFragment|Document} */ (this.getRootNode());
       const submenu = /** @type {typeof this} */ (root.getElementById(subMenuId));
+      if (!submenu || typeof submenu.cascade !== 'function') return;
+      const previousSubmenu = /** @type {typeof this} */ (this.submenu);
+      if (previousSubmenu && previousSubmenu !== submenu) {
+        previousSubmenu.close(undefined, false);
+      }
       this.submenu = submenu;
       submenu.cascade(menuItem);
     },
@@ -134,13 +166,23 @@ export default CustomElement
       // Wait for focus event (if mouse focus on sub menu item)
       queueMicrotask(() => {
         // Stay open if submenu is focused
-        if (submenu && submenu.matches(':focus-within,:focus')) return;
+        if (submenu.matches(':focus-within,:focus')) return;
 
         submenu.close(false);
       });
     },
 
     '~click'(event) {
+      const menuItem = event.target;
+      if (menuItem instanceof MenuItem && menuItem.parentElement === this) {
+        const commandItem = /** @type {{disabledState: boolean, type: string|null, cascades: string|null}} */ (
+          /** @type {unknown} */ (menuItem)
+        );
+        if (!commandItem.disabledState && commandItem.type == null && !commandItem.cascades) {
+          this._closeActivatedMenuChain();
+        }
+        return;
+      }
       if (this !== event.target) return;
       // Clicked self (scrim-like)
       event.stopPropagation();
@@ -163,7 +205,6 @@ export default CustomElement
         // Unless menu hiding is cancelled
         case 'ArrowLeft':
         case 'ArrowRight':
-          // if (!this.submenu) break;
           if (getComputedStyle(this).direction === 'rtl') {
             if (event.key === 'ArrowLeft') break;
           } else if (event.key === 'ArrowRight') {
@@ -198,6 +239,10 @@ export default CustomElement
       slotchange() {
         if (this.isConnected) {
           this.refreshTabIndexes();
+          const submenu = /** @type {typeof this} */ (this.submenu);
+          if (submenu && submenu.cascader?.parentElement !== this) {
+            submenu.close(undefined, false);
+          }
         }
       },
     },

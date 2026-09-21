@@ -183,14 +183,14 @@
       "audit": "auditing",
       "conformance": "unknown",
       "evidence": {
-        "spec": ["test/spec/KeyboardNavConsumers.test.js"],
+        "spec": ["test/spec/Menu.test.js", "test/spec/KeyboardNavConsumers.test.js"],
         "demo": ["demo/components/menus.html"]
       },
       "performance": {
         "ownership": "direct mdw-menu-item children only; nested menus own their own items",
-        "invalidation": "owned slotchange reconciles custom-target readiness and restores items that leave direct ownership",
-        "hotPath": "keyboard movement follows live direct sibling links and uses only a scoped direct-child tabindex query for the roving anchor, without broad descendant scans or retained topology; popup entry starts at the first direct item",
-        "cleanup": "keyboard mixin restores managed tabindex values on disconnect"
+        "invalidation": "owned slotchange reconciles custom-target readiness; cascade requests resolve the current same-root ID target and synchronously replace the previously open submenu",
+        "hotPath": "keyboard movement follows live direct sibling links without broad descendant scans or retained topology; command closure follows only direct cascader ownership links",
+        "cleanup": "keyboard state is restored on disconnect; replaced and closed submenu relationships synchronize aria-expanded"
       }
     },
     "MenuItem": {

@@ -8,7 +8,7 @@ import { build } from 'esbuild';
 import { chromium, firefox, webkit } from 'playwright';
 
 const browserTypes = { chromium, firefox, webkit };
-const availableSuites = ['keyboard-nav', 'list-grid', 'listbox'];
+const availableSuites = ['keyboard-nav', 'list-grid', 'listbox', 'menu'];
 const args = new Map(process.argv.slice(2).map((arg) => {
   const [name, value = 'true'] = arg.replace(/^--/, '').split('=', 2);
   return [name, value];
@@ -18,7 +18,7 @@ if (args.has('help')) {
   console.log(`Usage: npm run benchmark:components -- [options]
 
 Options:
-  --suite=all                         Suite to run: all, keyboard-nav, list-grid, or listbox
+  --suite=all                         Suite to run: all, keyboard-nav, list-grid, listbox, or menu
   --browsers=chromium,firefox,webkit  Browsers to run
   --size=1000                         Keyboard targets or three-action ListGrid rows
   --samples=15                        Measured samples per scenario
@@ -52,6 +52,7 @@ const benchmarkSource = `
   import KeyboardNavMixin from './mixins/KeyboardNavMixin.js';
   import './components/ListGrid.js';
   import './components/Listbox.js';
+  import './components/Menu.js';
 
   CustomElement
     .extend()
@@ -123,6 +124,10 @@ const benchmarkSource = `
       position: fixed;
       top: 0;
       width: 1px;
+    }
+    mdw-menu[data-runtime-benchmark] {
+      animation: none !important;
+      transition: none !important;
     }
   \`;
   document.head.append(style);
@@ -806,6 +811,171 @@ const benchmarkSource = `
     return results;
   }
 
+  async function createMenuFixture(itemCount) {
+    const trigger = document.createElement('button');
+    const host = document.createElement('mdw-menu');
+    const submenu = document.createElement('mdw-menu');
+    const fragment = document.createDocumentFragment();
+    trigger.textContent = 'Open';
+    host.id = 'benchmark-menu';
+    host.setAttribute('data-runtime-benchmark', '');
+    submenu.id = 'benchmark-submenu';
+    submenu.setAttribute('data-runtime-benchmark', '');
+    for (let index = 0; index < itemCount; index += 1) {
+      const item = document.createElement('mdw-menu-item');
+      item.textContent = 'item-' + index;
+      fragment.append(item);
+    }
+    const cascader = fragment.firstElementChild;
+    cascader.cascades = submenu.id;
+    const nestedDecoy = document.createElement('div');
+    nestedDecoy.append(document.createElement('mdw-menu-item'));
+    fragment.append(nestedDecoy);
+    submenu.append(document.createElement('mdw-menu-item'));
+    host.append(fragment);
+    const commandMenus = [];
+    const commandCascaders = [];
+    for (let depth = 0; depth < 5; depth += 1) {
+      const menu = document.createElement('mdw-menu');
+      const item = document.createElement('mdw-menu-item');
+      menu.id = 'benchmark-command-menu-' + depth;
+      menu.setAttribute('data-runtime-benchmark', '');
+      item.textContent = depth === 4 ? 'command' : 'depth-' + depth;
+      if (depth < 4) item.cascades = 'benchmark-command-menu-' + (depth + 1);
+      menu.append(item);
+      commandMenus.push(menu);
+      commandCascaders.push(item);
+    }
+    document.body.append(trigger, host, submenu, ...commandMenus);
+    await settleMutations();
+    return { cascader, commandCascaders, commandMenus, host, submenu, trigger };
+  }
+
+  function validateMenuFixture(fixture) {
+    const { cascader, host, submenu } = fixture;
+    if (host.kbdNavChildren.length !== host.children.length - 1) {
+      throw new Error('Menu adopted a nested keyboard decoy');
+    }
+    if (submenu.open || cascader._cascadeTimeout != null) {
+      throw new Error('Menu retained open cascade work');
+    }
+    if (cascader.refs.anchor.getAttribute('aria-expanded') !== 'false') {
+      throw new Error('Menu cascade ARIA state diverged');
+    }
+  }
+
+  const menuScenarios = [
+    {
+      name: 'direct keyboard movement',
+      operations() { return 10000; },
+      async run(fixture, operations) {
+        const { host, trigger } = fixture;
+        host.showPopup(trigger, true);
+        let current = document.activeElement;
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          dispatchNavigation(current, index % 2 ? 'ArrowUp' : 'ArrowDown');
+          current = document.activeElement;
+        }
+        const elapsed = performance.now() - start;
+        host.close(false);
+        validateMenuFixture(fixture);
+        return elapsed;
+      },
+    },
+    {
+      name: 'direct cascade cycles',
+      operations() { return 1000; },
+      async run(fixture, operations) {
+        const { cascader, host, submenu, trigger } = fixture;
+        let opens = 0;
+        let closes = 0;
+        const showPopup = submenu.showPopup;
+        const close = submenu.close;
+        submenu.showPopup = function showPopupCounter(...args) {
+          opens += 1;
+          return showPopup.apply(this, args);
+        };
+        submenu.close = function closeCounter(...args) {
+          closes += 1;
+          return close.apply(this, args);
+        };
+        host.showPopup(trigger, false);
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          cascader.click();
+          submenu.close(undefined, false);
+        }
+        const elapsed = performance.now() - start;
+        host.close(false);
+        if (opens !== operations || closes !== operations) {
+          throw new Error('Menu cascade open/close counts diverged');
+        }
+        validateMenuFixture(fixture);
+        return elapsed;
+      },
+    },
+    {
+      name: 'depth-five command closure',
+      operations() { return 1000; },
+      async run(fixture, operations) {
+        const { commandCascaders, commandMenus, trigger } = fixture;
+        const closeCounts = commandMenus.map(() => 0);
+        for (let depth = 0; depth < commandMenus.length; depth += 1) {
+          const menu = commandMenus[depth];
+          const close = menu.close;
+          menu.close = function closeCounter(...args) {
+            closeCounts[depth] += 1;
+            return close.apply(this, args);
+          };
+        }
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          commandMenus[0].showPopup(trigger, false);
+          for (let depth = 0; depth < commandCascaders.length; depth += 1) {
+            commandCascaders[depth].click();
+          }
+        }
+        const elapsed = performance.now() - start;
+        if (closeCounts.some((count) => count !== operations)
+          || commandMenus.some((menu) => menu.open)
+          || document.activeElement !== trigger) {
+          throw new Error('Depth-five command closure state diverged');
+        }
+        validateMenuFixture(fixture);
+        return elapsed;
+      },
+    },
+  ];
+
+  async function runMenuSuite(options) {
+    const results = [];
+    for (const scenario of menuScenarios) {
+      const timings = [];
+      const counterSamples = [];
+      const operations = scenario.operations(options.targetCount);
+      for (let index = -options.warmupCount; index < options.sampleCount; index += 1) {
+        const fixture = await createMenuFixture(Math.min(options.targetCount, 500));
+        try {
+          const elapsed = await scenario.run(fixture, operations);
+          if (index >= 0) {
+            timings.push(elapsed);
+            counterSamples.push({ outstandingCascadeTimers: 0 });
+          }
+        } finally {
+          fixture.trigger.remove();
+          fixture.host.remove();
+          fixture.submenu.remove();
+          for (const menu of fixture.commandMenus) menu.remove();
+          await settleMutations();
+        }
+        await new Promise(requestAnimationFrame);
+      }
+      results.push(summarize(scenario.name, operations, timings, counterSamples));
+    }
+    return results;
+  }
+
   window.runComponentBenchmark = async (options) => {
     const results = {};
     for (const suiteName of options.suiteNames) {
@@ -815,6 +985,8 @@ const benchmarkSource = `
         results[suiteName] = await runListGridSuite(options);
       } else if (suiteName === 'listbox') {
         results[suiteName] = await runListboxSuite(options);
+      } else if (suiteName === 'menu') {
+        results[suiteName] = await runMenuSuite(options);
       }
     }
     return results;

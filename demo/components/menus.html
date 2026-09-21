@@ -17,8 +17,8 @@
 
         <demo-preview-card label="Basic menus" col-span=12 code="
 &lt;mdw-menu id=&quot;menu-simple&quot;&gt;
-  &lt;mdw-menu-item&gt;Item 1&lt;/mdw-menu-item&gt;
-  &lt;mdw-menu-item icon=visibility&gt;Item 2&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item onaction=&quot;console.info('Run command')&quot;&gt;Command item&lt;/mdw-menu-item&gt;
+  &lt;mdw-menu-item href=&quot;./menus.html#menu-simple&quot; icon=visibility&gt;Link item&lt;/mdw-menu-item&gt;
   &lt;mdw-menu-item icon=content_copy trailing=&quot;Ctrl+C&quot;&gt;Item 3&lt;/mdw-menu-item&gt;
   &lt;mdw-menu-item icon=content_paste trailing=&quot;⌘V&quot;&gt;Item 4&lt;/mdw-menu-item&gt;
 &lt;/mdw-menu&gt;
@@ -124,8 +124,8 @@
     </mdw-box>
     <div id=menus>
       <mdw-menu id=menu-simple>
-        <mdw-menu-item>Item 1</mdw-menu-item>
-        <mdw-menu-item icon=visibility>Item 2</mdw-menu-item>
+        <mdw-menu-item onaction="console.info('Run command')">Command item</mdw-menu-item>
+        <mdw-menu-item href="./menus.html#menu-simple" icon=visibility>Link item</mdw-menu-item>
         <mdw-menu-item icon=content_copy trailing="Ctrl+C">Item 3</mdw-menu-item>
         <mdw-menu-item icon=content_paste trailing="⌘V">Item 4</mdw-menu-item>
       </mdw-menu>

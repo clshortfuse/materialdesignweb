@@ -1,5 +1,6 @@
 // https://www.w3.org/TR/wai-aria-practices/#menu
 
+import { EVENT_HANDLER_TYPE } from '../core/customTypes.js';
 import { isFocused } from '../core/dom.js';
 import FormAssociatedMixin from '../mixins/FormAssociatedMixin.js';
 
@@ -23,17 +24,24 @@ export default ListOption
 
     /** Internal flag indicating a cascade is in progress. */
     _cascading: false,
+
   })
-  .define({
-    type() {
-      if (this.radio != null) return 'radio';
-      if (this.checkbox != null) return 'checkbox';
+  .observe({
+    /** Whether the submenu owned by this cascader is open. */
+    _cascadeExpanded: 'boolean',
+
+    type({ radio, checkbox }) {
+      if (radio != null) return 'radio';
+      if (checkbox != null) return 'checkbox';
       return null;
     },
   })
   .observe({
     /** ID of the submenu to open when this item cascades. */
     cascades: 'string',
+
+    /** Event handler called when an ordinary menu item is activated. */
+    onaction: /** @type {any} */ (EVENT_HANDLER_TYPE),
 
     /**
      * Backing field for the menu item's value attribute. Can be `null` to
@@ -42,7 +50,6 @@ export default ListOption
     _defaultValue: {
       attr: 'value',
       reflect: true,
-      nullParser: String,
       empty: null,
     },
   })
@@ -58,7 +65,7 @@ export default ListOption
       },
       /** @param {string} value */
       set(value) {
-        this._defaultValue = value;
+        this._defaultValue = String(value);
       },
     },
     value: {
@@ -71,7 +78,7 @@ export default ListOption
        * @return {void}
        */
       set(value) {
-        this._defaultValue = value;
+        this._defaultValue = String(value);
       },
     },
   })
@@ -103,6 +110,10 @@ export default ListOption
       if (!trailingIcon && cascades) return 'arrow_right';
       return trailingIcon;
     },
+    computeMenuHref({ href, checkbox, radio, cascades, disabledState }) {
+      if (disabledState || checkbox != null || radio != null || cascades) return null;
+      return href;
+    },
   })
   .methods({
     unscheduleCascade() {
@@ -115,6 +126,7 @@ export default ListOption
     },
     cascade() {
       this.unscheduleCascade();
+      if (!this.isConnected || this.disabledState || !this.cascades) return;
       this._cascading = true;
       // Dispatch event asking for cascade.
       // Captured by parent mdw-menu and used to track current submenu
@@ -143,26 +155,39 @@ export default ListOption
     '~click'() {
       if (this.disabledState) return;
       if (this.type === 'radio') {
-        if (this.required) return;
         this.selected = true;
-      } else if (this.type === 'checkbox') {
-        if (this.required) return;
+        return;
+      }
+      if (this.type === 'checkbox') {
+        if (this.required && this.selected) return;
         this.selected = !this.selected;
         return;
       }
 
       if (this.cascades) {
         this.cascade();
+        return;
       }
+      this.dispatchEvent(new Event('action'));
     },
     keydown(event) {
-      if (this.disabledState) return;
+      if (this.disabledState) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.stopPropagation();
+          event.preventDefault();
+        }
+        return;
+      }
       switch (event.key) {
         case 'Enter':
         case ' ':
           event.stopPropagation();
           event.preventDefault();
-          this.click();
+          if (this.href == null) {
+            this.click();
+          } else {
+            this.refs.anchor.click();
+          }
           break;
         case 'ArrowLeft':
         case 'ArrowRight':
@@ -202,7 +227,17 @@ export default ListOption
     }));
 
     // MenuItems use checked instead of selected as in list items.
-    anchor.setAttribute('ariaChecked', anchor.getAttribute('aria-selected'));
+    anchor.setAttribute('aria-checked', inline(({ checkbox, radio, selected }) => {
+      if (checkbox == null && radio == null) return null;
+      return `${selected}`;
+    }));
+    anchor.setAttribute('aria-controls', '{cascades}');
+    anchor.setAttribute('aria-expanded', inline(({ cascades, _cascadeExpanded }) => (
+      cascades ? `${_cascadeExpanded}` : null
+    )));
+    anchor.setAttribute('aria-haspopup', inline(({ cascades }) => (cascades ? 'menu' : null)));
+    anchor.removeAttribute('aria-selected');
+    anchor.setAttribute('href', '{computeMenuHref}');
 
     row.prepend(html`
       <mdw-icon id=selection
@@ -220,6 +255,18 @@ export default ListOption
     _formResetChanged(oldValue, newValue) {
       if (!newValue) return;
       this._selected = this.defaultSelected;
+    },
+    disconnected() {
+      this.unscheduleCascade();
+      this._cascading = false;
+    },
+    disabledStateChanged(oldValue, newValue) {
+      if (newValue) {
+        this.unscheduleCascade();
+      }
+    },
+    cascadesChanged() {
+      this.unscheduleCascade();
     },
   })
   .css`
@@ -273,6 +320,10 @@ export default ListOption
     #anchor[selected] {
       background-color: transparent;
       color: inherit;
+    }
+
+    #anchor[href] {
+      z-index: 1;
     }
 
     #content[selected] {
