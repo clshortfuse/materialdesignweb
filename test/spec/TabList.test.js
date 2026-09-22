@@ -251,7 +251,7 @@ describe('mdw-tab-list', () => {
     });
   }
 
-  it('invalidates metrics after direct append, reorder, and removal', async () => {
+  it('recomputes metrics after direct append, reorder, and removal', async () => {
     /** @type {InstanceType<TabList>} */
     const tabList = html`
       <mdw-tab-list>
@@ -261,20 +261,21 @@ describe('mdw-tab-list', () => {
     `;
     const [first, second] = tabList.tabs;
     const third = new Tab();
+    third.textContent = 'Third';
     tabList._tabMetrics = [];
     tabList.append(third);
     await nextTask();
-    assert.isNull(tabList._tabMetrics);
+    assert.deepEqual(tabList._tabMetrics?.map(({ tab }) => tab.textContent), ['First', 'Second', 'Third']);
 
     tabList._tabMetrics = [];
     tabList.prepend(second);
     await nextTask();
-    assert.isNull(tabList._tabMetrics);
+    assert.deepEqual(tabList._tabMetrics?.map(({ tab }) => tab.textContent), ['Second', 'First', 'Third']);
 
     tabList._tabMetrics = [];
     first.remove();
     await nextTask();
-    assert.isNull(tabList._tabMetrics);
+    assert.deepEqual(tabList._tabMetrics?.map(({ tab }) => tab.textContent), ['Second', 'Third']);
     assert.deepEqual([...tabList.tabs], [second, third]);
   });
 });
