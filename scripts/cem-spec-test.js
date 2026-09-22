@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -8,32 +9,26 @@ import path from 'node:path';
  */
 // Parse CLI args once so verifier and generator stay in sync.
 const RAW_ARGS = process.argv.slice(2);
-const REQUESTED_MODULES = [];
 let REQUESTED_VERBOSE = false;
+let REQUESTED_SKIP_GENERATE = false;
 for (const a of RAW_ARGS) {
   if (a === '-v' || a === '--verbose') {
     REQUESTED_VERBOSE = true; continue;
   }
-  if (a.startsWith('-')) continue;
-  REQUESTED_MODULES.push(a);
+  if (a === '--skip-generate') {
+    REQUESTED_SKIP_GENERATE = true; continue;
+  }
+  if (!a.startsWith('-')) {
+    throw new Error('Focused verification is not supported; the canonical manifest must remain complete');
+  }
 }
-// Effective modules: when none explicitly requested, treat as no filter => generate ALL modules.
-// We represent that by leaving EFFECTIVE_MODULES empty when the user provided no module names.
-const EFFECTIVE_MODULES = REQUESTED_MODULES;
 
 /**
  *
  */
 function runGenerator() {
   try {
-    let cmd;
-    if (!EFFECTIVE_MODULES || EFFECTIVE_MODULES.length === 0) {
-      // No filter specified -> generate all modules
-      cmd = `node scripts/cem-generate.js${REQUESTED_VERBOSE ? ' -v' : ''}`;
-    } else {
-      const target = EFFECTIVE_MODULES.join(' ');
-      cmd = `node scripts/cem-generate.js ${target}${REQUESTED_VERBOSE ? ' -v' : ''}`;
-    }
+    const cmd = `node scripts/cem-generate.js${REQUESTED_VERBOSE ? ' -v' : ''}`;
     execSync(cmd, { stdio: 'inherit' });
     return true;
   } catch (e) {
@@ -55,7 +50,7 @@ function loadManifest() {
 
 /**
  *
- * @param p
+ * @param {unknown} p
  */
 function normalize(p) {
   return String(p || '').split(path.sep).join('/');
@@ -69,12 +64,150 @@ function hasHrefOrFile(source) {
 }
 
 /**
- *
- * @param manifest
+ * @param {{href?: string, file?: string}|null|undefined} source
+ * @return {string}
+ */
+function sourceModule(source) {
+  const value = String(source?.href || source?.file || '');
+  return normalize(/\/blob\/main\/([^#?]+\.js)(?:[#?]|$)/.exec(value)?.[1] || '');
+}
+
+/** @param {string} value @return {string} */
+function attributeToFieldName(value) {
+  return value.replaceAll(/-([a-z])/g, (_match, letter) => letter.toUpperCase());
+}
+
+/**
+ * Convert an `onX` listener property name to an event name.
+ * Examples: `onAction` or `onaction` -> `action`, `onValueChanged` -> `value-changed`.
+ * @param {string} prop
+ * @return {string}
+ */
+function listenerPropToEventName(prop) {
+  if (!prop || !prop.startsWith('on')) return '';
+  const rest = prop.slice(2);
+  if (!rest) return '';
+  const withDashes = rest.replaceAll(/([\da-z])([A-Z])/g, '$1-$2');
+  return withDashes.replaceAll(/[\s_]+/g, '-').toLowerCase();
+}
+
+/**
+ * @param {{name?: string, text?: string}|null|undefined} type
+ * @return {boolean}
+ */
+function typeLooksLikeEventListener(type) {
+  if (!type) return false;
+  const name = String(type.name || '');
+  const text = String(type.text || '');
+  return name === 'EventListener' || text.includes('EventListener');
+}
+
+/**
+ * @param {any} manifest
+ * @return {string[]}
  */
 function verify(manifest) {
   const errors = [];
-  const modules = manifest.modules || [];
+  const modules = /** @type {Array<any>} */ (manifest.modules || []);
+  const componentFiles = /** @type {string[]} */ (fs.readdirSync(path.resolve('components')))
+    .filter((file) => file.endsWith('.js'));
+  for (const componentFile of componentFiles) {
+    const expectedModule = `components/${componentFile}`;
+    const componentModule = modules.find((module) => normalize(module.path) === expectedModule);
+    if (!componentModule) {
+      errors.push(`manifest missing canonical component module ${expectedModule}`);
+      continue;
+    }
+    const declaration = (componentModule.declarations || [])
+      .find((item) => item?.kind === 'class');
+    if (!declaration || declaration.customElement !== true) {
+      errors.push(`${expectedModule} missing custom-element class declaration`);
+    }
+    const defaultExport = (componentModule.exports || [])
+      .some((item) => item?.kind === 'js' && item.name === 'default');
+    if (!defaultExport) {
+      errors.push(`${expectedModule} missing default JavaScript export`);
+    }
+    if (declaration?.tagName && !(componentModule.exports || []).some((item) => (
+      item?.kind === 'custom-element-definition' && item.name === declaration.tagName
+    ))) {
+      errors.push(`${expectedModule} missing definition export for ${declaration.tagName}`);
+    }
+  }
+  const IMPLEMENTATION_MEMBERS = new Set([
+    'attributeCache',
+    'attributeChangedCallback',
+    'callbackArguments',
+    'compose',
+    'composition',
+    'connectedCallback',
+    'disconnectedCallback',
+    'elementInternals',
+    'formAssociatedCallback',
+    'formDisabledCallback',
+    'formResetCallback',
+    'formStateRestoreCallback',
+    'formIPCEvent',
+    'patch',
+    'performImplicitSubmission',
+    'propChangedCallback',
+    'refreshFormAssociation',
+    'refs',
+    'render',
+    'static',
+  ]);
+
+  // CEM describes the element API consumed by authors, not the fluent class
+  // builder, lifecycle implementation, or private runtime state.
+  for (const mod of modules) {
+    for (const decl of (mod.declarations || [])) {
+      for (const member of (decl.members || [])) {
+        const qualifiedName = `${mod.path}::${decl.name}.${member?.name || '(unnamed)'}`;
+        if (member?.static === true) {
+          errors.push(`${qualifiedName} exposes static implementation API`);
+        }
+        if (member?.name?.startsWith('#') || member?.name?.startsWith('_')) {
+          errors.push(`${qualifiedName} exposes a private/internal member`);
+        }
+        if (/^on[A-Z]/.test(member?.name || '')) {
+          errors.push(`${qualifiedName} exposes an implementation callback`);
+        }
+        if (IMPLEMENTATION_MEMBERS.has(member?.name)) {
+          errors.push(`${qualifiedName} exposes lifecycle/runtime implementation API`);
+        }
+        if (member?.inheritedFrom && sourceModule(member.source) === normalize(mod.path)) {
+          errors.push(`${qualifiedName} is locally declared but marked inherited`);
+        }
+        const providerModule = sourceModule(member?.source);
+        if (decl.kind === 'class' && providerModule.startsWith('mixins/')
+            && normalize(member?.inheritedFrom?.module) !== providerModule) {
+          errors.push(`${qualifiedName} expected ultimate provider ${providerModule}`);
+        }
+      }
+      if (decl.kind === 'class') {
+        for (const attribute of (decl.attributes || [])) {
+          const fieldName = attribute.fieldName || attributeToFieldName(attribute.name);
+          const field = (decl.members || []).find((member) => member.name === fieldName);
+          if (!field) continue;
+          const qualifiedName = `${mod.path}::${decl.name} attribute ${attribute.name}`;
+          if (sourceModule(field.source) === normalize(mod.path) && attribute.inheritedFrom) {
+            errors.push(`${qualifiedName} is locally declared but marked inherited`);
+          } else if (field.inheritedFrom
+              && normalize(attribute.inheritedFrom?.module)
+                !== normalize(field.inheritedFrom.module)) {
+            errors.push(`${qualifiedName} does not match member provider ${field.inheritedFrom.module}`);
+          }
+        }
+      }
+    }
+  }
+
+  const serializedManifest = JSON.stringify(manifest);
+  const workspacePath = normalize(process.cwd());
+  if (serializedManifest.includes(workspacePath)
+      || /\bimport\\?\(["'](?:file:\/\/|\/|[A-Za-z]:[/\\])/.test(serializedManifest)) {
+    errors.push('manifest contains a machine-local absolute path');
+  }
 
   // Specific expectations used by tests below. Keep these small and focused —
   // they assert a handful of important attributes/properties and mixin members
@@ -82,12 +215,16 @@ function verify(manifest) {
   // Only expect members actually declared on Button itself (not mixin-origin members).
   const EXPECTED_BUTTON_MEMBERS = [
     { name: 'elevated', source: 'components/Button.js' },
-    { name: 'hasIcon', source: 'components/Button.js' },
-    { name: 'iconVariation', source: 'components/Button.js' },
   ];
 
+  /** @type {Record<string, {fields: string[], methods: string[], attrs?: string[], returns?: Record<string, string>}>} */
   const EXPECTED_MIXIN_MEMBERS = {
-    'mixins/ControlMixin.js': { fields: ['focusableOnDisabled', 'controlVoidElement', 'controlTagName'], methods: [] },
+    'mixins/ControlMixin.js': {
+      fields: ['focusableOnDisabled', 'controlVoidElement', 'controlTagName'],
+      methods: ['click'],
+      returns: { click: 'void' },
+    },
+    'mixins/DelegatesFocusMixin.js': { fields: ['delegatesFocus'], methods: [] },
     'mixins/FormAssociatedMixin.js': { fields: ['value', 'defaultValue', 'checked'], methods: ['checkValidity', 'reportValidity', 'setCustomValidity'] },
     'mixins/HyperlinkMixin.js': { fields: ['href', 'target'], methods: [] },
     'mixins/InputMixin.js': { fields: ['files'], methods: ['setRangeText', 'setSelectionRange'] },
@@ -153,31 +290,36 @@ function verify(manifest) {
     }
   }
 
-  // 2) Validate the Button declaration and ensure it does not include mixin-sourced members
-  // Only run Button-specific checks when Button was requested, or when no filter
-  // was provided (REQUESTED_MODULES empty) which means "all".
-  const shouldCheckButton = REQUESTED_MODULES.length === 0 || EFFECTIVE_MODULES.includes('Button') || EFFECTIVE_MODULES.includes('components/Button.js') || EFFECTIVE_MODULES.includes('all');
-  if (shouldCheckButton) {
+  // 2) Validate Button's own and inherited effective public API.
+  // Validate representative Button contracts on the complete manifest.
+  {
     const btnMod = modules.find((m) => normalize(m.path) === 'components/Button.js');
     if (btnMod) {
       const btnDecl = (btnMod.declarations || []).find((d) => d.kind === 'class' && d.name === 'Button');
       if (btnDecl) {
       // Ensure Button declaration looks like a custom element and has a superclass
-        if (btnDecl.customElement !== true) errors.push('Button declaration not marked as customElement');
-        if (!btnDecl.superclass) errors.push('Button declaration missing superclass');
+        if (btnDecl.customElement !== true) {
+          errors.push('Button declaration not marked as customElement');
+        }
+        if (!btnDecl.superclass) {
+          errors.push('Button declaration missing superclass');
+        }
         // Validate Button members have names/kinds and sources when present
         for (const mm of (btnDecl.members || [])) {
           if (!mm || !mm.name) {
             errors.push('Button has member with missing name'); continue;
           }
-          if (!mm.kind) errors.push(`Button.${mm.name} missing kind`);
-          if (mm.source && !hasHrefOrFile(mm.source)) errors.push(`Button.${mm.name} has source but missing href/file`);
-          // Methods that originate in mixins should not be listed on the component
+          if (!mm.kind) {
+            errors.push(`Button.${mm.name} missing kind`);
+          }
+          if (mm.source && !hasHrefOrFile(mm.source)) {
+            errors.push(`Button.${mm.name} has source but missing href/file`);
+          }
+          // Effective inherited API must retain machine-readable provenance.
           if (mm.kind === 'method' && mm.source) {
             const href = (mm.source && (mm.source.href || mm.source.file || mm.source)) || '';
-            if (String(href).includes('mixins/')) {
-
-              errors.push(`Button.${mm.name} is sourced from mixins (${href}); mixin-sourced methods should not appear on Button`);
+            if (String(href).includes('mixins/') && !mm.inheritedFrom) {
+              errors.push(`Button.${mm.name} is sourced from a mixin but is missing inheritedFrom provenance`);
             }
           }
         }
@@ -226,14 +368,19 @@ function verify(manifest) {
           errors.push(`Button mixins length ${actualMixins.length} !== expected ${EXPECTED_BUTTON_MIXINS_ORDER.length}`);
         }
 
-        // --- Ensure Button does NOT declare certain mixin-sourced members
-        const FORBIDDEN_BUTTON_MEMBERS = ['delegatesFocus', 'href'];
-        for (const forbidden of FORBIDDEN_BUTTON_MEMBERS) {
-          const found = (btnDecl.members || []).find((mm) => mm && mm.name === forbidden);
-          if (found) {
-            const src = (found.source && (found.source.href || found.source.file || found.source)) || 'unknown';
-            errors.push(`Button must not declare '${forbidden}' (it's mixin-sourced). Found source: ${src}`);
+        // --- Ensure representative inherited author APIs are present and attributed.
+        const EXPECTED_BUTTON_INHERITED_MEMBERS = ['delegatesFocus', 'href'];
+        for (const inheritedName of EXPECTED_BUTTON_INHERITED_MEMBERS) {
+          const found = (btnDecl.members || []).find((mm) => mm && mm.name === inheritedName);
+          if (!found) {
+            errors.push(`Button missing effective inherited member '${inheritedName}'`);
+          } else if (!found.inheritedFrom) {
+            errors.push(`Button.${inheritedName} missing inheritedFrom provenance`);
           }
+        }
+        const delegatesFocus = (btnDecl.members || []).find((mm) => mm?.name === 'delegatesFocus');
+        if (normalize(delegatesFocus?.inheritedFrom?.module) !== 'mixins/DelegatesFocusMixin.js') {
+          errors.push(`Button.delegatesFocus expected ultimate provider mixins/DelegatesFocusMixin.js but found ${normalize(delegatesFocus?.inheritedFrom?.module) || '(missing)'}`);
         }
 
         // Precompute Button attributes once for mixin attribute checks
@@ -243,40 +390,59 @@ function verify(manifest) {
         for (const [mPath, info] of Object.entries(EXPECTED_MIXIN_MEMBERS)) {
           const mixMod = modules.find((mod) => normalize(mod.path) === mPath);
           if (!mixMod) {
-            errors.push(`expected mixin module ${mPath} missing`); continue;
+            errors.push(`expected mixin module ${mPath} missing`);
+            continue;
           }
           const mixDecl = (mixMod.declarations || []).find((d) => d && d.kind === 'mixin');
           if (!mixDecl) {
-            errors.push(`${mPath} has no mixin declaration`); continue;
+            errors.push(`${mPath} has no mixin declaration`);
+            continue;
           }
           const memberNames = new Set((mixDecl.members || []).map((mm) => mm && mm.name).filter(Boolean));
           for (const f of (info.fields || [])) {
-            if (!memberNames.has(f)) errors.push(`${mPath} mixin missing field ${f}`);
+            if (!memberNames.has(f)) {
+              errors.push(`${mPath} mixin missing field ${f}`);
+            }
           }
           for (const meth of (info.methods || [])) {
             const mem = (mixDecl.members || []).find((mm) => mm && mm.name === meth);
             if (!mem) {
-              errors.push(`${mPath} mixin missing method ${meth}`); continue;
+              errors.push(`${mPath} mixin missing method ${meth}`);
+              continue;
             }
-            if (mem.kind !== 'method') errors.push(`${mPath}.${meth} expected kind 'method' but is ${mem.kind}`);
-            // Ensure Button does not list this method as its own method with mixin provenance
+            if (mem.kind !== 'method') {
+              errors.push(`${mPath}.${meth} expected kind 'method' but is ${mem.kind}`);
+            }
+            const expectedReturn = info.returns?.[meth];
+            if (expectedReturn && mem.return?.type?.text !== expectedReturn) {
+              errors.push(`${mPath}.${meth} expected return type ${expectedReturn} but found ${mem.return?.type?.text || '(missing)'}`);
+            }
+            // Ensure Button exposes the effective inherited method with provenance.
             const btnMeth = (btnDecl.members || []).find((mm) => mm && mm.name === meth);
-            if (btnMeth && btnMeth.kind === 'method' && btnMeth.source && String((btnMeth.source.href || btnMeth.source.file || btnMeth.source)).includes('mixins/')) {
-              errors.push(`Button.${meth} should not appear as a method with mixin provenance`);
+            if (!btnMeth && actualMixins.includes(mPath)) {
+              errors.push(`Button missing effective inherited method ${meth}`);
+            } else if (btnMeth && btnMeth.kind !== 'method') {
+              errors.push(`Button.${meth} expected inherited kind 'method' but is ${btnMeth.kind}`);
+            } else if (btnMeth && !btnMeth.inheritedFrom) {
+              errors.push(`Button.${meth} missing inheritedFrom provenance`);
             }
           }
           // Validate expected attributes declared by mixins.
           // Attributes are runtime/DOM concepts. The mixin itself should
-          // declare the attribute (in its `declaration.attributes` array)
-          // and the component should NOT incorrectly claim ownership of a
-          // mixin-owned attribute.
+          // declare the attribute, and the component's effective API should
+          // expose it with inheritedFrom provenance.
           const mixAttrs = new Set(((mixDecl.attributes || []).map((at) => at && at.name).filter(Boolean)));
           for (const a of (info.attrs || [])) {
             if (!mixAttrs.has(a)) {
               errors.push(`${mPath} mixin missing runtime attribute '${a}'`);
             }
             if (btnAttrs.has(a)) {
-              errors.push(`Button should NOT expose mixin attribute '${a}'`);
+              const btnAttr = (btnDecl.attributes || []).find((at) => at && at.name === a);
+              if (normalize(btnAttr?.inheritedFrom?.module) !== mPath) {
+                errors.push(`Button attribute '${a}' missing inheritedFrom ${mPath}`);
+              }
+            } else {
+              errors.push(`Button missing effective inherited attribute '${a}'`);
             }
           }
         }
@@ -286,13 +452,10 @@ function verify(manifest) {
     } else {
       errors.push('components/Button.js module missing');
     }
-  } else {
-    console.log('[verify] skipping Button-specific checks (not requested)');
   }
 
   // --- Ensure `ListOption` does not expose internal non-enumerable members
-  const shouldCheckListOption = REQUESTED_MODULES.length === 0 || EFFECTIVE_MODULES.includes('ListOption') || EFFECTIVE_MODULES.includes('components/ListOption.js') || EFFECTIVE_MODULES.includes('all');
-  if (shouldCheckListOption) {
+  {
     const listMod = modules.find((m) => normalize(m.path) === 'components/ListOption.js');
     if (listMod) {
       const listDecl = (listMod.declarations || []).find((d) => d && d.kind === 'class' && d.name === 'ListOption');
@@ -319,76 +482,221 @@ function verify(manifest) {
     }
   }
 
+  // --- Guard focused List/Menu public contracts added by the interaction work.
+  const COMPONENT_CONTRACTS = [
+    {
+      module: 'components/List.js',
+      name: 'List',
+      members: { multiAction: 'boolean' },
+      attributes: { 'multi-action': 'boolean' },
+    },
+    {
+      module: 'components/ListItem.js',
+      name: 'ListItem',
+      members: { actionable: 'boolean', onaction: 'EventListener' },
+      attributes: { actionable: 'boolean' },
+      events: ['action'],
+    },
+    {
+      module: 'components/MenuItem.js',
+      name: 'MenuItem',
+      members: { onaction: 'EventListener' },
+      events: ['action'],
+    },
+    {
+      module: 'components/Listbox.js',
+      name: 'Listbox',
+      members: {
+        options: 'HTMLCollectionOf<InstanceType<typeof ListOption>> & HTMLOptionsCollection',
+        selectedOptions: 'HTMLCollectionOf<InstanceType<typeof ListOption>>',
+        selectedIndex: 'number',
+      },
+      events: ['input', 'change'],
+    },
+  ];
+  for (const contract of COMPONENT_CONTRACTS) {
+    const componentModule = modules.find((m) => normalize(m.path) === contract.module);
+    const declaration = (componentModule?.declarations || [])
+      .find((d) => d?.kind === 'class' && d.name === contract.name);
+    if (!declaration) {
+      errors.push(`${contract.module} declaration ${contract.name} missing`);
+      continue;
+    }
+    for (const [memberName, expectedType] of Object.entries(contract.members || {})) {
+      const member = (declaration.members || []).find((m) => m?.name === memberName);
+      if (!member) {
+        errors.push(`${contract.name} missing member ${memberName}`);
+      } else if (expectedType && member.type?.text !== expectedType) {
+        errors.push(`${contract.name}.${memberName} expected type ${expectedType} but found ${member.type?.text || '(missing)'}`);
+      }
+    }
+    for (const [attributeName, expectedType] of Object.entries(contract.attributes || {})) {
+      const attribute = (declaration.attributes || []).find((a) => a?.name === attributeName);
+      if (!attribute) {
+        errors.push(`${contract.name} missing attribute ${attributeName}`);
+      } else if (attribute.type?.text !== expectedType) {
+        errors.push(`${contract.name} attribute ${attributeName} expected type ${expectedType} but found ${attribute.type?.text || '(missing)'}`);
+      }
+    }
+    for (const eventName of contract.events || []) {
+      if (!(declaration.events || []).some((event) => event?.name === eventName)) {
+        errors.push(`${contract.name} missing event ${eventName}`);
+      }
+    }
+  }
+
   /** @param {string} modulePath @param {string} [name] */
   const declarationFor = (modulePath, name) => modules
     .find((module) => normalize(module.path) === modulePath)?.declarations
-    ?.find((declaration) => (name ? declaration.name === name : declaration.kind === 'class'));
-  /** @param {string} modulePath @param {string} name */
-  const shouldCheckModule = (modulePath, name) => REQUESTED_MODULES.length === 0
-    || EFFECTIVE_MODULES.includes('all')
-    || EFFECTIVE_MODULES.includes(name)
-    || EFFECTIVE_MODULES.includes(modulePath);
+    ?.find((declaration) => (name ? declaration.name === name : declaration.kind === 'mixin'));
 
-  // --- Guard the explicit fixed-role list specialization contract.
-  for (const [modulePath, name, tagName, superclass] of [
-    ['components/ListGrid.js', 'ListGrid', 'mdw-list-grid', 'components/List.js'],
-    ['components/ListRow.js', 'ListRow', 'mdw-list-row', 'components/ListItem.js'],
-    ['components/ListCell.js', 'ListCell', 'mdw-list-cell', 'core/CustomElement.js'],
-    ['components/ListTreeItem.js', 'ListTreeItem', 'mdw-list-tree-item', 'components/ListItem.js'],
+  const listDeclaration = declarationFor('components/List.js', 'List');
+  const listboxDeclaration = declarationFor('components/Listbox.js', 'Listbox');
+  if (!(listDeclaration?.members || []).some((member) => member.name === 'multiAction')
+      || !(listDeclaration?.attributes || []).some((attribute) => attribute.name === 'multi-action')) {
+    errors.push('List must expose its multiAction property and multi-action attribute');
+  }
+  if ((listboxDeclaration?.members || []).some((member) => member.name === 'multiAction')
+      || (listboxDeclaration?.attributes || []).some((attribute) => attribute.name === 'multi-action')) {
+    errors.push('Listbox must honor .undefine(\'multiAction\') in its effective API');
+  }
+
+  const listItemDeclaration = declarationFor('components/ListItem.js', 'ListItem');
+  for (const internalName of [
+    'anchorHref',
+    'showPrimaryAction',
+    'showExpansionAction',
+    'showExpandableIcon',
   ]) {
-    if (!shouldCheckModule(modulePath, name)) continue;
-    const componentModule = modules.find((module) => normalize(module.path) === modulePath);
-    const declaration = declarationFor(modulePath, name);
-    if (!declaration) {
-      errors.push(`${modulePath} declaration ${name} missing`);
-      continue;
-    }
-    if (declaration.customElement !== true || declaration.tagName !== tagName) {
-      errors.push(`${name} expected custom-element tag ${tagName}`);
-    }
-    if (normalize(declaration.superclass?.module) !== superclass) {
-      errors.push(`${name} superclass expected ${superclass} but found ${normalize(declaration.superclass?.module) || '(missing)'}`);
-    }
-    if (!(componentModule?.exports || []).some((item) => (
-      item?.kind === 'custom-element-definition' && item.name === tagName
-    ))) {
-      errors.push(`${modulePath} missing definition export for ${tagName}`);
+    if ((listItemDeclaration?.members || []).some((member) => member.name === internalName)) {
+      errors.push(`ListItem exposes internal template expression '${internalName}'`);
     }
   }
 
-  if (shouldCheckModule('components/ListItem.js', 'ListItem')) {
-    const declaration = declarationFor('components/ListItem.js', 'ListItem');
-    const actionable = (declaration?.members || []).find((member) => member.name === 'actionable');
-    const onaction = (declaration?.members || []).find((member) => member.name === 'onaction');
-    const actionableAttribute = (declaration?.attributes || [])
-      .find((attribute) => attribute.name === 'actionable');
-    if (actionable?.type?.text !== 'boolean' || actionableAttribute?.type?.text !== 'boolean') {
-      errors.push('ListItem must expose boolean actionable property and attribute');
-    }
-    if (onaction?.type?.text !== 'EventListener') {
-      errors.push(`ListItem.onaction expected EventListener but found ${onaction?.type?.text || '(missing)'}`);
-    }
-    if (!(declaration?.events || []).some((event) => event.name === 'action')) {
-      errors.push('ListItem must expose the action event');
-    }
-  }
-
-  for (const [modulePath, name] of [
-    ['components/List.js', 'List'],
-    ['components/ListTree.js', 'ListTree'],
-    ['components/Listbox.js', 'Listbox'],
-  ]) {
-    if (!shouldCheckModule(modulePath, name)) continue;
-    const declaration = declarationFor(modulePath, name);
-    if ((declaration?.members || []).some((member) => member.name === 'multiAction')
-      || (declaration?.attributes || []).some((attribute) => attribute.name === 'multi-action')) {
-      errors.push(`${name} must not expose multiAction or multi-action`);
+  /** @type {Array<[string, string, boolean]>} */
+  const shapeOwners = [
+    ['components/ListItem.js', 'ListItem', true],
+    ['components/ListOption.js', 'ListOption', false],
+    ['components/MenuItem.js', 'MenuItem', false],
+  ];
+  for (const [modulePath, declarationName, expected] of shapeOwners) {
+    const declaration = declarationFor(modulePath, declarationName);
+    const hasMember = (declaration?.members || []).some((member) => member.name === 'shapeStyle');
+    const hasAttribute = (declaration?.attributes || [])
+      .some((attribute) => attribute.name === 'shape-style');
+    if (hasMember !== expected || hasAttribute !== expected) {
+      errors.push(`${declarationName} Shape API ownership does not match its concrete mixin contract`);
     }
   }
 
-  // --- Verify `onX` listener properties imply events when TypeScript types indicate
-  // they are event-listener signatures. Specifically check `components/Card.js`
-  // which defines `onaction` in source and should fire an `action` event.
+  const formAssociated = declarationFor('mixins/FormAssociatedMixin.js');
+  for (const methodName of ['checkValidity', 'reportValidity']) {
+    const method = (formAssociated?.members || []).find((member) => member.name === methodName);
+    if (method?.return?.type?.text !== 'boolean') {
+      errors.push(`FormAssociatedMixin.${methodName} expected boolean return`);
+    }
+  }
+  const setCustomValidity = (formAssociated?.members || [])
+    .find((member) => member.name === 'setCustomValidity');
+  if (setCustomValidity?.parameters?.[0]?.name !== 'error'
+      || setCustomValidity?.parameters?.[0]?.type?.text !== 'string') {
+    errors.push('FormAssociatedMixin.setCustomValidity expected error: string parameter');
+  }
+
+  const inputMixin = declarationFor('mixins/InputMixin.js');
+  const setRangeText = (inputMixin?.members || []).find((member) => member.name === 'setRangeText');
+  const rangeParameters = setRangeText?.parameters || [];
+  if (rangeParameters[0]?.name !== 'replacement' || rangeParameters[0]?.type?.text !== 'string'
+      || rangeParameters[1]?.name !== 'start' || rangeParameters[1]?.optional !== true
+      || rangeParameters[2]?.name !== 'end' || rangeParameters[2]?.optional !== true
+      || rangeParameters[3]?.optional !== true) {
+    errors.push('InputMixin.setRangeText overloads were not merged into optional range parameters');
+  }
+
+  const popupMixin = declarationFor('mixins/PopupMixin.js');
+  const showPopup = (popupMixin?.members || []).find((member) => member.name === 'showPopup');
+  const closePopup = (popupMixin?.members || []).find((member) => member.name === 'close');
+  if (showPopup?.parameters?.[1]?.optional !== true || showPopup?.parameters?.[2]?.optional !== true) {
+    errors.push('PopupMixin.showPopup defaulted parameters must be optional');
+  }
+  if (showPopup?.parameters?.[1]?.default !== 'true'
+      || showPopup?.parameters?.[2]?.default !== 'null') {
+    errors.push('PopupMixin.showPopup parameter defaults were not preserved');
+  }
+  if (closePopup?.parameters?.some((parameter) => parameter.optional !== true)) {
+    errors.push('PopupMixin.close defaulted parameters must be optional');
+  }
+  if (closePopup?.parameters?.[0]?.default !== 'undefined'
+      || closePopup?.parameters?.[1]?.default !== 'true') {
+    errors.push('PopupMixin.close parameter defaults were not preserved');
+  }
+
+  const EXPECTED_EFFECTIVE_EVENTS = {
+    'components/Input.js': { name: 'Input', events: ['input', 'change'] },
+    'components/Dialog.js': { name: 'Dialog', events: ['cancel', 'close'] },
+    'components/Popup.js': { name: 'Popup', events: ['cancel', 'close'] },
+    'components/Card.js': {
+      name: 'Card',
+      events: ['mdw-card:expandedchange', 'mdw-card:expandablechange'],
+    },
+  };
+  for (const [modulePath, contract] of Object.entries(EXPECTED_EFFECTIVE_EVENTS)) {
+    const declaration = declarationFor(modulePath, contract.name);
+    for (const eventName of contract.events) {
+      if (!(declaration?.events || []).some((event) => event.name === eventName)) {
+        errors.push(`${modulePath} missing effective event '${eventName}'`);
+      }
+    }
+  }
+
+  const cardStateTarget = (declarationFor('components/Card.js', 'Card')?.members || [])
+    .find((member) => member.name === 'stateTargetElement');
+  if (cardStateTarget?.inheritedFrom) {
+    errors.push('Card.stateTargetElement is locally overridden and must not be marked inherited');
+  }
+  const badgeMembers = declarationFor('components/Badge.js', 'Badge')?.members || [];
+  for (const forbidden of ['disabledState', 'focusedState', 'stateTargetElement']) {
+    if (badgeMembers.some((member) => member.name === forbidden)) {
+      errors.push(`Badge exposes constraint-only StateMixin member '${forbidden}'`);
+    }
+  }
+  const bottomAppBarMembers = declarationFor('components/BottomAppBar.js', 'BottomAppBar')?.members || [];
+  if (bottomAppBarMembers.filter((member) => member.name === 'ariaLabel').length > 1) {
+    errors.push('BottomAppBar duplicates AriaReflectorMixin members through a diamond dependency');
+  }
+  const bottomAppBarColor = (declarationFor('components/BottomAppBar.js', 'BottomAppBar')?.attributes || [])
+    .find((attribute) => attribute.name === 'color');
+  if (bottomAppBarColor?.inheritedFrom) {
+    errors.push('BottomAppBar color is locally overridden and must not be marked inherited');
+  }
+  const bottomAppBarKbdNav = bottomAppBarMembers.find((member) => member.name === 'kbdNav');
+  if (normalize(bottomAppBarKbdNav?.inheritedFrom?.module) !== 'mixins/KeyboardNavMixin.js') {
+    errors.push('BottomAppBar.kbdNav expected ultimate provider mixins/KeyboardNavMixin.js');
+  }
+  const bottomAppBarKbdNavAttribute = (declarationFor('components/BottomAppBar.js', 'BottomAppBar')?.attributes || [])
+    .find((attribute) => attribute.name === 'kbd-nav');
+  if (normalize(bottomAppBarKbdNavAttribute?.inheritedFrom?.module)
+      !== 'mixins/KeyboardNavMixin.js') {
+    errors.push('BottomAppBar kbd-nav expected ultimate provider mixins/KeyboardNavMixin.js');
+  }
+
+  // Internal callbacks named `on*` are not event-handler properties.
+  const FORBIDDEN_INFERRED_EVENTS = [
+    ['components/BottomSheet.js', 'drag-handle-active'],
+    ['components/Input.js', 'listbox-click'],
+    ['components/Listbox.js', 'listbox-click'],
+  ];
+  for (const [modulePath, eventName] of FORBIDDEN_INFERRED_EVENTS) {
+    const componentModule = modules.find((m) => normalize(m.path) === modulePath);
+    const declaration = (componentModule?.declarations || []).find((d) => d?.customElement);
+    if ((declaration?.events || []).some((event) => event?.name === eventName)) {
+      errors.push(`${modulePath} exposes false inferred event '${eventName}'`);
+    }
+  }
+
+  // --- Verify an observable event-handler property implies an event.
+  // Specifically check `components/Card.js`, which defines `onaction` in
+  // source and should fire an `action` event.
   const cardMod = modules.find((m) => normalize(m.path) === 'components/Card.js');
   if (cardMod) {
     const cardDecl = (cardMod.declarations || []).find((d) => d && (d.kind === 'class' || d.kind === 'mixin'));
@@ -420,54 +728,27 @@ function verify(manifest) {
 }
 
 /**
- * Convert an `onX` listener property name to an event name.
- * Examples: `onAction` or `onaction` -> `action`, `onValueChanged` -> `value-changed`.
- * @param prop
+ * Verify either the current artifact or a freshly generated one.
  */
-function listenerPropToEventName(prop) {
-  if (!prop || !prop.startsWith('on')) return '';
-  const rest = prop.slice(2);
-  if (!rest) return '';
-  // Insert dash between lower->upper transitions and lowercase everything
-  // Also handle already-lowercase `onaction` -> `action`
-  const withDashes = rest.replaceAll(/([\da-z])([A-Z])/g, '$1-$2');
-  return withDashes.replaceAll(/[\s_]+/g, '-').toLowerCase();
-}
-
-/**
- * Heuristic: does a manifest `Type` look like an event-listener / function?
- * We keep this conservative: accept types that mention `Event`, `EventListener`,
- * or `Function` in the type `name` when present. If no `type` is available
- * we return false (we require TS-derived type info to be present).
- * @param t
- */
-function typeLooksLikeEventListener(t) {
-  if (!t) return false;
-  // Accept either a `name` property or a textual `text` representation.
-  const name = String(t.name || '');
-  const text = String((t && (t.text || t.type || '')) || '');
-  if (!name && !text) return false;
-  // Conservative match: prefer exact `EventListener` but also accept
-  // textual forms that contain `EventListener`.
-  if (name === 'EventListener') return true;
-  if (text.includes('EventListener')) return true;
-  return false;
-}
-
-/**
- *
- */
-async function main() {
-  console.log('[verify] running generator...');
-  const genOk = runGenerator();
-  if (!genOk) process.exit(2);
+function main() {
+  if (REQUESTED_SKIP_GENERATE) {
+    console.log('[verify] using previously generated manifest...');
+  } else {
+    console.log('[verify] running generator...');
+    const genOk = runGenerator();
+    if (!genOk) {
+      process.exit(2);
+    }
+  }
 
   try {
     const manifest = loadManifest();
     const errors = verify(manifest);
     if (errors.length) {
       console.error('[verify] FAILED — problems found:');
-      for (const e of errors) console.error('  -', e);
+      for (const e of errors) {
+        console.error('  -', e);
+      }
       process.exit(1);
     }
     console.log('[verify] OK — basic manifest checks passed');

@@ -35,7 +35,6 @@ import ts from 'typescript';
  * @prop {Map<string, ObserverConfiguration>} attrList - attribute config keyed by attr name
  * @prop {Map<string, ObserverConfiguration>} propList - runtime propList (preserved as Map when available)
  * @prop {Map<string, 'field'|'getter'|'setter'|'method'|'constructor'>} prototypeMembers
- * @prop {Map<string, 'field'|'getter'|'setter'|'method'>} staticMembers
  * @prop {Set<string>} enumerableProps
  * @prop {Map<string,import('custom-elements-manifest').Slot>} slots
  * @prop {Map<string, import('custom-elements-manifest').CssPart>} cssParts
@@ -46,12 +45,34 @@ import ts from 'typescript';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const ROOT = path.resolve(__dirname, '..');
+
+/** @param {string} targetPath */
+function repositoryRelativePath(targetPath) {
+  return path.relative(ROOT, path.resolve(targetPath)).split(path.sep).join('/');
+}
+
+/** @param {string} targetPath */
+function browserModulePath(targetPath) {
+  return `/${repositoryRelativePath(targetPath).split('/').map((part) => encodeURIComponent(part)).join('/')}`;
+}
+
+/** @param {string} targetPath */
+function isInsideRepository(targetPath) {
+  const relative = path.relative(ROOT, targetPath);
+  return relative !== '..'
+    && !relative.startsWith(`..${path.sep}`)
+    && !path.isAbsolute(relative);
+}
 
 // Toggle verbose logging via CLI `-v` or `--verbose` (set in `main`).
 let VERBOSE = false;
 
 /** @type {import('playwright-core').BrowserContext | null} */
 let sharedContext = null;
+
+/** @type {import('playwright-core').Browser | null} */
+let sharedBrowser = null;
 
 /** @param {string} s */
 function camel(s) {
@@ -66,14 +87,13 @@ function kebab(s) {
 /**
  * Capture mixin factory metadata by importing the module and invoking
  * the default exported mixin with a dummy base class to observe the
- * returned class' prototype and static enumerable members. Returns
- * a minimal runtime descriptor matching `{ prototypeMembers, staticMembers }`.
+ * returned class' enumerable prototype members.
  * @param {string} src
  * @return {Promise<RuntimeCaptureResult|null>}
  */
 async function captureMixinMetadata(src) {
-  const importSpec = path.join('/', path.relative(process.cwd(), src).split(path.sep).join('/'));
-  const baseSpec = path.join('/', path.relative(process.cwd(), path.resolve(process.cwd(), 'core/CustomElement.js')).split(path.sep).join('/'));
+  const importSpec = browserModulePath(src);
+  const baseSpec = browserModulePath(path.join(ROOT, 'core/CustomElement.js'));
   if (VERBOSE) {
     console.log(`[manifest] captureMixinMetadata: importing ${importSpec} base=${baseSpec}`);
   }
@@ -170,33 +190,11 @@ async function captureMixinMetadata(src) {
               protoMap.set(n, 'field');
           }
         }
-        const staticNames = Object.getOwnPropertyNames(Mixed).filter((x) => !['length', 'name', 'prototype'].includes(x));
-        const staticMap = new Map();
-        for (const n of staticNames) {
-          const desc = Object.getOwnPropertyDescriptor(Mixed, n);
-          if (!desc || !desc.enumerable) {
-            continue;
-          }
-          switch ('function') {
-            case typeof desc.value:
-              staticMap.set(n, 'method');
-              break;
-            case typeof desc.get:
-              staticMap.set(n, 'getter');
-              break;
-            case typeof desc.set:
-              staticMap.set(n, 'setter');
-              break;
-            default:
-              staticMap.set(n, 'field');
-          }
-        }
         // Also capture any attribute/prop lists attached to the base class
         const attrs = Array.from((Base && Base.attrList) ? Base.attrList.entries() : []);
         const props = Array.from((Base && Base.propList) ? Base.propList.entries() : []);
         return {
           prototypeMembers: Array.from(protoMap.entries()),
-          staticMembers: Array.from(staticMap.entries()),
           enumerableProps: Array.from(enumerableProps.values()),
           attrs,
           props,
@@ -211,7 +209,6 @@ async function captureMixinMetadata(src) {
     }
     return {
       prototypeMembers: new Map(serialized.prototypeMembers),
-      staticMembers: new Map(serialized.staticMembers),
       attrList: new Map(serialized.attrs || []),
       propList: new Map(serialized.props || []),
       // mixin captures don't normally expose slots/parts/tag, provide empty defaults
@@ -245,6 +242,19 @@ function listenerPropToEventName(prop) {
 }
 
 /**
+ * Check whether a runtime observer uses the shared event-handler contract.
+ * This excludes internal methods whose names happen to start with `on`.
+ * @param {RuntimeCaptureResult} runtime
+ * @param {string} prop
+ * @return {boolean}
+ */
+function isRuntimeEventHandler(runtime, prop) {
+  if (!listenerPropToEventName(prop)) return false;
+  const config = runtime?.propList?.get(prop);
+  return config?.type === 'function' && config?.reflect === 'read';
+}
+
+/**
  * @param {string} p
  * @return {Promise<boolean>}
  */
@@ -267,6 +277,154 @@ function normalizeType(t) {
   return { text: `${t}` };
 }
 
+const IMPLEMENTATION_MEMBER_NAMES = new Set([
+  'attributeCache',
+  'attributeChangedCallback',
+  'callbackArguments',
+  'compose',
+  'composition',
+  'connectedCallback',
+  'disconnectedCallback',
+  'elementInternals',
+  'formAssociatedCallback',
+  'formDisabledCallback',
+  'formResetCallback',
+  'formStateRestoreCallback',
+  'formIPCEvent',
+  'patch',
+  'performImplicitSubmission',
+  'propChangedCallback',
+  'refreshFormAssociation',
+  'refs',
+  'render',
+  'static',
+]);
+
+/**
+ * @param {string|null|undefined} name
+ * @return {boolean}
+ */
+function isPublicCemMemberName(name) {
+  return typeof name === 'string'
+    && name.length > 0
+    && !name.startsWith('_')
+    && !name.startsWith('#')
+    && !/^on[A-Z]/.test(name)
+    && !IMPLEMENTATION_MEMBER_NAMES.has(name);
+}
+
+/**
+ * Keep implementation machinery out of the author-facing element API.
+ * Effective inherited instance APIs remain eligible for CEM output.
+ * @param {CEMMember|null|undefined} member
+ * @return {boolean}
+ */
+function isPublicCemMember(member) {
+  return isPublicCemMemberName(member?.name) && member?.static !== true;
+}
+
+/**
+ * Serialize a checker type relative to its declaration and reject machine-local
+ * import paths before they reach generated artifacts.
+ * @param {ts.TypeChecker} checker
+ * @param {ts.Type} type
+ * @param {ts.Node|null|undefined} enclosingNode
+ * @return {string}
+ */
+function typeToText(checker, type, enclosingNode) {
+  const text = checker.typeToString(
+    type,
+    enclosingNode || undefined,
+    ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope,
+  );
+  if (/\bimport\(["'](?:file:\/\/|\/|[A-Za-z]:[/\\])/.test(text)) {
+    throw new Error(`[manifest] non-portable type contains an absolute import: ${text}`);
+  }
+  return text;
+}
+
+/**
+ * @param {ts.MethodDeclaration} method
+ * @return {boolean}
+ */
+function methodReturnsValue(method) {
+  let returnsValue = false;
+  const visit = (node) => {
+    if (node !== method && ts.isFunctionLike(node)) return;
+    if (ts.isReturnStatement(node) && node.expression) {
+      returnsValue = true;
+      return;
+    }
+    ts.forEachChild(node, visit);
+  };
+  if (method.body) {
+    visit(method.body);
+  }
+  return returnsValue;
+}
+
+/**
+ * @param {ts.TypeChecker} checker
+ * @param {ts.Type} type
+ * @param {ts.Node|null|undefined} enclosingNode
+ * @return {Pick<CEMMethod, 'parameters'|'return'>}
+ */
+function methodTypeMetadata(checker, type, enclosingNode) {
+  const signatures = type.getCallSignatures?.() || [];
+  if (!signatures.length) {
+    return { parameters: [], return: { type: normalizeType('any') } };
+  }
+  const parameterCount = Math.max(...signatures.map((signature) => signature.parameters.length));
+  const parameters = Array.from({ length: parameterCount }, (_, index) => {
+    const signatureParameters = signatures.map((signature) => signature.parameters[index]);
+    const parameter = signatureParameters.find(Boolean);
+    const declaration = parameter?.valueDeclaration || parameter?.declarations?.[0];
+    const defaultDeclaration = signatureParameters
+      .map((signatureParameter) => signatureParameter?.valueDeclaration
+        || signatureParameter?.declarations?.[0])
+      .find((parameterDeclaration) => parameterDeclaration
+        && ts.isParameter(parameterDeclaration) && parameterDeclaration.initializer);
+    const typeTexts = new Set();
+    for (const signatureParameter of signatureParameters) {
+      if (!signatureParameter) continue;
+      const parameterDeclaration = signatureParameter.valueDeclaration
+        || signatureParameter.declarations?.[0];
+      const parameterType = checker.getTypeOfSymbolAtLocation(
+        signatureParameter,
+        parameterDeclaration || enclosingNode,
+      );
+      typeTexts.add(typeToText(checker, parameterType, parameterDeclaration || enclosingNode));
+    }
+    return {
+      name: parameter?.getName() || `arg${index}`,
+      type: normalizeType([...typeTexts].join(' | ') || 'any'),
+      optional: Boolean(signatureParameters.some((item) => !item)
+        || signatures.some((signature) => index >= signature.minArgumentCount)
+        || (declaration && ts.isParameter(declaration)
+          && (declaration.questionToken || declaration.initializer))) || undefined,
+      rest: Boolean(declaration && ts.isParameter(declaration) && declaration.dotDotDotToken) || undefined,
+      default: defaultDeclaration && ts.isParameter(defaultDeclaration)
+        ? defaultDeclaration.initializer?.getText() : undefined,
+    };
+  });
+  const returnTypes = new Set(signatures.map((signature) => typeToText(
+    checker,
+    signature.getReturnType(),
+    enclosingNode,
+  )));
+  let returnType = [...returnTypes].join(' | ');
+  if (returnType === 'any' && enclosingNode && ts.isMethodDeclaration(enclosingNode)
+      && !methodReturnsValue(enclosingNode)) {
+    returnType = 'void';
+  }
+  return {
+    parameters,
+    return: {
+      type: normalizeType(returnType),
+    },
+  };
+}
+
 /**
  * Normalize an export name (convert __ prefixed names to 'default').
  * @param {string|undefined} name
@@ -277,11 +435,6 @@ function normalizeExportName(name) {
 }
 
 /**
- * Extract source location information from a TypeScript declaration.
- * @param {ts.Node|null} declaration
- * @return {import('custom-elements-manifest').SourceReference|null}
- */
-/**
  * Get the source location of a TypeScript declaration.
  * @param {ts.Declaration} declaration
  * @return {{path: string, line: number}|null}
@@ -291,7 +444,7 @@ function getSourceLocation(declaration) {
   const sourceFile = declaration.getSourceFile();
   if (!sourceFile) return null;
   const position = declaration.getStart();
-  const relativePath = path.relative(process.cwd(), sourceFile.fileName).split(path.sep).join('/');
+  const relativePath = repositoryRelativePath(sourceFile.fileName);
   const line = sourceFile.getLineAndCharacterOfPosition(position).line + 1;
   return {
     path: relativePath,
@@ -311,30 +464,112 @@ function sourceLocationToReference(sourceLocation) {
   };
 }
 
+/**
+ * @param {CEMMember|null|undefined} member
+ * @return {string}
+ */
+function memberSourceModule(member) {
+  const href = member?.source?.href || '';
+  return /\/blob\/main\/([^#?]+\.js)(?:[#?]|$)/.exec(href)?.[1] || '';
+}
+
+/**
+ * Prefer a member's existing ultimate provider, then its mixin source, before
+ * falling back to the immediate inheritance edge.
+ * @param {CEMMember} member
+ * @param {CEMReference} fallback
+ * @return {CEMReference}
+ */
+function memberInheritanceReference(member, fallback) {
+  if (member.inheritedFrom) return member.inheritedFrom;
+  const sourceModule = memberSourceModule(member);
+  return sourceModule.startsWith('mixins/')
+    ? { name: 'default', module: sourceModule }
+    : fallback;
+}
+
+/**
+ * Find a single instance field returned directly by a fluent method.
+ * @param {ts.MethodDeclaration} method
+ * @return {string|undefined}
+ */
+function returnedThisField(method) {
+  /** @type {Set<string>} */
+  const fields = new Set();
+  const visit = (node) => {
+    if (node !== method && ts.isFunctionLike(node)) return;
+    if (ts.isReturnStatement(node) && node.expression
+        && ts.isPropertyAccessExpression(node.expression)
+        && node.expression.expression.kind === ts.SyntaxKind.ThisKeyword) {
+      fields.add(node.expression.name.text);
+    }
+    ts.forEachChild(node, visit);
+  };
+  if (method.body) {
+    visit(method.body);
+  }
+  return fields.size === 1 ? fields.values().next().value : undefined;
+}
+
 /** @type {Map<string, Promise<CEMModule>>} */
 const moduleByFile = new Map();
+
+/** @type {Map<string, Set<string>>} */
+const implementationMembersByModule = new Map();
+
+/** @type {Map<string, Set<string>>} */
+const undefinedMembersByModule = new Map();
 
 /**
  * @typedef {Object} TSExport
  * @prop {string} [type]
  * @prop {string} [docs]
  * @prop {{path?: string, line?: number}} [source]
+ * @prop {string} [returnField]
+ * @prop {boolean} [authoredType]
  */
+
+const FLUENT_MEMBER_CALLS = new Set([
+  'define',
+  'methods',
+  'observe',
+  'overrides',
+  'props',
+  'readonly',
+  'set',
+]);
 
 /**
  * Collect TypeScript-exported property metadata from a source file.
- * Scans the default export expression for object literal properties.
+ * Scans only object literals passed to fluent member-definition calls.
  * @param {ts.SourceFile} sf
   @return {Map<string, TSExport>} */
 function collectTsExports(sf) {
   /** @type {Map<string, TSExport>} */
   const tsExports = new Map();
 
+  /** @param {ts.Node} node @return {string|undefined} */
+  const jsDocTypeText = (node) => {
+    const typeNode = ts.isMethodDeclaration(node) || ts.isGetAccessorDeclaration(node)
+      ? ts.getJSDocReturnType(node)
+      : ts.getJSDocType(node);
+    return typeNode?.getText(sf) || undefined;
+  };
+
   /** @param {ts.Node} node */
   const collect = (node) => {
-    if (ts.isObjectLiteralExpression(node)) {
+    const parentCall = ts.isObjectLiteralExpression(node) && ts.isCallExpression(node.parent)
+      ? node.parent
+      : null;
+    const callName = parentCall && ts.isPropertyAccessExpression(parentCall.expression)
+      ? parentCall.expression.name.text
+      : '';
+    if (ts.isObjectLiteralExpression(node) && FLUENT_MEMBER_CALLS.has(callName)) {
       for (const prop of node.properties) {
-        if (ts.isPropertyAssignment(prop) || ts.isShorthandPropertyAssignment(prop)) {
+        if (ts.isPropertyAssignment(prop)
+            || ts.isShorthandPropertyAssignment(prop)
+            || ts.isMethodDeclaration(prop)
+            || ts.isGetAccessorDeclaration(prop)) {
           const nameNode = prop.name;
           let propName = null;
           if (ts.isIdentifier(nameNode) || ts.isStringLiteral(nameNode)) {
@@ -345,16 +580,29 @@ function collectTsExports(sf) {
           if (!propName) {
             throw new Error(`[manifest] collect: unable to determine property name for node: ${prop.getText(sf)}`);
           }
+          const jsDocType = jsDocTypeText(prop);
           let inferredType = null;
           if (ts.isPropertyAssignment(prop) && ts.isStringLiteral(prop.initializer)) {
-            inferredType = prop.initializer.text;
+            inferredType = callName === 'observe' || callName === 'props'
+              ? prop.initializer.text
+              : 'string';
+          } else if (ts.isPropertyAssignment(prop)
+              && (prop.initializer.kind === ts.SyntaxKind.TrueKeyword
+                || prop.initializer.kind === ts.SyntaxKind.FalseKeyword)) {
+            inferredType = 'boolean';
+          } else if (ts.isPropertyAssignment(prop) && ts.isNumericLiteral(prop.initializer)) {
+            inferredType = 'number';
+          } else if (ts.isMethodDeclaration(prop) && !methodReturnsValue(prop)) {
+            inferredType = 'void';
           }
           const doc = ts.getJSDocCommentsAndTags(prop).map((d) => d.comment || '').join('\n');
 
           tsExports.set(propName, {
-            type: inferredType || undefined,
+            type: jsDocType || inferredType || undefined,
             docs: doc || undefined,
             source: getSourceLocation(prop),
+            returnField: ts.isMethodDeclaration(prop) ? returnedThisField(prop) : undefined,
+            authoredType: Boolean(jsDocType),
           });
         }
       }
@@ -362,7 +610,193 @@ function collectTsExports(sf) {
     ts.forEachChild(node, collect);
   };
   collect(sf);
+  for (const metadata of tsExports.values()) {
+    if (!metadata.type && metadata.returnField) {
+      const returnedMetadata = tsExports.get(metadata.returnField);
+      metadata.type = returnedMetadata?.type;
+      metadata.authoredType = returnedMetadata?.authoredType;
+    }
+    delete metadata.returnField;
+  }
   return tsExports;
+}
+
+/**
+ * @param {ts.Expression|null|undefined} expression
+ * @param {string} [localName]
+ * @return {import('custom-elements-manifest').Event|null}
+ */
+function eventFromExpression(expression, localName) {
+  if (!expression || !ts.isNewExpression(expression)
+      || !ts.isIdentifier(expression.expression)) return null;
+  const eventType = expression.expression.text;
+  const [nameExpression] = expression.arguments || [];
+  if (!eventType.endsWith('Event') || !nameExpression) return null;
+  let eventName;
+  let isLocalNameTemplate = false;
+  if (ts.isStringLiteral(nameExpression)) {
+    eventName = nameExpression.text;
+  } else if (ts.isTemplateExpression(nameExpression)
+      && nameExpression.head.text === '' && nameExpression.templateSpans.length === 1) {
+    const [span] = nameExpression.templateSpans;
+    const expressionIsLocalName = ts.isPropertyAccessExpression(span.expression)
+      && span.expression.expression.kind === ts.SyntaxKind.ThisKeyword
+      && span.expression.name.text === 'localName';
+    if (expressionIsLocalName && span.literal.text.startsWith(':')) {
+      isLocalNameTemplate = true;
+      eventName = `${localName || '__localName__'}${span.literal.text}`;
+    }
+  }
+  if (!eventName || (!isLocalNameTemplate && eventName.startsWith('mdw-'))) return null;
+  return {
+    name: eventName,
+    type: normalizeType(eventType),
+  };
+}
+
+/**
+ * @param {ts.SourceFile} sourceFile
+ * @param {string} [localName]
+ * @return {Array<import('custom-elements-manifest').Event>}
+ */
+function collectDispatchedEvents(sourceFile, localName) {
+  /** @type {Map<string, import('custom-elements-manifest').Event>} */
+  const events = new Map();
+  /** @type {Map<string, import('custom-elements-manifest').Event>} */
+  const eventVariables = new Map();
+  const visit = (node) => {
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name)) {
+      const event = eventFromExpression(node.initializer, localName);
+      if (event) {
+        eventVariables.set(node.name.text, event);
+      }
+    }
+    if (ts.isCallExpression(node)
+        && ts.isPropertyAccessExpression(node.expression)
+        && node.expression.name.text === 'dispatchEvent') {
+      const [eventExpression] = node.arguments;
+      const event = eventFromExpression(eventExpression, localName)
+        || (eventExpression && ts.isIdentifier(eventExpression)
+          ? eventVariables.get(eventExpression.text) : null);
+      if (event) {
+        events.set(event.name, event);
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return [...events.values()];
+}
+
+/**
+ * @param {ts.PropertyName|null|undefined} name
+ * @return {string|undefined}
+ */
+function literalPropertyName(name) {
+  if (name && (ts.isIdentifier(name) || ts.isStringLiteral(name))) {
+    return name.text;
+  }
+  return undefined;
+}
+
+/**
+ * @param {ts.ObjectLiteralExpression} listenerMap
+ * @param {boolean} includeKeys
+ * @param {Set<string>} names
+ */
+function collectListenerImplementationNames(listenerMap, includeKeys, names) {
+  for (const property of listenerMap.properties) {
+    if (includeKeys) {
+      const name = literalPropertyName(property.name);
+      if (name) {
+        names.add(name);
+      }
+    }
+    if (!ts.isPropertyAssignment(property)) continue;
+    if (ts.isStringLiteral(property.initializer)) {
+      names.add(property.initializer.text);
+    } else if (ts.isObjectLiteralExpression(property.initializer)) {
+      collectListenerImplementationNames(property.initializer, true, names);
+    }
+  }
+}
+
+/**
+ * Collect callbacks consumed by the composition runtime rather than authors.
+ * @param {ts.SourceFile} sourceFile
+ * @return {Set<string>}
+ */
+function collectFluentImplementationMembers(sourceFile) {
+  /** @type {Set<string>} */
+  const names = new Set();
+  const visit = (node) => {
+    if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression)) {
+      const callName = node.expression.name.text;
+      const [listenerMap] = node.arguments;
+      if (listenerMap && ts.isObjectLiteralExpression(listenerMap)) {
+        switch (callName) {
+          case 'expressions':
+          case 'events':
+          case 'rootEvents':
+            collectListenerImplementationNames(listenerMap, true, names);
+            break;
+          case 'childEvents':
+            collectListenerImplementationNames(listenerMap, false, names);
+            break;
+          case 'on':
+          case 'overrides':
+            for (const property of listenerMap.properties) {
+              const name = literalPropertyName(property.name);
+              if (name) {
+                names.add(name);
+              }
+            }
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  for (const match of sourceFile.text.matchAll(/\bon-[\w-]+\s*=\s*{([A-Z_a-z][\w$]*)}/g)) {
+    names.add(match[1]);
+  }
+  return names;
+}
+
+/**
+ * Collect inherited properties explicitly removed from a fluent subclass.
+ * @param {ts.SourceFile} sourceFile
+ * @return {Set<string>}
+ */
+function collectFluentUndefinedMembers(sourceFile) {
+  /** @type {Set<string>} */
+  const names = new Set();
+  const visit = (node) => {
+    if (ts.isCallExpression(node)
+        && ts.isPropertyAccessExpression(node.expression)
+        && node.expression.name.text === 'undefine') {
+      for (const argument of node.arguments) {
+        if (ts.isStringLiteral(argument) || ts.isNoSubstitutionTemplateLiteral(argument)) {
+          names.add(argument.text);
+        }
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return names;
+}
+
+/**
+ * @param {CEMAttribute} attribute
+ * @param {Set<string>} undefinedMembers
+ * @return {boolean}
+ */
+function isUndefinedAttribute(attribute, undefinedMembers) {
+  return undefinedMembers.has(attribute.fieldName || camel(attribute.name));
 }
 
 /**
@@ -425,7 +859,7 @@ let typescriptProgram = null;
 /** @return {ts.Program} */
 function getTypescriptProgram() {
   if (!typescriptProgram) {
-    const tsconfigPath = path.resolve(process.cwd(), 'tsconfig.json');
+    const tsconfigPath = path.join(ROOT, 'tsconfig.json');
     const conf = ts.readConfigFile(tsconfigPath, ts.sys.readFile);
     const parsed = ts.parseJsonConfigFileContent(conf.config, ts.sys, path.dirname(tsconfigPath));
     const rootFiles = parsed.fileNames;
@@ -750,7 +1184,7 @@ function referenceFromSymbol(sym) {
   if (fn.includes('lib.dom')) {
     return { module: 'global:', name: displayName };
   }
-  const rel = path.relative(process.cwd(), fn).split(path.sep).join('/');
+  const rel = repositoryRelativePath(fn);
 
   // Use the export name rather than the internal name
   const exportInfo = findExportInfo(sf);
@@ -898,7 +1332,7 @@ function computeSuperclassRef(name, instanceType, type, idNode, exportExpr, sf, 
         if (ref?.module) {
           // eslint-disable-next-line no-use-before-define
           const customBasePath = getCustomElementRelativePath();
-          const currentRel = src ? path.relative(process.cwd(), src).split(path.sep).join('/') : null;
+          const currentRel = src ? repositoryRelativePath(src) : null;
           if (ref.module !== customBasePath && ref.module !== currentRel) {
             superclassRef = ref;
             if (VERBOSE) {
@@ -924,7 +1358,7 @@ function computeSuperclassRef(name, instanceType, type, idNode, exportExpr, sf, 
         if (ref2?.module) {
           // eslint-disable-next-line no-use-before-define
           const customBasePath2 = getCustomElementRelativePath();
-          const currentRel2 = src ? path.relative(process.cwd(), src).split(path.sep).join('/') : null;
+          const currentRel2 = src ? repositoryRelativePath(src) : null;
           if (ref2.module !== customBasePath2 && ref2.module !== currentRel2) {
             superclassRef = ref2;
             if (VERBOSE) {
@@ -997,7 +1431,7 @@ function computeSuperclassRef(name, instanceType, type, idNode, exportExpr, sf, 
  */
 function resolveModulePath(mod) {
   if (!mod) return null;
-  const candidate = path.resolve(process.cwd(), mod);
+  const candidate = path.resolve(ROOT, mod);
   const tryPaths = [candidate, `${candidate}.js`, `${candidate.replace(/\.js$/, '')}.js`];
   for (const p of tryPaths) {
     if (ts.sys.fileExists(p)) return p;
@@ -1013,7 +1447,7 @@ function resolveModulePath(mod) {
 function getRelativeModulePath(modulePath) {
   const resolved = resolveModulePath(modulePath || '');
   return resolved
-    ? path.relative(process.cwd(), resolved).split(path.sep).join('/')
+    ? repositoryRelativePath(resolved)
     : (modulePath || '');
 }
 
@@ -1029,7 +1463,7 @@ function getCustomElementRelativePath() {
   if (cachedCustomElementPath === null) {
     const resolved = resolveModulePath('core/CustomElement.js');
     cachedCustomElementPath = resolved
-      ? path.relative(process.cwd(), resolved).split(path.sep).join('/')
+      ? repositoryRelativePath(resolved)
       : false; // use false to distinguish from null (not cached yet)
   }
   return cachedCustomElementPath || null;
@@ -1165,8 +1599,8 @@ function collectMixins(expr) {
           const ref = referenceFromSymbol(symRef);
           if (ref) {
             out.push(ref);
-          } else {
-            console.warn(`[manifest] collectMixins: unable to build reference from mixin argument: ${a.getText()}`);
+          } else if (VERBOSE) {
+            console.log(`[manifest] collectMixins: anonymous mixin argument has no portable reference: ${a.getText()}`);
           }
         }
       }
@@ -1268,11 +1702,11 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
         let ptype = '';
         const pdecl = p.valueDeclaration;
         const t = pdecl ? checker.getTypeOfSymbolAtLocation(p, pdecl) : null;
-        ptype = t ? checker.typeToString(t) : '';
+        ptype = t ? typeToText(checker, t, pdecl || exportExprLocal) : '';
 
         decl.parameters.push({ name: pname, type: { text: ptype } });
       }
-      decl.return.type.text = checker.typeToString(callSigs[0].getReturnType());
+      decl.return.type.text = typeToText(checker, callSigs[0].getReturnType(), exportExprLocal);
       _retTypeForDetection = callSigs[0].getReturnType();
     }
   }
@@ -1286,7 +1720,7 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
   if (nested.length) {
     for (const n of nested) {
       // eslint-disable-next-line no-await-in-loop
-      const child = await buildMixinDeclarationFromRef(n, seen);
+      const child = await buildMixinDeclarationFromRef(n, new Set(seen));
       if (child // Do NOT add nested mixins to `decl.mixins` here. The parent mixin
           // should not "report" its children as separate mixin references
           // (we still include their members below by seeding `mergedMembers`).
@@ -1336,7 +1770,7 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
     }
   }
 
-  // Attempt to capture prototype/static members for the mixin by
+  // Attempt to capture prototype members for the mixin by
   // executing the mixin factory in a safe Playwright page with a
   // minimal dummy base class. This avoids instantiating elements and
   // lets us observe what the mixin adds to the returned class' prototype
@@ -1367,18 +1801,17 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
         }
       }
 
-      // Best-effort: attempt to derive types for prototype and static
-      // members using the TypeScript checker and the mixin's return type.
+      // Best-effort: derive types for prototype members using the checker.
       /** @type {Record<string,string>} */
       const derivedTypes = Object.create(null);
+      /** @type {Record<string, Pick<CEMMethod, 'parameters'|'return'>>} */
+      const derivedMethods = Object.create(null);
       /** @type {Record<string,{path:string,line:number}|null>} */
       const derivedSources = Object.create(null);
       const skippedPrototype = new Set();
-      const skippedStatic = new Set();
-      // Pre-create CustomElement property name sets so they are available
-      // to the runtime-merge loops even if TS inspection fails.
+      // Pre-create the CustomElement property name set so it is available
+      // to the runtime-merge loop even if TS inspection fails.
       const ceInstanceProps = new Set();
-      const ceStaticProps = new Set();
       const cePath = resolveModulePath('core/CustomElement.js');
       if (cePath) {
         const ceSf = getTypescriptProgram().getSourceFile(cePath)
@@ -1395,11 +1828,6 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
             if (ceResolved.instanceType) {
               for (const p of ceResolved.instanceType.getProperties()) {
                 ceInstanceProps.add(p.getName());
-              }
-            }
-            if (ceResolved.ctorInstanceType) {
-              for (const p of ceResolved.ctorInstanceType.getProperties()) {
-                ceStaticProps.add(p.getName());
               }
             }
           }
@@ -1431,6 +1859,7 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
           // For prototype members, inspect the instance type
           if (instanceType) {
             for (const [mname] of mixRuntime.prototypeMembers.entries()) {
+              if (!isPublicCemMemberName(mname)) continue;
               const propSym = checker.getPropertyOfType(instanceType, mname) || instanceType.getProperty?.(mname);
               if (!propSym) {
                 skippedPrototype.add(mname);
@@ -1459,52 +1888,24 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
                 continue;
               }
               const pType = checker.getTypeOfSymbolAtLocation(propSym, memberDecl || srcSf);
-              derivedTypes[mname] = pType ? checker.typeToString(pType) : '';
+              const memberKind = normalizeMemberKind(mixRuntime.prototypeMembers.get(mname));
+              if (pType && memberKind === 'method') {
+                derivedMethods[mname] = methodTypeMetadata(checker, pType, memberDecl);
+              } else {
+                derivedTypes[mname] = pType ? typeToText(checker, pType, memberDecl) : '';
+              }
               derivedSources[mname] = getSourceLocation(memberDecl);
             }
-          }
-
-          // For static members, inspect the constructor/returned type itself
-          for (const [mname] of mixRuntime.staticMembers.entries()) {
-            const staticSym = checker.getPropertyOfType(retType, mname) || retType.getProperty?.(mname);
-            if (!staticSym) {
-              skippedStatic.add(mname);
-              continue;
-            }
-            const decls = staticSym.getDeclarations?.() || [];
-            const [sdecl] = decls;
-            const sdeclFile = sdecl?.getSourceFile?.()?.fileName;
-            if (!sdeclFile) {
-              skippedStatic.add(mname);
-              continue;
-            }
-            const resolved = path.resolve(sdeclFile);
-            if (sdeclFile.includes('lib.dom')) {
-              skippedStatic.add(mname);
-              continue;
-            }
-            if (mixinCEPath
-                  && !allowedDeclFiles.has(resolved)
-                  && path.resolve(sdeclFile) === path.resolve(mixinCEPath)) {
-              skippedStatic.add(mname);
-              continue;
-            }
-            if (!allowedDeclFiles.has(resolved)) {
-              skippedStatic.add(mname);
-              continue;
-            }
-            const sType = checker.getTypeOfSymbolAtLocation(staticSym, sdecl || srcSf);
-            derivedTypes[mname] = sType ? checker.typeToString(sType) : '';
-            derivedSources[mname] = getSourceLocation(sdecl);
           }
         }
       }
 
       for (const [mname, kind] of mixRuntime.prototypeMembers.entries()) {
+        if (!isPublicCemMemberName(mname)) continue;
         // Exclude any names that are known to be declared on the project's
         // `CustomElement` base (these are superclass items, not mixin-contributed).
-        if (ceInstanceProps?.has?.(mname)) continue;
-        if (skippedPrototype.has(mname)) continue;
+        if (ceInstanceProps?.has?.(mname) && !tsExports.has(mname)) continue;
+        if (skippedPrototype.has(mname) && !tsExports.has(mname)) continue;
         // Exclude form-associated lifecycle callbacks (implementation details)
         if (mname === 'formAssociatedCallback'
             || mname === 'formDisabledCallback'
@@ -1515,8 +1916,9 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
         const mdoc = tsExports.get(mname);
         // Include when TS export provides a source or when we derived a TS type above
         const hasDerived = Object.prototype.hasOwnProperty.call(derivedTypes, mname)
-            && derivedTypes[mname] !== undefined;
-        if (!mdoc && !hasDerived) continue;
+          && derivedTypes[mname] !== undefined;
+        const hasDerivedMethod = Object.prototype.hasOwnProperty.call(derivedMethods, mname);
+        if (!mdoc && !hasDerived && !hasDerivedMethod) continue;
         const derived = derivedTypes[mname];
         const memberKey = `${mname}::i`;
         if (!mergedMembers.has(memberKey)) {
@@ -1530,40 +1932,13 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
             source,
           };
           if (memberKind === 'method') {
-            // Represent methods using `return` per CEM schema
-            mergedMembers.set(memberKey, { ...base, return: { type: normalizeType(mdoc?.type || derived || 'any') } });
-          } else {
-            mergedMembers.set(memberKey, { ...base, type: normalizeType(mdoc?.type || derived || 'any') });
-          }
-        }
-      }
-      for (const [mname, kind] of mixRuntime.staticMembers.entries()) {
-        // Exclude static names copied from CustomElement
-        if (ceStaticProps?.has?.(mname)) continue;
-        if (skippedStatic.has(mname)) continue;
-        // Exclude formAssociated static field (implementation detail)
-        if (mname === 'formAssociated') {
-          continue;
-        }
-        const mdoc = tsExports.get(mname);
-        const hasDerived = Object.prototype.hasOwnProperty.call(derivedTypes, mname)
-            && derivedTypes[mname] !== undefined;
-        if (!mdoc && !hasDerived) continue;
-        const derived = derivedTypes[mname];
-        const memberKey = `${mname}::s`;
-        if (!mergedMembers.has(memberKey)) {
-          const memberKind = normalizeMemberKind(kind);
-          const source = sourceLocationToReference(mdoc?.source)
-            || sourceLocationToReference(derivedSources[mname]) || undefined;
-          const base = {
-            name: mname,
-            kind: memberKind,
-            static: true,
-            description: mdoc?.docs || undefined,
-            source,
-          };
-          if (memberKind === 'method') {
-            mergedMembers.set(memberKey, { ...base, return: { type: normalizeType(mdoc?.type || derived || 'any') } });
+            mergedMembers.set(memberKey, {
+              ...base,
+              ...(derivedMethods[mname] || {
+                parameters: [],
+                return: { type: normalizeType(mdoc?.type || 'any') },
+              }),
+            });
           } else {
             mergedMembers.set(memberKey, { ...base, type: normalizeType(mdoc?.type || derived || 'any') });
           }
@@ -1594,7 +1969,7 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
         moduleForMixin.declarations = moduleForMixin.declarations ?? [];
         // finalize decl.members from mergedMembers (preserve child-seeded members + mixRuntime additions)
         // Filter out members that were not observed as enumerable at mixin-runtime
-        // capture. `mixRuntime.prototypeMembers` / `mixRuntime.staticMembers` are
+        // capture. `mixRuntime.prototypeMembers` is
         // populated from runtime capture and thus indicate enumerability; when
         // `mixRuntime.enumerableProps` exists prefer it. This avoids reporting
         // inherited or non-enumerable properties as mixin-contributed.
@@ -1604,7 +1979,7 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
           const mname = String(m.name);
           const seenEnum = (mixRuntime?.enumerableProps?.size > 0)
             ? mixRuntime.enumerableProps.has(mname)
-            : (mixRuntime?.prototypeMembers?.has(mname) || mixRuntime?.staticMembers?.has(mname));
+            : mixRuntime?.prototypeMembers?.has(mname);
           if (!seenEnum) {
             if (VERBOSE) {
               console.log(`[manifest] skipping non-enumerable mixin member ${mname} for mixin ${decl.name}`);
@@ -1612,7 +1987,9 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
             continue;
           }
 
-          finalMembers.push(m);
+          if (isPublicCemMember(m)) {
+            finalMembers.push(m);
+          }
         }
         decl.members = finalMembers;
         if (mixinAttrs.length) {
@@ -1630,7 +2007,7 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
           const existingMembers = (existing.members ?? []);
           const existingKeys = new Set(existingMembers.map((m) => `${m.name}::${m.static ? 's' : 'i'}`));
           const merged = existingMembers.slice();
-          for (const m of Array.from(mergedMembers.values())) {
+          for (const m of finalMembers) {
             const memberKey = `${m.name}::${m.static ? 's' : 'i'}`;
             if (!existingKeys.has(memberKey)) {
               merged.push(m);
@@ -1667,12 +2044,6 @@ async function buildMixinDeclarationFromRef(ref, seen = new Set()) {
   return decl;
 }
 
-/**
- * Given a component export expression, synthesize mixin declarations applied to it.
- * @param {ts.Node|null} exportExprLocal
- * @param {ts.SourceFile} sfLocal
- * @return {Promise<Array<CEMElementMixin>>}
- */
 /**
  * Given a component export expression, return an array of CEM References
  * pointing to mixin modules applied to the export. The referenced mixin
@@ -1724,6 +2095,7 @@ function mergePropertiesFromType(type, instanceFieldMap, instanceMethodMap, runt
   if (typeof type?.getProperties !== 'function') return;
   for (const p of type.getProperties()) {
     const pname = p.getName();
+    if (!isPublicCemMemberName(pname)) continue;
     if (instanceFieldMap.has(pname) || instanceMethodMap.has(pname)) {
       // Assert match, throw if not
       const existing = instanceFieldMap.get(pname) || instanceMethodMap.get(pname);
@@ -1743,7 +2115,7 @@ function mergePropertiesFromType(type, instanceFieldMap, instanceMethodMap, runt
 
     const checker = getTypeChecker();
     const pType = checker.getTypeOfSymbolAtLocation(p, p.valueDeclaration || idNode);
-    const typeStr = checker.typeToString(pType);
+    const typeStr = typeToText(checker, pType, p.valueDeclaration || idNode);
     const decls = (p.getDeclarations() || []);
     const declarations = decls.map((d) => ({ file: d.getSourceFile().fileName, text: d.getText() }));
     // Skip declarations that come from lib.dom (HTMLElement)
@@ -1765,7 +2137,10 @@ function mergePropertiesFromType(type, instanceFieldMap, instanceMethodMap, runt
     // types and exports. runtime.propList was disabled due to instability.
     const docs = docToString(p) || tsExports.get(pname)?.docs || undefined;
     const source = sourceLocationToReference(tsExports.get(pname)?.source) || undefined;
-    const chosenType = typeStr || tsExports.get(pname)?.type;
+    const authoredType = tsExports.get(pname)?.authoredType
+      ? tsExports.get(pname)?.type
+      : null;
+    const chosenType = authoredType || typeStr || tsExports.get(pname)?.type;
     if (!chosenType) {
       throw new Error(`[manifest] missing type for property ${name}.${pname}; falling back to 'any'`);
     }
@@ -1779,7 +2154,7 @@ function mergePropertiesFromType(type, instanceFieldMap, instanceMethodMap, runt
           kind: memberKind,
           description: docs || undefined,
           source,
-          return: { type: normalizeType(chosenType) },
+          ...methodTypeMetadata(checker, pType, p.valueDeclaration || idNode),
         });
       } else {
         instanceFieldMap.set(pname, {
@@ -1823,11 +2198,16 @@ async function mergeInstanceTypeProperties(
   if (!instanceType) return;
   for (const p of instanceType.getProperties()) {
     const pname = p.getName();
+    if (!isPublicCemMemberName(pname)) continue;
     if (instanceFieldMap.has(pname) || instanceMethodMap.has(pname)) continue;
     const checker = getTypeChecker();
     const pType = checker.getTypeOfSymbolAtLocation(p, p.valueDeclaration || p?.declarations?.[0] || idNode);
-    const typeStr = checker.typeToString(pType);
-    if (typeStr === 'any') {
+    const typeStr = typeToText(
+      checker,
+      pType,
+      p.valueDeclaration || p?.declarations?.[0] || idNode,
+    );
+    if (typeStr === 'any' && !isRuntimeEventHandler(runtime, pname)) {
       console.warn(`[manifest] property ${name}.${pname} has type 'any'`);
     }
     const docs = docToString(p) || tsExports.get(pname)?.docs || '';
@@ -1837,9 +2217,9 @@ async function mergeInstanceTypeProperties(
     if (declarations.some((d) => d.file?.includes('lib.dom'))) continue;
     // Skip properties that originate only from the project's CustomElement base
     const customBasePath = getCustomElementRelativePath();
-    const currentRel = path.relative(process.cwd(), src).split(path.sep).join('/');
+    const currentRel = repositoryRelativePath(src);
     if (customBasePath && declarations.length) {
-      const rels = declarations.map((d) => path.relative(process.cwd(), d.file).split(path.sep).join('/'));
+      const rels = declarations.map((d) => repositoryRelativePath(d.file));
       const allFromBase = rels.length && rels.every((r) => r === customBasePath);
       // Skip base-class members only when analyzing a subclass; keep them
       // when generating the manifest entry for the base class itself.
@@ -1893,7 +2273,10 @@ async function mergeInstanceTypeProperties(
 
     // Do NOT consult runtime.propList here; prefer TypeScript-declared
     // types and exports. runtime.propList was disabled due to instability.
-    const chosenType = typeStr || tsExports.get(pname)?.type;
+    const authoredType = tsExports.get(pname)?.authoredType
+      ? tsExports.get(pname)?.type
+      : null;
+    const chosenType = authoredType || typeStr || tsExports.get(pname)?.type;
     if (!chosenType) {
       throw new Error(`[manifest] missing type for property ${name}.${pname}; falling back to 'any'`);
     }
@@ -1915,7 +2298,11 @@ async function mergeInstanceTypeProperties(
           kind: memberKind,
           description: docs || undefined,
           source: memberSource || undefined,
-          return: { type: normalizeType(chosenType) },
+          ...methodTypeMetadata(
+            checker,
+            pType,
+            p.valueDeclaration || p?.declarations?.[0] || idNode,
+          ),
         });
       } else {
         instanceFieldMap.set(pname, {
@@ -1925,105 +2312,6 @@ async function mergeInstanceTypeProperties(
           source: memberSource || undefined,
           type: normalizeType(chosenType),
         });
-      }
-    }
-  }
-}
-
-/**
- * Merge constructor/typeof-declared properties into a static members map.
- * Mirrors the instance-side merging performed by
- * `mergeInstanceTypeProperties` but marks members as `static: true`.
- * This function may perform async lookups of other modules (via
- * `getModuleForFile`) so it is `async` and must be awaited.
- * @param {ts.Type} ctorType
- * @param {Map<string, CEMMember>} staticMembersMap
- * @param {RuntimeCaptureResult} runtime
- * @param {Map<string, TSExport>} tsExports
- * @param {ts.Node|null} idNode
- * @param {string} name
- * @param {string} src
- * @param {CEMElement['superclass']|null} superclassRef
- */
-async function mergeConstructorTypeProperties(
-  ctorType,
-  staticMembersMap,
-  runtime,
-  tsExports,
-  idNode,
-  name,
-  src,
-  superclassRef,
-) {
-  if (!ctorType) return;
-  for (const p of ctorType.getProperties()) {
-    const pname = p.getName();
-    if (staticMembersMap.has(pname)) continue;
-    const checker = getTypeChecker();
-    const pType = checker.getTypeOfSymbolAtLocation(
-      p,
-      p.valueDeclaration || p?.declarations?.[0] || idNode,
-    );
-    const typeStr = checker.typeToString(pType);
-    const docs = docToString(p) || tsExports.get(pname)?.docs || '';
-    const decls = (p.getDeclarations() || []);
-    const declarations = decls.map((d) => ({ decl: d, file: d.getSourceFile().fileName, text: d.getText() }));
-    // Skip static props declared on lib.dom (HTMLElement constructor)
-    if (declarations.some((d) => d.file?.includes('lib.dom'))) continue;
-    // Skip static properties that originate only from the project's CustomElement base
-    const customBasePath = getCustomElementRelativePath();
-    const currentRel = path.relative(process.cwd(), src).split(path.sep).join('/');
-    if (customBasePath && declarations.length) {
-      const rels = declarations.map((d) => path.relative(process.cwd(), d.file).split(path.sep).join('/'));
-      const allFromBase = rels.length && rels.every((r) => r === customBasePath);
-      // Skip base-class static members only for subclasses; keep them on
-      // the base-class declaration.
-      if (allFromBase && currentRel !== customBasePath) continue;
-    }
-
-    if (VERBOSE) {
-      console.log(`[manifest] inspecting TS constructor property ${name}.${pname}`);
-    }
-    const lastDeclaration = declarations.length ? declarations.at(-1) : null;
-    if (declarations.length > 1) {
-      console.warn(`[manifest] multiple declarations found for ${name}.${pname} (${typeStr}); using last one from ${lastDeclaration?.file}`);
-    }
-
-    if (lastDeclaration) {
-      // Determine source of declaration
-      if (path.resolve(lastDeclaration.file || '') === path.resolve(src)) {
-        if (VERBOSE) {
-          console.log(`[manifest] declaration for static ${name}.${pname} comes from source file`);
-        }
-      } else {
-        // eslint-disable-next-line no-await-in-loop, no-use-before-define
-        const sourceCEM = await getModuleForFile(lastDeclaration.file);
-        if (sourceCEM.path === superclassRef?.module) {
-          if (VERBOSE) {
-            console.log(`[manifest] static property ${name}.${pname} comes from superclass ${superclassRef.name}`);
-          }
-          continue;
-        }
-        if (VERBOSE) {
-          console.log(`[manifest] using declaration for static ${name}.${pname} (${typeStr}) from ${lastDeclaration.file}`);
-        }
-      }
-    }
-
-    const chosenType = typeStr || tsExports.get(pname)?.type || 'any';
-    {
-      const memberKind = normalizeMemberKind(runtime.staticMembers.get(pname) || 'field');
-      const base = {
-        name: pname,
-        kind: memberKind,
-        static: true,
-        description: docs || undefined,
-        source: sourceLocationToReference(tsExports.get(pname)?.source) || undefined,
-      };
-      if (memberKind === 'method') {
-        staticMembersMap.set(pname, { ...base, return: { type: normalizeType(chosenType) } });
-      } else {
-        staticMembersMap.set(pname, { ...base, type: normalizeType(chosenType) });
       }
     }
   }
@@ -2044,21 +2332,7 @@ function buildAttributeMapFromRuntime(runtime, tsExports, attributeMap, name) {
     const typeStr = tsType || cfg?.type;
     const docs = tsExports.get(key)?.docs || null;
 
-    let fieldName = cfg?.key || cfg?.attr;
-
-    // runtime.propList is disabled; do not attempt to infer a mapping
-    // from prop -> attribute at runtime. Leave `fieldName` undefined
-    // so attribute-to-field mapping will rely on TypeScript data.
-    const usePropList = false;
-    if (usePropList) {
-      for (const [pname, pcfg] of runtime.propList.entries()) {
-        const candidateAttr = (pcfg?.attr || pcfg?.key) || kebab(pname);
-        if (candidateAttr === a) {
-          fieldName = pname;
-          break;
-        }
-      }
-    }
+    const fieldName = cfg?.key || cfg?.attr;
 
     if (!typeStr) {
       throw new Error(`[manifest] missing type for attribute ${name}.${a}; falling back to 'string'`);
@@ -2081,7 +2355,6 @@ function buildAttributeMapFromRuntime(runtime, tsExports, attributeMap, name) {
  * @param {Map<string, CEMMethod>} instanceMethodMap
  * @param {RuntimeCaptureResult} runtime
  * @param {Map<string, TSExport>} tsExports
- * @param {Map<string, CEMMember>} staticMembersMap
  */
 function enrichAttributesAndMembers(
   attributeMap,
@@ -2089,7 +2362,6 @@ function enrichAttributesAndMembers(
   instanceMethodMap,
   runtime,
   tsExports,
-  staticMembersMap,
 ) {
   for (const [a, cfg] of runtime.attrList.entries()) {
     if (!a) continue;
@@ -2162,27 +2434,6 @@ function enrichAttributesAndMembers(
       }
     }
   }
-
-  // If a static members map was provided, apply similar enrichment rules
-  // (prefer TS docs/types from `tsExports`). Always populate missing
-  // `return.type` for static methods and `type` for static fields.
-  if (staticMembersMap) {
-    for (const [mname, mval] of staticMembersMap.entries()) {
-      if (!tsExports.has(mname)) continue;
-      const foundValue = tsExports.get(mname);
-      if (mval.kind === 'field' && (!mval.type || mval.type.text === 'any')) {
-        mval.type = normalizeType(foundValue.type || 'any');
-      }
-      if (mval.kind === 'method') {
-        mval.return = mval.return || {};
-        if (!mval.return.type || mval.return.type.text === 'any') {
-          mval.return.type = normalizeType(foundValue.type || 'any');
-        }
-      }
-      mval.description ||= foundValue.docs || undefined;
-      mval.source ||= sourceLocationToReference(foundValue.source) || undefined;
-    }
-  }
 }
 
 /**
@@ -2193,7 +2444,7 @@ function enrichAttributesAndMembers(
 async function findDemos(name) {
   /** @type {CEMElement['demos']} */
   const demos = [];
-  const root = process.cwd();
+  const root = ROOT;
   const candidates = [
     path.join(root, 'demo', 'components', `${name.toLowerCase()}.html`),
     path.join(root, 'demo', 'components', `${name.toLowerCase()}s.html`),
@@ -2224,7 +2475,7 @@ async function findDemos(name) {
  * @return {Promise<RuntimeCaptureResult>}
  */
 async function captureCustomElementMetadata(src) {
-  const importSpec = path.join('/', path.relative(process.cwd(), src).split(path.sep).join('/'));
+  const importSpec = browserModulePath(src);
   if (VERBOSE) {
     console.log(`[manifest] captureCustomElementMetadata: launching playwright for ${importSpec}`);
   }
@@ -2250,14 +2501,13 @@ async function captureCustomElementMetadata(src) {
       try {
         element = new CustomElementConstructor();
       } catch {
-        // Not constructible (propably base class or mixin); continue capture
+        // Not constructible (probably a base class or mixin); continue capture.
       }
       /** @type {RuntimeCaptureResult} */
       const result = {
         attrList: CustomElementConstructor.attrList,
         propList: CustomElementConstructor.propList,
         prototypeMembers: new Map(),
-        staticMembers: new Map(),
         enumerableProps: new Set(),
         slots: new Map(),
         cssParts: new Map(),
@@ -2288,25 +2538,6 @@ async function captureCustomElementMetadata(src) {
           result.prototypeMembers.set(n, 'field');
         }
       }
-      const staticNames = Object.getOwnPropertyNames(CustomElementConstructor).filter((x) => !['length', 'name', 'prototype'].includes(x));
-      for (const n of staticNames) {
-        const desc = Object.getOwnPropertyDescriptor(CustomElementConstructor, n);
-        if (!desc) continue;
-        if (!desc.enumerable) continue;
-        if (typeof desc.value === 'function') {
-          result.staticMembers.set(n, 'method');
-        }
-        if (typeof desc.get === 'function') {
-          result.staticMembers.set(n, 'getter');
-        }
-        if (typeof desc.set === 'function') {
-          result.staticMembers.set(n, 'setter');
-        }
-        if (!desc.get && !desc.set && typeof desc.value !== 'function') {
-          result.staticMembers.set(n, 'field');
-        }
-      }
-
       if (element?.composition) {
         for (const slotElement of element.composition.template.querySelectorAll('slot')) {
           result.slots.set(slotElement.name, {
@@ -2327,7 +2558,6 @@ async function captureCustomElementMetadata(src) {
         attrs: Array.from(CustomElementConstructor.attrList.entries()),
         props: Array.from(CustomElementConstructor.propList.entries()),
         prototypeMembers: Array.from(result.prototypeMembers.entries()),
-        staticMembers: Array.from(result.staticMembers.entries()),
         enumerableProps: Array.from(result.enumerableProps.values()),
         slots: Array.from(result.slots.entries()),
         cssParts: Array.from(result.cssParts.entries()),
@@ -2349,7 +2579,6 @@ async function captureCustomElementMetadata(src) {
       attrList: new Map(serialized.attrs),
       propList: new Map(serialized.props),
       prototypeMembers: new Map(serialized.prototypeMembers),
-      staticMembers: new Map(serialized.staticMembers),
       enumerableProps: new Set(serialized.enumerableProps),
       slots: new Map(serialized.slots),
       cssParts: new Map(serialized.cssParts),
@@ -2367,24 +2596,15 @@ async function captureCustomElementMetadata(src) {
   }
 }
 
-// TODO: split metadata capture into two responsibilities:
-//  - `captureCustomElementMetadata(src)` - instantiates the element and
-//    captures composition/runtime-derived metadata (slots, parts, runtime
-//    properties).
-//  - `captureMixinMetadata(src)` - inspects mixin functions/objects and
-//    synthesizes their contributed properties/members so we can merge
-//    them into component declarations without needing to instantiate a
-//    composed element. This will be necessary for analyzing mixins that
-//    aren't applied at runtime or that are applied via helper utilities.
-
 /**
- * Generate AI manifest for a single component file.
+ * Generate a CEM module for one component file.
  * @param {string} file
  * @return {Promise<CEMModule>}
  */
 async function generateForFile(file) {
   const name = path.basename(file, '.js');
   const src = file;
+  const sourceRel = repositoryRelativePath(src);
 
   const program = getTypescriptProgram();
   const checker = getTypeChecker();
@@ -2403,11 +2623,14 @@ async function generateForFile(file) {
     ? checker.getTypeOfSymbolAtLocation(sym, sym.valueDeclaration || idNode)
     : (idNode ? checker.getTypeAtLocation(idNode) : null);
 
-  const { instanceType, ctorInstanceType } = resolveInstanceAndCtor(sym, type, idNode);
+  const { instanceType } = resolveInstanceAndCtor(sym, type, idNode);
 
   const isCustomElementExport = typeLooksLikeCustomElement(instanceType) || typeLooksLikeCustomElement(type);
 
   if (!isCustomElementExport) {
+    if (sourceRel.startsWith('components/')) {
+      throw new Error(`[manifest] ${name}: component export is not recognized as a custom element`);
+    }
     if (VERBOSE) {
       console.log(`[manifest] ${name}: export does not appear to be a Custom Element, skipping runtime capture`);
     }
@@ -2417,7 +2640,7 @@ async function generateForFile(file) {
     /** @type {CEMModule} */
     const mod = {
       kind: 'javascript-module',
-      path: path.relative(process.cwd(), src),
+      path: repositoryRelativePath(src),
       declarations: [],
       exports: [],
     };
@@ -2432,7 +2655,7 @@ async function generateForFile(file) {
   // This handles cases where fluent/chained factories produce a local alias
   // binding that leads TypeScript to attribute the symbol to the same file.
   if (superclassRef && exportExpr) {
-    const currentRel = path.relative(process.cwd(), src).split(path.sep).join('/');
+    const currentRel = repositoryRelativePath(src);
     if (superclassRef.module === currentRel) {
       let chainRootSym = resolveSymbolFromExpression(exportExpr);
       // If the checker-based walk failed to find a left-most identifier
@@ -2489,7 +2712,7 @@ async function generateForFile(file) {
               const ref = referenceFromSymbol(actual);
               if (ref && ref.module) {
                 // prefer symbols declared in other modules
-                const rel = path.relative(process.cwd(), src).split(path.sep).join('/');
+                const rel = repositoryRelativePath(src);
                 if (ref.module !== rel) {
                   importedSym = actual;
                   return;
@@ -2600,7 +2823,7 @@ async function generateForFile(file) {
     // symbol (eg. `ListItem.extend()...`) which may have been lost by
     // earlier AST-based tracing; prefer the imported symbol's module
     // when available.
-    if (superclassRef && exportExpr && superclassRef.module === path.relative(process.cwd(), src).split(path.sep).join('/')) {
+    if (superclassRef && exportExpr && superclassRef.module === repositoryRelativePath(src)) {
       // find a left-most identifier text from the export expression
       const txt = exportExpr.getText(sf) || '';
       const m = txt.match(/([$A-Z_a-z][\w$]*)/);
@@ -2653,7 +2876,7 @@ async function generateForFile(file) {
                 }
               }
             }
-            if (superclassRef && superclassRef.module !== path.relative(process.cwd(), src).split(path.sep).join('/')) break;
+            if (superclassRef && superclassRef.module !== repositoryRelativePath(src)) break;
           }
           // namespace import: `import * as NS from '...';` and usage `NS.X`
           if (clause.namedBindings && ts.isNamespaceImport(clause.namedBindings)) {
@@ -2747,7 +2970,7 @@ async function generateForFile(file) {
           // prefer the earlier-resolved chain-root (eg. `ListItem`).
           const ref = referenceFromSymbol(exSym);
           const isLocalParam = exSym.valueDeclaration && ts.isParameter(exSym.valueDeclaration);
-          const refersToCurrentFile = ref && ref.module === path.relative(process.cwd(), src);
+          const refersToCurrentFile = ref && ref.module === repositoryRelativePath(src);
           // Prefer a chain-root reference when the `extends` identifier
           // resolves to a local parameter (eg. `.extend((Base) => class extends Base {})`).
           // If the extends identifier is local but we already resolved a
@@ -2779,13 +3002,16 @@ async function generateForFile(file) {
   // runtime capture to gather composition/runtime metadata.
   const runtime = await captureCustomElementMetadata(src);
   if (!runtime) {
+    if (sourceRel.startsWith('components/')) {
+      throw new Error(`[manifest] ${name}: component runtime metadata capture failed`);
+    }
     if (VERBOSE) {
       console.log(`[manifest] ${name}: runtime capture skipped (non-instantiable or missing constructor)`);
     }
     /** @type {CEMModule} */
     const mod = {
       kind: 'javascript-module',
-      path: path.relative(process.cwd(), src),
+      path: repositoryRelativePath(src),
       declarations: [],
       exports: [],
     };
@@ -2796,11 +3022,11 @@ async function generateForFile(file) {
     console.log(`[manifest] ${name}: runtime captured, enumerableProps=${runtime?.enumerableProps?.size ?? 0}`);
   }
 
-  if (VERBOSE) {
-    console.log(`[manifest] ${name}: runtime captured, enumerableProps=${runtime?.enumerableProps?.size ?? 0}`);
-  }
-
   const tsExports = collectTsExports(sf);
+  const implementationMembers = collectFluentImplementationMembers(sf);
+  const undefinedMembers = collectFluentUndefinedMembers(sf);
+  implementationMembersByModule.set(sourceRel, implementationMembers);
+  undefinedMembersByModule.set(sourceRel, undefinedMembers);
 
   /** @type {Map<string, CEMField>} */
   const instanceFieldMap = new Map();
@@ -2835,107 +3061,45 @@ async function generateForFile(file) {
   const mixins = await collectMixinDeclarationsFromExport(exportExpr);
   buildAttributeMapFromRuntime(runtime, tsExports, attributeMap, name);
 
-  // Build a dedicated static members map from runtime and enrich it
-  // with TypeScript-declared constructor/typeof properties. We avoid
-  // merging runtime static members into the instance map so that
-  // `static: true` members are kept distinct.
-  const staticMembersMap = new Map(); // buildMembersFromRuntime(runtime, tsExports, name, true);
-
-  // mergePrototypeMembers(runtime, instanceMembersMap);
-
-  // Attempt to resolve a constructor/class symbol from the exported
-  // `type` and merge its declared properties into the static map.
-
-  const ctorSym = resolveCtorSymbolFromType(type);
-  if (ctorSym) {
-    const ctorType = checker.getTypeOfSymbolAtLocation(
-      ctorSym,
-      ctorSym.valueDeclaration || idNode,
-    );
-      // eslint-disable-next-line no-await-in-loop
-    await mergeConstructorTypeProperties(
-      ctorType,
-      staticMembersMap,
-      runtime,
-      tsExports,
-      idNode,
-      name,
-      src,
-      superclassRef,
-    );
-  } else if (ctorInstanceType) {
-    // Fallback: sometimes constructor-like shapes are available on `type`
-    // or via `ctorInstanceType`; attempt to merge from the exported `type`.
-    // eslint-disable-next-line no-await-in-loop
-    await mergeConstructorTypeProperties(
-      type,
-      staticMembersMap,
-      runtime,
-      tsExports,
-      idNode,
-      name,
-      src,
-      superclassRef,
-    );
-  }
-
   enrichAttributesAndMembers(
     attributeMap,
     instanceFieldMap,
     instanceMethodMap,
     runtime,
     tsExports,
-    staticMembersMap,
   );
+
+  // Source-level casts can be required when a reusable observer descriptor is
+  // applied to a deeply composed subclass. Runtime metadata still identifies
+  // the author-facing property as an EventListener.
+  for (const [memberName, member] of instanceFieldMap.entries()) {
+    if (isRuntimeEventHandler(runtime, memberName)) {
+      member.type = { text: 'EventListener' };
+    }
+  }
 
   // eslint-disable-next-line no-await-in-loop
   const demos = await findDemos(name);
 
-  /** @type {CEMElement} */
-  // Filter out mixin-sourced `field` members from component declarations.
-  // Mixin provenance is still captured on mixin module declarations;
-  // here we avoid copying mixin-owned fields onto the composed component
-  // so verifier expectations can be component-local only.
   /** @type {CEMMember[]} */
   const allMemberCandidates = [
     ...Array.from(instanceFieldMap.values()),
     ...Array.from(instanceMethodMap.values()),
-    ...(staticMembersMap ? Array.from(staticMembersMap.values()) : []),
   ];
-
-  const filteredMembers = allMemberCandidates.filter((m) => {
-    if (!m) {
-      return false;
-    }
-
-    // Hide underscored internals only when runtime enumeration explicitly
-    // observed them; otherwise keep TS-derived members even if they are
-    // non-enumerable (base classes often define non-enumerable helpers).
-    const maybeName = (typeof m.name === 'string') ? m.name : null;
-    const hasRuntimeEnumeration = runtime?.enumerableProps?.size > 0;
-    const runtimeObserved = hasRuntimeEnumeration && maybeName ? runtime.enumerableProps.has(maybeName) : false;
-
-    if (maybeName && maybeName.startsWith('_') && !runtimeObserved) {
-      if (VERBOSE) {
-        console.log(`[manifest] hiding underscored internal ${maybeName} for ${name}`);
-      }
-      return false;
-    }
-
-    return true;
-  });
-  // Synthesize events inferred from `on*` listener-style members.
-  const events = [];
-  const seenEvents = new Set();
-  for (const m of filteredMembers) {
-    if (!m || !m.name || typeof m.name !== 'string') {
-      continue;
-    }
-    const lname = m.name.toLowerCase();
-    if (!lname.startsWith('on')) {
-      continue;
-    }
-    const eventName = listenerPropToEventName(m.name);
+  const currentModulePath = repositoryRelativePath(src);
+  const filteredMembers = allMemberCandidates.filter((member) => isPublicCemMember(member)
+    && !undefinedMembers.has(member.name)
+    && !(implementationMembers.has(member.name)
+      && memberSourceModule(member) === currentModulePath));
+  const filteredAttributes = [...attributeMap.values()]
+    .filter((attribute) => !isUndefinedAttribute(attribute, undefinedMembers));
+  // Synthesize events only from observable event-handler properties. Inferring
+  // from every `on*` member would publish internal callbacks as false events.
+  const events = collectDispatchedEvents(sf, runtime.tag);
+  const seenEvents = new Set(events.map((event) => event.name));
+  for (const [propName] of runtime.propList.entries()) {
+    if (!isRuntimeEventHandler(runtime, propName)) continue;
+    const eventName = listenerPropToEventName(propName);
     if (!eventName || seenEvents.has(eventName)) {
       continue;
     }
@@ -2952,7 +3116,7 @@ async function generateForFile(file) {
     name: name[0].toUpperCase() + name.slice(1),
     tagName: runtime.tag,
     customElement: true,
-    attributes: [...attributeMap.values()],
+    attributes: filteredAttributes,
     members: filteredMembers,
     slots: [...runtime.slots.values()],
     cssParts: [...runtime.cssParts.values()],
@@ -2991,7 +3155,7 @@ async function generateForFile(file) {
     cemDecl.description = classDesc;
   }
 
-  const modulePath = path.relative(process.cwd(), src).split(path.sep).join('/');
+  const modulePath = currentModulePath;
   /** @type {CEMModule} */
   const mod = {
     kind: 'javascript-module',
@@ -3082,34 +3246,37 @@ async function ensureReferencedModulesGenerated(modules) {
 /**
  *
  */
-async function main() {
+async function generateManifest() {
   const args = process.argv.slice(2);
+  const supportedFlags = new Set(['-h', '--help', '-v', '--verbose']);
+  const unknownFlag = args.find((arg) => arg.startsWith('-') && !supportedFlags.has(arg));
+  if (unknownFlag) {
+    throw new Error(`Unknown argument: ${unknownFlag}`);
+  }
   // Enable verbose logging if requested on CLI
   VERBOSE = args.includes('-v') || args.includes('--verbose');
   if (VERBOSE) {
     console.log('[manifest] verbose enabled');
   }
   if (args.includes('-h') || args.includes('--help')) {
-    console.log('Usage: node scripts/generate-manifests.js [ComponentName ...]');
+    console.log('Usage: node scripts/cem-generate.js [--verbose]');
     console.log('Builds `api/custom-elements.json` from components (no per-component AI manifests).');
     console.log('Use -v or --verbose for extra runtime logging');
     return;
   }
-  const root = path.resolve(__dirname, '..');
+  const root = ROOT;
   const componentsDir = path.join(root, 'components');
   const positionalArgs = args.filter((a) => !a.startsWith('-'));
-  const filterNames = positionalArgs.length ? new Set(positionalArgs.map((a) => path.basename(a, '.js'))) : null;
+  if (positionalArgs.length) {
+    throw new Error('Focused generation is not supported because api/custom-elements.json must remain complete');
+  }
 
   const entries = await fs.readdir(componentsDir);
 
-  const jsFiles = entries.filter((e) => e.endsWith('.js')
-    && (!filterNames || filterNames.has(path.basename(e, '.js'))));
-  if (filterNames && jsFiles.length === 0) {
-    console.warn('No matching component files found for', [...filterNames].join(', '));
-  }
+  const jsFiles = entries.filter((entry) => entry.endsWith('.js'));
 
-  const browser = await chromium.launch({ headless: true });
-  sharedContext = await browser.newContext();
+  sharedBrowser = await chromium.launch({ headless: true });
+  sharedContext = await sharedBrowser.newContext();
 
   await sharedContext.route('**/*', async (route, request) => {
     try {
@@ -3125,13 +3292,18 @@ async function main() {
         return;
       }
 
-      const fsPath = path.join(process.cwd(), relPath);
-      if (!fsPath.startsWith(process.cwd()) || !fsSync.existsSync(fsPath)) {
+      const fsPath = path.resolve(ROOT, relPath);
+      if (!isInsideRepository(fsPath) || !fsSync.existsSync(fsPath)) {
         await route.fulfill({ status: 404, body: 'not found' });
         return;
       }
-      const data = await readFile(fsPath, 'utf8');
-      const ext = path.extname(fsPath).toLowerCase();
+      const realPath = await fs.realpath(fsPath);
+      if (!isInsideRepository(realPath) || !fsSync.statSync(realPath).isFile()) {
+        await route.fulfill({ status: 404, body: 'not found' });
+        return;
+      }
+      const data = await readFile(realPath, 'utf8');
+      const ext = path.extname(realPath).toLowerCase();
       const ct = ext === '.js' ? 'application/javascript' : (ext === '.html' ? 'text/html' : 'text/plain');
       await route.fulfill({
         status: 200,
@@ -3169,7 +3341,7 @@ async function main() {
   // their mixin declarations appear in the final manifest.
   for (const fileKey of Array.from(moduleByFile.keys())) {
     if (fileKey.includes(`${path.sep}mixins${path.sep}`)) {
-      const rel = path.relative(process.cwd(), fileKey).split(path.sep).join('/');
+      const rel = repositoryRelativePath(fileKey);
       // eslint-disable-next-line no-await-in-loop
       await buildMixinDeclarationFromRef({ module: rel }, new Set());
     }
@@ -3211,32 +3383,130 @@ async function main() {
 
   // Post-pass: merge mixin attributes and members into components with inheritedFrom.
 
+  /** @type {Map<string, CEMElementMixin>} */
+  const mixinDeclarationByModule = new Map();
+  /** @type {Map<string, CEMElement>} */
+  const classDeclarationByModule = new Map();
+  for (const mod of modules) {
+    for (const declaration of (mod.declarations || [])) {
+      if (declaration?.kind === 'mixin') {
+        mixinDeclarationByModule.set(mod.path, declaration);
+      } else if (declaration?.kind === 'class') {
+        classDeclarationByModule.set(mod.path, declaration);
+      }
+    }
+  }
+
+  /**
+   * @param {CEMReference[]} references
+   * @param {Set<string>} providers
+   */
+  const collectMixinProviders = (references, providers) => {
+    for (const reference of references || []) {
+      const modulePath = reference?.module;
+      if (!modulePath || providers.has(modulePath)) continue;
+      providers.add(modulePath);
+      collectMixinProviders(mixinDeclarationByModule.get(modulePath)?.mixins || [], providers);
+    }
+  };
+
+  /**
+   * @param {CEMElement} declaration
+   * @param {Set<string>} [seenClasses]
+   * @return {Set<string>}
+   */
+  const collectClassMixinProviders = (declaration, seenClasses = new Set()) => {
+    /** @type {Set<string>} */
+    const providers = new Set();
+    collectMixinProviders(declaration.mixins || [], providers);
+    const superModule = declaration.superclass?.module;
+    if (superModule && !seenClasses.has(superModule)) {
+      const superclass = classDeclarationByModule.get(superModule);
+      if (superclass) {
+        seenClasses.add(superModule);
+        for (const provider of collectClassMixinProviders(superclass, seenClasses)) {
+          providers.add(provider);
+        }
+      }
+    }
+    return providers;
+  };
+
+  /** @type {Map<string, import('custom-elements-manifest').Event[]>} */
+  const eventsByModule = new Map();
+  for (const mod of modules) {
+    const declaration = (mod.declarations || []).find((item) => item?.kind === 'class');
+    if (declaration?.events?.length) {
+      eventsByModule.set(mod.path, declaration.events);
+    } else if (mod.path.startsWith('mixins/')) {
+      const sourceFile = getTypescriptProgram().getSourceFile(resolveModulePath(mod.path));
+      if (sourceFile) {
+        eventsByModule.set(mod.path, collectDispatchedEvents(sourceFile));
+      }
+    }
+  }
+
+  for (const mod of modules) {
+    for (const declaration of (mod.declarations || [])) {
+      if (declaration?.kind !== 'class') continue;
+      const providers = collectClassMixinProviders(declaration);
+      let superclass = declaration.superclass?.module;
+      while (superclass) {
+        providers.add(superclass);
+        superclass = classDeclarationByModule.get(superclass)?.superclass?.module;
+      }
+      /** @type {Map<string, import('custom-elements-manifest').Event>} */
+      const effectiveEvents = new Map(
+        (declaration.events || []).map((event) => [event.name, event]),
+      );
+      for (const provider of providers) {
+        for (const event of eventsByModule.get(provider) || []) {
+          const eventName = event.name.startsWith('__localName__')
+            ? `${declaration.tagName || ''}${event.name.slice('__localName__'.length)}`
+            : event.name;
+          if (eventName.startsWith(':')) continue;
+          effectiveEvents.set(eventName, { ...event, name: eventName });
+        }
+      }
+      declaration.events = [...effectiveEvents.values()];
+    }
+  }
+
+  // Type constraints describe what a mixin expects, not what a component
+  // applies. Keep mixin-sourced members only when their provider is reachable
+  // through the actual mixin/superclass graph.
+  for (const mod of modules) {
+    for (const declaration of (mod.declarations || [])) {
+      if (declaration?.kind !== 'class' && declaration?.kind !== 'mixin') continue;
+      const providers = declaration.kind === 'class'
+        ? collectClassMixinProviders(declaration)
+        : (() => {
+          const mixinProviders = new Set();
+          collectMixinProviders(declaration.mixins || [], mixinProviders);
+          return mixinProviders;
+        })();
+      declaration.members = (declaration.members || []).filter((member) => {
+        const sourceModule = memberSourceModule(member);
+        return !sourceModule.startsWith('mixins/')
+          || sourceModule === mod.path
+          || providers.has(sourceModule);
+      });
+    }
+  }
+
   /** @type {Map<string, {attributes?: any[], members?: any[]}>} */
   const mixinDataByModuleName = new Map();
   /** @type {Map<string, {attributes?: any[], members?: any[]}>} */
   const classDataByModuleName = new Map();
-  /** @type {Map<string, string>} */
-  const exportToDeclarationName = new Map();
 
   for (const mod of modules) {
     if (!mod || mod.kind !== 'javascript-module' || !mod.path) continue;
-
-    // Build export-to-declaration mapping for resolving references
-    for (const exp of (mod.exports || [])) {
-      if (!exp || !exp.declaration) continue;
-      const declName = exp.declaration.name;
-      if (declName) {
-        const exportName = exp.name || 'default';
-        const key = `${mod.path}::${exportName}`;
-        exportToDeclarationName.set(key, declName);
-      }
-    }
 
     for (const d of (mod.declarations || [])) {
       if (!d || d.kind !== 'mixin') continue;
       // Store mixin data using both declaration name and export names
       const mixinData = {
-        members: d.members || [],
+        members: (d.members || []).filter((member) => isPublicCemMember(member)),
         ...('customElement' in d ? { attributes: d.attributes || [] } : {}),
       };
 
@@ -3260,7 +3530,7 @@ async function main() {
 
       const classData = {
         ...('customElement' in d ? { attributes: d.attributes || [] } : {}),
-        members: d.members || [],
+        members: (d.members || []).filter((member) => isPublicCemMember(member)),
       };
 
       // Store by declaration name
@@ -3278,10 +3548,10 @@ async function main() {
     }
   }
 
+  // Build a map to find mixins by both declaration name and export name.
+  /** @type {Map<string, string>} */
+  const mixinDeclarationToExportName = new Map();
   if (mixinDataByModuleName.size) {
-    // Build a map to find mixins by both declaration name and export name
-    /** @type {Map<string, string>} */
-    const mixinDeclarationToExportName = new Map();
     for (const mod of modules) {
       if (!mod || mod.kind !== 'javascript-module' || !mod.path) continue;
       for (const exp of (mod.exports || [])) {
@@ -3301,11 +3571,9 @@ async function main() {
         if (!d || d.kind !== 'class' || !d.mixins) continue;
         if (!('customElement' in d)) continue;
 
-        // Build sets of existing component-defined names
         const attrs = d.attributes || [];
         const mems = d.members || [];
-        const existingAttrNames = new Set(attrs.map((a) => a.name));
-        const existingMemberNames = new Set(mems.map((m) => m.name));
+        const undefinedMembers = undefinedMembersByModule.get(mod.path) || new Set();
 
         // For each applied mixin, merge its attributes and members with inheritedFrom
         for (const mref of d.mixins) {
@@ -3350,9 +3618,13 @@ async function main() {
           // Mark attributes that come from mixin with inheritedFrom
           if (mixinData.attributes) {
             for (const attr of mixinData.attributes) {
+              if (isUndefinedAttribute(attr, undefinedMembers)) continue;
               // If already present on the class, just tag inheritedFrom
               const existing = attrs.find((a) => a.name === attr.name);
               if (existing) {
+                const fieldName = existing.fieldName || camel(existing.name);
+                const field = mems.find((member) => member.name === fieldName);
+                if (memberSourceModule(field) === mod.path) continue;
                 if (!existing.inheritedFrom) {
                   existing.inheritedFrom = { name: mixName, module: mixModule };
                 }
@@ -3362,35 +3634,38 @@ async function main() {
               d.attributes = d.attributes || [];
               d.attributes.push({
                 ...attr,
-                inheritedFrom: {
+                inheritedFrom: attr.inheritedFrom || {
                   name: mixName,
                   module: mixModule,
                 },
               });
-              existingAttrNames.add(attr.name);
             }
           }
 
           // Mark members that come from mixin with inheritedFrom
           if (mixinData.members) {
             for (const member of mixinData.members) {
-              if (!member.name) continue;
+              if (!isPublicCemMember(member)) continue;
+              if (undefinedMembers.has(member.name)) continue;
               const existing = mems.find((m) => m.name === member.name);
               if (existing) {
+                if (memberSourceModule(existing) === mod.path) continue;
                 if (!existing.inheritedFrom) {
-                  existing.inheritedFrom = { name: mixName, module: mixModule };
+                  existing.inheritedFrom = memberInheritanceReference(existing, {
+                    name: mixName,
+                    module: mixModule,
+                  });
                 }
                 continue;
               }
               d.members = d.members || [];
               d.members.push({
                 ...member,
-                inheritedFrom: {
+                inheritedFrom: memberInheritanceReference(member, {
                   name: mixName,
                   module: mixModule,
-                },
+                }),
               });
-              existingMemberNames.add(member.name);
             }
           }
         }
@@ -3405,15 +3680,20 @@ async function main() {
       for (const d of (mod.declarations || [])) {
         if (!d || d.kind !== 'class' || !d.superclass) continue;
 
+        const undefinedMembers = undefinedMembersByModule.get(mod.path) || new Set();
+
         const superModule = d.superclass.module;
         const superName = d.superclass.name;
         if (!superModule || !superName) continue;
+        if (superModule === 'global:' || superModule.startsWith('global:')) continue;
 
         // Look up by export name (as used in the reference)
         const key = `${superModule}::${superName}`;
         const superData = classDataByModuleName.get(key);
         if (!superData) {
-          console.log(`[superclass] unable to resolve ${d.name} superclass reference ${superModule}::${superName}`);
+          if (VERBOSE) {
+            console.log(`[superclass] unable to resolve ${d.name} superclass reference ${superModule}::${superName}`);
+          }
           continue;
         }
 
@@ -3429,7 +3709,11 @@ async function main() {
         if (('customElement' in d)) {
           for (const attr of (d.attributes || [])) {
             if (superAttrByName.has(attr.name) && !attr.inheritedFrom) {
-              attr.inheritedFrom = {
+              const fieldName = attr.fieldName || camel(attr.name);
+              const field = (d.members || []).find((member) => member.name === fieldName);
+              if (memberSourceModule(field) === mod.path) continue;
+              const superAttribute = superAttrByName.get(attr.name);
+              attr.inheritedFrom = superAttribute?.inheritedFrom || {
                 name: superName,
                 module: superModule,
               };
@@ -3439,11 +3723,16 @@ async function main() {
 
         // Mark members that come from superclass with inheritedFrom
         for (const member of (d.members || [])) {
-          if (superMemberByName.has(member.name) && !member.inheritedFrom) {
-            member.inheritedFrom = {
-              name: superName,
-              module: superModule,
-            };
+          const superMember = superMemberByName.get(member.name);
+          if (superMember && !member.inheritedFrom) {
+            if (memberSourceModule(member) === mod.path) continue;
+            member.inheritedFrom = memberInheritanceReference(
+              member,
+              memberInheritanceReference(superMember, {
+                name: superName,
+                module: superModule,
+              }),
+            );
           }
         }
 
@@ -3452,11 +3741,12 @@ async function main() {
         if (('customElement' in d)) {
           const existingAttrNames = new Set((d.attributes || []).map((a) => a.name));
           for (const attr of superData.attributes) {
+            if (isUndefinedAttribute(attr, undefinedMembers)) continue;
             if (!existingAttrNames.has(attr.name)) {
               d.attributes = d.attributes || [];
               d.attributes.push({
                 ...attr,
-                inheritedFrom: {
+                inheritedFrom: attr.inheritedFrom || {
                   name: superName,
                   module: superModule,
                 },
@@ -3467,14 +3757,15 @@ async function main() {
 
         const existingMemberNames = new Set((d.members || []).map((m) => m.name));
         for (const member of superData.members) {
-          if (member.name && !existingMemberNames.has(member.name)) {
+          if (undefinedMembers.has(member.name)) continue;
+          if (isPublicCemMember(member) && !existingMemberNames.has(member.name)) {
             d.members = d.members || [];
             d.members.push({
               ...member,
-              inheritedFrom: {
+              inheritedFrom: memberInheritanceReference(member, {
                 name: superName,
                 module: superModule,
-              },
+              }),
             });
           }
         }
@@ -3482,20 +3773,84 @@ async function main() {
     }
   }
 
-  /** @type {CEMPackage & { $schema?: string }} */
+  // Type analysis can surface an effective member before the merge pass sees
+  // the nested mixin that actually provides it. Normalize provenance from the
+  // member's source after all mixin and superclass copies are complete.
+  for (const mod of modules) {
+    for (const declaration of (mod.declarations || [])) {
+      if (declaration?.kind !== 'class') continue;
+      const providers = collectClassMixinProviders(declaration);
+      for (const member of (declaration.members || [])) {
+        const sourceModule = memberSourceModule(member);
+        if (sourceModule === mod.path) {
+          delete member.inheritedFrom;
+          continue;
+        }
+        if (!sourceModule.startsWith('mixins/') || !providers.has(sourceModule)) continue;
+        const providerDeclaration = mixinDeclarationByModule.get(sourceModule);
+        const providerName = providerDeclaration
+          ? mixinDeclarationToExportName.get(`${sourceModule}::${providerDeclaration.name}`)
+          : undefined;
+        member.inheritedFrom = {
+          name: providerName || 'default',
+          module: sourceModule,
+        };
+      }
+      for (const attribute of (declaration.attributes || [])) {
+        const fieldName = attribute.fieldName || camel(attribute.name);
+        const field = (declaration.members || []).find((member) => member.name === fieldName);
+        if (!field) continue;
+        if (memberSourceModule(field) === mod.path) {
+          delete attribute.inheritedFrom;
+        } else if (field.inheritedFrom) {
+          attribute.inheritedFrom = field.inheritedFrom;
+        }
+      }
+
+      const undefinedMembers = undefinedMembersByModule.get(mod.path) || new Set();
+      declaration.members = (declaration.members || []).filter((member) => {
+        if (undefinedMembers.has(member.name)) return false;
+        const sourceModule = memberSourceModule(member) || mod.path;
+        return !implementationMembersByModule.get(sourceModule)?.has(member.name);
+      });
+      declaration.attributes = (declaration.attributes || [])
+        .filter((attribute) => !isUndefinedAttribute(attribute, undefinedMembers));
+    }
+  }
+
+  /** @type {CEMPackage} */
   const output = {
-    $schema: 'https://cdn.jsdelivr.net/npm/custom-elements-manifest@2.1.0/schema.json',
     schemaVersion: '2.1.0',
     modules,
   };
   const outPath = path.join(root, 'api', 'custom-elements.json');
-  await fs.writeFile(outPath, JSON.stringify(output, null, 2), 'utf8');
+  const temporaryPath = path.join(
+    path.dirname(outPath),
+    `.${path.basename(outPath)}.${process.pid}.tmp`,
+  );
+  try {
+    await fs.writeFile(temporaryPath, JSON.stringify(output, null, 2), 'utf8');
+    await fs.rename(temporaryPath, outPath);
+  } finally {
+    await fs.rm(temporaryPath, { force: true });
+  }
   console.log('Wrote', outPath);
+}
 
-  // await buildCEMFromModules(modules, root);
-
-  await sharedContext.close();
-  await browser.close();
+/** Generate a manifest and always release Playwright resources. */
+async function main() {
+  try {
+    await generateManifest();
+  } finally {
+    const context = sharedContext;
+    const browser = sharedBrowser;
+    sharedContext = null;
+    sharedBrowser = null;
+    await Promise.allSettled([
+      context?.close(),
+      browser?.close(),
+    ]);
+  }
 }
 
 const invokedDirectly = process.argv[1] && path.resolve(process.argv[1]) === path.resolve(__filename);

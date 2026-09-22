@@ -145,6 +145,8 @@
     "demo": "npm run build:demo",
     "dist": "npm run build",
     "api": "npm run cem",
+    "verify:public-api": "npm run types && npm run api && npm run test:cem && node scripts/cem-validate.js && node scripts/cem-spec-test.js --skip-generate",
+    "verify:public-api:strict": "npm run types && npm run api && npm run test:cem && node scripts/cem-validate.js --strict && node scripts/cem-spec-test.js --skip-generate",
     "prepublishOnly": "npm run types && npm run api && npm run dist",
     "eslint": "eslint core components mixins --ignore-path .gitignore --ext .js",
     "lint": "npm run eslint && tsc --noEmit",

@@ -23,9 +23,10 @@ function fail(msg) {
 /** @typedef {import('custom-elements-manifest').CEMSchema} CEMSchema */
 
 /**
- * @param {boolean}[strict]
+ * @param {boolean} [strict]
+ * @param {string|null} [customSchemaPath]
  */
-async function runValidation(strict = false) {
+async function runValidation(strict = false, customSchemaPath = null) {
   const ajv = new Ajv({
     allErrors: true, strict: !!strict, verbose: !!strict, allowUnionTypes: true,
   });
@@ -47,8 +48,17 @@ async function runValidation(strict = false) {
     return;
   }
 
-  const schema = await import('custom-elements-manifest/schema.json', { with: { type: 'json' } });
-  if (!schema) {
+  let schema;
+  if (customSchemaPath) {
+    schema = JSON.parse(fs.readFileSync(path.resolve(customSchemaPath), 'utf8'));
+  } else {
+    const schemaModule = await import(
+      'custom-elements-manifest/schema.json',
+      { with: { type: 'json' } }
+    );
+    schema = structuredClone(schemaModule.default ?? schemaModule);
+  }
+  if (!schema || typeof schema !== 'object' || Array.isArray(schema)) {
     fail('Unable to load custom-elements-manifest schema via ESM. Install `custom-elements-manifest` or pass `--schema <path>`.');
     return;
   }
@@ -425,20 +435,38 @@ async function runValidation(strict = false) {
 }
 
 if (import.meta.url === `file://${process.argv[1]}` || path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url))) {
-  const args = new Set(process.argv.slice(2));
-  const strict = args.has('--strict') || args.has('-s');
-
-  let overallError = false;
-  try {
-    process.exitCode = 0;
-    await runValidation(strict);
-    if (process.exitCode && process.exitCode !== 0) {
-      overallError = true;
+  const args = process.argv.slice(2);
+  let strict = false;
+  let schemaPath = null;
+  let argumentError = null;
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg === '--strict' || arg === '-s') {
+      strict = true;
+    } else if (arg === '--schema') {
+      schemaPath = args[index + 1];
+      if (!schemaPath || schemaPath.startsWith('-')) {
+        argumentError = '--schema requires a path';
+        break;
+      }
+      index += 1;
+    } else {
+      argumentError = `Unknown argument: ${arg}`;
+      break;
     }
-  } catch (err) {
-    console.error('Validator error:', err && err.message ? err.message : String(err));
-    overallError = true;
   }
 
-  process.exitCode = overallError ? 1 : 0;
+  if (argumentError) {
+    console.error(argumentError);
+    console.error('Usage: node scripts/cem-validate.js [--strict|-s] [--schema <path>]');
+    process.exitCode = 2;
+  } else {
+    try {
+      process.exitCode = 0;
+      await runValidation(strict, schemaPath);
+    } catch (err) {
+      console.error('Validator error:', err && err.message ? err.message : String(err));
+      process.exitCode = 2;
+    }
+  }
 }
