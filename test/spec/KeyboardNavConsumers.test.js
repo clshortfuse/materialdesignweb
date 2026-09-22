@@ -566,7 +566,7 @@ describe('keyboard navigation lifecycle consumers', () => {
     assert.strictEqual(document.activeElement, second);
   });
 
-  it('reconciles Listbox direct topology once per slot change', async () => {
+  it('does not repeat synchronous Listbox topology reconciliation on slotchange', async () => {
     /** @type {InstanceType<Listbox>} */
     const listbox = html`
       <mdw-listbox>
@@ -584,7 +584,8 @@ describe('keyboard navigation lifecycle consumers', () => {
     listbox.append(new ListOption());
     await nextTask();
 
-    assert.equal(refreshes, 1);
+    assert.equal(refreshes, 0);
+    assert.deepEqual([...listbox.options].map((option) => option._index), [0, 1]);
   });
 
   it('preserves Listbox option reconciliation across detached slotchange', async () => {
