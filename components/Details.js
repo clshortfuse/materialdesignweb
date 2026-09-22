@@ -144,6 +144,24 @@ export default CustomElement
       transform: rotate(180deg);
     }
 
+    @supports (interpolate-size: allow-keywords) {
+      :host {
+        interpolate-size: allow-keywords;
+      }
+
+      #expansion {
+        block-size: 0;
+        grid-template-rows: 1fr;
+
+        transition-property: block-size, opacity;
+        will-change: block-size, opacity;
+      }
+
+      :host([expanded]) #expansion {
+        block-size: auto;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       #marker[rotating] {
         transition-duration: 0ms;

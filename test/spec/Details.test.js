@@ -111,6 +111,30 @@ describe('mdw-details', () => {
     assert.isTrue(marker.hasAttribute('expanded'));
   });
 
+  it('uses intrinsic block-size interpolation when supported', async () => {
+    if (!CSS.supports('interpolate-size: allow-keywords')) return;
+    const details = detailsHtml`
+      <mdw-details style="--mdw-expand__duration: 0ms">
+        <span slot=summary>Show details</span>
+        <div style="block-size: 64px">Expanded content</div>
+      </mdw-details>
+    `;
+    await nextTask();
+    const expansion = /** @type {HTMLElement} */ (details.refs.expansion);
+
+    assert.equal(getComputedStyle(details).interpolateSize, 'allow-keywords');
+    assert.equal(getComputedStyle(expansion).blockSize, '0px');
+    assert.include(getComputedStyle(expansion).transitionProperty, 'block-size');
+
+    details.open = true;
+
+    assert.equal(getComputedStyle(expansion).blockSize, '64px');
+
+    details.open = false;
+
+    assert.equal(getComputedStyle(expansion).blockSize, '0px');
+  });
+
   it('uses default children as expansion content and summary slot as disclosure', async () => {
     const details = detailsHtml`
       <mdw-details>
