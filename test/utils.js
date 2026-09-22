@@ -156,18 +156,25 @@ export function disableAnimations(...customElements) {
   }
 }
 
-/** @return {void} */
+/** @return {Promise<void>} */
 export async function addRobotoFont() {
-  return await new Promise((resolve, reject) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css?family=Roboto&display=block';
-    link.addEventListener('load', async () => {
-      await document.fonts.load('16px "Roboto"');
-      requestAnimationFrame(resolve);
-    });
-    link.addEventListener('error', reject);
-    document.head.append(link);
+  const style = document.createElement('style');
+  style.textContent = `
+    @font-face {
+      font-family: "Roboto";
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: url("/node_modules/@fontsource/roboto/files/roboto-latin-400-normal.woff2") format("woff2");
+    }
+  `;
+  document.head.append(style);
+  const loaded = await document.fonts.load('16px "Roboto"');
+  if (loaded.length === 0) {
+    throw new Error('Pinned Roboto test font could not be loaded');
+  }
+  await new Promise((resolve) => {
+    requestAnimationFrame(() => resolve());
   });
 }
 
@@ -219,7 +226,7 @@ export function generateScreenshotTests({ template, before, matrix, after, paddi
     const listOfStates = tags.slice(0, -1).join(', ');
     const stateDescription = listOfStates ? `${listOfStates}, and ${tags.at(-1)}` : tag;
     // eslint-disable-next-line no-loop-func
-    it(`matches screenshot when ${stateDescription}`, async function () {
+    it(`matches screenshot when ${stateDescription}`, async function screenshotStateTest() {
       makeFromString(`
         <div id=box style="position:fixed;inset:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column">
           <div id=bounds style="position:relative;display:inline-flex;align-items:center;justify-content:center;padding:${padding}px"></div>
@@ -273,26 +280,29 @@ export function generateScreenshotTests({ template, before, matrix, after, paddi
       /* eslint-enable no-await-in-loop */
 
       // Webkit times out sooner than 2000ms at times
-      this.timeout((Math.max(animationWait * 2), 5000));
+      this.timeout(Math.max(animationWait * 2, 5000));
 
       const timeToWait = (startTime + animationWait) - performance.now();
       if (timeToWait > 0) {
         await new Promise((resolve) => setTimeout(resolve, timeToWait));
       }
 
-      const elementTagName = element.tagName.toLowerCase();
-      const { percentage, referenceLocation, differenceLocation } = await screenshotCompare(
-        `${elementTagName}__${tag}`,
-        '#bounds',
-      );
-      if (movedMouse) {
-        await sendMouse({ type: 'move', position: [0, 0] });
-        await sendMouse({ type: 'up', button: 'left' });
+      try {
+        const elementTagName = element.tagName.toLowerCase();
+        const { percentage, referenceLocation, differenceLocation } = await screenshotCompare(
+          `${elementTagName}__${tag}`,
+          '#bounds',
+        );
+        assert.isAbove(percentage, 0.99, `Screenshot too different. Compare ${referenceLocation} with ${differenceLocation}`);
+      } finally {
+        if (movedMouse) {
+          await sendMouse({ type: 'move', position: [0, 0] });
+          await sendMouse({ type: 'up', button: 'left' });
+        }
+        if (movedFocus) {
+          element.blur();
+        }
       }
-      if (movedFocus) {
-        element.blur();
-      }
-      assert.isAbove(percentage, 0.99, `Screenshot too different. Compare ${referenceLocation} with ${differenceLocation}`);
     });
   }
 }

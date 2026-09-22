@@ -64,6 +64,9 @@ async function DEFAULT_GET_ASSET(location) {
   if (url) {
     const response = await fetch(url);
     if (response.status === 404) return null;
+    if (!response.ok) {
+      throw new Error(`Unable to read screenshot asset ${url}: ${response.status} ${response.statusText}`);
+    }
     buffer = Buffer.from(await response.arrayBuffer());
   } else if (path) {
     try {
@@ -89,7 +92,11 @@ async function encodeDataToBlob(data) {
   if (Buffer.isBuffer(data)) {
     return new Blob([data]);
   }
-  return await fetch(data).then((response) => response.blob());
+  const response = await fetch(data);
+  if (!response.ok) {
+    throw new Error(`Unable to read screenshot data ${data}: ${response.status} ${response.statusText}`);
+  }
+  return await response.blob();
 }
 
 /**
@@ -102,14 +109,16 @@ async function encodeDataToBuffer(data) {
     return Buffer.from(await data.arrayBuffer());
   }
 
-  return await fetch(data)
-    .then((response) => response.arrayBuffer())
-    .then((buffer) => Buffer.from(buffer));
+  const response = await fetch(data);
+  if (!response.ok) {
+    throw new Error(`Unable to read screenshot data ${data}: ${response.status} ${response.statusText}`);
+  }
+  return Buffer.from(await response.arrayBuffer());
 }
 
 /**
  * @param {string} location
- * @param {Blob|Buffer|string} [data] null for delete
+ * @param {Blob|Buffer|string|null} [data] null for delete
  * @return {Promise<any>}
  */
 async function DEFAULT_WRITE_ASSET(location, data) {
@@ -122,29 +131,31 @@ async function DEFAULT_WRITE_ASSET(location, data) {
   }
 
   if (url) {
-    if (data) {
-      await fetch(url, { method: 'DELETE' });
-    } else {
-      await fetch(url, {
+    const deleting = data == null;
+    const response = deleting
+      ? await fetch(url, { method: 'DELETE' })
+      : await fetch(url, {
         method: 'PUT',
         headers: { 'Content-Type': 'image/png' },
         body: await encodeDataToBlob(data),
       });
-    }
-  } else if (path) {
-    if (data) {
-      await mkdir(dirname(path), { recursive: true });
-      await writeFile(path, await encodeDataToBuffer(data));
-    } else {
+    if (response.ok || (deleting && response.status === 404)) return;
+    throw new Error(`Unable to ${deleting ? 'delete' : 'write'} screenshot asset ${url}: ${response.status} ${response.statusText}`);
+  }
+  if (path) {
+    if (data == null) {
       try {
         await rm(path);
       } catch (e) {
         if (e?.code !== 'ENOENT') throw e;
       }
+      return;
     }
-  } else {
-    throw new Error(`Invalid location: ${location}`);
+    await mkdir(dirname(path), { recursive: true });
+    await writeFile(path, await encodeDataToBuffer(data));
+    return;
   }
+  throw new Error(`Invalid location: ${location}`);
 }
 
 /**
@@ -173,7 +184,7 @@ export function screenshotComparePlugin(options = {}) {
         getReferenceLocation,
         getDifferenceLocation,
       } = {
-        create: 'auto',
+        create: false,
         getAsset: DEFAULT_GET_ASSET,
         writeAsset: DEFAULT_WRITE_ASSET,
         getReferenceLocation: DEFAULT_GET_REFERENCE_LOCATION,
@@ -203,7 +214,9 @@ export function screenshotComparePlugin(options = {}) {
           } else {
             shouldWrite = true;
           }
-        } else if (!reference) {
+        } else if (reference) {
+          expected = reference;
+        } else {
           console.error('will throw, not found');
           throw new Error(`No reference found for ${tag}`);
         }
@@ -247,12 +260,12 @@ export function screenshotComparePlugin(options = {}) {
       const actual = urlObjectFromBuffer(screenshot);
 
       if (shouldWrite) {
-        writeAsset(referenceLocation, screenshot);
+        await writeAsset(referenceLocation, screenshot);
         expected = actual;
       }
 
       const differenceLocation = getDifferenceLocation(tag, session);
-      writeAsset(differenceLocation, actual === expected ? null : screenshot);
+      await writeAsset(differenceLocation, actual === expected ? null : screenshot);
 
       return { actual, expected, referenceLocation, differenceLocation };
     },

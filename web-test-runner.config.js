@@ -6,8 +6,7 @@ export default {
   plugins: [
     axTreePlugin(),
     screenshotComparePlugin({
-      create: process.argv.includes('--create-snapshots') ? true
-        : (process.argv.includes('--verify-snapshots') ? false : 'auto'),
+      create: process.argv.includes('--create-snapshots'),
     }),
   ],
 };

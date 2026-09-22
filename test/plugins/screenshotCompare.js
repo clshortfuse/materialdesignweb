@@ -14,8 +14,11 @@ export async function useCanvas(width, height, callback) {
   canvas.width = width;
   canvas.height = height;
   document.body.append(canvas);
-  await callback(canvas);
-  canvas.remove();
+  try {
+    await callback(canvas);
+  } finally {
+    canvas.remove();
+  }
 }
 
 /**
