@@ -1,6 +1,7 @@
 // https://w3c.github.io/aria/#tablist
 
 import CustomElement from '../core/CustomElement.js';
+import { constructDirectChildrenCollectionProxy } from '../dom/HTMLOptionsCollectionProxy.js';
 import KeyboardNavMixin from '../mixins/KeyboardNavMixin.js';
 import RTLObserverMixin from '../mixins/RTLObserverMixin.js';
 import ResizeObserverMixin from '../mixins/ResizeObserverMixin.js';
@@ -56,18 +57,22 @@ export default CustomElement
       /** @param {HTMLElement} value  */
       set(value) {
         const oldValue = this._tabContentRef?.deref();
+        if (oldValue === value) return;
         if (oldValue) {
           oldValue.removeEventListener('scroll', this._tabContentScrollListener);
         }
         if (value) {
           this._tabContentRef = new WeakRef(value);
-          // @ts-expect-error this lacks forward declaration
-          this._tabContentScrollListener = this.observeTabContent.bind(this);
+          this._tabContentScrollListener = /** @type {{observeTabContent(): void}} */ (
+            /** @type {unknown} */ (this)
+          ).observeTabContent.bind(this);
           value.addEventListener('scroll', this._tabContentScrollListener);
-          // @ts-expect-error this lacks forward declaration
-          this.observeTabContent();
+          /** @type {{observeTabContent(): void}} */ (
+            /** @type {unknown} */ (this)
+          ).observeTabContent();
         } else {
           this._tabContentRef = null;
+          this._tabContentScrollListener = null;
         }
       },
     },
@@ -88,7 +93,10 @@ export default CustomElement
     tabs() {
       // eslint-disable-next-line no-return-assign
       return this._tabCollection ??= /** @type {HTMLCollectionOf<InstanceType<Tab>>} */ (
-        this.getElementsByTagName(Tab.elementName)
+        constructDirectChildrenCollectionProxy({
+          host: this,
+          accept: (element) => element.localName === Tab.elementName,
+        })
       );
     },
   })
@@ -113,9 +121,13 @@ export default CustomElement
     ariaOrientationDefault() {
       return /** @type {'horizontal'|'vertical'} */ ('horizontal');
     },
-    /** @return {NodeListOf<InstanceType<Tab>>} */
+    /**
+     * Legacy snapshot of descendant tabs. Selection, navigation, and indicator
+     * behavior use the direct-owned live `tabs` collection instead.
+     * @return {NodeListOf<InstanceType<Tab>>}
+     */
     childTabItems() {
-      return (this.querySelectorAll(Tab.elementName));
+      return this.querySelectorAll(Tab.elementName);
     },
     tabMetrics() {
       // eslint-disable-next-line no-return-assign
@@ -149,15 +161,17 @@ export default CustomElement
       },
       set(value) {
         let index = 0;
+        let selectedIndex = -1;
         for (const el of this.tabs) {
           if (index === value) {
             el.active = true;
-            this._selectedIndex = index;
+            selectedIndex = index;
           } else {
             el.active = false;
           }
           index++;
         }
+        this._selectedIndex = selectedIndex;
       },
     },
   })
@@ -189,6 +203,7 @@ export default CustomElement
           }
           index++;
         }
+        this.selectedIndex = -1;
         return null;
       },
     },
@@ -201,8 +216,10 @@ export default CustomElement
     /** Find and bind to the external `TabContent` element by id. */
     searchForTabContent() {
       const { tabContentId, isConnected } = this;
-      if (!tabContentId) return;
-      if (!isConnected) return;
+      if (!tabContentId || !isConnected) {
+        this.tabContent = null;
+        return;
+      }
       const root = /** @type {ShadowRoot|Document} */ (this.getRootNode());
       this.tabContent = root.getElementById(tabContentId);
     },
@@ -267,8 +284,8 @@ export default CustomElement
         for (const tab of this.tabs) {
           tab.active = tab === activeTab;
         }
-        this.active = true;
       }
+      this._selectedIndex = activeTab === leftMetrics.tab ? leftIndex : rightIndex;
 
       this._indicatorStyle = `--width: ${width}; --offset: ${center - (width / 2)}px`;
       this.refs.indicator.style.setProperty('--transition-ratio', '0');
@@ -299,7 +316,7 @@ export default CustomElement
   })
 
   .set({
-    ariaRole: 'tablist',
+    _ariaRole: 'tablist',
   })
   .html`
     <slot id=slot ink={ink} type-style={typeStyle} scrollable={scrollable}></slot>
@@ -315,6 +332,9 @@ export default CustomElement
     },
     connected() {
       this.searchForTabContent();
+    },
+    disconnected() {
+      this.tabContent = null;
     },
     pageIsRTLChanged() {
       this.clearCache();
@@ -352,6 +372,8 @@ export default CustomElement
           this.refreshTabIndexes();
         }
         this.clearCache();
+        const selectedIndex = this.selectedIndex;
+        this.selectedIndex = selectedIndex;
         this.updateIndicator();
         this.searchForTabContent();
       },

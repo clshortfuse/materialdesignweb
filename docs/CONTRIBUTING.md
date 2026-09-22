@@ -52,7 +52,8 @@ elapsed timings are evidence rather than hard CI thresholds. Use
 size, sample count, warm-up count, or JSON output. The initial `keyboard-nav`
 suite separates live-collection reconciliation, steady sibling traversal, idle
 topology churn, live focus behavior, and topology bursts followed by
-immediate navigation.
+immediate navigation. The complete harness also provides `list-grid`, `listbox`,
+`menu`, and `tab-list` suites; `--suite=all` runs all five component workloads.
 
 - Generate a static theme file for demo pages (optional):
 

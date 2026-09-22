@@ -223,14 +223,14 @@
       "audit": "auditing",
       "conformance": "unknown",
       "evidence": {
-        "spec": ["test/spec/KeyboardNavConsumers.test.js"],
+        "spec": ["test/spec/TabList.test.js", "test/spec/KeyboardNavConsumers.test.js"],
         "demo": ["demo/components/tabs.html"]
       },
       "performance": {
-        "ownership": "direct mdw-tab children in live host element order",
-        "invalidation": "slot changes refresh selection, metrics, and keyboard state",
-        "hotPath": "keyboard movement follows live sibling links and derives the roving anchor through a scoped direct-child tabindex query; selection and indicator work iterate only the direct owned collection",
-        "cleanup": "keyboard and resize mixins release lifecycle state on disconnect"
+        "ownership": "the live tabs collection owns direct mdw-tab children only; legacy childTabItems remains a descendant snapshot for compatibility and does not drive behavior",
+        "invalidation": "owned slot changes normalize direct selection, clear geometry metrics, reconcile keyboard readiness, update the indicator, and resolve the current external content target",
+        "hotPath": "keyboard movement follows live direct sibling links; selection and indicator updates iterate only the direct owned collection and reuse cached metrics until topology, resize, or direction changes",
+        "cleanup": "external scroll listeners are replaced symmetrically with at most one active listener and released on clear or disconnect; keyboard and resize mixins release lifecycle state"
       }
     }
   },

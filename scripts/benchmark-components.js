@@ -8,7 +8,7 @@ import { build } from 'esbuild';
 import { chromium, firefox, webkit } from 'playwright';
 
 const browserTypes = { chromium, firefox, webkit };
-const availableSuites = ['keyboard-nav', 'list-grid', 'listbox', 'menu'];
+const availableSuites = ['keyboard-nav', 'list-grid', 'listbox', 'menu', 'tab-list'];
 const args = new Map(process.argv.slice(2).map((arg) => {
   const [name, value = 'true'] = arg.replace(/^--/, '').split('=', 2);
   return [name, value];
@@ -18,7 +18,7 @@ if (args.has('help')) {
   console.log(`Usage: npm run benchmark:components -- [options]
 
 Options:
-  --suite=all                         Suite to run: all, keyboard-nav, list-grid, listbox, or menu
+  --suite=all                         Suite to run: all, keyboard-nav, list-grid, listbox, menu, or tab-list
   --browsers=chromium,firefox,webkit  Browsers to run
   --size=1000                         Keyboard targets or three-action ListGrid rows
   --samples=15                        Measured samples per scenario
@@ -53,6 +53,7 @@ const benchmarkSource = `
   import './components/ListGrid.js';
   import './components/Listbox.js';
   import './components/Menu.js';
+  import './components/TabList.js';
 
   CustomElement
     .extend()
@@ -128,6 +129,11 @@ const benchmarkSource = `
     mdw-menu[data-runtime-benchmark] {
       animation: none !important;
       transition: none !important;
+    }
+    mdw-tab-list[data-runtime-benchmark] {
+      contain: strict;
+      height: 48px;
+      width: 1000px;
     }
   \`;
   document.head.append(style);
@@ -976,6 +982,192 @@ const benchmarkSource = `
     return results;
   }
 
+  async function createTabListFixture(tabCount) {
+    const host = document.createElement('mdw-tab-list');
+    const contentA = document.createElement('div');
+    const contentB = document.createElement('div');
+    const fragment = document.createDocumentFragment();
+    const counters = {
+      listenerAdditions: 0,
+      listenerRemovals: 0,
+      maxConcurrentListeners: 0,
+      metricRebuilds: 0,
+    };
+    let concurrentListeners = 0;
+    host.setAttribute('data-runtime-benchmark', '');
+    contentA.id = 'benchmark-tab-content';
+    contentB.id = 'benchmark-tab-content-replacement';
+    for (const content of [contentA, contentB]) {
+      Object.defineProperties(content, {
+        clientWidth: { configurable: true, value: 100 },
+        scrollWidth: { configurable: true, value: tabCount * 100 },
+        scrollLeft: { configurable: true, writable: true, value: 0 },
+      });
+      const addEventListener = content.addEventListener;
+      const removeEventListener = content.removeEventListener;
+      content.addEventListener = function addEventListenerCounter(...args) {
+        if (args[0] === 'scroll') {
+          counters.listenerAdditions += 1;
+          concurrentListeners += 1;
+          counters.maxConcurrentListeners = Math.max(counters.maxConcurrentListeners, concurrentListeners);
+        }
+        return addEventListener.apply(this, args);
+      };
+      content.removeEventListener = function removeEventListenerCounter(...args) {
+        if (args[0] === 'scroll') {
+          counters.listenerRemovals += 1;
+          concurrentListeners -= 1;
+        }
+        return removeEventListener.apply(this, args);
+      };
+    }
+    for (let index = 0; index < tabCount; index += 1) {
+      const tab = document.createElement('mdw-tab');
+      tab.textContent = 'tab-' + index;
+      fragment.append(tab);
+    }
+    const nested = document.createElement('div');
+    nested.append(document.createElement('mdw-tab'));
+    fragment.append(nested);
+    host.append(fragment);
+    document.body.append(contentA, contentB, host);
+    await settleMutations();
+    host._tabMetrics = [...host.tabs].map((tab, index) => ({
+      center: 50 + (index * 100),
+      index,
+      label: { left: 25, width: 50 },
+      left: index * 100,
+      right: (index + 1) * 100,
+      tab,
+      width: 100,
+    }));
+    const clearCache = host.clearCache;
+    host.clearCache = function clearCacheCounter() {
+      counters.metricRebuilds += 1;
+      return clearCache.call(this);
+    };
+    return { contentA, contentB, counters, host };
+  }
+
+  function validateTabListFixture(fixture, expectedTabs) {
+    const { counters, host } = fixture;
+    if (host.tabs.length !== expectedTabs || host.childTabItems.length !== expectedTabs + 1) {
+      throw new Error('TabList direct ownership diverged');
+    }
+    if (host.selectedIndex < 0 || host.selectedIndex >= expectedTabs) {
+      throw new Error('TabList selection diverged');
+    }
+    if (counters.maxConcurrentListeners > 1) {
+      throw new Error('TabList retained duplicate scroll listeners');
+    }
+  }
+
+  const tabListScenarios = [
+    {
+      name: 'warm selection and indicator updates',
+      operations() { return 10000; },
+      async run(fixture, operations) {
+        const { counters, host } = fixture;
+        const metrics = host._tabMetrics;
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          host.selectedIndex = index % host.tabs.length;
+          host.updateIndicatorByIndex(host.selectedIndex);
+        }
+        const elapsed = performance.now() - start;
+        if (host._tabMetrics !== metrics || counters.metricRebuilds !== 0) {
+          throw new Error('TabList rebuilt warm metrics');
+        }
+        validateTabListFixture(fixture, host.tabs.length);
+        return elapsed;
+      },
+    },
+    {
+      name: 'scroll updates',
+      operations() { return 1000; },
+      async run(fixture, operations) {
+        const { contentA, host } = fixture;
+        host.tabContent = contentA;
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          contentA.scrollLeft = (index % host.tabs.length) * 100;
+          host.observeTabContent();
+        }
+        const elapsed = performance.now() - start;
+        validateTabListFixture(fixture, host.tabs.length);
+        return elapsed;
+      },
+    },
+    {
+      name: 'direct topology changes',
+      operations() { return 1000; },
+      async run(fixture, operations) {
+        const { host } = fixture;
+        const expectedTabs = host.tabs.length;
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          const tab = host.tabs.item(host.tabs.length - 1);
+          tab.remove();
+          host.prepend(tab);
+          host.selectedIndex = index % expectedTabs;
+        }
+        const elapsed = performance.now() - start;
+        await settleMutations();
+        validateTabListFixture(fixture, expectedTabs);
+        return elapsed;
+      },
+    },
+    {
+      name: 'content bind replace and unbind',
+      operations() { return 1000; },
+      async run(fixture, operations) {
+        const { contentA, contentB, counters, host } = fixture;
+        const start = performance.now();
+        for (let index = 0; index < operations; index += 1) {
+          host.tabContent = contentA;
+          host.tabContent = contentB;
+          host.tabContent = null;
+        }
+        const elapsed = performance.now() - start;
+        if (counters.listenerAdditions !== operations * 2
+          || counters.listenerRemovals !== operations * 2
+          || host.tabContent !== undefined) {
+          throw new Error('TabList listener lifecycle diverged');
+        }
+        host.selectedIndex = 0;
+        validateTabListFixture(fixture, host.tabs.length);
+        return elapsed;
+      },
+    },
+  ];
+
+  async function runTabListSuite(options) {
+    const results = [];
+    for (const scenario of tabListScenarios) {
+      const timings = [];
+      const counterSamples = [];
+      const operations = scenario.operations(options.targetCount);
+      for (let index = -options.warmupCount; index < options.sampleCount; index += 1) {
+        const fixture = await createTabListFixture(Math.min(options.targetCount, 200));
+        try {
+          const elapsed = await scenario.run(fixture, operations);
+          if (index >= 0) {
+            timings.push(elapsed);
+            counterSamples.push(copyCounters(fixture.counters));
+          }
+        } finally {
+          fixture.host.remove();
+          fixture.contentA.remove();
+          fixture.contentB.remove();
+          await settleMutations();
+        }
+        await new Promise(requestAnimationFrame);
+      }
+      results.push(summarize(scenario.name, operations, timings, counterSamples));
+    }
+    return results;
+  }
+
   window.runComponentBenchmark = async (options) => {
     const results = {};
     for (const suiteName of options.suiteNames) {
@@ -987,6 +1179,8 @@ const benchmarkSource = `
         results[suiteName] = await runListboxSuite(options);
       } else if (suiteName === 'menu') {
         results[suiteName] = await runMenuSuite(options);
+      } else if (suiteName === 'tab-list') {
+        results[suiteName] = await runTabListSuite(options);
       }
     }
     return results;

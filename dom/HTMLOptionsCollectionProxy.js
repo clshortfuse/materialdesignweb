@@ -38,7 +38,7 @@ function getCollectionIndex(key) {
  * @param {Set<PropertyKey>} [options.reservedKeys]
  * @return {HTMLCollectionOf<T>}
  */
-function constructDirectChildrenCollectionProxy({
+export function constructDirectChildrenCollectionProxy({
   host,
   accept,
   getIndexedElements,
