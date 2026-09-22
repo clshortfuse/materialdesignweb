@@ -23,6 +23,19 @@ const supportsHTMLDialogElement = typeof HTMLDialogElement !== 'undefined';
 /** @type {PopupStack[]} */
 const OPEN_POPUPS = [];
 
+/** @type {Record<string, any>[]} */
+const PENDING_HISTORY_STATES = [];
+
+/**
+ * @param {Record<string, any>} left
+ * @param {Record<string, any>} right
+ * @return {boolean}
+ */
+function historyStatesMatch(left, right) {
+  return left === right || Object.keys(right)
+    .every((key) => right[key] === left[key]);
+}
+
 /**
  * @return {void}
  */
@@ -48,12 +61,18 @@ function onNavMouseDown(event) {
  */
 function onPopState(event) {
   if (!event.state) return;
+  const pendingIndex = PENDING_HISTORY_STATES.findIndex(
+    (state) => historyStatesMatch(event.state, state),
+  );
+  if (pendingIndex !== -1) {
+    PENDING_HISTORY_STATES.splice(pendingIndex, 1);
+    return;
+  }
   const lastOpenPopup = OPEN_POPUPS.at(-1);
   if (!lastOpenPopup || !lastOpenPopup.previousState) {
     return;
   }
-  if ((lastOpenPopup.previousState === event.state) || Object.keys(event.state)
-    .every((key) => event.state[key] === lastOpenPopup.previousState[key])) {
+  if (historyStatesMatch(event.state, lastOpenPopup.previousState)) {
     // Close (cancel event) can be prevented. Fire and check if prevented
     const cancelEvent = new Event('cancel', { cancelable: true });
     if (lastOpenPopup.element.dispatchEvent(cancelEvent)) {
@@ -107,6 +126,8 @@ export default function PopupMixin(Base) {
       returnValue: '',
       /** Internal: true while closing is in-progress */
       _closing: false,
+      /** Pending frame for ResizeObserver-driven positioning. */
+      _popupResizeFrame: 0,
       /** Internal: whether to show a scrim (overlay) for modal popups */
       _useScrim: false,
       /**
@@ -417,6 +438,8 @@ export default function PopupMixin(Base) {
       close(returnValue = undefined, returnFocus = true) {
         if (!this.open) return false;
         if (this._closing) return false;
+        cancelAnimationFrame(this._popupResizeFrame);
+        this._popupResizeFrame = 0;
         this._source = null;
         this._closing = true;
         this.modal = false;
@@ -459,6 +482,7 @@ export default function PopupMixin(Base) {
               if (entry.state && window.history
                 && window.history.state && entry.state.hash === window.history.state.hash) {
                 window.removeEventListener('popstate', onPopState);
+                PENDING_HISTORY_STATES.push(entry.previousState);
                 window.history.back();
                 // Back does not set state immediately
                 // Needed to track submenu
@@ -496,8 +520,13 @@ export default function PopupMixin(Base) {
 
     .overrides({
       onResizeObserved(entry) {
-        if (!this.open || this._closing) return;
-        this.updatePopupPosition();
+        void entry;
+        if (!this.open || this._closing || this._popupResizeFrame) return;
+        this._popupResizeFrame = requestAnimationFrame(() => {
+          this._popupResizeFrame = 0;
+          if (!this.open || this._closing) return;
+          this.updatePopupPosition();
+        });
       },
     })
     .html`

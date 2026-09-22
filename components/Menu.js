@@ -111,7 +111,7 @@ export default CustomElement
       return result;
     },
     focus() {
-      this.focusCurrentOrFirst();
+      this.focusFirst();
     },
     /**
      * @param {HTMLElement} cascader Element that calls for submenu cascade
