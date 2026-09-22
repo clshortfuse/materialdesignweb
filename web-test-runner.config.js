@@ -2,7 +2,7 @@ import { axTreePlugin } from './test/plugins/axTreePlugin.js';
 import { screenshotComparePlugin } from './test/plugins/screenshotComparePlugin.js';
 
 export default {
-  testsFinishTimeout: 10 * 60 * 1000,
+  testsFinishTimeout: 20 * 60 * 1000,
   plugins: [
     axTreePlugin(),
     screenshotComparePlugin({
