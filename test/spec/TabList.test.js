@@ -234,6 +234,7 @@ describe('mdw-tab-list', () => {
           <mdw-tab>Third</mdw-tab>
         </mdw-tab-list>
       `;
+      tabList.pageIsRTL = rtl;
       tabList._tabMetrics = [...tabList.tabs].map((tab, index) => ({
         center: 50 + (index * 100),
         index,
@@ -243,7 +244,6 @@ describe('mdw-tab-list', () => {
         tab,
         width: 100,
       }));
-      tabList._isRTL = rtl;
       tabList.tabContent = content;
 
       assert.equal(tabList.selectedIndex, expectedIndex);
