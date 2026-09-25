@@ -111,6 +111,8 @@ export default CustomElement
     /** Currently suggested option (used for aria-activedescendant labels). */
     _suggestionOption: {
       type: 'object',
+      diff: null,
+      is: Object.is,
       /** @type {Pick<HTMLOptionElement, 'label'|'value'|'selected'>} */
       value: null,
     },

@@ -124,6 +124,41 @@ describe('mdw-input', () => {
     assert.equal(element.value, 'AK');
   });
 
+  it('changes select-one options without diffing DOM element state', async () => {
+    /** @type {HTMLInputElement} */
+    const element = html`
+      <mdw-input label="Client" type="select-one">
+        <mdw-listbox>
+          <mdw-list-option value="alpha">Alpha</mdw-list-option>
+          <mdw-list-option value="beta">Beta</mdw-list-option>
+        </mdw-listbox>
+      </mdw-input>
+    `;
+    await wait();
+    const listbox = element.querySelector('mdw-listbox');
+    const [alpha, beta] = listbox.querySelectorAll('mdw-list-option');
+    let inputEvents = 0;
+    let changeEvents = 0;
+    listbox.addEventListener('input', () => { inputEvents += 1; });
+    element.addEventListener('change', () => { changeEvents += 1; });
+
+    element.focus();
+    await sendKeypress('Alt+ArrowDown');
+    await wait();
+    beta.click();
+    await wait();
+    assert.equal(element.value, 'beta');
+
+    await sendKeypress('Alt+ArrowDown');
+    await wait();
+    alpha.click();
+    await wait();
+
+    assert.equal(element.value, 'alpha');
+    assert.equal(inputEvents, 2);
+    assert.equal(changeEvents, 2);
+  });
+
   it('selects first navigated option with Enter', async () => {
     /** @type {HTMLInputElement} */
     const element = html`
